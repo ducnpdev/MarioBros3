@@ -1,0 +1,26 @@
+﻿  Animations.cpp
+  Brick.cpp
+  Koopas.cpp
+  Portal.cpp
+D:\MarioBros3\05-ScenceManager\Portal.cpp(9,16): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\MarioBros3\05-ScenceManager\Portal.cpp(10,17): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Utils.cpp
+  Game.cpp
+  GameObject.cpp
+  Goomba.cpp
+  main.cpp
+  Mario.cpp
+  PlayScence.cpp
+D:\MarioBros3\05-ScenceManager\PlayScence.cpp(89,20): warning C4018: '<': signed/unsigned mismatch
+D:\MarioBros3\05-ScenceManager\PlayScence.cpp(111,20): warning C4018: '<': signed/unsigned mismatch
+D:\MarioBros3\05-ScenceManager\PlayScence.cpp(134,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\MarioBros3\05-ScenceManager\PlayScence.cpp(135,10): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\MarioBros3\05-ScenceManager\PlayScence.cpp(161,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\MarioBros3\05-ScenceManager\PlayScence.cpp(162,12): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\MarioBros3\05-ScenceManager\PlayScence.cpp(261,20): warning C4018: '<': signed/unsigned mismatch
+D:\MarioBros3\05-ScenceManager\PlayScence.cpp(270,20): warning C4018: '<': signed/unsigned mismatch
+  Scence.cpp
+  Sprites.cpp
+  Textures.cpp
+  Generating Code...
+  05-ScenceManager.vcxproj -> D:\MarioBros3\Debug\05-ScenceManager.exe
