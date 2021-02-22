@@ -1,0 +1,7 @@
+[SETTINGS]
+start	1
+#scene list
+[SCENES]
+1	filetxt/scene1.txt
+2	filetxt/scene2.txt
+3	filetxt/scene-test.txt
