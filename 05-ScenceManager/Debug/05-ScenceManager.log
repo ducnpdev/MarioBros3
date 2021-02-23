@@ -1,2 +1,52 @@
 ﻿  Mario.cpp
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(82,1): warning C4005: 'ANI_MARIO_BIG_IDLE_RIGHT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(56): message : see previous definition of 'ANI_MARIO_BIG_IDLE_RIGHT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(83,1): warning C4005: 'ANI_MARIO_BIG_IDLE_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(57): message : see previous definition of 'ANI_MARIO_BIG_IDLE_LEFT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(85,1): warning C4005: 'ANI_MARIO_BIG_WALK_RIGHT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(58): message : see previous definition of 'ANI_MARIO_BIG_WALK_RIGHT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(86,1): warning C4005: 'ANI_MARIO_BIG_WALK_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(59): message : see previous definition of 'ANI_MARIO_BIG_WALK_LEFT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(87,1): warning C4005: 'ANI_MARIO_BIG_RUN_RIGHT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(60): message : see previous definition of 'ANI_MARIO_BIG_RUN_RIGHT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(88,1): warning C4005: 'ANI_MARIO_BIG_RUN_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(61): message : see previous definition of 'ANI_MARIO_BIG_RUN_LEFT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(89,1): warning C4005: 'ANI_MARIO_BIG_JUMP_RIGHT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(62): message : see previous definition of 'ANI_MARIO_BIG_JUMP_RIGHT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(90,1): warning C4005: 'ANI_MARIO_BIG_JUMP_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(63): message : see previous definition of 'ANI_MARIO_BIG_JUMP_LEFT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(92,1): warning C4005: 'ANI_MARIO_BIG_KICK_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(65): message : see previous definition of 'ANI_MARIO_BIG_KICK_LEFT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(93,1): warning C4005: 'ANI_MARIO_BIG_IDLE_TORTOISESHELL_RIGHT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(66): message : see previous definition of 'ANI_MARIO_BIG_IDLE_TORTOISESHELL_RIGHT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(94,1): warning C4005: 'ANI_MARIO_BIG_IDLE_TORTOISESHELL_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(67): message : see previous definition of 'ANI_MARIO_BIG_IDLE_TORTOISESHELL_LEFT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(95,1): warning C4005: 'ANI_MARIO_BIG_WALK_TORTOISESHELL_RIGHT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(68): message : see previous definition of 'ANI_MARIO_BIG_WALK_TORTOISESHELL_RIGHT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(96,1): warning C4005: 'ANI_MARIO_BIG_WALK_TORTOISESHELL_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(69): message : see previous definition of 'ANI_MARIO_BIG_WALK_TORTOISESHELL_LEFT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(97,1): warning C4005: 'ANI_MARIO_BIG_JUMP_TORTOISESHELL_RIGHT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(70): message : see previous definition of 'ANI_MARIO_BIG_JUMP_TORTOISESHELL_RIGHT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(98,1): warning C4005: 'ANI_MARIO_BIG_JUMP_TORTOISESHELL_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(71): message : see previous definition of 'ANI_MARIO_BIG_JUMP_TORTOISESHELL_LEFT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(99,1): warning C4005: 'ANI_MARIO_BIG_TURN_RIGHT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(72): message : see previous definition of 'ANI_MARIO_BIG_TURN_RIGHT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(100,1): warning C4005: 'ANI_MARIO_BIG_TURN_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(73): message : see previous definition of 'ANI_MARIO_BIG_TURN_LEFT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(101,1): warning C4005: 'ANI_MARIO_BIG_RUN_FAST_RIGHT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(74): message : see previous definition of 'ANI_MARIO_BIG_RUN_FAST_RIGHT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(102,1): warning C4005: 'ANI_MARIO_BIG_RUN_FAST_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(75): message : see previous definition of 'ANI_MARIO_BIG_RUN_FAST_LEFT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(103,1): warning C4005: 'ANI_MARIO_BIG_SIT_RIGHT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(76): message : see previous definition of 'ANI_MARIO_BIG_SIT_RIGHT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(104,1): warning C4005: 'ANI_MARIO_BIG_SIT_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(77): message : see previous definition of 'ANI_MARIO_BIG_SIT_LEFT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(107,1): warning C4005: 'ANI_MARIO_BIG_FLY_LOW_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(106): message : see previous definition of 'ANI_MARIO_BIG_FLY_LOW_LEFT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(109,1): warning C4005: 'ANI_MARIO_BIG_FLY_HIGH_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(108): message : see previous definition of 'ANI_MARIO_BIG_FLY_HIGH_LEFT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(113,1): warning C4005: 'ANI_MARIO_BIG_MAX_POWER_RIGHT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(78): message : see previous definition of 'ANI_MARIO_BIG_MAX_POWER_RIGHT'
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(114,1): warning C4005: 'ANI_MARIO_BIG_MAX_POWER_LEFT': macro redefinition
+D:\MarioBros3\05-ScenceManager\MarioConfig.h(79): message : see previous definition of 'ANI_MARIO_BIG_MAX_POWER_LEFT'
   05-ScenceManager.vcxproj -> D:\MarioBros3\Debug\05-ScenceManager.exe

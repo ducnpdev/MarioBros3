@@ -150,8 +150,8 @@ void CMario::Render()
 	int alpha = 255;
 	if (untouchable) alpha = 128;
 
-	animation_set->at(17)->Render(x, y, alpha);
-
+	animation_set->at(73)->Render(x, y, alpha);
+	
 	RenderBoundingBox();
 }
 
