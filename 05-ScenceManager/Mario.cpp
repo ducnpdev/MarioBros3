@@ -8,9 +8,9 @@
 
 CMario::CMario(float x, float y) : CGameObject()
 {
-	level = MARIO_LEVEL_BIG;
+	level = LEVEL_MARIO_BIG;
 	untouchable = 0;
-	SetState(MARIO_STATE_IDLE);
+	SetState(STATE_MARIO_IDLE);
 
 	start_x = x; 
 	start_y = y; 
@@ -32,7 +32,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	coEvents.clear();
 
 	// turn off collision when die 
-	if (state!=MARIO_STATE_DIE)
+	if (state!=STATE_MARIO_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
@@ -86,7 +86,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					if (goomba->GetState()!= GOOMBA_STATE_DIE)
 					{
 						goomba->SetState(GOOMBA_STATE_DIE);
-						vy = -MARIO_JUMP_DEFLECT_SPEED;
+						vy = -SPEED_MARIO_JUMP_DEFLECT;
 					}
 				}
 				else if (e->nx != 0)
@@ -95,13 +95,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					{
 						if (goomba->GetState()!=GOOMBA_STATE_DIE)
 						{
-							if (level > MARIO_LEVEL_SMALL)
+							if (level > LEVEL_MARIO_SMAIL)
 							{
-								level = MARIO_LEVEL_SMALL;
+								level = LEVEL_MARIO_SMAIL;
 								StartUntouchable();
 							}
 							else 
-								SetState(MARIO_STATE_DIE);
+								SetState(STATE_MARIO_DIE);
 						}
 					}
 				}
@@ -118,42 +118,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-void CMario::Render()
-{
-	int ani = -1;
-	if (state == MARIO_STATE_DIE)
-		ani = MARIO_ANI_DIE;
-	else
-	if (level == MARIO_LEVEL_BIG)
-	{
-		if (vx == 0)
-		{
-			if (nx>0) ani = MARIO_ANI_BIG_IDLE_RIGHT;
-			else ani = MARIO_ANI_BIG_IDLE_LEFT;
-		}
-		else if (vx > 0) 
-			ani = MARIO_ANI_BIG_WALKING_RIGHT; 
-		else ani = MARIO_ANI_BIG_WALKING_LEFT;
-	}
-	else if (level == MARIO_LEVEL_SMALL)
-	{
-		if (vx == 0)
-		{
-			if (nx>0) ani = MARIO_ANI_SMALL_IDLE_RIGHT;
-			else ani = MARIO_ANI_SMALL_IDLE_LEFT;
-		}
-		else if (vx > 0)
-			ani = MARIO_ANI_SMALL_WALKING_RIGHT;
-		else ani = MARIO_ANI_SMALL_WALKING_LEFT;
-	}
 
-	int alpha = 255;
-	if (untouchable) alpha = 128;
-
-	animation_set->at(103)->Render(x, y, alpha);
-	
-	RenderBoundingBox();
-}
 
 void CMario::SetState(int state)
 {
@@ -161,23 +126,48 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
-	case MARIO_STATE_WALKING_RIGHT:
-		vx = MARIO_WALKING_SPEED;
-		nx = 1;
+	case STATE_MARIO_WALKING_RIGHT:
+		isRunning = false;
+		isSitDown = false;
+		vx = SPEED_MARIO_WALKING;
+		nx = DIRECTION_MARIO_RIGHT;
 		break;
-	case MARIO_STATE_WALKING_LEFT: 
-		vx = -MARIO_WALKING_SPEED;
-		nx = -1;
+	case STATE_MARIO_WALKING_LEFT: 
+		isSitDown = false;
+		vx = -SPEED_MARIO_WALKING;
+		nx = DIRECTION_MARIO_LEFT;
 		break;
-	case MARIO_STATE_JUMP:
+	case STATE_MARIO_RUNNING_RIGHT:
+		isSitDown = false;
+		isRunning = true;
+		vx = SPEED_MARIO_RUNNING;
+		nx = DIRECTION_MARIO_RIGHT;
+		break;
+	case STATE_MARIO_RUNNING_LEFT:
+		isSitDown = false;
+		isRunning = true;
+		vx = -SPEED_MARIO_RUNNING;
+		nx = DIRECTION_MARIO_LEFT;
+		break;		
+	case STATE_MARIO_SITDOWN:
+		if(level != 1){
+			if (!isSitDown)
+			{
+				y = y - 1;
+			}
+		}
+		isSitDown = true;
+		break;
+	case STATE_MARIO_JUMP:
 		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
 		vy = -MARIO_JUMP_SPEED_Y;
 		break; 
-	case MARIO_STATE_IDLE: 
+	case STATE_MARIO_IDLE:
+		isSitDown = false; 
 		vx = 0;
 		break;
-	case MARIO_STATE_DIE:
-		vy = -MARIO_DIE_DEFLECT_SPEED;
+	case STATE_MARIO_DIE:
+		vy = -SPEED_MARIO_DIE_DEFLECT;
 		break;
 	}
 }
@@ -186,17 +176,30 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 {
 	left = x;
 	top = y; 
-
-	if (level==MARIO_LEVEL_BIG)
+	switch (level)
 	{
+	case LEVEL_MARIO_BIG:
+		right = x + BBOX_MARIO_BIG_WIDTH;
+		bottom = y + BBOX_MARIO_BIG_HEIGHT;
+		if(isSitDown) {
+			right = x + BBOX_MARIO_BIG_SIT_WIDTH;
+			bottom = y + BBOX_MARIO_BIG_SIT_HEIGHT;
+		}
+		break;
+	case LEVEL_MARIO_TAIL:
 		right = x + MARIO_BIG_BBOX_WIDTH;
 		bottom = y + MARIO_BIG_BBOX_HEIGHT;
-	}
-	else
-	{
+		break;	
+	case LEVEL_MARIO_FIRE:
+		right = x + MARIO_BIG_BBOX_WIDTH;
+		bottom = y + MARIO_BIG_BBOX_HEIGHT;
+		break;	
+	default:
 		right = x + MARIO_SMALL_BBOX_WIDTH;
 		bottom = y + MARIO_SMALL_BBOX_HEIGHT;
+		break;
 	}
+
 }
 
 /*
@@ -204,9 +207,91 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 */
 void CMario::Reset()
 {
-	SetState(MARIO_STATE_IDLE);
-	SetLevel(MARIO_LEVEL_BIG);
+	SetState(STATE_MARIO_IDLE);
+	SetLevel(LEVEL_MARIO_BIG);
 	SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
+}
+
+void CMario::Render()
+{
+	if (state == STATE_MARIO_DIE) ani = MARIO_ANI_DIE;
+	else
+		switch (level)
+		{
+		case LEVEL_MARIO_SMAIL:
+			ani = RenderLevelMarioSmall();
+			break;
+		case LEVEL_MARIO_BIG:
+			ani = RenderLevelMarioBig();
+			break;
+		case LEVEL_MARIO_TAIL:
+			ani = RenderLevelMarioTail();
+			break;
+		case LEVEL_MARIO_FIRE:
+			ani = RenderLevelMarioFire();
+			break;
+		default:
+			break;
+		}
+
+	int alpha = 255;
+	if (untouchable) alpha = 128;
+	animation_set->at(ani)->Render(x, y, alpha);
+	RenderBoundingBox();
+}
+
+int CMario::RenderLevelMarioSmall() {
+	if (vx == 0)
+	{
+		if (nx > 0) {
+			ani = ANI_MARIO_SMALL_IDLE_RIGHT;	
+		} 
+		else {
+			ani = ANI_MARIO_SMALL_IDLE_LEFT;
+		}
+	}
+	else if (vx > 0){
+		if(isRunning) ani = ANI_MARIO_SMALL_RUN_RIGHT; 
+		else ani = ANI_MARIO_SMALL_WALK_RIGHT; 
+	} 
+	else {
+		if(isRunning) ani = ANI_MARIO_SMALL_RUN_LEFT;
+		else ani = ANI_MARIO_SMALL_WALK_LEFT; 
+	}
+	
+	return ani;
+}
+
+int CMario::RenderLevelMarioBig() {
+	if (vx == 0)
+	{
+		if (nx > 0) {
+			if(isSitDown) ani = ANI_MARIO_BIG_SIT_RIGHT;
+			else ani = ANI_MARIO_BIG_IDLE_RIGHT;	
+		} 
+		else {
+			if(isSitDown) ani = ANI_MARIO_BIG_SIT_LEFT;
+			else ani = ANI_MARIO_BIG_IDLE_LEFT;
+		}
+	}
+	else if (vx > 0){
+		if(isRunning) ani = ANI_MARIO_BIG_RUN_RIGHT; 
+		else ani = ANI_MARIO_BIG_WALK_RIGHT; 
+	} 
+	else {
+		if(isRunning) ani = ANI_MARIO_BIG_RUN_LEFT;
+		else ani = ANI_MARIO_BIG_WALK_LEFT; 
+	}
+	
+	return ani;
+}
+
+int CMario::RenderLevelMarioTail() {
+	return 20;
+}
+
+int CMario::RenderLevelMarioFire() {
+	return 30;
 }
 

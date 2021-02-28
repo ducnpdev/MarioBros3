@@ -278,15 +278,15 @@ void CPlayScene::Unload()
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 {
-	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
-
 	CMario *mario = ((CPlayScene*)scence)->GetPlayer();
+	if (mario->GetMarioIsDead()) return;
+
 	switch (KeyCode)
 	{
-	case DIK_SPACE:
-		mario->SetState(MARIO_STATE_JUMP);
+	case DIK_S:
+		mario->SetState(STATE_MARIO_JUMP);
 		break;
-	case DIK_A: 
+	case DIK_Q: 
 		mario->Reset();
 		break;
 	}
@@ -297,12 +297,32 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	CGame *game = CGame::GetInstance();
 	CMario *mario = ((CPlayScene*)scence)->GetPlayer();
 
+	if(mario->GetMarioIsDead()) return; 
+
 	// disable control key when Mario die 
-	if (mario->GetState() == MARIO_STATE_DIE) return;
-	if (game->IsKeyDown(DIK_RIGHT))
-		mario->SetState(MARIO_STATE_WALKING_RIGHT);
-	else if (game->IsKeyDown(DIK_LEFT))
-		mario->SetState(MARIO_STATE_WALKING_LEFT);
+	if (mario->GetState() == STATE_MARIO_DIE) return;
+
+
+	if (game->IsKeyDown(DIK_RIGHT)) {
+		if(game->IsKeyDown(DIK_A)){
+			mario->SetState(STATE_MARIO_RUNNING_RIGHT);
+		}else {
+			mario->SetState(STATE_MARIO_WALKING_RIGHT);
+		}
+	}
+	else if (game->IsKeyDown(DIK_LEFT)) {
+		if(game->IsKeyDown(DIK_A)){
+			mario->SetState(STATE_MARIO_RUNNING_LEFT);
+		}else {
+			mario->SetState(STATE_MARIO_WALKING_LEFT);
+		}
+	}
 	else
-		mario->SetState(MARIO_STATE_IDLE);
+		mario->SetState(STATE_MARIO_IDLE);
+	
+	if(game->IsKeyDown(DIK_DOWN)) {
+		if(mario->GetState() == STATE_MARIO_IDLE)  
+			mario->SetState(STATE_MARIO_SITDOWN);
+	}
+
 }

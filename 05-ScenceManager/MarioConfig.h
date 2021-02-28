@@ -1,15 +1,5 @@
 #pragma once
 
-#define MARIO_WALKING_SPEED					0.15f 
-#define MARIO_JUMP_SPEED_Y					0.5f
-#define MARIO_JUMP_DEFLECT_SPEED			0.2f
-#define MARIO_GRAVITY						0.002f
-#define MARIO_DIE_DEFLECT_SPEED				0.5f
-#define MARIO_STATE_IDLE					0
-#define MARIO_STATE_WALKING_RIGHT			100
-#define MARIO_STATE_WALKING_LEFT			200
-#define MARIO_STATE_JUMP					300
-#define MARIO_STATE_DIE						400
 #define MARIO_ANI_BIG_IDLE_RIGHT			0
 #define MARIO_ANI_BIG_IDLE_LEFT				1
 #define MARIO_ANI_SMALL_IDLE_RIGHT			2
@@ -19,15 +9,67 @@
 #define MARIO_ANI_SMALL_WALKING_RIGHT		6
 #define MARIO_ANI_SMALL_WALKING_LEFT		7
 #define MARIO_ANI_DIE						8
-#define	MARIO_LEVEL_SMALL					1
-#define	MARIO_LEVEL_BIG						2
+#define	LEVEL_MARIO_SMAIL					1
+#define	LEVEL_MARIO_BIG						2
 #define MARIO_BIG_BBOX_WIDTH				15
 #define MARIO_BIG_BBOX_HEIGHT				27
 #define MARIO_SMALL_BBOX_WIDTH				13
 #define MARIO_SMALL_BBOX_HEIGHT				15
 #define MARIO_UNTOUCHABLE_TIME				5000
 
-// **************** animation ****************
+// **************** MARIO -> BoundingBox - BoundingBox ****************
+#define BBOX_MARIO_BIG_SIT_WIDTH			14
+#define BBOX_MARIO_BIG_SIT_HEIGHT			18
+#define BBOX_MARIO_BIG_WIDTH			    14
+#define BBOX_MARIO_BIG_HEIGHT			    27
+
+#define BBOX_MARIO_TAIL_SIT_WIDTH			14
+#define BBOX_MARIO_TAIL_SIT_HEIGHT			18
+#define BBOX_MARIO_TAIL_WIDTH			    14
+#define BBOX_MARIO_TAIL_HEIGHT			    27
+#define BBOX_MARIO_TAIL_SPLUS_LEFT		    7
+
+#define BBOX_MARIO_FIRE_SIT_WIDTH			14
+#define BBOX_MARIO_FIRE_SIT_HEIGHT			18
+#define BBOX_MARIO_FIRE_WIDTH			    14
+#define BBOX_MARIO_FIRE_HEIGHT			    27
+
+// **************** MARIO -> LEVEL - LEVEL ****************
+#define DIRECTION_MARIO_RIGHT				1
+#define DIRECTION_MARIO_LEFT				-1
+#define LEVEL_MARIO_SMAIL				1
+#define LEVEL_MARIO_BIG				    2
+#define LEVEL_MARIO_TAIL				3
+#define LEVEL_MARIO_FIRE				4
+
+
+// **************** MARIO -> SPEED - SPEED ****************
+#define SPEED_MARIO_WALKING					0.12f 
+#define SPEED_MARIO_RUNNING					0.3f
+#define SPEED_MARIO_RUNNING_FAST			0.2f
+#define MARIO_JUMP_SPEED_Y					0.5f
+#define SPEED_MARIO_JUMP_DEFLECT			0.2f
+#define MARIO_GRAVITY						0.002f
+#define SPEED_MARIO_DIE_DEFLECT				0.5f
+
+// **************** MARIO -> STATE - STATE ****************
+#define STATE_MARIO_IDLE					0
+#define STATE_MARIO_WALKING_RIGHT			110
+#define STATE_MARIO_WALKING_LEFT			120
+#define STATE_MARIO_RUNNING_RIGHT			130
+#define STATE_MARIO_RUNNING_LEFT			140
+#define STATE_MARIO_RUNNING_FAST_RIGHT			150
+#define STATE_MARIO_RUNNING_FAST_LEFT			160
+#define STATE_MARIO_RUNNING_TURN_RIGHT			170
+#define STATE_MARIO_RUNNING_TURN_LEFT			180
+#define STATE_MARIO_SITDOWN			190
+
+#define STATE_MARIO_JUMP					300
+#define STATE_MARIO_DIE						999
+
+// **************** MARIO -> TIME - TIME ****************
+
+// **************** MARIO -> AMIMATION - ANIMATION ****************
 // ## mario small ##
 #define ANI_MARIO_SMALL_IDLE_RIGHT			0
 #define ANI_MARIO_SMALL_IDLE_LEFT			1
@@ -101,9 +143,9 @@
 #define ANI_MARIO_TAIL_RUN_FAST_LEFT			65
 #define ANI_MARIO_TAIL_SIT_RIGHT				66
 #define ANI_MARIO_TAIL_SIT_LEFT				67
-#define ANI_MARIO_TAIL_FLY_LOW_LEFT			68
+#define ANI_MARIO_TAIL_FLY_LOW_RIGHT			68
 #define ANI_MARIO_TAIL_FLY_LOW_LEFT			69
-#define ANI_MARIO_TAIL_FLY_HIGH_LEFT			70
+#define ANI_MARIO_TAIL_FLY_HIGH_RIGHT			70
 #define ANI_MARIO_TAIL_FLY_HIGH_LEFT			71
 #define ANI_MARIO_TAIL_MAX_POWER_RIGHT		72
 #define ANI_MARIO_TAIL_MAX_POWER_LEFT		73
@@ -138,9 +180,9 @@
 
 // ## mario special ##
 #define ANI_MARIO_SMALL_WORLD_MAP		100
-#define ANI_MARIO_BIG_WORLD_MAP		101
+#define ANI_MARIO_BIG_WORLD_MAP			101
 #define ANI_MARIO_TAIL_WORLD_MAP		102
 #define ANI_MARIO_FIRE_WORLD_MAP		103
-#define ANI_MARIO_SMALL_DIE		104
+#define ANI_MARIO_SMALL_DIE				104
 
 
