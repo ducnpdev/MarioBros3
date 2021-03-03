@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 
+#include "PlayScenceConfig.h"
 #include "PlayScence.h"
 #include "Utils.h"
 #include "Textures.h"
@@ -14,27 +15,6 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 {
 	key_handler = new CPlayScenceKeyHandler(this);
 }
-
-/*
-	Load scene resources from scene file (textures, sprites, animations and objects)
-	See scene1.txt, scene2.txt for detail format specification
-*/
-
-#define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_TEXTURES 2
-#define SCENE_SECTION_SPRITES 3
-#define SCENE_SECTION_ANIMATIONS 4
-#define SCENE_SECTION_ANIMATION_SETS	5
-#define SCENE_SECTION_OBJECTS	6
-
-#define OBJECT_TYPE_MARIO	0
-#define OBJECT_TYPE_BRICK	1
-#define OBJECT_TYPE_GOOMBA	2
-#define OBJECT_TYPE_KOOPAS	3
-
-#define OBJECT_TYPE_PORTAL	50
-
-#define MAX_SCENE_LINE 1024
 
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
@@ -284,6 +264,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_S:
+		// if(mario->GetMarioIsStandingFloor()) mario->SetState(STATE_MARIO_JUMP);
 		mario->SetState(STATE_MARIO_JUMP);
 		break;
 	case DIK_Q: 
@@ -292,37 +273,75 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	}
 }
 
+void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) 
+{
+	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+	if (mario->GetMarioIsDead()) return;
+	switch (KeyCode)
+	{
+	case DIK_DOWN:
+		if(mario->GetMarioIsStateSitDown()){
+			if (mario->GetMarioLevel() != LEVEL_MARIO_SMAIL) {
+				mario->y -= NUMBER_AFTER_MARIO_SIT_DOWN;
+				mario->SetMarioIsStateSitDown(false);
+			}
+		}
+		break;
+	
+	}
+}
+
 void CPlayScenceKeyHandler::KeyState(BYTE *states)
 {
 	CGame *game = CGame::GetInstance();
 	CMario *mario = ((CPlayScene*)scence)->GetPlayer();
-
+	
 	if(mario->GetMarioIsDead()) return; 
 
 	// disable control key when Mario die 
 	if (mario->GetState() == STATE_MARIO_DIE) return;
 
+	if (game->IsKeyDown(DIK_DOWN)) {
+		if (mario->GetState() == STATE_MARIO_IDLE)
+			mario->SetState(STATE_MARIO_SITDOWN);
+	}
 
 	if (game->IsKeyDown(DIK_RIGHT)) {
-		if(game->IsKeyDown(DIK_A)){
-			mario->SetState(STATE_MARIO_RUNNING_RIGHT);
-		}else {
-			mario->SetState(STATE_MARIO_WALKING_RIGHT);
+
+		mario->SetTimeWalkingRight(GetTickCount());
+		if (GetTickCount() - mario->GetTimeWalkingLeft() > 200) {
+
+			if (game->IsKeyDown(DIK_A) || game->IsKeyDown(DIK_A) && game->IsKeyDown(DIK_S)) {
+				if (mario->GetMarioPower()) mario->SetState(STATE_MARIO_RUNNING_FAST_RIGHT);
+				else mario->SetState(STATE_MARIO_RUNNING_RIGHT);
+			}
+			else {
+				mario->SetState(STATE_MARIO_WALKING_RIGHT);
+			}
+
 		}
+		else {
+			mario->SetState(STATE_MARIO_TURN_LEFT);
+		}
+		
 	}
 	else if (game->IsKeyDown(DIK_LEFT)) {
-		if(game->IsKeyDown(DIK_A)){
-			mario->SetState(STATE_MARIO_RUNNING_LEFT);
-		}else {
-			mario->SetState(STATE_MARIO_WALKING_LEFT);
+		mario->SetTimeWalkingLeft(GetTickCount());
+		if (GetTickCount() - mario->GetTimeWalkingRight() > 200) {
+			if(game->IsKeyDown(DIK_A)){
+
+				mario->SetState(STATE_MARIO_RUNNING_LEFT);
+			}else {
+				mario->SetState(STATE_MARIO_WALKING_LEFT);
+			}
+		}
+		else {
+			mario->SetState( STATE_MARIO_TURN_RIGHT);
 		}
 	}
 	else
 		mario->SetState(STATE_MARIO_IDLE);
 	
-	if(game->IsKeyDown(DIK_DOWN)) {
-		if(mario->GetState() == STATE_MARIO_IDLE)  
-			mario->SetState(STATE_MARIO_SITDOWN);
-	}
+	
 
 }

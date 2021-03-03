@@ -47,6 +47,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		x += dx; 
 		y += dy;
+		isStandingFloor = false;
 	}
 	else
 	{
@@ -128,43 +129,53 @@ void CMario::SetState(int state)
 	{
 	case STATE_MARIO_WALKING_RIGHT:
 		isRunning = false;
-		isSitDown = false;
+		isJump = false;
+		isTurn = false;
 		vx = SPEED_MARIO_WALKING;
 		nx = DIRECTION_MARIO_RIGHT;
 		break;
 	case STATE_MARIO_WALKING_LEFT: 
-		isSitDown = false;
+		isJump = false;
+		isTurn = false;
 		vx = -SPEED_MARIO_WALKING;
 		nx = DIRECTION_MARIO_LEFT;
 		break;
 	case STATE_MARIO_RUNNING_RIGHT:
-		isSitDown = false;
+		isJump = false;
 		isRunning = true;
 		vx = SPEED_MARIO_RUNNING;
 		nx = DIRECTION_MARIO_RIGHT;
 		break;
 	case STATE_MARIO_RUNNING_LEFT:
-		isSitDown = false;
 		isRunning = true;
+		isJump = false;
 		vx = -SPEED_MARIO_RUNNING;
 		nx = DIRECTION_MARIO_LEFT;
 		break;		
 	case STATE_MARIO_SITDOWN:
-		if(level != 1){
-			if (!isSitDown)
-			{
-				y = y - 1;
-			}
-		}
-		isSitDown = true;
+		isStateSitDown = true;
+		isJump = false;
 		break;
 	case STATE_MARIO_JUMP:
 		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
+		isJump = true;
 		vy = -MARIO_JUMP_SPEED_Y;
 		break; 
 	case STATE_MARIO_IDLE:
-		isSitDown = false; 
+		isTurn = false;
 		vx = 0;
+		break;
+	case STATE_MARIO_TURN_RIGHT:
+		isTurn = true;
+		isRunning = false;
+		vx = SPEED_MARIO_WALKING;
+		if (isRunning) vx = SPEED_MARIO_WALKING + 0.5f;
+		break;
+	case STATE_MARIO_TURN_LEFT:
+		isTurn = true;
+		isRunning = false;
+		vx = -SPEED_MARIO_WALKING;
+		if (isRunning) vx = -SPEED_MARIO_WALKING - 0.5f;
 		break;
 	case STATE_MARIO_DIE:
 		vy = -SPEED_MARIO_DIE_DEFLECT;
@@ -181,7 +192,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	case LEVEL_MARIO_BIG:
 		right = x + BBOX_MARIO_BIG_WIDTH;
 		bottom = y + BBOX_MARIO_BIG_HEIGHT;
-		if(isSitDown) {
+		if(isStateSitDown) {
 			right = x + BBOX_MARIO_BIG_SIT_WIDTH;
 			bottom = y + BBOX_MARIO_BIG_SIT_HEIGHT;
 		}
@@ -267,20 +278,26 @@ int CMario::RenderLevelMarioBig() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if(isSitDown) ani = ANI_MARIO_BIG_SIT_RIGHT;
+			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_RIGHT;
+			else if (isJump == 1 && !isStandingFloor || isJump == -1 && !isStandingFloor) ani = ANI_MARIO_BIG_JUMP_RIGHT;
 			else ani = ANI_MARIO_BIG_IDLE_RIGHT;	
 		} 
 		else {
-			if(isSitDown) ani = ANI_MARIO_BIG_SIT_LEFT;
+			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_LEFT;
+			else if (isJump == 1 && !isStandingFloor || isJump == -1 && !isStandingFloor) ani = ANI_MARIO_BIG_JUMP_LEFT;
 			else ani = ANI_MARIO_BIG_IDLE_LEFT;
 		}
 	}
 	else if (vx > 0){
 		if(isRunning) ani = ANI_MARIO_BIG_RUN_RIGHT; 
+		else if (isTurn) ani = ANI_MARIO_BIG_TURN_LEFT;
+		else if (isJump == 1 && !isStandingFloor || isJump == -1 && !isStandingFloor) ani = ANI_MARIO_BIG_JUMP_RIGHT;
 		else ani = ANI_MARIO_BIG_WALK_RIGHT; 
 	} 
 	else {
 		if(isRunning) ani = ANI_MARIO_BIG_RUN_LEFT;
+		else if (isJump == 1 && !isStandingFloor || isJump == -1 && !isStandingFloor) ani = ANI_MARIO_BIG_JUMP_LEFT;
+		else if (isTurn) ani = ANI_MARIO_BIG_TURN_RIGHT;
 		else ani = ANI_MARIO_BIG_WALK_LEFT; 
 	}
 	

@@ -13,8 +13,13 @@ class CMario : public CGameObject
 	float start_y; 
 	bool marioIsDead = false;
 	bool isRunning = false;
-	bool isJump = false;
-	bool isSitDown = false;
+	bool isStateSitDown = false;
+	bool isStandingFloor = false;
+	bool isTurn = false;
+	int isJump = 0;
+
+	DWORD timeWalkingRight;
+	DWORD timeWalkingLeft;
 
 
 public: 
@@ -36,10 +41,32 @@ public:
 	int RenderLevelMarioTail();
 	int RenderLevelMarioFire();
 
+	bool GetMarioPower(){
+		//TODO word P in hud 
+		return false;
+	}
+
 	// Function Get - Set
 	bool GetMarioIsDead() { return marioIsDead; }
 	void SetMarioIsDead(bool isDead) { marioIsDead = isDead; }
+
 	int GetMarioLevel() { return level; }
 	void SetMarioLevel(int le) { level = le; }
+
+	bool GetMarioIsStateSitDown() { return isStateSitDown; }
+	void SetMarioIsStateSitDown(bool stateSitDown) { isStateSitDown = stateSitDown; }
+
+	bool GetMarioIsStandingFloor() { return isStandingFloor; }
+	void SetMarioIsStandingFloor(bool stading) { isStandingFloor = stading; }
+
+	int GetMarioIsJump() { return isJump; }
+	void SetMarioIsStandingFloor(int i) { isJump = i; }
+
+	void SetTimeWalkingLeft(DWORD t) { timeWalkingLeft = t; }
+	DWORD GetTimeWalkingLeft() { return timeWalkingLeft; }
+		
+	void SetTimeWalkingRight(DWORD t) { timeWalkingRight = t; }
+	DWORD GetTimeWalkingRight() { return timeWalkingRight; }
+
 
 };

@@ -146,5 +146,8 @@
     <ClInclude Include="Gold.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
+    <ClInclude Include="PlayScenceConfig.h">
+      <Filter>Header Files\Config</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

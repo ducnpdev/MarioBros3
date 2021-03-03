@@ -17,6 +17,11 @@
 #define MARIO_SMALL_BBOX_HEIGHT				15
 #define MARIO_UNTOUCHABLE_TIME				5000
 
+// **************** MARIO -> DYANMIC POSITION ****************
+#define NUMBER_AFTER_MARIO_SIT_DOWN		10
+
+
+
 // **************** MARIO -> BoundingBox - BoundingBox ****************
 #define BBOX_MARIO_BIG_SIT_WIDTH			14
 #define BBOX_MARIO_BIG_SIT_HEIGHT			18
@@ -63,6 +68,8 @@
 #define STATE_MARIO_RUNNING_TURN_RIGHT			170
 #define STATE_MARIO_RUNNING_TURN_LEFT			180
 #define STATE_MARIO_SITDOWN			190
+#define STATE_MARIO_TURN_RIGHT 200
+#define STATE_MARIO_TURN_LEFT 210
 
 #define STATE_MARIO_JUMP					300
 #define STATE_MARIO_DIE						999
