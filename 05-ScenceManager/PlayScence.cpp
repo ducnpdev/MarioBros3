@@ -8,6 +8,7 @@
 #include "Sprites.h"
 #include "Portal.h"
 
+
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
@@ -158,6 +159,25 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
+void CPlayScene::_ParseSection_MAPBACKGROUND(string line) {
+	DebugOut(L"_ParseSection_MAPBACKGROUND \n");
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 7) return; // skip invalid lines
+
+	int idTileSet = atoi(tokens[0].c_str());
+	int totalRowsTileSet = atoi(tokens[1].c_str());
+	int totalColumnsTileSet = atoi(tokens[2].c_str());
+	int totalRowsMap = atoi(tokens[3].c_str());
+	int totalColumnsMap = atoi(tokens[4].c_str());
+	int totalTiles = atoi(tokens[5].c_str());
+	wstring file_path = ToWSTR(tokens[6]);
+
+	mapBackground = new CMap(idTileSet, totalRowsTileSet, totalColumnsTileSet, totalRowsMap, totalColumnsMap, totalTiles);
+	mapBackground->LoadResourceTilesMap(file_path.c_str());
+	mapBackground->LoadTilesSet();
+}
+
 void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
@@ -174,6 +194,8 @@ void CPlayScene::Load()
 		string line(str);
 
 		if (line[0] == '#') continue;	// skip comment lines	
+
+		if (line == "[MAPBACKGROUND]")  { section = SCENE_SECTION_MAPBACKGROUND; continue; }
 
 		if (line == "[TEXTURES]") { section = SCENE_SECTION_TEXTURES; continue; }
 		if (line == "[SPRITES]") { 
@@ -196,6 +218,7 @@ void CPlayScene::Load()
 			case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
 			case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
 			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+			case SCENE_SECTION_MAPBACKGROUND: _ParseSection_MAPBACKGROUND(line); break;
 		}
 	}
 
@@ -233,11 +256,12 @@ void CPlayScene::Update(DWORD dt)
 	cx -= game->GetScreenWidth() / 2;
 	cy -= game->GetScreenHeight() / 2;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, 250 /*cy*/);
 }
 
 void CPlayScene::Render()
 {
+	mapBackground->RenderMap();
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }
@@ -265,7 +289,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	{
 	case DIK_S:
 		// if(mario->GetMarioIsStandingFloor()) mario->SetState(STATE_MARIO_JUMP);
-		mario->SetState(STATE_MARIO_JUMP);
+		if (mario->GetMarioIsJump() == false) {
+			DebugOut(L"start jump 111\n");
+			mario->SetTimeJumpStart(GetTickCount64());
+		//	mario->SetState(STATE_MARIO_JUMP);
+		}
 		break;
 	case DIK_Q: 
 		mario->Reset();
@@ -342,6 +370,12 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	else
 		mario->SetState(STATE_MARIO_IDLE);
 	
-	
+	if (game->IsKeyDown(DIK_S)) {
+		if (GetTickCount() - mario->GetTimeJumpStart() < 380 )
+		{
+			if (mario->GetMarioIsJump() != 1)
+				mario->SetState(STATE_MARIO_JUMP);
+		}
+	}
 
 }

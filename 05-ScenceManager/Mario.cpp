@@ -23,6 +23,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
+	if (vy > 0) {
+	}
+
 	// Simple fall down
 	vy += MARIO_GRAVITY*dt;
 
@@ -129,40 +132,41 @@ void CMario::SetState(int state)
 	{
 	case STATE_MARIO_WALKING_RIGHT:
 		isRunning = false;
-		isJump = false;
+		isJump = 0;
 		isTurn = false;
 		vx = SPEED_MARIO_WALKING;
 		nx = DIRECTION_MARIO_RIGHT;
 		break;
 	case STATE_MARIO_WALKING_LEFT: 
-		isJump = false;
+		isJump = 0;
 		isTurn = false;
 		vx = -SPEED_MARIO_WALKING;
 		nx = DIRECTION_MARIO_LEFT;
 		break;
 	case STATE_MARIO_RUNNING_RIGHT:
-		isJump = false;
+		isJump = 0;
 		isRunning = true;
 		vx = SPEED_MARIO_RUNNING;
 		nx = DIRECTION_MARIO_RIGHT;
 		break;
 	case STATE_MARIO_RUNNING_LEFT:
 		isRunning = true;
-		isJump = false;
+		isJump = 0;
 		vx = -SPEED_MARIO_RUNNING;
 		nx = DIRECTION_MARIO_LEFT;
 		break;		
 	case STATE_MARIO_SITDOWN:
 		isStateSitDown = true;
-		isJump = false;
+		isJump = 0;
 		break;
 	case STATE_MARIO_JUMP:
 		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
-		isJump = true;
+		isJump = 1;
 		vy = -MARIO_JUMP_SPEED_Y;
 		break; 
 	case STATE_MARIO_IDLE:
 		isTurn = false;
+		isJump = 0;
 		vx = 0;
 		break;
 	case STATE_MARIO_TURN_RIGHT:
@@ -279,25 +283,25 @@ int CMario::RenderLevelMarioBig() {
 	{
 		if (nx > 0) {
 			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_RIGHT;
-			else if (isJump == 1 && !isStandingFloor || isJump == -1 && !isStandingFloor) ani = ANI_MARIO_BIG_JUMP_RIGHT;
+			else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_RIGHT;
 			else ani = ANI_MARIO_BIG_IDLE_RIGHT;	
 		} 
 		else {
 			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_LEFT;
-			else if (isJump == 1 && !isStandingFloor || isJump == -1 && !isStandingFloor) ani = ANI_MARIO_BIG_JUMP_LEFT;
+			else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_LEFT;
 			else ani = ANI_MARIO_BIG_IDLE_LEFT;
 		}
 	}
 	else if (vx > 0){
-		if(isRunning) ani = ANI_MARIO_BIG_RUN_RIGHT; 
-		else if (isTurn) ani = ANI_MARIO_BIG_TURN_LEFT;
-		else if (isJump == 1 && !isStandingFloor || isJump == -1 && !isStandingFloor) ani = ANI_MARIO_BIG_JUMP_RIGHT;
+		if(isRunning) ani = ANI_MARIO_BIG_RUN_RIGHT;  
+		else if (isTurn) ani =  ANI_MARIO_BIG_TURN_RIGHT;
+		else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_RIGHT;
 		else ani = ANI_MARIO_BIG_WALK_RIGHT; 
 	} 
 	else {
 		if(isRunning) ani = ANI_MARIO_BIG_RUN_LEFT;
-		else if (isJump == 1 && !isStandingFloor || isJump == -1 && !isStandingFloor) ani = ANI_MARIO_BIG_JUMP_LEFT;
-		else if (isTurn) ani = ANI_MARIO_BIG_TURN_RIGHT;
+		else if (isJump == 1 ) ani = ANI_MARIO_BIG_JUMP_LEFT;
+		else if (isTurn) ani = ANI_MARIO_BIG_TURN_LEFT;
 		else ani = ANI_MARIO_BIG_WALK_LEFT; 
 	}
 	

@@ -130,6 +130,7 @@
     <ClCompile Include="FireMario.cpp" />
     <ClCompile Include="Gold.cpp" />
     <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Turtle.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="FireMario.h" />
     <ClInclude Include="Gold.h" />
     <ClInclude Include="Koopas.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="MarioConfig.h" />
     <ClInclude Include="PlayScenceConfig.h" />
     <ClInclude Include="Portal.h" />

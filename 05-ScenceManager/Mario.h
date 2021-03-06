@@ -20,6 +20,7 @@ class CMario : public CGameObject
 
 	DWORD timeWalkingRight;
 	DWORD timeWalkingLeft;
+	DWORD timeMarioJumpStart;
 
 
 public: 
@@ -60,7 +61,10 @@ public:
 	void SetMarioIsStandingFloor(bool stading) { isStandingFloor = stading; }
 
 	int GetMarioIsJump() { return isJump; }
-	void SetMarioIsStandingFloor(int i) { isJump = i; }
+	void SetMarioIsJump(int i) { isJump = i; }
+
+	void SetTimeJumpStart(DWORD t) { timeMarioJumpStart = t; }
+	DWORD GetTimeJumpStart() { return timeMarioJumpStart; }
 
 	void SetTimeWalkingLeft(DWORD t) { timeWalkingLeft = t; }
 	DWORD GetTimeWalkingLeft() { return timeWalkingLeft; }

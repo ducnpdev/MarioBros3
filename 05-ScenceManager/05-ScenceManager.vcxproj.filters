@@ -28,6 +28,12 @@
     <Filter Include="Source Files\Items">
       <UniqueIdentifier>{859c05e4-8bfd-4554-a9e6-e0960a4bd2a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Games">
+      <UniqueIdentifier>{c7447473-7418-4e81-b7e9-e2405aad8654}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Games">
+      <UniqueIdentifier>{c345755d-8890-455d-a371-bd750819602f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -83,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="Gold.cpp">
       <Filter>Source Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files\Games</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="PlayScenceConfig.h">
       <Filter>Header Files\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files\Games</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
