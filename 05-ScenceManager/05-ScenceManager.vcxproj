@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -126,9 +126,12 @@
   <ItemGroup>
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CellResource.cpp" />
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="FireMario.cpp" />
     <ClCompile Include="Gold.cpp" />
+    <ClCompile Include="GridResource.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Portal.cpp" />
@@ -147,9 +150,13 @@
   <ItemGroup>
     <ClInclude Include="Animations.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CellResource.h" />
     <ClInclude Include="Enemies.h" />
     <ClInclude Include="FireMario.h" />
     <ClInclude Include="Gold.h" />
+    <ClInclude Include="GridConfig.h" />
+    <ClInclude Include="GridResource.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MarioConfig.h" />

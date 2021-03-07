@@ -8,12 +8,14 @@
 #include "Goomba.h"
 #include "Koopas.h"
 #include "Map.h"
+#include "GridResource.h"
 
 class CPlayScene: public CScene
 {
 protected: 
 	// defination
 	CMap* mapBackground;
+	CGridResource* gridResource;
 
 
 	CMario *player;					// A play scene has to have player, right? 
@@ -26,6 +28,7 @@ protected:
 	void _ParseSection_ANIMATION_SETS(string line);
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_MAPBACKGROUND(string line);
+	void _ParseSection_GRID_RESOURCE(string line);
 
 	
 public: 

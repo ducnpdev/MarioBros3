@@ -131,20 +131,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		obj = new CMario(x,y); 
 		player = (CMario*)obj;  
-
 		DebugOut(L"[INFO] Player object created!\n");
 		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
-	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
-	case OBJECT_TYPE_PORTAL:
-		{	
-			float r = atof(tokens[4].c_str());
-			float b = atof(tokens[5].c_str());
-			int scene_id = atoi(tokens[6].c_str());
-			obj = new CPortal(x, y, r, b, scene_id);
-		}
-		break;
+	
 	default:
 		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
@@ -178,6 +168,18 @@ void CPlayScene::_ParseSection_MAPBACKGROUND(string line) {
 	mapBackground->LoadTilesSet();
 }
 
+void CPlayScene::_ParseSection_GRID_RESOURCE(string line)
+{
+	DebugOut(L"_ParseSection_GRID_RESOURCE: %S \n", line);
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 1) return;
+
+	wstring file_path = ToWSTR(tokens[0]);
+
+	gridResource = new CGridResource(file_path.c_str());
+}
+
 void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
@@ -196,6 +198,8 @@ void CPlayScene::Load()
 		if (line[0] == '#') continue;	// skip comment lines	
 
 		if (line == "[MAPBACKGROUND]")  { section = SCENE_SECTION_MAPBACKGROUND; continue; }
+
+		if (line == "[GRIDRESOURCE]") { section = SCENE_SECTION_GRID_RESOURCE; continue; }
 
 		if (line == "[TEXTURES]") { section = SCENE_SECTION_TEXTURES; continue; }
 		if (line == "[SPRITES]") { 
@@ -219,6 +223,7 @@ void CPlayScene::Load()
 			case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
 			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 			case SCENE_SECTION_MAPBACKGROUND: _ParseSection_MAPBACKGROUND(line); break;
+			case SCENE_SECTION_GRID_RESOURCE: _ParseSection_GRID_RESOURCE(line); break;
 		}
 	}
 
@@ -248,6 +253,7 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
 
+	gridResource->GirdPushResource(objects,);
 	// Update camera to follow mario
 	float cx, cy;
 	player->GetPosition(cx, cy);
@@ -261,7 +267,10 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
+	// render tilemap 
 	mapBackground->RenderMap();
+
+	// render all object in game
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }
