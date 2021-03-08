@@ -132,6 +132,7 @@
     <ClCompile Include="FireMario.cpp" />
     <ClCompile Include="Gold.cpp" />
     <ClCompile Include="GridResource.cpp" />
+    <ClCompile Include="Hub.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Portal.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="Gold.h" />
     <ClInclude Include="GridConfig.h" />
     <ClInclude Include="GridResource.h" />
+    <ClInclude Include="Hub.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MarioConfig.h" />

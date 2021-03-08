@@ -20,7 +20,6 @@ CMap::~CMap()
 
 void CMap::RenderMap()
 {
-	DebugOut(L"map.cpp Fn RenderMap:\n");
 	for (int rowMapIndex = 0; rowMapIndex < rowMap; rowMapIndex++) {
 		for (int columnMapIndex = 0; columnMapIndex < columnMap; columnMapIndex++)
 		{
@@ -32,7 +31,6 @@ void CMap::RenderMap()
 }
 void CMap::LoadResourceTilesMap(LPCWSTR pathFileTileMap)
 {
-	DebugOut(L"map.cpp Fn LoadResourceTilesMap: %s \n", pathFileTileMap);
 	ifstream fStream;
 
 	// open file save position map
@@ -54,7 +52,6 @@ void CMap::LoadResourceTilesMap(LPCWSTR pathFileTileMap)
 
 void CMap::LoadTilesSet()
 {
-	DebugOut(L"map.cpp Fn LoadTilesSet: \n");
 	for (int i = 0; i < maxTileSet; i++) 
 	{
 		int left = i % columnTileSet * TILESET;

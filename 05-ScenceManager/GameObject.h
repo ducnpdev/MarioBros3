@@ -62,6 +62,11 @@ public:
 
 	LPANIMATION_SET animation_set;
 
+	float originX;
+	float originY;
+	int originState;
+	bool visible;
+
 public: 
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
@@ -95,5 +100,12 @@ public:
 
 
 	~CGameObject();
+
+	void SetOriginObject(float x, float y, int state);
+	void ResetOriginObject();
+	void GetOriginObject(float& x, float& y);
+	void SetVisible(bool b) { visible = b;  }
+	bool GetVisible() { return visible; }
+
 };
 

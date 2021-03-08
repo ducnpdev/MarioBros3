@@ -11,11 +11,16 @@
 #include "Koopas.h"
 
 class CGridResource {
-	CCellResource** cellResource;
 
+	int numRow; 
+	int numCol;
+	int cellWidth;
+	int cellHeight;
+	CCellResource** cellResource;
 
 	void _ParseSection_Grid_ENEMIES(string line);
 	void _ParseSection_Grid_ITEMS(string line);
+	void _ParseSection_Grid_INITIAL(string line);
 
 public:
 	CGridResource(LPCWSTR pathFileGrid);

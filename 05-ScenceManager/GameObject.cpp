@@ -137,3 +137,16 @@ CGameObject::~CGameObject()
 {
 
 }
+
+
+void CGameObject::SetOriginObject(float x, float y, int state) {
+	originX = x; originY = y; originState = state;
+}
+void CGameObject::GetOriginObject(float& x, float& y) {
+	x = originX; y = originY;
+}
+void CGameObject::ResetOriginObject() {
+	x = originX;
+	y = originY;
+	SetState(originState);
+}

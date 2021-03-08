@@ -13,6 +13,7 @@
 // *** grid ***
 #define  GRID_RESOURCE_OBJECT_ITEM  1
 #define  GRID_RESOURCE_ENEMIES  2
+#define  GRID_RESOURCE_INITIAL  3
 
 
 #define OBJECT_TYPE_MARIO	0

@@ -102,6 +102,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Games</Filter>
     </ClCompile>
+    <ClCompile Include="Hub.cpp">
+      <Filter>Source Files\Games</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brick.h">
@@ -180,6 +183,9 @@
       <Filter>Header Files\Config</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
+      <Filter>Header Files\Games</Filter>
+    </ClInclude>
+    <ClInclude Include="Hub.h">
       <Filter>Header Files\Games</Filter>
     </ClInclude>
   </ItemGroup>

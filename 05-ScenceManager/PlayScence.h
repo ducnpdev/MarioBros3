@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "Game.h"
 #include "Textures.h"
 #include "Scence.h"
@@ -9,17 +10,20 @@
 #include "Koopas.h"
 #include "Map.h"
 #include "GridResource.h"
+#include "Camera.h"
+#include "Hub.h"
 
 class CPlayScene: public CScene
 {
 protected: 
 	// defination
 	CMap* mapBackground;
+
 	CGridResource* gridResource;
 
-
+	CHub* hub;
 	CMario *player;					// A play scene has to have player, right? 
-
+	CCamera* camera;
 	vector<LPGAMEOBJECT> objects;
 
 	void _ParseSection_TEXTURES(string line);
@@ -38,7 +42,8 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
-
+	void initCamera();
+	bool ObjectInUsing(float x, float y);
 	CMario * GetPlayer() { return player; } 
 
 	//friend class CPlayScenceKeyHandler;

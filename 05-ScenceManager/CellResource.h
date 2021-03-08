@@ -9,3 +9,4 @@ public:
 	void RemoveResource();
 };
 
+typedef CCellResource* LPCCellResource;

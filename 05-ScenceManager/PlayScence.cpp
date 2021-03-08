@@ -17,6 +17,18 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	key_handler = new CPlayScenceKeyHandler(this);
 }
 
+bool CPlayScene::ObjectInUsing(float x, float y) {
+	float CamX, CamY;
+
+	CamX = camera->GetPositionCameraX();
+
+	CamY = camera->GetPositionCameraX();
+
+	if (((CamX - 10 < x) && (x < CamX + 320)) && ((CamY < y) && (y < CamY + 320)))
+		return true;
+	return false;
+
+}
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
 {
@@ -170,19 +182,17 @@ void CPlayScene::_ParseSection_MAPBACKGROUND(string line) {
 
 void CPlayScene::_ParseSection_GRID_RESOURCE(string line)
 {
-	DebugOut(L"_ParseSection_GRID_RESOURCE: %S \n", line);
 	vector<string> tokens = split(line);
 
 	if (tokens.size() < 1) return;
 
 	wstring file_path = ToWSTR(tokens[0]);
-
+	// if (gridResource != NULL) return;
 	gridResource = new CGridResource(file_path.c_str());
 }
 
 void CPlayScene::Load()
 {
-	DebugOut(L"[INFO] Start loading scene resources from : %s \n", sceneFilePath);
 
 	ifstream f;
 	f.open(sceneFilePath);
@@ -231,11 +241,19 @@ void CPlayScene::Load()
 
 	CTextures::GetInstance()->Add(ID_TEX_BBOX, L"textures\\bbox.png", D3DCOLOR_XRGB(255, 255, 255));
 
-	DebugOut(L"[INFO] Done loading scene resources %s\n", sceneFilePath);
+}
+
+void CPlayScene::initCamera() {
+	if (camera != NULL) return;
+	camera = new CCamera(player, id);
+
+	hub = new CHub();
+	hub->SetCameraInHub(camera);
 }
 
 void CPlayScene::Update(DWORD dt)
 {
+	initCamera();
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 
@@ -245,24 +263,23 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(objects[i]);
 	}
 
+
+	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
+	if (player == NULL) return; 
+	
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->Update(dt, &coObjects);
 	}
-
-	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return; 
-
-	gridResource->GirdPushResource(objects,);
-	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
-
-	CGame *game = CGame::GetInstance();
-	cx -= game->GetScreenWidth() / 2;
-	cy -= game->GetScreenHeight() / 2;
-
-	CGame::GetInstance()->SetCamPos(cx, 250 /*cy*/);
+	camera->UpdateCamera();
+	int Xcam = (int)camera->GetPositionCameraX();
+	int Ycam = (int)camera->GetPositionCameraY();
+	gridResource->GirdPushResource(objects, Xcam, Ycam);
+	
+	//CGame *game = CGame::GetInstance();
+	//cx -= game->GetScreenWidth() / 2;
+	//cy -= game->GetScreenHeight() / 2;
+	//CGame::GetInstance()->SetCamPos(cx, 250 /*cy*/);
 }
 
 void CPlayScene::Render()
@@ -286,7 +303,6 @@ void CPlayScene::Unload()
 	objects.clear();
 	player = NULL;
 
-	DebugOut(L"[INFO] Scene %s unloaded! \n", sceneFilePath);
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
@@ -299,7 +315,6 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_S:
 		// if(mario->GetMarioIsStandingFloor()) mario->SetState(STATE_MARIO_JUMP);
 		if (mario->GetMarioIsJump() == false) {
-			DebugOut(L"start jump 111\n");
 			mario->SetTimeJumpStart(GetTickCount64());
 		//	mario->SetState(STATE_MARIO_JUMP);
 		}
