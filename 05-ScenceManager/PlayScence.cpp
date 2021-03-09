@@ -7,6 +7,8 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
+#include "Road.h"
+
 
 
 using namespace std;
@@ -72,14 +74,12 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 {
 	vector<string> tokens = split(line);
 
-	if (tokens.size() < 3) return; // skip invalid lines - an animation must at least has 1 frame and 1 frame time
-
-	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+	if (tokens.size() < 3) return; 
 
 	LPANIMATION ani = new CAnimation();
 
 	int ani_id = atoi(tokens[0].c_str());
-	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
+	for (int i = 1; i < tokens.size(); i += 2)
 	{
 		int sprite_id = atoi(tokens[i].c_str());
 		int frame_time = atoi(tokens[i+1].c_str());
@@ -93,7 +93,7 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 {
 	vector<string> tokens = split(line);
 
-	if (tokens.size() < 2) return; // skip invalid lines - an animation set must at least id and one animation id
+	if (tokens.size() < 2) return;
 
 	int ani_set_id = atoi(tokens[0].c_str());
 
@@ -119,9 +119,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
 
-	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
-
-	if (tokens.size() < 3) return; // skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 3) return; 
 
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
@@ -138,17 +136,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_MARIO:
 		if (player!=NULL) 
 		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
 		obj = new CMario(x,y); 
 		player = (CMario*)obj;  
-		DebugOut(L"[INFO] Player object created!\n");
 		break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(); break;
+	case OBJECT_TYPE_BRICK: 
+		obj = new CBrick(); 
+		break;
 	
 	default:
-		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
 
@@ -162,7 +159,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 }
 
 void CPlayScene::_ParseSection_MAPBACKGROUND(string line) {
-	DebugOut(L"_ParseSection_MAPBACKGROUND \n");
 	vector<string> tokens = split(line);
 
 	if (tokens.size() < 7) return; // skip invalid lines
@@ -187,7 +183,6 @@ void CPlayScene::_ParseSection_GRID_RESOURCE(string line)
 	if (tokens.size() < 1) return;
 
 	wstring file_path = ToWSTR(tokens[0]);
-	// if (gridResource != NULL) return;
 	gridResource = new CGridResource(file_path.c_str());
 }
 
@@ -207,20 +202,29 @@ void CPlayScene::Load()
 
 		if (line[0] == '#') continue;	// skip comment lines	
 
-		if (line == "[MAPBACKGROUND]")  { section = SCENE_SECTION_MAPBACKGROUND; continue; }
+		if (line == "[MAPBACKGROUND]")  { 
+			section = SCENE_SECTION_MAPBACKGROUND; continue; }
 
-		if (line == "[GRIDRESOURCE]") { section = SCENE_SECTION_GRID_RESOURCE; continue; }
+		if (line == "[GRIDRESOURCE]") { 
+			section = SCENE_SECTION_GRID_RESOURCE; continue; }
 
-		if (line == "[TEXTURES]") { section = SCENE_SECTION_TEXTURES; continue; }
+		if (line == "[TEXTURES]") { 
+			section = SCENE_SECTION_TEXTURES; continue; }
+		
 		if (line == "[SPRITES]") { 
 			section = SCENE_SECTION_SPRITES; continue; }
+	
 		if (line == "[ANIMATIONS]") { 
 			section = SCENE_SECTION_ANIMATIONS; continue; }
+		
 		if (line == "[ANIMATION_SETS]") { 
 			section = SCENE_SECTION_ANIMATION_SETS; continue; }
+	
 		if (line == "[OBJECTS]") { 
 			section = SCENE_SECTION_OBJECTS; continue; }
-		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
+	
+		if (line[0] == '[') { 
+			section = SCENE_SECTION_UNKNOWN; continue; }	
 
 		//
 		// data section
@@ -263,23 +267,23 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(objects[i]);
 	}
 
-
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
 	
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Update(dt, &coObjects);
-	}
+
 	camera->UpdateCamera();
 	int Xcam = (int)camera->GetPositionCameraX();
 	int Ycam = (int)camera->GetPositionCameraY();
 	gridResource->GirdPushResource(objects, Xcam, Ycam);
-	
-	//CGame *game = CGame::GetInstance();
-	//cx -= game->GetScreenWidth() / 2;
-	//cy -= game->GetScreenHeight() / 2;
-	//CGame::GetInstance()->SetCamPos(cx, 250 /*cy*/);
+	 for (size_t i = 1; i < objects.size(); i++)
+	 {
+	 	DebugOut(L"xxxxxxxxx: %d \n", i);
+	 	// objects[i]->Update(dt, &objects);
+	 }
+	 for (size_t i = 0; i < objects.size(); i++)
+	 {
+		 objects[i]->Update(dt, &coObjects);
+	 }
 }
 
 void CPlayScene::Render()

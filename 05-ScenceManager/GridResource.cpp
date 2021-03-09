@@ -25,9 +25,44 @@ void CGridResource::_ParseSection_Grid_INITIAL(string line) {
 		cellResource[i] = new CCellResource[numRow];
 	}
 }
+
 void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 	vector<string> tokens = split(line);
 
+	 CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+
+	 if (tokens.size() < 6) return; // skip invalid lines
+
+	 int x = atoi(tokens[1].c_str());
+	 int y = atoi(tokens[2].c_str());
+
+	 int cellX = atoi(tokens[4].c_str());
+	 int cellY = atoi(tokens[5].c_str());
+
+	 int type = atoi(tokens[0].c_str());
+
+	 int ani_set_id = atoi(tokens[3].c_str());
+
+	 CGameObject* obj = NULL;
+	 switch (type)
+	 {
+	 	case 2:
+	 	{
+	 		int type = atoi(tokens[6].c_str());
+	 		obj = new CRoad(type);
+	 	}
+	 	break;
+	 }
+
+	 LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+	 if (obj != NULL)
+	 {
+	 	int add = 0;
+	 	obj->SetPosition((float)x, (float)y);
+	 	obj->SetAnimationSet(ani_set);
+	 	obj->SetOriginObject((float)x, (float)y, obj->GetState());
+	 	cellResource[cellX][cellY].PushObjectToCellResource(obj);
+	 }
 }
 
 void CGridResource::_ParseSection_Grid_ENEMIES(string line) {

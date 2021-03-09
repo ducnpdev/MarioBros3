@@ -9,6 +9,7 @@
 #include "GridConfig.h"
 #include "Goomba.h"
 #include "Koopas.h"
+#include "Road.h"
 
 class CGridResource {
 

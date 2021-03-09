@@ -136,6 +136,7 @@
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="Road.cpp" />
     <ClCompile Include="Turtle.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="MarioConfig.h" />
     <ClInclude Include="PlayScenceConfig.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="Road.h" />
     <ClInclude Include="Turtle.h" />
     <ClInclude Include="TurtleConfig.h" />
     <ClInclude Include="Utils.h" />
