@@ -157,6 +157,7 @@
     <ClInclude Include="Enemies.h" />
     <ClInclude Include="FireMario.h" />
     <ClInclude Include="Gold.h" />
+    <ClInclude Include="GoombaConfig.h" />
     <ClInclude Include="GridConfig.h" />
     <ClInclude Include="GridResource.h" />
     <ClInclude Include="Hub.h" />

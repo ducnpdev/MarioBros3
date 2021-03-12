@@ -2,11 +2,12 @@
 #include "PlayScence.h"
 
 CGridResource::CGridResource(LPCWSTR path) {
+	numRow = 0;
+	numCol = 0;
+	cellWidth = 0;
+	cellHeight = 0;
+	// GridLoadResource must place end func
 	GridLoadResource(path);
-	numRow = 30;
-	numCol =30;
-	cellWidth = 100;
-	 cellHeight = 100;
 }
 
 void CGridResource::_ParseSection_Grid_INITIAL(string line) {
@@ -79,7 +80,10 @@ void CGridResource::_ParseSection_Grid_ENEMIES(string line) {
 	switch (type)
 	{
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
-	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(); break;
+	case OBJECT_TYPE_KOOPAS: {
+		obj = new CKoopas(); 
+		break; 
+	}
 	default:
 		return;
 	}
@@ -143,7 +147,7 @@ void CGridResource::GirdPushResource(vector<LPGAMEOBJECT>& listResource, int xca
 	right = (xcam + GRID_CELL_WIDTH) / cellWidth;
 	if (((xcam + GRID_CELL_WIDTH) % cellWidth) != 0)
 		right++;
-	top = (xcam) / cellHeight;
+	top = (ycam) / cellHeight;
 	bottom = (ycam + GRID_CELL_HEIGHT) / cellHeight;
 
 

@@ -269,15 +269,16 @@ void CPlayScene::Update(DWORD dt)
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
-	
-
+	objects[0]->Update(dt, &objects);
 	camera->UpdateCamera();
 	int Xcam = (int)camera->GetPositionCameraX();
 	int Ycam = (int)camera->GetPositionCameraY();
+	
+
 	gridResource->GirdPushResource(objects, Xcam, Ycam);
 	 for (size_t i = 1; i < objects.size(); i++)
 	 {
-	 	DebugOut(L"xxxxxxxxx: %d \n", i);
+		// DebugOut(L"xxxxxxxxx: %d \n", i);
 	 	// objects[i]->Update(dt, &objects);
 	 }
 	 for (size_t i = 0; i < objects.size(); i++)

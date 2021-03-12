@@ -194,5 +194,8 @@
     <ClInclude Include="Road.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
+    <ClInclude Include="GoombaConfig.h">
+      <Filter>Header Files\Config</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
