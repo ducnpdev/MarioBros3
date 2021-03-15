@@ -271,9 +271,9 @@ void CPlayScene::Update(DWORD dt)
 	if (player == NULL) return; 
 	objects[0]->Update(dt, &objects);
 	camera->UpdateCamera();
+
 	int Xcam = (int)camera->GetPositionCameraX();
 	int Ycam = (int)camera->GetPositionCameraY();
-	
 
 	gridResource->GirdPushResource(objects, Xcam, Ycam);
 	 for (size_t i = 1; i < objects.size(); i++)
@@ -363,7 +363,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			mario->SetState(STATE_MARIO_SITDOWN);
 	}
 
-	if (game->IsKeyDown(DIK_RIGHT)) {
+	if (game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_DOWN)) {
 
 		mario->SetTimeWalkingRight(GetTickCount());
 		if (GetTickCount() - mario->GetTimeWalkingLeft() > 200) {
@@ -382,7 +382,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		}
 		
 	}
-	else if (game->IsKeyDown(DIK_LEFT)) {
+	else if (game->IsKeyDown(DIK_LEFT) && !game->IsKeyDown(DIK_DOWN)) {
 		mario->SetTimeWalkingLeft(GetTickCount());
 		if (GetTickCount() - mario->GetTimeWalkingRight() > 200) {
 			if(game->IsKeyDown(DIK_A)){

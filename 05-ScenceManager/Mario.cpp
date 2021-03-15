@@ -80,37 +80,37 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
 
-			if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
-			{
-				CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
+			//if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
+			//{
+			//	CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
 
-				// jump on top >> kill Goomba and deflect a bit 
-				if (e->ny < 0)
-				{
-					if (goomba->GetState()!= GOOMBA_STATE_DIE)
-					{
-						goomba->SetState(GOOMBA_STATE_DIE);
-						vy = -SPEED_MARIO_JUMP_DEFLECT;
-					}
-				}
-				else if (e->nx != 0)
-				{
-					if (untouchable==0)
-					{
-						if (goomba->GetState()!=GOOMBA_STATE_DIE)
-						{
-							if (level > LEVEL_MARIO_SMAIL)
-							{
-								level = LEVEL_MARIO_SMAIL;
-								StartUntouchable();
-							}
-							else 
-								SetState(STATE_MARIO_DIE);
-						}
-					}
-				}
-			} // if Goomba
-			else if (dynamic_cast<CPortal *>(e->obj))
+			//	// jump on top >> kill Goomba and deflect a bit 
+			//	if (e->ny < 0)
+			//	{
+			//		if (goomba->GetState()!= GOOMBA_STATE_DIE)
+			//		{
+			//			goomba->SetState(GOOMBA_STATE_DIE);
+			//			vy = -SPEED_MARIO_JUMP_DEFLECT;
+			//		}
+			//	}
+			//	else if (e->nx != 0)
+			//	{
+			//		if (untouchable==0)
+			//		{
+			//			if (goomba->GetState()!=GOOMBA_STATE_DIE)
+			//			{
+			//				if (level > LEVEL_MARIO_SMAIL)
+			//				{
+			//					level = LEVEL_MARIO_SMAIL;
+			//					StartUntouchable();
+			//				}
+			//				else 
+			//					SetState(STATE_MARIO_DIE);
+			//			}
+			//		}
+			//	}
+			//} // if Goomba
+			 if (dynamic_cast<CPortal *>(e->obj))
 			{
 				CPortal *p = dynamic_cast<CPortal *>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());

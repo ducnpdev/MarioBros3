@@ -68,18 +68,22 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 
 void CGridResource::_ParseSection_Grid_ENEMIES(string line) {
 	vector<string> tokens = split(line);
-	if (tokens.size() < 6) return;
+	if (tokens.size() < 7) return;
 	int type = atoi(tokens[0].c_str());
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
 	int ani_set_id = atoi(tokens[3].c_str());
 	int XCell = atoi(tokens[4].c_str());
 	int YCell = atoi(tokens[5].c_str());
+	int state = atoi(tokens[6].c_str());
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 	CGameObject* obj = NULL;
 	switch (type)
 	{
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(); break;
+	case OBJECT_TYPE_GOOMBA: {
+		obj = new CGoomba(state);
+		break;
+	}
 	case OBJECT_TYPE_KOOPAS: {
 		obj = new CKoopas(); 
 		break; 
@@ -150,7 +154,6 @@ void CGridResource::GirdPushResource(vector<LPGAMEOBJECT>& listResource, int xca
 	top = (ycam) / cellHeight;
 	bottom = (ycam + GRID_CELL_HEIGHT) / cellHeight;
 
-
 	for (i = left; i <= right; i++)
 	{
 		for (j = top; j <= bottom; j++)
@@ -159,6 +162,7 @@ void CGridResource::GirdPushResource(vector<LPGAMEOBJECT>& listResource, int xca
 			{
 				for (unsigned int k = 0; k < cellResource[i][j].GetListResourceInCell().size(); k++)
 				{
+					DebugOut(L"size %d \n", cellResource[i][j].GetListResourceInCell().size());
 					if (!cellResource[i][j].GetListResourceInCell().at(k)->visible)
 					{
 						float tempOriginX, tempOriginY;

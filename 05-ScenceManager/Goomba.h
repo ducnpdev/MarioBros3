@@ -21,7 +21,12 @@ class CGoomba : public CGameObject
 	virtual void Render();
 	bool isDead = false;
 	DWORD timeDestroy = 0;
+	int type;
 public: 	
-	CGoomba();
+	CGoomba(int t);
 	virtual void SetState(int state);
+
+	void SetTypeGoomba(int t) { type = t; }
+	int GetTypeGoomba() { return type; }
+
 };

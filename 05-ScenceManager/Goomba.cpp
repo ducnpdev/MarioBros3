@@ -1,9 +1,11 @@
 #include "Goomba.h"
 #include "Utils.h"
 
-CGoomba::CGoomba()
+CGoomba::CGoomba(int t)
 {
+	SetTypeGoomba(t);
 	SetState(GOOMBA_STATE_WALKING);
+	
 }
 
 void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -20,12 +22,31 @@ void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &botto
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	
 	CGameObject::Update(dt, coObjects);
 	vy += 0.0005f * dt;
+	if (type == 0) {
+		x = 100;
+		y = 350;
+	}
 
+	if (type == 1) {
+		x = 200;
+		y = 350;
+	}
+	
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
+	CalcPotentialCollisions(coObjects, coEvents);
 
+	if (coEvents.size() == 0)
+	{
+		 x += dx;
+		y += dy;
+	//	DebugOut(L"xxx: %f \n", x);
+		//DebugOut(L"yyy: %f \n", y);
+
+	}
 }
 
 void CGoomba::Render()
@@ -36,7 +57,7 @@ void CGoomba::Render()
 	}
 
 	animation_set->at(5)->Render(x,y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CGoomba::SetState(int state)

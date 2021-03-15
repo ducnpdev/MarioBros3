@@ -49,9 +49,9 @@
 
 
 // **************** MARIO -> SPEED - SPEED ****************
-#define SPEED_MARIO_WALKING					0.12f 
-#define SPEED_MARIO_RUNNING					0.3f
-#define SPEED_MARIO_RUNNING_FAST			0.2f
+#define SPEED_MARIO_WALKING					0.08f 
+#define SPEED_MARIO_RUNNING					0.1f
+#define SPEED_MARIO_RUNNING_FAST			0.12f
 #define MARIO_JUMP_SPEED_Y					0.5f
 #define SPEED_MARIO_JUMP_DEFLECT			0.2f
 #define MARIO_GRAVITY						0.002f
