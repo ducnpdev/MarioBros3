@@ -23,12 +23,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 
-	if (vy > 0) {
-	}
 
 	// Simple fall down
 	vy += MARIO_GRAVITY*dt;
-
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -66,8 +63,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		//	x += nx*abs(rdx); 
 		
 		// block every object first!
-		x += min_tx*dx + nx*0.4f;
-		y += min_ty*dy + ny*0.4f;
+		x += min_tx*dx + nx*0.2f;
+		y += min_ty*dy + ny*0.2f;
 
 		if (nx!=0) vx = 0;
 		if (ny!=0) vy = 0;
@@ -147,12 +144,14 @@ void CMario::SetState(int state)
 		isJump = 0;
 		isRunning = true;
 		vx = SPEED_MARIO_RUNNING;
+		if (isTurn)  vx = SPEED_MARIO_RUNNING + 0.01f;
 		nx = DIRECTION_MARIO_RIGHT;
 		break;
 	case STATE_MARIO_RUNNING_LEFT:
 		isRunning = true;
 		isJump = 0;
 		vx = -SPEED_MARIO_RUNNING;
+		if (isTurn)  vx = -SPEED_MARIO_RUNNING - 0.01f;
 		nx = DIRECTION_MARIO_LEFT;
 		break;		
 	case STATE_MARIO_SITDOWN:
@@ -293,15 +292,15 @@ int CMario::RenderLevelMarioBig() {
 		}
 	}
 	else if (vx > 0){
-		if(isRunning) ani = ANI_MARIO_BIG_RUN_RIGHT;  
-		else if (isTurn) ani =  ANI_MARIO_BIG_TURN_RIGHT;
+		if (isTurn && !isRunning) ani =  ANI_MARIO_BIG_TURN_RIGHT;
 		else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_RIGHT;
+		else if(isRunning) ani = ANI_MARIO_BIG_RUN_RIGHT;
 		else ani = ANI_MARIO_BIG_WALK_RIGHT; 
 	} 
 	else {
-		if(isRunning) ani = ANI_MARIO_BIG_RUN_LEFT;
+		if (isTurn && !isRunning) ani = ANI_MARIO_BIG_TURN_LEFT;
 		else if (isJump == 1 ) ani = ANI_MARIO_BIG_JUMP_LEFT;
-		else if (isTurn) ani = ANI_MARIO_BIG_TURN_LEFT;
+		else if(isRunning) ani = ANI_MARIO_BIG_RUN_LEFT;
 		else ani = ANI_MARIO_BIG_WALK_LEFT; 
 	}
 	

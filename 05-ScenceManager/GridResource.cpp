@@ -162,7 +162,7 @@ void CGridResource::GirdPushResource(vector<LPGAMEOBJECT>& listResource, int xca
 			{
 				for (unsigned int k = 0; k < cellResource[i][j].GetListResourceInCell().size(); k++)
 				{
-					DebugOut(L"size %d \n", cellResource[i][j].GetListResourceInCell().size());
+				//	DebugOut(L"size %d \n", cellResource[i][j].GetListResourceInCell().size());
 					if (!cellResource[i][j].GetListResourceInCell().at(k)->visible)
 					{
 						float tempOriginX, tempOriginY;

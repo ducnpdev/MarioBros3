@@ -21,7 +21,7 @@ class CMario : public CGameObject
 	DWORD timeWalkingRight;
 	DWORD timeWalkingLeft;
 	DWORD timeMarioJumpStart;
-
+	float marioSpeechJump;
 
 public: 
 	CMario(float x = 0.0f, float y = 0.0f);
@@ -72,5 +72,7 @@ public:
 	void SetTimeWalkingRight(DWORD t) { timeWalkingRight = t; }
 	DWORD GetTimeWalkingRight() { return timeWalkingRight; }
 
+	float GetMarioSpeechJump() { return marioSpeechJump; }
+	void SetMarioSpeechJump() { marioSpeechJump += 0.0025f; }
 
 };

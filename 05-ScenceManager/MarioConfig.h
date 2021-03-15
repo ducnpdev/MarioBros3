@@ -52,11 +52,11 @@
 #define SPEED_MARIO_WALKING					0.08f 
 #define SPEED_MARIO_RUNNING					0.1f
 #define SPEED_MARIO_RUNNING_FAST			0.12f
-#define MARIO_JUMP_SPEED_Y					0.5f
+#define MARIO_JUMP_SPEED_Y					0.15f
 #define SPEED_MARIO_JUMP_DEFLECT			0.2f
-#define MARIO_GRAVITY						0.002f
+#define MARIO_GRAVITY						0.001f
 #define SPEED_MARIO_DIE_DEFLECT				0.5f
-
+#define MARIO_DIE_DEFLECT_SPEED							0.5f
 // **************** MARIO -> STATE - STATE ****************
 #define STATE_MARIO_IDLE					0
 #define STATE_MARIO_WALKING_RIGHT			110

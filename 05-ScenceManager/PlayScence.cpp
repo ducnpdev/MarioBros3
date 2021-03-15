@@ -274,17 +274,17 @@ void CPlayScene::Update(DWORD dt)
 
 	int Xcam = (int)camera->GetPositionCameraX();
 	int Ycam = (int)camera->GetPositionCameraY();
-
+	for (size_t i = 0; i < objects.size(); i++)
+	{
+		objects[i]->Update(dt, &coObjects);
+	}
 	gridResource->GirdPushResource(objects, Xcam, Ycam);
 	 for (size_t i = 1; i < objects.size(); i++)
 	 {
 		// DebugOut(L"xxxxxxxxx: %d \n", i);
 	 	// objects[i]->Update(dt, &objects);
 	 }
-	 for (size_t i = 0; i < objects.size(); i++)
-	 {
-		 objects[i]->Update(dt, &coObjects);
-	 }
+	
 }
 
 void CPlayScene::Render()
@@ -317,6 +317,29 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 	switch (KeyCode)
 	{
+	case DIK_1:
+		mario->SetLevel(LEVEL_MARIO_SMAIL);
+		break;
+	case DIK_2:
+		mario->SetLevel(LEVEL_MARIO_BIG);
+		break;
+	case DIK_3:
+		mario->SetLevel(LEVEL_MARIO_TAIL);
+		break;
+	case DIK_4:
+		mario->SetLevel(LEVEL_MARIO_FIRE);
+		break;
+	case DIK_5:
+		break;
+	case DIK_6:
+		mario->SetPosition(50, 384);
+		break;
+	case DIK_7:
+		mario->SetPosition(1152, 384);
+		break;
+	case DIK_8:
+		mario->SetPosition(2357, 80);
+		break;
 	case DIK_S:
 		// if(mario->GetMarioIsStandingFloor()) mario->SetState(STATE_MARIO_JUMP);
 		if (mario->GetMarioIsJump() == false) {
@@ -364,7 +387,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 
 	if (game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_DOWN)) {
-
+		//DebugOut(L"DIK_RIGHT \n");
 		mario->SetTimeWalkingRight(GetTickCount());
 		if (GetTickCount() - mario->GetTimeWalkingLeft() > 200) {
 
@@ -375,18 +398,18 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			else {
 				mario->SetState(STATE_MARIO_WALKING_RIGHT);
 			}
-
 		}
 		else {
 			mario->SetState(STATE_MARIO_TURN_LEFT);
 		}
 		
 	}
-	else if (game->IsKeyDown(DIK_LEFT) && !game->IsKeyDown(DIK_DOWN)) {
+	else if (game->IsKeyDown(DIK_LEFT) && !game->IsKeyDown(DIK_DOWN) ) {
+		//DebugOut(L"DIK_LEFT \n");
+
 		mario->SetTimeWalkingLeft(GetTickCount());
 		if (GetTickCount() - mario->GetTimeWalkingRight() > 200) {
-			if(game->IsKeyDown(DIK_A)){
-
+			if(game->IsKeyDown(DIK_A) || game->IsKeyDown(DIK_A) && game->IsKeyDown(DIK_S)){
 				mario->SetState(STATE_MARIO_RUNNING_LEFT);
 			}else {
 				mario->SetState(STATE_MARIO_WALKING_LEFT);
@@ -396,14 +419,23 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			mario->SetState( STATE_MARIO_TURN_RIGHT);
 		}
 	}
-	else
+	else {
+	//	DebugOut(L"STATE_MARIO_IDLE \n");
+
 		mario->SetState(STATE_MARIO_IDLE);
+	}
 	
 	if (game->IsKeyDown(DIK_S)) {
-		if (GetTickCount() - mario->GetTimeJumpStart() < 380 )
+		if (GetTickCount() - mario->GetTimeJumpStart() < 350 )
 		{
-			if (mario->GetMarioIsJump() != 1)
+			// && mario->vy <= 0
+			/*if (mario->GetMarioSpeechJump() < 0.2) {
+				DebugOut(L"mario->vy %f \n", mario->vy);
+				mario->SetMarioSpeechJump();
+			}*/
+			if (mario->GetMarioIsJump() != 1) {
 				mario->SetState(STATE_MARIO_JUMP);
+			}
 		}
 	}
 
