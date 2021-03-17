@@ -25,8 +25,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// TO-DO: make sure Koopas can interact with the world and to each of them too!
 	// 
 
-	x = 20.0f;
-	y = 350.0f;
+	//x = 20.0f;
+	//y = 350.0f;
 
 	//x += dx;
 	//y += dy;
