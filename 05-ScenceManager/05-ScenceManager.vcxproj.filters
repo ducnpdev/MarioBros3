@@ -34,6 +34,12 @@
     <Filter Include="Source Files\Games">
       <UniqueIdentifier>{c345755d-8890-455d-a371-bd750819602f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\HubItem">
+      <UniqueIdentifier>{db4beb19-fe8b-44c5-9eed-fd7767d5c1c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\HubItem">
+      <UniqueIdentifier>{7b6db338-b7e8-4bd5-94c7-7aafa73bdde4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Brick.cpp">
@@ -102,11 +108,26 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Games</Filter>
     </ClCompile>
-    <ClCompile Include="Hub.cpp">
-      <Filter>Source Files\Games</Filter>
-    </ClCompile>
     <ClCompile Include="Road.cpp">
       <Filter>Source Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Arrow.cpp">
+      <Filter>Source Files\HubItem</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Source Files\HubItem</Filter>
+    </ClCompile>
+    <ClCompile Include="Hub.cpp">
+      <Filter>Source Files\HubItem</Filter>
+    </ClCompile>
+    <ClCompile Include="Number.cpp">
+      <Filter>Source Files\HubItem</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Source Files\HubItem</Filter>
+    </ClCompile>
+    <ClCompile Include="Card.cpp">
+      <Filter>Source Files\HubItem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,14 +209,29 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files\Games</Filter>
     </ClInclude>
-    <ClInclude Include="Hub.h">
-      <Filter>Header Files\Games</Filter>
-    </ClInclude>
     <ClInclude Include="Road.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
     <ClInclude Include="GoombaConfig.h">
       <Filter>Header Files\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Header Files\HubItem</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Header Files\HubItem</Filter>
+    </ClInclude>
+    <ClInclude Include="Arrow.h">
+      <Filter>Header Files\HubItem</Filter>
+    </ClInclude>
+    <ClInclude Include="Number.h">
+      <Filter>Header Files\HubItem</Filter>
+    </ClInclude>
+    <ClInclude Include="Hub.h">
+      <Filter>Header Files\HubItem</Filter>
+    </ClInclude>
+    <ClInclude Include="Card.h">
+      <Filter>Header Files\HubItem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

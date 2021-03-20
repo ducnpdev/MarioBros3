@@ -125,9 +125,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animations.cpp" />
+    <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Card.cpp" />
     <ClCompile Include="CellResource.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="FireMario.cpp" />
     <ClCompile Include="Gold.cpp" />
@@ -135,8 +138,10 @@
     <ClCompile Include="Hub.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Number.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Road.cpp" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="Turtle.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -151,9 +156,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
+    <ClInclude Include="Arrow.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Card.h" />
     <ClInclude Include="CellResource.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="Enemies.h" />
     <ClInclude Include="FireMario.h" />
     <ClInclude Include="Gold.h" />
@@ -164,9 +172,11 @@
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MarioConfig.h" />
+    <ClInclude Include="Number.h" />
     <ClInclude Include="PlayScenceConfig.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Road.h" />
+    <ClInclude Include="Time.h" />
     <ClInclude Include="Turtle.h" />
     <ClInclude Include="TurtleConfig.h" />
     <ClInclude Include="Utils.h" />

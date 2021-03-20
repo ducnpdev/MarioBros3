@@ -12,6 +12,12 @@
 #include "GridResource.h"
 #include "Camera.h"
 #include "Hub.h"
+#include "Time.h"
+#include "Arrow.h"
+#include "Coin.h"
+
+
+
 
 class CPlayScene: public CScene
 {
@@ -22,6 +28,12 @@ protected:
 	CGridResource* gridResource;
 
 	CHub* hub;
+	CTime* time;
+	CCoinPlay* coinPlay;
+	CListArrow* arrows;
+	CCard* cards[3];
+
+
 	CMario *player;					// A play scene has to have player, right? 
 	CCamera* camera;
 	vector<LPGAMEOBJECT> objects;

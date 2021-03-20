@@ -41,6 +41,10 @@ class CGame
 	int screen_width;
 	int screen_height; 
 
+	// class hub
+	int coin = 0;
+	int time = 0;
+	//
 	unordered_map<int, LPSCENE> scenes;
 	int current_scene; 
 
@@ -48,6 +52,14 @@ class CGame
 	void _ParseSection_SCENES(string line);
 
 public:
+
+	// start class hub
+	void SetTimeGame(int t) { time = t; }
+	int GetTimeGame() { return time; }
+	void SetCoinGame(int c) { coin = c; }
+	int GetCoinGame() { return coin; }
+	// end class hub
+
 	void InitKeyboard();
 	void SetKeyHandler(LPKEYEVENTHANDLER handler) { keyHandler = handler; }
 	void Init(HWND hWnd);

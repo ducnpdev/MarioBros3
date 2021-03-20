@@ -13,18 +13,14 @@ class CCoinPlay : public CGameObject
 public:
 	CCoinPlay(vector<CNumber*> num) {
 		CGame* game = CGame::GetInstance();
-		coin = game->GetCoinPlay();
+		coin = game->GetCoinGame();
 		for (int i = 0; i < (int)num.size(); i++)
 		{
 			numbers.push_back(num[i]);
 		}
-
 	}
 	void SetPositionNumbers(float x, float y);
-	void AddCoin() {
-		CGame* game = CGame::GetInstance();
-		game->SetCoin(game->GetCoinPlay() + 1);
-	}
+	void AddCoinHub();
 
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

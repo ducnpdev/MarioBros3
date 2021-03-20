@@ -144,7 +144,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK: 
 		obj = new CBrick(); 
 		break;
-	
+	case 24:
+		DebugOut(L"11111111111 \n");
+		break;
+	case 21:
+		obj = new CHub();
+		hub = (CHub*)obj;
+		hub->SetTimeHub(time);
+		hub->SetCoinHub(coinPlay);
+		hub->SetArrowHub(arrows);
+		hub->SetCardHub(cards);
+		break;
 	default:
 		return;
 	}
@@ -251,8 +261,8 @@ void CPlayScene::initCamera() {
 	if (camera != NULL) return;
 	camera = new CCamera(player, id);
 
-	hub = new CHub();
-	hub->SetCameraInHub(camera);
+	// hub = new CHub();
+	// hub->SetCameraInHub(camera);
 }
 
 void CPlayScene::Update(DWORD dt)
