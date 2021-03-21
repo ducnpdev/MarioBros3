@@ -27,6 +27,11 @@ protected:
 
 	CGridResource* gridResource;
 
+	vector<CNumber*> numCoin;
+	vector<CNumber*> numScore; // time
+	vector<CNumber*> num; // time
+	vector<CNumber*> numLives;
+
 	CHub* hub;
 	CTime* time;
 	CCoinPlay* coinPlay;

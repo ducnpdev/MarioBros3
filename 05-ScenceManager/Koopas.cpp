@@ -1,5 +1,7 @@
 #include "Koopas.h"
 
+#include "Utils.h"
+
 CKoopas::CKoopas()
 {
 	SetState(KOOPAS_STATE_WALKING);
@@ -19,8 +21,9 @@ void CKoopas::GetBoundingBox(float &left, float &top, float &right, float &botto
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+//	DebugOut(L"class koopas, x, y %d %d \n", x,y);
 	CGameObject::Update(dt, coObjects);
-
+	
 	//
 	// TO-DO: make sure Koopas can interact with the world and to each of them too!
 	// 
@@ -38,6 +41,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (vx > 0 && x > 290) {
 		x = 290; vx = -vx;
 	}*/
+	if (y > 350) y = 350;
 }
 
 void CKoopas::Render()

@@ -34,6 +34,7 @@ void CTime::Render()
 
 void CTime::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	// DebugOut(L"class time \n");
 	if (GetTickCount64() - time_start_game_hub > TIME_COUNT)
 	{
 		time -= 1;

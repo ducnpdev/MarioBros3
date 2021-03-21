@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Goomba.h"
 #include "Portal.h"
+#include "Road.h"
 
 CMario::CMario(float x, float y) : CGameObject()
 {
@@ -22,10 +23,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
-
+	 if (vy > 0) isJump = 1;
 
 	// Simple fall down
-	vy += MARIO_GRAVITY*dt;
+	vy += 0.0005*dt;
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -54,7 +55,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		float min_tx, min_ty, nx = 0, ny;
 		float rdx = 0; 
 		float rdy = 0;
-
+		
+	
 		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
@@ -63,11 +65,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		//	x += nx*abs(rdx); 
 		
 		// block every object first!
-		x += min_tx*dx + nx*0.2f;
-		y += min_ty*dy + ny*0.2f;
+		x += min_tx*dx + nx*0.1f;
+		y += min_ty*dy + ny*0.1f;
+
+		/*if (vy < 0.02 && vy >= 0) {
+			isJump = 0;
+			vy = 0;
+		}*/
 
 		if (nx!=0) vx = 0;
 		if (ny!=0) vy = 0;
+		
 
 
 		//
@@ -76,6 +84,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
+
+			if (dynamic_cast<CRoad*>(e->obj)) {
+				marioSpeechJump = 0.0f;
+				isJump = 0;
+				vy = 0;
+			}
 
 			//if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
 			//{
@@ -168,11 +182,12 @@ void CMario::SetState(int state)
 	case STATE_MARIO_JUMP:
 		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
 		isJump = 1;
-		vy = -MARIO_JUMP_SPEED_Y;
+		vy = -0.13f - marioSpeechJump;
 		break; 
 	case STATE_MARIO_IDLE:
 		isTurn = false;
-		isJump = 0;
+		//isJump = 0;
+		// marioSpeechJump = 0.0f;
 		vx = 0;
 		break;
 	case STATE_MARIO_TURN_RIGHT:
@@ -359,19 +374,19 @@ int CMario::RenderLevelMarioFire() {
 	{
 		if (nx > 0) {
 			if (isStateSitDown) ani = ANI_MARIO_FIRE_SIT_RIGHT;
-			else if (isJump == 1) ani = ANI_MARIO_FIRE_JUMP_RIGHT;
+			else if (isJump == 1 || isJump == -1) ani = ANI_MARIO_FIRE_JUMP_RIGHT;
 			else ani = ANI_MARIO_FIRE_IDLE_RIGHT;	
 		} 
 		else {
 			if (isStateSitDown) ani = ANI_MARIO_FIRE_SIT_LEFT;
-			else if (isJump == 1) ani = ANI_MARIO_FIRE_JUMP_LEFT;
+			else if (isJump == 1 || isJump == -1) ani = ANI_MARIO_FIRE_JUMP_LEFT;
 			else ani = ANI_MARIO_FIRE_IDLE_LEFT;
 		}
 	}
 	else if (vx > 0){
 		if (isTurn && !isRunning) ani =  ANI_MARIO_FIRE_TURN_RIGHT;
 		else if (isJump == 1) ani = ANI_MARIO_FIRE_JUMP_RIGHT;
-		else if(isRunning) ani = ANI_MARIO_FIRE_RUN_RIGHT;
+		else if (isRunning) ani = ANI_MARIO_FIRE_RUN_RIGHT;
 		else ani = ANI_MARIO_FIRE_WALK_RIGHT; 
 	} 
 	else {

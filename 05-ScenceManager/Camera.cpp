@@ -32,9 +32,6 @@ void CCamera::UpdateCamera() {
 void CCamera::UpdateCameraScence1() {
 
 	player->GetPosition(playerX, playerY);
-	// DebugOut(L"playX %f \n", playerX);
-	// DebugOut(L"playY %f \n", playerY);
-
 	CGame* game = CGame::GetInstance();
 	
 	// Mario khi đi đến sát biên bên trái
@@ -54,14 +51,15 @@ void CCamera::UpdateCameraScence1() {
 		playerX -= game->GetScreenWidth() / 2;
 		playerY -= game->GetScreenHeight() / 2 + 16;
 		// thay đổi round(playerY) thành CAM_Y_MIN là fix cứng cameraY
-		CGame::GetInstance()->SetCamPos(round(playerX), round(playerY));
-		SetPositionCamera(round(playerX), round(playerY));
+		CGame::GetInstance()->SetCamPos(round(playerX), round(CAM_Y_MIN));
+		//DebugOut(L"playerX %f \b", playerX);
+		SetPositionCamera(round(playerX), round(CAM_Y_MIN));
 	}
 	// Mario khi mới bắt mở game
 	else {
 		playerY -= game->GetScreenHeight() / 2 + 16;
-		CGame::GetInstance()->SetCamPos(0.0f, round(playerY));
-		SetPositionCamera(0.0f, playerY);
+		CGame::GetInstance()->SetCamPos(0.0f, round(CAM_Y_MIN));
+		SetPositionCamera(0.0f, round(CAM_Y_MIN));
 	}
 	playerY -= game->GetScreenHeight() / 2;
 }

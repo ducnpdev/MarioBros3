@@ -85,7 +85,9 @@ void CGridResource::_ParseSection_Grid_ENEMIES(string line) {
 		break;
 	}
 	case OBJECT_TYPE_KOOPAS: {
+		DebugOut(L"da load koopa\n");
 		obj = new CKoopas(); 
+		DebugOut(L"da load koopa %f %f\n", x, y);
 		break; 
 	}
 	default:
@@ -98,6 +100,7 @@ void CGridResource::_ParseSection_Grid_ENEMIES(string line) {
 	int add = 0;
 	obj->SetPosition(x, y);
 	obj->SetAnimationSet(ani_set);
+	obj->SetOriginObject((float)x, (float)y, obj->GetState());
 	cellResource[XCell][YCell].PushObjectToCellResource(obj);
 }
 
@@ -169,8 +172,7 @@ void CGridResource::GirdPushResource(vector<LPGAMEOBJECT>& listResource, int xca
 						cellResource[i][j].GetListResourceInCell().at(k)->GetOriginObject(tempOriginX, tempOriginY);
 						if (!((CPlayScene*)(CGame::GetInstance()->GetCurrentScene()))->ObjectInUsing(tempOriginX, tempOriginY) && cellResource[i][j].GetListResourceInCell().at(k)->GetState() > 10)
 							cellResource[i][j].GetListResourceInCell().at(k)->ResetOriginObject();
-
-						listResource.push_back(cellResource[i][j].GetListResourceInCell().at(k));
+							listResource.push_back(cellResource[i][j].GetListResourceInCell().at(k));
 						cellResource[i][j].GetListResourceInCell().at(k)->SetVisible(true);
 					}
 				}

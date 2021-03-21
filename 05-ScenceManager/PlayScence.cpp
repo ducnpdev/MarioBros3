@@ -13,7 +13,7 @@
 
 using namespace std;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath):
+CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	key_handler = new CPlayScenceKeyHandler(this);
@@ -21,15 +21,18 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 
 bool CPlayScene::ObjectInUsing(float x, float y) {
 	float CamX, CamY;
-
 	CamX = camera->GetPositionCameraX();
-
 	CamY = camera->GetPositionCameraX();
 
-	if (((CamX - 10 < x) && (x < CamX + 320)) && ((CamY < y) && (y < CamY + 320)))
+	/*if (((CamX - 10 < x) && (x < CamX + 320)) && ((CamY < y) && (y < CamY + 320)))
 		return true;
-	return false;
+	return false;*/
 
+	if ((x > CamX - 200) && (x < CamY + 200) && (y < CamY + 200) && (y > CamY - 200)){
+		return true;
+	}
+
+	return false;
 }
 
 void CPlayScene::_ParseSection_TEXTURES(string line)
@@ -144,18 +147,42 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK: 
 		obj = new CBrick(); 
 		break;
-	case 24:
-		DebugOut(L"11111111111 \n");
+	
+	case OBJECT_TYPE_NUMBER: {
+		int typetmp = atoi(tokens[4].c_str());
+		obj = new CNumber();
+		if (typetmp == 0) {
+			// num is time
+			num.push_back((CNumber*)obj);
+		}
+		if (typetmp == 1) {
+			numScore.push_back((CNumber*)obj);
+		}
+		if (typetmp == 2) {
+			numCoin.push_back((CNumber*)obj);
+		}
+		if (typetmp == 3) {
+			numLives.push_back((CNumber*)obj);
+		}
 		break;
-	case 21:
+	}
+	case OBJECT_TYPE_HUB: {
+
 		obj = new CHub();
 		hub = (CHub*)obj;
 		hub->SetTimeHub(time);
-		hub->SetCoinHub(coinPlay);
-		hub->SetArrowHub(arrows);
-		hub->SetCardHub(cards);
+	//	hub->SetCoinHub(coinPlay);
+		//hub->SetArrowHub(arrows);
+		//hub->SetCardHub(cards);
 		break;
+	}
+	case OBJECT_TYPE_HUB_TIME: {
+		obj = new CTime(num);
+		time = (CTime*)obj;
+		break;
+	}
 	default:
+		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
 		return;
 	}
 
@@ -258,11 +285,19 @@ void CPlayScene::Load()
 }
 
 void CPlayScene::initCamera() {
-	if (camera != NULL) return;
+	if (camera != NULL) {
+		return;
+	}
 	camera = new CCamera(player, id);
 
 	// hub = new CHub();
-	// hub->SetCameraInHub(camera);
+	if (hub != NULL) {
+
+		hub->SetCameraHub(camera);
+	}
+	else {
+		DebugOut(L"123123 \n");
+	}
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -279,20 +314,31 @@ void CPlayScene::Update(DWORD dt)
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
+
+	for (size_t i = 1; i < objects.size(); i++)
+	{
+		if (dynamic_cast<CKoopas*>(objects[i])) {
+			float tempX, tempY;
+			objects[i]->GetPosition(tempX, tempY);
+			if (ObjectInUsing(tempX, tempY)) {
+				objects[i]->SetVisible(false);
+				objects.erase(objects.begin() + i);
+			}
+		}
+		
+	}
+
 	objects[0]->Update(dt, &objects);
 	camera->UpdateCamera();
 
 	int Xcam = (int)camera->GetPositionCameraX();
 	int Ycam = (int)camera->GetPositionCameraY();
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Update(dt, &coObjects);
-	}
+
 	gridResource->GirdPushResource(objects, Xcam, Ycam);
-	 for (size_t i = 1; i < objects.size(); i++)
+	
+	 for (size_t i = 0; i < objects.size(); i++)
 	 {
-		// DebugOut(L"xxxxxxxxx: %d \n", i);
-	 	// objects[i]->Update(dt, &objects);
+		 objects[i]->Update(dt, &coObjects);
 	 }
 	
 }
@@ -352,7 +398,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_S:
 		// if(mario->GetMarioIsStandingFloor()) mario->SetState(STATE_MARIO_JUMP);
-		if (mario->GetMarioIsJump() == false) {
+		if (mario->GetMarioIsJump() == 0) {
 			mario->SetTimeJumpStart(GetTickCount64());
 		//	mario->SetState(STATE_MARIO_JUMP);
 		}
@@ -369,7 +415,8 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	if (mario->GetMarioIsDead()) return;
 	switch (KeyCode)
 	{
-	case DIK_DOWN:
+	case DIK_DOWN: {
+
 		if(mario->GetMarioIsStateSitDown()){
 			if (mario->GetMarioLevel() != LEVEL_MARIO_SMAIL) {
 				mario->y -= NUMBER_AFTER_MARIO_SIT_DOWN;
@@ -377,7 +424,12 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 			}
 		}
 		break;
-	
+	}
+	case DIK_S: {
+		mario->SetMarioIsJump(-1);
+		break;
+
+	}
 	}
 }
 
@@ -436,14 +488,16 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 	
 	if (game->IsKeyDown(DIK_S)) {
-		if (GetTickCount() - mario->GetTimeJumpStart() < 350 )
+		if (GetTickCount() - mario->GetTimeJumpStart() < 250 )
 		{
+
 			// && mario->vy <= 0
-			/*if (mario->GetMarioSpeechJump() < 0.2) {
-				DebugOut(L"mario->vy %f \n", mario->vy);
+			if (mario->GetMarioSpeechJump() < 0.2) {
 				mario->SetMarioSpeechJump();
-			}*/
-			if (mario->GetMarioIsJump() != 1) {
+			}
+			DebugOut(L"mario->vy 22 %f \n", mario->GetMarioSpeechJump());
+
+			if (mario->GetMarioIsJump() != -1 && mario->vy <= 0.02) {
 				mario->SetState(STATE_MARIO_JUMP);
 			}
 		}

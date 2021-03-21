@@ -9,6 +9,11 @@
 
 
 #define MaxShowCards 3
+#define BOARD_TIME_X_PLUS				152.0f
+#define BOARD_TIME_Y_PLUS				185.0f
+
+#define BOARD_CAM_X_PLUS				8.0f
+#define BOARD_CAM_Y_PLUS				165.0f
 
 class CHub : public CGameObject
 {
