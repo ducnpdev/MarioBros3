@@ -1,8 +1,10 @@
 #pragma once
-#include "GameObject.h"
 #include "MarioConfig.h"
+#include "Collision.h"
+#include "GameObject.h"
 
-class CMario : public CGameObject
+class CMario : public  CCollision
+
 {
 	int level;
 	int untouchable;
@@ -36,7 +38,15 @@ public:
 	void Reset();
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
-
+	virtual void FilterCollision(
+		vector<LPCOLLISIONEVENT>& coEvents,
+		vector<LPCOLLISIONEVENT>& coEventsResult,
+		float& min_tx,
+		float& min_ty,
+		float& nx,
+		float& ny,
+		float& rdx,
+		float& rdy);
 	// Function Render 
 	virtual void Render();
 	int RenderLevelMarioSmall();

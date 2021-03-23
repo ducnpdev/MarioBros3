@@ -7,7 +7,7 @@
 #include "Portal.h"
 #include "Road.h"
 
-CMario::CMario(float x, float y) : CGameObject()
+CMario::CMario(float x, float y)
 {
 	level = LEVEL_MARIO_FIRE;
 	untouchable = 0;
@@ -23,7 +23,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
-	 if (vy > 0) isJump = 1;
+	// if (vy > 0) isJump = 1;
 
 	// Simple fall down
 	vy += 0.0005*dt;
@@ -76,8 +76,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (nx!=0) vx = 0;
 		if (ny!=0) vy = 0;
 		
-
-
 		//
 		// Collision logic with other objects
 		//
@@ -90,38 +88,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				isJump = 0;
 				vy = 0;
 			}
-
-			//if (dynamic_cast<CGoomba *>(e->obj)) // if e->obj is Goomba 
-			//{
-			//	CGoomba *goomba = dynamic_cast<CGoomba *>(e->obj);
-
-			//	// jump on top >> kill Goomba and deflect a bit 
-			//	if (e->ny < 0)
-			//	{
-			//		if (goomba->GetState()!= GOOMBA_STATE_DIE)
-			//		{
-			//			goomba->SetState(GOOMBA_STATE_DIE);
-			//			vy = -SPEED_MARIO_JUMP_DEFLECT;
-			//		}
-			//	}
-			//	else if (e->nx != 0)
-			//	{
-			//		if (untouchable==0)
-			//		{
-			//			if (goomba->GetState()!=GOOMBA_STATE_DIE)
-			//			{
-			//				if (level > LEVEL_MARIO_SMAIL)
-			//				{
-			//					level = LEVEL_MARIO_SMAIL;
-			//					StartUntouchable();
-			//				}
-			//				else 
-			//					SetState(STATE_MARIO_DIE);
-			//			}
-			//		}
-			//	}
-			//} // if Goomba
-			 if (dynamic_cast<CPortal *>(e->obj))
+			if (dynamic_cast<CPortal *>(e->obj))
 			{
 				CPortal *p = dynamic_cast<CPortal *>(e->obj);
 				CGame::GetInstance()->SwitchScene(p->GetSceneId());
@@ -155,7 +122,7 @@ void CMario::SetState(int state)
 		nx = DIRECTION_MARIO_LEFT;
 		break;
 	case STATE_MARIO_RUNNING_RIGHT:
-		isJump = 0;
+		isJump = 0;			
 		isRunning = true;
 		vx = SPEED_MARIO_RUNNING;
 		if (isTurn)  vx = SPEED_MARIO_RUNNING + 0.01f;
@@ -245,6 +212,36 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		bottom = y + MARIO_SMALL_BBOX_HEIGHT;
 		break;
 	}
+
+}
+
+void CMario::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLISIONEVENT>& coEventsResult, float& min_tx, float& min_ty, float& nx, float& ny, float& rdx, float& rdy)
+{
+	min_tx = 1.0f;
+	min_ty = 1.0f;
+	int min_ix = -1;
+	int min_iy = -1;
+
+	nx = 0.0f;
+	ny = 0.0f;
+
+	coEventsResult.clear();
+
+	for (UINT i = 0; i < coEvents.size(); i++)
+	{
+		LPCOLLISIONEVENT c = coEvents[i];
+
+		if (c->t < min_tx && c->nx != 0) {
+			min_tx = c->t; nx = c->nx; min_ix = i; rdx = c->dx;
+		}
+
+		if (c->t < min_ty && c->ny != 0) {
+			min_ty = c->t; ny = c->ny; min_iy = i; rdy = c->dy;
+		}
+	}
+
+	if (min_ix >= 0) coEventsResult.push_back(coEvents[min_ix]);
+	if (min_iy >= 0) coEventsResult.push_back(coEvents[min_iy]);
 
 }
 

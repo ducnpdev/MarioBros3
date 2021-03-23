@@ -81,13 +81,11 @@ void CGridResource::_ParseSection_Grid_ENEMIES(string line) {
 	switch (type)
 	{
 	case OBJECT_TYPE_GOOMBA: {
-		obj = new CGoomba(state);
+		// obj = new CGoomba(state);
 		break;
 	}
 	case OBJECT_TYPE_KOOPAS: {
-		DebugOut(L"da load koopa\n");
 		obj = new CKoopas(); 
-		DebugOut(L"da load koopa %f %f\n", x, y);
 		break; 
 	}
 	default:

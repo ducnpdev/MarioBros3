@@ -1,5 +1,5 @@
 #include "Koopas.h"
-
+#include "Road.h"
 #include "Utils.h"
 
 CKoopas::CKoopas()
@@ -21,28 +21,43 @@ void CKoopas::GetBoundingBox(float &left, float &top, float &right, float &botto
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-//	DebugOut(L"class koopas, x, y %d %d \n", x,y);
 	CGameObject::Update(dt, coObjects);
-	
-	//
-	// TO-DO: make sure Koopas can interact with the world and to each of them too!
-	// 
+	vy += KOOPA_GRAVITY * dt;
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	coEvents.clear();
 
-	//x = 20.0f;
-	//y = 350.0f;
+	CalcPotentialCollisions(coObjects, coEvents);
 
-	//x += dx;
-	//y += dy;
+	if (coEvents.size() == 0)
+	{
+		x += dx;
+		y += dy;
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		float rdx = 0;
+		float rdy = 0;
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+		x += min_tx * dx + nx * 0.2f;
+		y += min_ty * dy + ny * 0.2f;
 
-	/*if (vx < 0 && x < 0) {
-		x = 0; vx = -vx;
+		if (ny != 0) vy = 0;
+		if (nx != 0) vx = 0;
+
+		for (UINT i = 0; i < coEventsResult.size(); i++) {
+			LPCOLLISIONEVENT e = coEventsResult[i];
+			if (dynamic_cast<CRoad*>(e->obj)) {
+				DebugOut(L"collision CRoad \n");
+			}
+		}
 	}
 
-	if (vx > 0 && x > 290) {
-		x = 290; vx = -vx;
-	}*/
-	if (y > 350) y = 350;
+	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
+
+
 
 void CKoopas::Render()
 {
@@ -53,9 +68,38 @@ void CKoopas::Render()
 	else if (vx > 0) ani = KOOPAS_ANI_WALKING_RIGHT;
 	else if (vx <= 0) ani = KOOPAS_ANI_WALKING_LEFT;
 
-	animation_set->at(ani)->Render(x, y);
+	animation_set->at(15)->Render(x, y);
 
 	RenderBoundingBox();
+}
+
+void CKoopas::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLISIONEVENT>& coEventsResult, float& min_tx, float& min_ty, float& nx, float& ny, float& rdx, float& rdy)
+{
+	min_tx = 1.0f;
+	min_ty = 1.0f;
+	int min_ix = -1;
+	int min_iy = -1;
+
+	nx = 0.0f;
+	ny = 0.0f;
+
+	coEventsResult.clear();
+
+	for (UINT i = 0; i < coEvents.size(); i++)
+	{
+		LPCOLLISIONEVENT c = coEvents[i];
+
+		if (c->t < min_tx && c->nx != 0) {
+			min_tx = c->t; nx = c->nx; min_ix = i; rdx = c->dx;
+		}
+
+		if (c->t < min_ty && c->ny != 0) {
+			min_ty = c->t; ny = c->ny; min_iy = i; rdy = c->dy;
+		}
+	}
+
+	if (min_ix >= 0) coEventsResult.push_back(coEvents[min_ix]);
+	if (min_iy >= 0) coEventsResult.push_back(coEvents[min_iy]);
 }
 
 void CKoopas::SetState(int state)
