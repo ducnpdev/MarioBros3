@@ -132,6 +132,7 @@
     <ClCompile Include="CellResource.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="ColorBrick.cpp" />
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="FireMario.cpp" />
     <ClCompile Include="Gold.cpp" />
@@ -141,6 +142,7 @@
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Number.cpp" />
+    <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -164,6 +166,7 @@
     <ClInclude Include="CellResource.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="ColorBrick.h" />
     <ClInclude Include="Enemies.h" />
     <ClInclude Include="FireMario.h" />
     <ClInclude Include="Gold.h" />
@@ -176,6 +179,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="MarioConfig.h" />
     <ClInclude Include="Number.h" />
+    <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlayScenceConfig.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="Road.h" />

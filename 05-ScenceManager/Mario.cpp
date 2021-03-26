@@ -4,12 +4,15 @@
 #include "Mario.h"
 #include "Game.h"
 #include "Goomba.h"
+#include "Koopas.h"
 #include "Portal.h"
 #include "Road.h"
+#include "ColorBrick.h"
+
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_FIRE;
+	level = LEVEL_MARIO_SMAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 
@@ -24,7 +27,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 	// if (vy > 0) isJump = 1;
-
+//	DebugOut(L"mario positionX: %f \n",x);
 	// Simple fall down
 	vy += 0.0005*dt;
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -57,42 +60,36 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		float rdy = 0;
 		
 	
-		// TODO: This is a very ugly designed function!!!!
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
-		// how to push back Mario if collides with a moving objects, what if Mario is pushed this way into another object?
-		//if (rdx != 0 && rdx!=dx)
-		//	x += nx*abs(rdx); 
-		
-		// block every object first!
 		x += min_tx*dx + nx*0.1f;
 		y += min_ty*dy + ny*0.1f;
-
-		/*if (vy < 0.02 && vy >= 0) {
-			isJump = 0;
-			vy = 0;
-		}*/
 
 		if (nx!=0) vx = 0;
 		if (ny!=0) vy = 0;
 		
-		//
-		// Collision logic with other objects
-		//
+	
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
+			
+			if (dynamic_cast<CGoomba*>(e->obj))
+			{
+				CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+				DebugOut(L"mario collision goomba \n");
+			}
+
+			if (dynamic_cast<CKoopas*>(e->obj))
+			{
+				DebugOut(L"mario collision koopas \n");
+			}
 
 			if (dynamic_cast<CRoad*>(e->obj)) {
 				marioSpeechJump = 0.0f;
 				isJump = 0;
 				vy = 0;
 			}
-			if (dynamic_cast<CPortal *>(e->obj))
-			{
-				CPortal *p = dynamic_cast<CPortal *>(e->obj);
-				CGame::GetInstance()->SwitchScene(p->GetSceneId());
-			}
+			
 		}
 	}
 
@@ -221,27 +218,39 @@ void CMario::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLIS
 	min_ty = 1.0f;
 	int min_ix = -1;
 	int min_iy = -1;
-
 	nx = 0.0f;
 	ny = 0.0f;
-
 	coEventsResult.clear();
 
 	for (UINT i = 0; i < coEvents.size(); i++)
 	{
 		LPCOLLISIONEVENT c = coEvents[i];
 
-		if (c->t < min_tx && c->nx != 0) {
-			min_tx = c->t; nx = c->nx; min_ix = i; rdx = c->dx;
+		if (dynamic_cast<CColorBrick*>(c->obj))
+		{
+			if (c->ny < 0 && c->t < min_tx)
+			{
+				min_ty = c->t; ny = c->ny; rdy = c->dy;
+				coEventsResult.push_back(coEvents[i]);
+			}
+		}
+		else {
+			if (c->t < min_tx && c->nx != 0) {
+				min_tx = c->t; nx = c->nx; rdx = c->dx;
+				coEventsResult.push_back(coEvents[i]);
+			}
+
+			if (c->t < min_ty && c->ny != 0) {
+				min_ty = c->t; ny = c->ny; rdy = c->dy;
+				coEventsResult.push_back(coEvents[i]);
+			}
 		}
 
-		if (c->t < min_ty && c->ny != 0) {
-			min_ty = c->t; ny = c->ny; min_iy = i; rdy = c->dy;
-		}
+		
 	}
 
-	if (min_ix >= 0) coEventsResult.push_back(coEvents[min_ix]);
-	if (min_iy >= 0) coEventsResult.push_back(coEvents[min_iy]);
+//	if (min_ix >= 0) coEventsResult.push_back(coEvents[min_ix]);
+	// if (min_iy >= 0) coEventsResult.push_back(coEvents[min_iy]);
 
 }
 

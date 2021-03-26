@@ -1,5 +1,7 @@
 #include "GridResource.h"
 #include "PlayScence.h"
+#include "Pipe.h"
+#include "ColorBrick.h"
 
 CGridResource::CGridResource(LPCWSTR path) {
 	numRow = 0;
@@ -30,30 +32,53 @@ void CGridResource::_ParseSection_Grid_INITIAL(string line) {
 void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 	vector<string> tokens = split(line);
 
-	 CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 
-	 if (tokens.size() < 6) return; // skip invalid lines
+	if (tokens.size() < 6) return; // skip invalid lines
 
-	 int x = atoi(tokens[1].c_str());
-	 int y = atoi(tokens[2].c_str());
+	int x = atoi(tokens[1].c_str());
+	int y = atoi(tokens[2].c_str());
 
-	 int cellX = atoi(tokens[4].c_str());
-	 int cellY = atoi(tokens[5].c_str());
+	int cellX = atoi(tokens[4].c_str());
+	int cellY = atoi(tokens[5].c_str());
 
-	 int type = atoi(tokens[0].c_str());
+	int type = atoi(tokens[0].c_str());
 
-	 int ani_set_id = atoi(tokens[3].c_str());
+	int ani_set_id = atoi(tokens[3].c_str());
 
-	 CGameObject* obj = NULL;
-	 switch (type)
-	 {
-	 	case 2:
-	 	{
-	 		int type = atoi(tokens[6].c_str());
+	CGameObject* obj = NULL;
+	switch (type)
+	{
+		case OBJECT_TYPE_ROAD:{
+			int type = atoi(tokens[6].c_str());
 	 		obj = new CRoad(type);
-	 	}
-	 	break;
-	 }
+			break;
+		}
+		case 90: {
+			DebugOut(L"class brick \n");
+			obj = new CBrick();
+			/*for (int i = 0; i < BRICK_AMOUNT; i++)
+			{
+				if (brick[i] == NULL)
+				{
+					brick[i] = (CBrick*)obj;
+					break;
+				}
+			}*/
+			break;	
+		}
+		case OBJECT_TYPE_PIPE:{
+			int type = atoi(tokens[6].c_str());
+			obj = new CPipe(type);
+			break;
+		}
+		case OBJECT_TYPE_BRICK_MANY_WALL: {
+			obj = new CColorBrick(); break;
+			break;
+		}
+
+	
+	}
 
 	 LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 	 if (obj != NULL)
@@ -81,7 +106,7 @@ void CGridResource::_ParseSection_Grid_ENEMIES(string line) {
 	switch (type)
 	{
 	case OBJECT_TYPE_GOOMBA: {
-		// obj = new CGoomba(state);
+		obj = new CGoomba();
 		break;
 	}
 	case OBJECT_TYPE_KOOPAS: {
@@ -115,7 +140,15 @@ void CGridResource::GridLoadResource(LPCWSTR path) {
 
 		if (line[0] == '#') continue;	// skip comment lines	
 
-		if (line == "[OBJECTITEM]") { section = GRID_RESOURCE_OBJECT_ITEM; continue; }
+		if (line == "[OBJECTITEM]") { 
+			// excample road, brick, pipe
+			section = GRID_RESOURCE_OBJECT_ITEM; continue; 
+		}
+
+		if (line == "[OBJECTITEM]") {
+			// excample road, brick, pipe
+			section = GRID_RESOURCE_OBJECT_ITEM; continue;
+		}
 
 		if (line == "[GRIDENEMIES]") { section = GRID_RESOURCE_ENEMIES; continue; }
 		

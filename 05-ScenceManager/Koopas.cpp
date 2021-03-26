@@ -49,7 +49,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		for (UINT i = 0; i < coEventsResult.size(); i++) {
 			LPCOLLISIONEVENT e = coEventsResult[i];
 			if (dynamic_cast<CRoad*>(e->obj)) {
-				DebugOut(L"collision CRoad \n");
+				// DebugOut(L"collision CRoad \n");
 			}
 		}
 	}
@@ -68,7 +68,7 @@ void CKoopas::Render()
 	else if (vx > 0) ani = KOOPAS_ANI_WALKING_RIGHT;
 	else if (vx <= 0) ani = KOOPAS_ANI_WALKING_LEFT;
 
-	animation_set->at(15)->Render(x, y);
+	animation_set->at(0)->Render(x, y);
 
 	RenderBoundingBox();
 }
