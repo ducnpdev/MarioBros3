@@ -16,6 +16,6 @@ void CColorBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CColorBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"class color brick \n");
+	// DebugOut(L"class color brick \n");
 	CGameObject::Update(dt, coObjects);
 }

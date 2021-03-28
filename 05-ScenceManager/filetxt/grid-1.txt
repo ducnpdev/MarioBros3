@@ -2,10 +2,11 @@
 100	100	30	30
 [GRIDENEMIES]
 # **** GOOMBA ****
+# type x y ani_set cellx celly typeGoombaColor
 #3	720	384	4	7	3	0
 #3	1008	384	4	10	3	0
 3	100	350	4	2	4	0
-#3	545	400	4	2	4	1
+#3	545	400	4	2	4	0
 
 # **** KOOPA ****
 2	200	352	6	2	3	0

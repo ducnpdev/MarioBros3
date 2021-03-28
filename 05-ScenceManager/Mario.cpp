@@ -8,7 +8,7 @@
 #include "Portal.h"
 #include "Road.h"
 #include "ColorBrick.h"
-
+#include "Goomba.h"
 
 CMario::CMario(float x, float y)
 {
@@ -76,11 +76,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<CGoomba*>(e->obj))
 			{
 				CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-				DebugOut(L"mario collision goomba \n");
+				if (e->ny < 0) {
+					if (goomba->GetState() != GOOMBA_STATE_IDLE) {
+						DebugOut(L"mario collision with ny < 0 \n");
+						goomba->SetState(GOOMBA_STATE_DIE);
+						vy = -0.15f;
+						isJump = 1;
+					}
+				
+				}
+				else if(e->nx != 0) {
+
+				}
 			}
 
 			if (dynamic_cast<CKoopas*>(e->obj))
 			{
+				CKoopas* koopa = dynamic_cast<CKoopas*>(e->obj);
 				DebugOut(L"mario collision koopas \n");
 			}
 
@@ -234,6 +246,18 @@ void CMario::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLIS
 				coEventsResult.push_back(coEvents[i]);
 			}
 		}
+
+		/*if (dynamic_cast<CGoomba*>(c->obj)) {
+			if (c->t < min_tx && c->nx != 0) {
+				min_tx = c->t; nx = c->nx; rdx = c->dx;
+				coEventsResult.push_back(coEvents[i]);
+			}
+
+			if (c->t < min_ty && c->ny != 0) {
+				min_ty = c->t; ny = c->ny; rdy = c->dy;
+				coEventsResult.push_back(coEvents[i]);
+			}
+		}*/
 		else {
 			if (c->t < min_tx && c->nx != 0) {
 				min_tx = c->t; nx = c->nx; rdx = c->dx;
@@ -297,21 +321,29 @@ int CMario::RenderLevelMarioSmall() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			ani = ANI_MARIO_SMALL_IDLE_RIGHT;	
+			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_RIGHT;
+			else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_RIGHT;
+			else ani = ANI_MARIO_SMALL_IDLE_RIGHT;
 		} 
 		else {
-			ani = ANI_MARIO_SMALL_IDLE_LEFT;
+			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_RIGHT;
+			else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_LEFT;
+			else ani = ANI_MARIO_SMALL_IDLE_LEFT;
 		}
 	}
 	else if (vx > 0){
-		if(isRunning) ani = ANI_MARIO_SMALL_RUN_RIGHT; 
-		else ani = ANI_MARIO_SMALL_WALK_RIGHT; 
+		if (isTurn && !isRunning) ani = ANI_MARIO_SMALL_TURN_RIGHT;
+		else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_RIGHT;
+		else if (isRunning) ani = ANI_MARIO_SMALL_RUN_RIGHT;
+		else ani = ANI_MARIO_SMALL_WALK_RIGHT;
 	} 
 	else {
-		if(isRunning) ani = ANI_MARIO_SMALL_RUN_LEFT;
-		else ani = ANI_MARIO_SMALL_WALK_LEFT; 
+		if (isTurn && !isRunning) ani = ANI_MARIO_SMALL_TURN_LEFT;
+		else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_LEFT;
+		else if (isRunning) ani = ANI_MARIO_SMALL_RUN_LEFT;
+		else ani = ANI_MARIO_SMALL_WALK_LEFT;
 	}
-	
+
 	return ani;
 }
 

@@ -73,7 +73,8 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			break;
 		}
 		case OBJECT_TYPE_BRICK_MANY_WALL: {
-			obj = new CColorBrick(); break;
+			obj = new CColorBrick(); 
+			DebugOut(L"load class CColorBrick \n");
 			break;
 		}
 
@@ -101,12 +102,14 @@ void CGridResource::_ParseSection_Grid_ENEMIES(string line) {
 	int XCell = atoi(tokens[4].c_str());
 	int YCell = atoi(tokens[5].c_str());
 	int state = atoi(tokens[6].c_str());
+	
 	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
 	CGameObject* obj = NULL;
 	switch (type)
 	{
 	case OBJECT_TYPE_GOOMBA: {
-		obj = new CGoomba();
+		// DebugOut(L"typeColorGoomba %d \n", state);
+		obj = new CGoomba(state);
 		break;
 	}
 	case OBJECT_TYPE_KOOPAS: {

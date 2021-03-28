@@ -18,7 +18,7 @@
 
 #define GOOMBA_BBOX_HEIGHT_DIE		9
 
-#define GOOMBA_YELLOW_FORM			0
+#define GOOMBA_YELLOW_COLOR			0
 #define GOOMBA_BROWN_FORM			1
 #define PARAGOOMBA_BROWN_FORM		2
 
@@ -58,9 +58,16 @@
 
 class CGoomba : public CCollision
 {
-	
+	int typeColorGoomba; // goomba color yellow, brown
+	bool isVisibleGoomba = false; 
+	DWORD timeVisibleGoomba = 0;
+
 public:
-	CGoomba();
+	CGoomba(int type);
+
+	void setColorGoomba(int _typeGoomba) { typeColorGoomba = _typeGoomba; }
+	int getColorGoomba() { return typeColorGoomba; }
+
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();

@@ -137,12 +137,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO:
+
 		if (player!=NULL) 
 		{
 			return;
 		}
 		obj = new CMario(x,y); 
 		player = (CMario*)obj;  
+		DebugOut(L"load class mario \n");
 		break;
 	case OBJECT_TYPE_BRICK: 
 		obj = new CBrick(); 
@@ -257,7 +259,7 @@ void CPlayScene::Load()
 		if (line == "[ANIMATION_SETS]") { 
 			section = SCENE_SECTION_ANIMATION_SETS; continue; }
 	
-		if (line == "[OBJECTS]") { 
+		if (line == "[OBJECTS]") {
 			section = SCENE_SECTION_OBJECTS; continue; }
 	
 		if (line[0] == '[') { 
@@ -335,7 +337,6 @@ void CPlayScene::Update(DWORD dt)
 	int Ycam = (int)camera->GetPositionCameraY();
 
 	gridResource->GirdPushResource(objects, Xcam, Ycam);
-	
 	 for (size_t i = 0; i < objects.size(); i++)
 	 {
 		 objects[i]->Update(dt, &coObjects);
@@ -495,7 +496,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			if (mario->GetMarioSpeechJump() < 0.2) {
 				mario->SetMarioSpeechJump();
 			}
-			DebugOut(L"mario->vy 22 %f \n", mario->GetMarioSpeechJump());
+		//	DebugOut(L"mario->vy 22 %f \n", mario->GetMarioSpeechJump());
 
 			if (mario->GetMarioIsJump() != -1 && mario->vy <= 0.02) {
 				mario->SetState(STATE_MARIO_JUMP);
