@@ -10,17 +10,17 @@
 #define GOOMBA_BBOX_WIDTH			16
 #define GOOMBA_BBOX_HEIGHT			15
 
-#define PARAGOOMBA_BBOX_WIDTH		20
-#define PARAGOOMBA_BBOX_HEIGHT		18
+#define PARA_GOOMBA_BBOX_WIDTH		20
+#define PARA_GOOMBA_BBOX_HEIGHT		18
 
-#define PARAGOOMBA_JUMPING_BBOX_WIDTH		20
-#define PARAGOOMBA_JUMPING_BBOX_HEIGHT		24
+#define PARA_GOOMBA_JUMPING_BBOX_WIDTH		20
+#define PARA_GOOMBA_JUMPING_BBOX_HEIGHT		24
 
 #define GOOMBA_BBOX_HEIGHT_DIE		9
 
 #define GOOMBA_YELLOW_COLOR			0
 #define GOOMBA_BROWN_FORM			1
-#define PARAGOOMBA_BROWN_FORM		2
+#define PARA_GOOMBA_BROWN		2
 
 #define GOOMBA_STATE_IDLE			0
 #define GOOMBA_STATE_WALKING		100
@@ -31,8 +31,8 @@
 
 #define GOOMBA_ANI_YELLOW_WALKING			0
 #define GOOMBA_ANI_BROWN_WALKING			1
-#define PARAGOOMBA_ANI_BROWN_JUMPING		2
-#define PARAGOOMBA_ANI_BROWN_WALKING		3
+#define PARA_GOOMBA_ANI_BROWN_JUMPING		2
+#define PARA_GOOMBA_ANI_BROWN_WALKING		3
 #define GOOMBA_ANI_YELLOW_DIE				4
 #define GOOMBA_ANI_BROWN_DIE				5
 #define GOOMBA_ANI_YELLOW_IDLE				6
@@ -61,6 +61,8 @@ class CGoomba : public CCollision
 	int typeColorGoomba; // goomba color yellow, brown
 	bool isVisibleGoomba = false; 
 	DWORD timeVisibleGoomba = 0;
+	bool goomStateJump = false;
+	DWORD timeParaGoomba;
 
 public:
 	CGoomba(int type);

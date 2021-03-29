@@ -78,9 +78,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 				if (e->ny < 0) {
 					if (goomba->GetState() != GOOMBA_STATE_IDLE) {
-						DebugOut(L"mario collision with ny < 0 \n");
-						goomba->SetState(GOOMBA_STATE_DIE);
-						vy = -0.15f;
+						if (goomba->getColorGoomba() != PARA_GOOMBA_BROWN) {
+							goomba->SetState(GOOMBA_STATE_DIE);
+						}
+						else {
+							// change paraGoomba -> goomba yellow
+							goomba->setColorGoomba(GOOMBA_YELLOW_COLOR);
+						}
+						// jump when collision goomba
+						vy = -0.2f;
 						isJump = 1;
 					}
 				

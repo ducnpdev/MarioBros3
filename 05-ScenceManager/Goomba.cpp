@@ -4,6 +4,7 @@
 
 CGoomba::CGoomba(int typeColor)
 {
+	timeParaGoomba = GetTickCount();
 	setColorGoomba(typeColor);
 	SetState(GOOMBA_STATE_WALKING);
 }
@@ -20,8 +21,8 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
 		coEvents.clear();
-		// if (state != GOOMBA_STATE_DIE && state != GOOMBA_STATE_DEFLECT)
-		CalcPotentialCollisions(coObjects, coEvents);
+		if (state != GOOMBA_STATE_DIE && state != GOOMBA_STATE_DEFLECT)
+			CalcPotentialCollisions(coObjects, coEvents);
 
 		if (coEvents.size() == 0)
 		{
@@ -57,6 +58,20 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
+	// handle para goomba jump with 
+	if (typeColorGoomba == PARA_GOOMBA_BROWN) {
+		if (GetTickCount() - timeParaGoomba < 2000) {
+			if (GetTickCount() - timeParaGoomba < 700) {
+				SetState(GOOMBA_STATE_JUMPING);
+			}
+			else {
+				SetState(GOOMBA_STATE_WALKING);
+			}
+		}
+		else {
+			timeParaGoomba = GetTickCount();
+		}
+	}
 }
 
 void CGoomba::Render()
@@ -75,6 +90,10 @@ void CGoomba::Render()
 			ani = GOOMBA_ANI_YELLOW_IDLE;
 		}
 	}
+	else if(typeColorGoomba == PARA_GOOMBA_BROWN) {
+		ani = PARA_GOOMBA_ANI_BROWN_JUMPING;
+		if (!goomStateJump) ani = PARA_GOOMBA_ANI_BROWN_WALKING;
+	}
 	animation_set->at(ani)->Render(x, y);
 	
 }
@@ -85,8 +104,8 @@ void CGoomba::SetState(int state)
 	switch (state)
 	{
 	case GOOMBA_STATE_WALKING:
-		DebugOut(L"goomba walking hihi \n");
-		vx = GOOMBA_WALKING_SPEED;
+		goomStateJump = false;
+		vx = -GOOMBA_WALKING_SPEED;
 		break;
 	case GOOMBA_STATE_DIE:
 		break;
@@ -96,6 +115,13 @@ void CGoomba::SetState(int state)
 	case GOOMBA_STATE_IDLE:
 		vx = 0;
 		break;	
+	case GOOMBA_STATE_JUMPING:
+		if (!goomStateJump) {
+			y -= 5;
+			goomStateJump = true;
+		}
+		vy = -0.06f;
+		break;
 	default: 
 		break;
 	}
@@ -107,10 +133,22 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 	// if (state == GOOMBA_STATE_DEFLECT) return;
 	left = x;
 	top = y;
-	right = x + GOOMBA_BBOX_WIDTH;
-	bottom = y + GOOMBA_BBOX_HEIGHT;
-	if (state == GOOMBA_STATE_DIE)
-		bottom = y + GOOMBA_BBOX_HEIGHT_DIE;
+	if (typeColorGoomba == PARA_GOOMBA_BROWN) {
+		if (goomStateJump) {
+			right = x + PARA_GOOMBA_JUMPING_BBOX_WIDTH;
+			bottom = y + PARA_GOOMBA_JUMPING_BBOX_HEIGHT;
+		}
+		else {
+			right = x + PARA_GOOMBA_BBOX_WIDTH;
+			bottom = y + PARA_GOOMBA_BBOX_HEIGHT;
+		}
+	}
+	else {
+		right = x + GOOMBA_BBOX_WIDTH;
+		bottom = y + GOOMBA_BBOX_HEIGHT;
+		if (state == GOOMBA_STATE_DIE)
+			bottom = y + GOOMBA_BBOX_HEIGHT_DIE;
+	}
 }
 
 void CGoomba::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLISIONEVENT>& coEventsResult, float& min_tx, float& min_ty, float& nx, float& ny, float& rdx, float& rdy)
