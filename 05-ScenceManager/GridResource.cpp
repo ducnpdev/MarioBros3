@@ -1,6 +1,7 @@
 #include "GridResource.h"
 #include "PlayScence.h"
 #include "Pipe.h"
+#include "QuestionBrick.h"
 #include "ColorBrick.h"
 
 CGridResource::CGridResource(LPCWSTR path) {
@@ -53,6 +54,13 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			int type = atoi(tokens[6].c_str());
 	 		obj = new CRoad(type);
 			break;
+		}
+		case OBJECT_TYPE_QUESTION_BRICK: {
+			obj = new CQuestionBlock();
+			break;
+		}
+		case OBJECT_TYPE_BORDER_ROAD: {
+			obj = new CBorderRoad(); break;
 		}
 		case 90: {
 			DebugOut(L"class brick \n");

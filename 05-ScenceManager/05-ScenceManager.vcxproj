@@ -144,6 +144,7 @@
     <ClCompile Include="Number.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="QuestionBrick.cpp" />
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Turtle.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlayScenceConfig.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="QuestionBrick.h" />
     <ClInclude Include="Road.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Turtle.h" />

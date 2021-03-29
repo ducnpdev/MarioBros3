@@ -15,6 +15,9 @@
 
 // object type in grid 
 #define OBJECT_TYPE_ROAD	2
+#define OBJECT_TYPE_QUESTION_BRICK	4
+#define OBJECT_TYPE_BORDER_ROAD	13
+
 #define OBJECT_TYPE_PIPE	8
 #define OBJECT_TYPE_BRICK_MANY_WALL	9
 

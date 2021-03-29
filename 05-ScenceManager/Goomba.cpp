@@ -1,6 +1,8 @@
 #include "Goomba.h"
 #include "Utils.h"
 #include "Road.h"
+#include "Pipe.h"
+
 
 CGoomba::CGoomba(int typeColor)
 {
@@ -41,17 +43,31 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
-				if (dynamic_cast<CRoad*>(e->obj))
+				if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
 				{
-					// DebugOut(L"goomba collision road \n");
+					// e->nx > 0: right of pipe
+					if (e->nx != 0 ) {
+						vx = -1 * vx;
+					}
 				}
+			
+				if (dynamic_cast<CGoomba*>(e->obj))
+				{
+					CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+					if (e->nx != 0) {
+						vx = -1 * vx;
+						goomba->vx = -1 * goomba->vx;
+					}
+				}
+
 			}
+
 		}
 	}
 
 	if (GetState() == GOOMBA_STATE_DIE && !isVisibleGoomba) {
 		timeVisibleGoomba += dt;
-		if (timeVisibleGoomba >= dt * 8)
+		if (timeVisibleGoomba >= dt * 10)
 		{
 			SetPosition(-50, 50);
 			isVisibleGoomba = true;
@@ -95,7 +111,6 @@ void CGoomba::Render()
 		if (!goomStateJump) ani = PARA_GOOMBA_ANI_BROWN_WALKING;
 	}
 	animation_set->at(ani)->Render(x, y);
-	
 }
 
 void CGoomba::SetState(int state)
@@ -117,7 +132,7 @@ void CGoomba::SetState(int state)
 		break;	
 	case GOOMBA_STATE_JUMPING:
 		if (!goomStateJump) {
-			y -= 5;
+			y -= PLUST_POSITION_Y;
 			goomStateJump = true;
 		}
 		vy = -0.06f;

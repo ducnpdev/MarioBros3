@@ -55,6 +55,7 @@
 #define PARAGOOMBA_ANI_JUMP_TIME			500
 
 #define GOOMBA_GRAVITY				0.0005f
+#define PLUST_POSITION_Y 5
 
 class CGoomba : public CCollision
 {

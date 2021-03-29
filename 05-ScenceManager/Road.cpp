@@ -10,21 +10,21 @@ void CRoad::Render()
 
 void CRoad::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	if (type == 0)
-	{
-		l = x;
-		t = y;
-		r = x + 32;
-		b = y + 37;
-	}
-	if (type == 1)
-	{
-		l = x;
-		t = y;
-		r = x + 16;
-		b = y + 14;
-	}
+	l = x;
+	t = y;
+	r = x + 16;
+	b = y + 14;
+}
 
+void CBorderRoad::Render()
+{
+	animation_set->at(0)->Render(x, y);
+}
 
-
+void CBorderRoad::GetBoundingBox(float& l, float& t, float& r, float& b)
+{
+	l = x;
+	t = y;
+	r = x + 16;
+	b = y + 16;
 }
