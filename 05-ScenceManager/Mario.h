@@ -19,6 +19,7 @@ class CMario : public  CCollision
 	bool isStandingFloor = false;
 	bool isTurn = false;
 	int isJump = 0;
+	bool marioStateFall = false;
 
 
 
@@ -87,4 +88,6 @@ public:
 	float GetMarioSpeechJump() { return marioSpeechJump; }
 	void SetMarioSpeechJump() { marioSpeechJump += 0.00025f; }
 
+	float GetMarioFallState() { return marioStateFall; }
+	void SetMarioFallState(int _fallstate) { marioStateFall += _fallstate; }
 };

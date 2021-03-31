@@ -8,7 +8,10 @@
 #include "Portal.h"
 #include "Road.h"
 #include "ColorBrick.h"
+#include "QuestionBrick.h"
 #include "Goomba.h"
+#include "ItemCoin.h"
+
 
 CMario::CMario(float x, float y)
 {
@@ -34,6 +37,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
+
+
 
 	// turn off collision when die 
 	if (state!=STATE_MARIO_DIE)
@@ -99,15 +104,46 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<CKoopas*>(e->obj))
 			{
 				CKoopas* koopa = dynamic_cast<CKoopas*>(e->obj);
-				DebugOut(L"mario collision koopas \n");
 			}
 
-			if (dynamic_cast<CRoad*>(e->obj)) {
+			if (dynamic_cast<CRoad*>(e->obj) || dynamic_cast<CColorBrick*>(e->obj)) {
 				marioSpeechJump = 0.0f;
 				isJump = 0;
 				vy = 0;
+				marioStateFall = false;
+				SetMarioFallState(false);
 			}
-			
+		
+			if (dynamic_cast<CQuestionBrick*>(e->obj)) {
+				CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
+				if (e->ny > 0) {
+					vy = 0; SetMarioFallState(true);
+
+					if (questionBrick->GetState() == QUESTION_BRICK_STATE_MOVING) {
+						questionBrick->SetItemWhenCollision(STATE_MOVING);
+						questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
+
+					}
+				}
+
+				if (e->ny < 0) {
+				}
+
+			}
+
+			if (dynamic_cast<CCoin*>(e->obj)) // if e->obj is Koopa
+			{
+				CCoin* coin = dynamic_cast<CCoin*>(e->obj);
+
+				if (coin->GetState() == 2)
+				{
+					/*coinplay->AddCoin();
+					coin->SetState(COIN_STATE_HIDEN);*/
+
+				}
+			}
+
+
 		}
 	}
 

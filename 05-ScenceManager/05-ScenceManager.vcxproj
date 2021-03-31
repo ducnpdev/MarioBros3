@@ -139,6 +139,7 @@
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="GridResource.cpp" />
     <ClCompile Include="Hub.cpp" />
+    <ClCompile Include="ItemCoin.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Number.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="GridConfig.h" />
     <ClInclude Include="GridResource.h" />
     <ClInclude Include="Hub.h" />
+    <ClInclude Include="ItemCoin.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MarioConfig.h" />

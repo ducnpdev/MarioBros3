@@ -1,8 +1,10 @@
-#include "GridResource.h"
+﻿#include "GridResource.h"
 #include "PlayScence.h"
 #include "Pipe.h"
 #include "QuestionBrick.h"
 #include "ColorBrick.h"
+#include "ItemCoin.h"
+
 
 CGridResource::CGridResource(LPCWSTR path) {
 	numRow = 0;
@@ -56,14 +58,22 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			break;
 		}
 		case OBJECT_TYPE_QUESTION_BRICK: {
-			obj = new CQuestionBlock();
+			obj = new CQuestionBrick(y);
+			for (int i = 0; i < 11; i++)
+			{
+				if (questionBrick[i] == NULL)
+				{
+					questionBrick[i] = (CQuestionBrick*)obj;
+					break;
+				}
+			}
 			break;
 		}
 		case OBJECT_TYPE_BORDER_ROAD: {
 			obj = new CBorderRoad(); break;
 		}
 		case 90: {
-			DebugOut(L"class brick \n");
+			// 	DebugOut(L"class brick \n");
 			obj = new CBrick();
 			/*for (int i = 0; i < BRICK_AMOUNT; i++)
 			{
@@ -138,6 +148,57 @@ void CGridResource::_ParseSection_Grid_ENEMIES(string line) {
 	cellResource[XCell][YCell].PushObjectToCellResource(obj);
 }
 
+void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 8) return; // skip invalid lines - an object set must have at least id, x, y
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+	int ani_set_id = atoi(tokens[3].c_str());
+	int cellX = atoi(tokens[4].c_str());
+	int cellY = atoi(tokens[5].c_str());
+	int state = atoi(tokens[6].c_str());
+	int item_object = atoi(tokens[7].c_str());
+
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	CGameObject* obj = NULL;
+	switch (object_type)
+	{
+	case OBJECT_TYPE_COIN:
+		obj = new CCoin(state);
+		if (state == 0) {
+			// count question brick
+			int countQuestion = 11;
+			for(int i = 0; i < countQuestion; i++){
+				if (listItemQuestionBrick[i] == NULL) {
+					listItemQuestionBrick[i] = (CCoin*)(obj);
+					// item_object số lượng item trong 1 question brick
+					for (int i = 0; i < item_object; i++) {
+						questionBrick[i]->PushItemQuestionBrick(listItemQuestionBrick[i], item_object);
+					}
+
+				}
+			}
+		}
+		break;
+	default:
+		break;
+	}
+
+	
+	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+
+	if (obj == NULL) return;
+
+	obj->SetPosition(x, y);
+	obj->SetAnimationSet(ani_set);
+	obj->SetOriginObject((float)x, (float)y, obj->GetState());
+	cellResource[cellX][cellY].PushObjectToCellResource(obj);
+}
+
+
 void CGridResource::GridLoadResource(LPCWSTR path) {
 
 	ifstream fStream;
@@ -156,9 +217,9 @@ void CGridResource::GridLoadResource(LPCWSTR path) {
 			section = GRID_RESOURCE_OBJECT_ITEM; continue; 
 		}
 
-		if (line == "[OBJECTITEM]") {
+		if (line == "[ITEM_QUESTION]") {
 			// excample road, brick, pipe
-			section = GRID_RESOURCE_OBJECT_ITEM; continue;
+			section = GRID_RESOURCE_OBJECT_QUESTION; continue;
 		}
 
 		if (line == "[GRIDENEMIES]") { section = GRID_RESOURCE_ENEMIES; continue; }
@@ -171,6 +232,7 @@ void CGridResource::GridLoadResource(LPCWSTR path) {
 		//
 		switch (section)
 		{
+		case GRID_RESOURCE_OBJECT_QUESTION: _ParseSection_ITEMS_QUESTION(line); break;
 		case GRID_RESOURCE_OBJECT_ITEM: _ParseSection_Grid_ITEMS(line); break;
 		case GRID_RESOURCE_ENEMIES: _ParseSection_Grid_ENEMIES(line); break;
 		case GRID_RESOURCE_INITIAL: _ParseSection_Grid_INITIAL(line); break;

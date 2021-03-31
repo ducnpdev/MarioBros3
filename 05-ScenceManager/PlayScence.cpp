@@ -498,7 +498,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			}
 		//	DebugOut(L"mario->vy 22 %f \n", mario->GetMarioSpeechJump());
 
-			if (mario->GetMarioIsJump() != -1 && mario->vy <= 0.02) {
+			if (mario->GetMarioIsJump() != -1 && mario->vy <= 0.02 && !mario->GetMarioFallState()) {
 				mario->SetState(STATE_MARIO_JUMP);
 			}
 		}

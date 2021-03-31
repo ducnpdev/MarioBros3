@@ -10,6 +10,8 @@
 #include "Goomba.h"
 #include "Koopas.h"
 #include "Road.h"
+#include "QuestionBrick.h"
+
 
 class CGridResource {
 
@@ -19,9 +21,13 @@ class CGridResource {
 	int cellHeight;
 	CCellResource** cellResource;
 
+	CGameObject* listItemQuestionBrick[11];
+	CQuestionBrick* questionBrick[11];
+	
 	void _ParseSection_Grid_ENEMIES(string line);
 	void _ParseSection_Grid_ITEMS(string line);
 	void _ParseSection_Grid_INITIAL(string line);
+	void _ParseSection_ITEMS_QUESTION(string line);
 
 public:
 	CGridResource(LPCWSTR pathFileGrid);

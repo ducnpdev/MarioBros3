@@ -1,18 +1,18 @@
 #include "QuestionBrick.h"
 #include "Utils.h"
+#include "ItemCoin.h"
 
-#define QUESTION_BRICK_STATE_MOVING		100
-#define QUESTION_BRICK_STATE_CRETE		200
 
-#define QUESTION_BRICK_ANI_MOVING		0
-#define QUESTION_BRICK_ANI_CRETE		1
-
-CQuestionBlock::CQuestionBlock()
+CQuestionBrick::CQuestionBrick(float _originY)
 {
 	SetState(QUESTION_BRICK_STATE_MOVING);
+	for (int i = 0; i < 11; i++) {
+		itemInBrick[i] = NULL;
+	}
+	brickOriginY = _originY;
 }
 
-void CQuestionBlock::Render()
+void CQuestionBrick::Render()
 {
 	int ani = QUESTION_BRICK_ANI_MOVING;
 	if (state != QUESTION_BRICK_STATE_MOVING) {
@@ -21,14 +21,22 @@ void CQuestionBlock::Render()
 	animation_set->at(ani)->Render(x, y);
 }
 
-void CQuestionBlock::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
-	DebugOut(L" class question brick \n");
+	
+	y += dy;
+	if (state == QUESTION_BRICK_ANI_CRETE) {
+		if (y < brickOriginY - 16) {
+			SetState(QUESTION_BRICK_FALL);
+		}
+	}
+
+	if (y > brickOriginY) y = brickOriginY;
 }
 
 
-void CQuestionBlock::GetBoundingBox(float& l, float& t, float& r, float& b)
+void CQuestionBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;
 	t = y;
@@ -36,7 +44,7 @@ void CQuestionBlock::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = y + 16;
 }
 
-void CQuestionBlock::SetState(int state)
+void CQuestionBrick::SetState(int state)
 {
 	CGameObject::SetState(state);
 	switch (state)
@@ -44,7 +52,42 @@ void CQuestionBlock::SetState(int state)
 	case QUESTION_BRICK_STATE_MOVING:
 		vx = 0;
 		break;
+	case QUESTION_BRICK_ANI_CRETE:
+		vy = -0.125f;
+		break;
+	case QUESTION_BRICK_FALL:
+		vy = 0.125f;;
 	default:
 		break;
+	}
+}
+
+void CQuestionBrick::SetItemWhenCollision(int state)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		if (itemInBrick[i] != NULL ) {
+			if (itemInBrick[i]->GetState() == 0 && dynamic_cast<CCoin*>(itemInBrick[i])) {
+				itemInBrick[i]->SetPosition(x + 4, y -16);
+				itemInBrick[i]->SetState(state);
+				itemInBrick[i] = NULL;
+			}
+			/*if () {
+				DebugOut(L"bbbbb \n");
+			}*/
+		}
+	}
+}
+
+void CQuestionBrick::PushItemQuestionBrick(CGameObject* tempItem, int countItem)
+{
+	for (int i = 0; i < 10; i++)
+	{
+	//	DebugOut(L"", itemInBrick[i]);
+		if(itemInBrick[i] == NULL){
+			itemInBrick[i] = tempItem;
+			return;
+		}
+	//	DebugOut(L"1ccccccccccccccccc \ n");
 	}
 }

@@ -9,6 +9,7 @@
 3	textures\enemies-2.png	0	255	255
 4	textures\enemies.png	0	136	255
 6	textures\tiles-3.png	176	224	248
+8	textures\misc.png	166	185	255
 10	textures\black-background.png	1	1	1
 19	textures\font.png	255	0	255
 
@@ -971,6 +972,11 @@
 721	30021	100	30022	100	30023	100	30024	100
 722	30025	100
 
+# === COIN ==========
+101	50004	100	50005	100	50006	100	50001	100
+102	50001	50	50002	50	50003	50
+
+
 # ==== BRICK =========
 701	30001	100
 702	30002	100
@@ -1059,12 +1065,18 @@
 # QUESTION_BLOCK
 6	721	722	701
 
+#COIN
+
+201	101	102
+
 # CLASS HUB
 # board
 161	861
 
 # number
 171	870	871	872	873	874	875	876	877	878	879
+
+
 
 [OBJECTS]
 0	50.0	250.0	1

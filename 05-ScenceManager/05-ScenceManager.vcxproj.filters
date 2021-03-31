@@ -147,6 +147,9 @@
     <ClCompile Include="QuestionBrick.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
+    <ClCompile Include="ItemCoin.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="QuestionBrick.h">
       <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemCoin.h">
+      <Filter>Header Files\Items</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

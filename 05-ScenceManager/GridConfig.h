@@ -21,3 +21,7 @@
 #define OBJECT_TYPE_PIPE	8
 #define OBJECT_TYPE_BRICK_MANY_WALL	9
 
+
+// object type question brick in grid 
+#define OBJECT_TYPE_COIN 11
+
