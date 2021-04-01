@@ -2,6 +2,7 @@
 #include "PlayScence.h"
 #include "Pipe.h"
 #include "QuestionBrick.h"
+#include "Mushroom.h"
 #include "ColorBrick.h"
 #include "ItemCoin.h"
 
@@ -41,12 +42,9 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 
 	int x = atoi(tokens[1].c_str());
 	int y = atoi(tokens[2].c_str());
-
 	int cellX = atoi(tokens[4].c_str());
 	int cellY = atoi(tokens[5].c_str());
-
 	int type = atoi(tokens[0].c_str());
-
 	int ani_set_id = atoi(tokens[3].c_str());
 
 	CGameObject* obj = NULL;
@@ -73,16 +71,7 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			obj = new CBorderRoad(); break;
 		}
 		case 90: {
-			// 	DebugOut(L"class brick \n");
 			obj = new CBrick();
-			/*for (int i = 0; i < BRICK_AMOUNT; i++)
-			{
-				if (brick[i] == NULL)
-				{
-					brick[i] = (CBrick*)obj;
-					break;
-				}
-			}*/
 			break;	
 		}
 		case OBJECT_TYPE_PIPE:{
@@ -92,7 +81,6 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 		}
 		case OBJECT_TYPE_BRICK_MANY_WALL: {
 			obj = new CColorBrick(); 
-			DebugOut(L"load class CColorBrick \n");
 			break;
 		}
 
@@ -169,19 +157,29 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 	case OBJECT_TYPE_COIN:
 		obj = new CCoin(state);
 		if (state == 0) {
-			// count question brick
-			int countQuestion = 11;
-			for(int i = 0; i < countQuestion; i++){
+			for(int i = 0; i < 10; i++){
 				if (listItemQuestionBrick[i] == NULL) {
 					listItemQuestionBrick[i] = (CCoin*)(obj);
 					// item_object số lượng item trong 1 question brick
-					for (int i = 0; i < item_object; i++) {
+				//	for (int i = 0; i < item_object; i++) {
 						questionBrick[i]->PushItemQuestionBrick(listItemQuestionBrick[i], item_object);
-					}
+					//}
 
 				}
 			}
 		}
+		break;
+	case 18:
+		obj = new CMushroom(state);
+			for (int i = 0; i < 10; i++)
+			{
+				if (listItemQuestionBrick[i] == NULL)
+				{
+					listItemQuestionBrick[i] = (CMushroom*)obj;
+					questionBrick[i]->PushItemQuestionBrick(listItemQuestionBrick[i], item_object);
+					break;
+				}
+			}
 		break;
 	default:
 		break;

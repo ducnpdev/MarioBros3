@@ -1,7 +1,7 @@
 #include "QuestionBrick.h"
 #include "Utils.h"
 #include "ItemCoin.h"
-
+#include "Mushroom.h"
 
 CQuestionBrick::CQuestionBrick(float _originY)
 {
@@ -67,14 +67,29 @@ void CQuestionBrick::SetItemWhenCollision(int state)
 	for (int i = 0; i < 5; i++)
 	{
 		if (itemInBrick[i] != NULL ) {
-			if (itemInBrick[i]->GetState() == 0 && dynamic_cast<CCoin*>(itemInBrick[i])) {
+			/*if (dynamic_cast<CMushroom*>(itemInBrick[i])) {
+				
+			}
+
+			if (dynamic_cast<CCoin*>(itemInBrick[i])) {
+				
+			}*/
+
+
+			if (itemInBrick[i]->GetState() == 100 && dynamic_cast<CMushroom*>(itemInBrick[i])) {
+				// DebugOut(L"Coin CMushroom %d \n", itemInBrick[i]->GetState());
+				itemInBrick[i]->SetPosition(x, y - 16);
+				itemInBrick[i]->SetState(state);
+				// itemInBrick[i] = NULL;
+			}
+			
+			if (itemInBrick[i]->GetState() == 100 && dynamic_cast<CCoin*>(itemInBrick[i])) {
+				// DebugOut(L"Coin State %d \n", itemInBrick[i]->GetState());
 				itemInBrick[i]->SetPosition(x + 4, y -16);
 				itemInBrick[i]->SetState(state);
-				itemInBrick[i] = NULL;
+				// itemInBrick[i] = NULL;
 			}
-			/*if () {
-				DebugOut(L"bbbbb \n");
-			}*/
+						
 		}
 	}
 }

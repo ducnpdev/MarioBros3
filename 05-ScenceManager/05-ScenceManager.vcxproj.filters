@@ -150,6 +150,9 @@
     <ClCompile Include="ItemCoin.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -267,6 +270,9 @@
       <Filter>Header Files\Object</Filter>
     </ClInclude>
     <ClInclude Include="ItemCoin.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
   </ItemGroup>

@@ -30,7 +30,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 	// if (vy > 0) isJump = 1;
-//	DebugOut(L"mario positionX: %f \n",x);
+	DebugOut(L"mario positionX: %f \n",x);
 	// Simple fall down
 	vy += 0.0005*dt;
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -120,7 +120,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					vy = 0; SetMarioFallState(true);
 
 					if (questionBrick->GetState() == QUESTION_BRICK_STATE_MOVING) {
-						questionBrick->SetItemWhenCollision(STATE_MOVING);
+						// 200 là BRICK_STATE_INIT_COLLISION_MARIO
+						questionBrick->SetItemWhenCollision(200);
 						questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
 
 					}

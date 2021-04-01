@@ -142,6 +142,7 @@
     <ClCompile Include="ItemCoin.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="Number.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Portal.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MarioConfig.h" />
+    <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PlayScenceConfig.h" />

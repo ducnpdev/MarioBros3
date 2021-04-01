@@ -2,7 +2,7 @@
 #include "Utils.h"
 #include "Road.h"
 #include "Pipe.h"
-
+#include "QuestionBrick.h"
 
 CGoomba::CGoomba(int typeColor)
 {
@@ -43,7 +43,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			for (UINT i = 0; i < coEventsResult.size(); i++)
 			{
 				LPCOLLISIONEVENT e = coEventsResult[i];
-				if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
+				if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj) || dynamic_cast<CQuestionBrick*>(e->obj) )
 				{
 					// e->nx > 0: right of pipe
 					if (e->nx != 0 ) {
