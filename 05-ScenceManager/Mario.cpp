@@ -11,7 +11,7 @@
 #include "QuestionBrick.h"
 #include "Goomba.h"
 #include "ItemCoin.h"
-
+#include "Koopas.h"
 
 CMario::CMario(float x, float y)
 {
@@ -30,7 +30,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// Calculate dx, dy 
 	CGameObject::Update(dt);
 	// if (vy > 0) isJump = 1;
-	DebugOut(L"mario positionX: %f \n",x);
+	// DebugOut(L"mario positionX: %f \n",x);
 	// Simple fall down
 	vy += 0.0005*dt;
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -104,6 +104,32 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<CKoopas*>(e->obj))
 			{
 				CKoopas* koopa = dynamic_cast<CKoopas*>(e->obj);
+				
+				// collision above koopas
+				if (e->ny < 0) {
+					if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN) {
+						koopa->SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
+						vy = -0.2f;
+					}
+					else if (koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_DOWN) {
+						if ( (x + GetBBoxWidthMario()) < (koopa->x + round(KOOPAS_BBOX_WIDTH / 2)) ) {
+							koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
+						}
+						else {
+							koopa->SetState(KOOPAS_STATE_SPIN_LEFT);
+						}
+					}
+					isJump = 1;
+
+				}
+				// 
+				else if (e->nx != 0 || e->ny > 0) {
+					if (untouchable == 0)
+					{
+						
+
+					}
+				}
 			}
 
 			if (dynamic_cast<CRoad*>(e->obj) || dynamic_cast<CColorBrick*>(e->obj)) {
@@ -289,7 +315,19 @@ void CMario::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLIS
 				coEventsResult.push_back(coEvents[i]);
 			}
 		}
+		else if (dynamic_cast<CGoomba*>(c->obj)) {
+			if (c->nx != 0 && c->t < 1.0f)
+			{
+				min_tx = c->t; nx = c->nx; rdx = c->dx;
+				coEventsResult.push_back(coEvents[i]);
+			}
 
+			if (c->ny != 0 && c->t < 1.0f)
+			{
+				min_ty = c->t; ny = c->ny; rdy = c->dy;
+				coEventsResult.push_back(coEvents[i]);
+			}
+		}
 		/*if (dynamic_cast<CGoomba*>(c->obj)) {
 			if (c->t < min_tx && c->nx != 0) {
 				min_tx = c->t; nx = c->nx; rdx = c->dx;
@@ -480,3 +518,38 @@ int CMario::RenderLevelMarioFire() {
 	return ani;
 }
 
+int CMario::GetBBoxWidthMario()
+{
+	int width = 0;
+	switch (level)
+	{
+	case LEVEL_MARIO_SMAIL:
+		width =  MARIO_SMALL_BBOX_WIDTH;
+	case LEVEL_MARIO_BIG:
+		width = BBOX_MARIO_BIG_WIDTH;
+	case LEVEL_MARIO_TAIL:
+		width = BBOX_MARIO_TAIL_WIDTH;
+	case LEVEL_MARIO_FIRE:
+		width = BBOX_MARIO_FIRE_WIDTH;
+	}
+	return round(width);
+}
+
+int CMario::GetBBoxHeightMario()
+{
+	int height = 0;
+	switch (level)
+	{
+	case LEVEL_MARIO_SMAIL:
+		height = MARIO_SMALL_BBOX_WIDTH;
+	case LEVEL_MARIO_BIG:
+		height = BBOX_MARIO_BIG_HEIGHT;
+	case LEVEL_MARIO_TAIL:
+		height = MARIO_BIG_BBOX_HEIGHT;
+	case LEVEL_MARIO_FIRE:
+		height = MARIO_BIG_BBOX_HEIGHT;
+	}
+	return round(height);
+}
+
+  

@@ -319,15 +319,21 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 1; i < objects.size(); i++)
 	{
-		if (dynamic_cast<CKoopas*>(objects[i])) {
+		/*if (dynamic_cast<CKoopas*>(objects[i])) {
 			float tempX, tempY;
 			objects[i]->GetPosition(tempX, tempY);
 			if (ObjectInUsing(tempX, tempY)) {
 				objects[i]->SetVisible(false);
 				objects.erase(objects.begin() + i);
 			}
-		}
-		
+		}*/
+		/*float Ox, Oy;
+		objects[i]->GetPosition(Ox, Oy);
+		if (!ObjectInUsing(Ox, Oy))
+		{
+			objects[i]->SetVisible(false);
+			objects.erase(objects.begin() + i);
+		}*/
 	}
 
 	objects[0]->Update(dt, &objects);

@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include "Road.h"
 #include "Pipe.h"
+#include "Koopas.h"
 #include "QuestionBrick.h"
 
 CGoomba::CGoomba(int typeColor)
@@ -60,6 +61,26 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 				}
 
+				if (dynamic_cast<CKoopas*>(e->obj))
+				{
+					CKoopas* koopa = dynamic_cast<CKoopas*>(e->obj);
+					if (state != GOOMBA_STATE_DEFLECT) {
+						if (koopa->GetState() == KOOPAS_STATE_SPIN_LEFT || koopa->GetState() == KOOPAS_STATE_SPIN_RIGHT)
+						{
+							SetState(GOOMBA_STATE_DEFLECT);
+						}
+						else {
+							vx = -1 * vx;
+						}
+					}
+					/*if (e->nx != 0) {
+						
+					}*/
+
+					// Todo xu li va cham sau do bien goomba thanh deftect
+				}
+
+
 			}
 
 		}
@@ -99,7 +120,8 @@ void CGoomba::Render()
 		}
 		// 
 		else if (state == GOOMBA_STATE_DEFLECT) {
-			ani = GOOMBA_ANI_DEFLECT;
+			// Todo can thay ani = GOOMBA_ANI_DEFLECT
+			ani = 0;
 		}
 		// GOOMBA_STATE_IDLE sau khi mario collision 
 		else if (state == GOOMBA_STATE_IDLE) {

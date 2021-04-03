@@ -90,4 +90,7 @@ public:
 
 	float GetMarioFallState() { return marioStateFall; }
 	void SetMarioFallState(int _fallstate) { marioStateFall += _fallstate; }
+
+	int GetBBoxWidthMario();
+	int GetBBoxHeightMario();
 };

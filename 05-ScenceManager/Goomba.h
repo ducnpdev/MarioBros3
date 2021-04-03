@@ -36,7 +36,7 @@
 #define GOOMBA_ANI_YELLOW_DIE				4
 #define GOOMBA_ANI_BROWN_DIE				5
 #define GOOMBA_ANI_YELLOW_IDLE				6
-#define GOOMBA_ANI_DEFLECT					0
+#define GOOMBA_ANI_DEFLECT					7
 
 #define DELTA_DESTROY_TIME					15
 #define GOOMBA_DEAD_X						-50
