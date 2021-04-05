@@ -33,7 +33,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (hidenStateKoopas) return;
 	CGameObject::Update(dt, coObjects);
 	vy += KOOPA_GRAVITY * dt;
-
+	vx = 0;
+	// vy = 0;
 
 	if (stateKoopaTortoiSeShell && GetTickCount() - timeStateTorToiSeShell > 5000 && GetTickCount() - timeStateTorToiSeShell < 7000)  {
 		SetState(KOOPAS_STATE_REBORN);
@@ -48,8 +49,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	if (vx > 0 && x > 590) {
 		x = 590; vx = -1 * vx;
-	}
-*/
+	}*/
+
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -128,6 +129,9 @@ void CKoopas::Render()
 	}
 	else if (state == KOOPAS_STATE_WALKING_LEFT) {
 		ani = 1;
+	}
+	else if (state == KOOPAS_STATE_TAKEN) {
+		ani = 2;
 	}
 
 	// koopas color green

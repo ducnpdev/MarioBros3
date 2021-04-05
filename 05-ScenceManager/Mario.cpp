@@ -38,7 +38,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	coEvents.clear();
 
-
+	if (state == STATE_MARIO_RUNNING_RIGHT || state == STATE_MARIO_RUNNING_LEFT) {
+	//	DebugOut(L"11111111111111111111 \n");
+	}
 
 	// turn off collision when die 
 	if (state!=STATE_MARIO_DIE)
@@ -126,7 +128,37 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				else if (e->nx != 0 || e->ny > 0) {
 					if (untouchable == 0)
 					{
-						
+						if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN || koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN ) {
+							if (level > LEVEL_MARIO_SMAIL) {
+								SetMarioLevel(GetMarioLevel() - 1);
+								StartUntouchable();
+							}
+							else {
+								SetState(STATE_MARIO_DIE);
+							}
+						}
+						else {
+							if (state == STATE_MARIO_RUNNING_RIGHT  || state == STATE_MARIO_RUNNING_LEFT) {
+								
+								if (e->nx < 0) {
+									SetState(STATE_MARIO_TORTOISESHELL_RIGHT);
+								}
+								else SetState(STATE_MARIO_TORTOISESHELL_LEFT);
+							
+							}
+							else {
+								timeStartKick = GetTickCount();
+								SetState(STATE_MARIO_KICK);
+								if (e->nx < 0)
+								{
+									koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
+								}
+								else
+								{
+									koopa->SetState(KOOPAS_STATE_SPIN_LEFT);
+								}
+							}
+						}
 
 					}
 				}
@@ -149,8 +181,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						// 200 là BRICK_STATE_INIT_COLLISION_MARIO
 						questionBrick->SetItemWhenCollision(200);
 						questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
-
 					}
+
 				}
 
 				if (e->ny < 0) {
@@ -174,6 +206,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 
+	if (GetTickCount() - timeStartKick < 300) {
+		SetState(STATE_MARIO_KICK);
+	}
+
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
@@ -190,24 +226,34 @@ void CMario::SetState(int state)
 		isRunning = false;
 		isJump = 0;
 		isTurn = false;
+		isKick = false;
+		//marioStateTorToiSeShell = false;
+		
 		vx = SPEED_MARIO_WALKING;
 		nx = DIRECTION_MARIO_RIGHT;
 		break;
 	case STATE_MARIO_WALKING_LEFT: 
 		isJump = 0;
 		isTurn = false;
+		isKick = false;
+	//	marioStateTorToiSeShell = false;
 		vx = -SPEED_MARIO_WALKING;
 		nx = DIRECTION_MARIO_LEFT;
 		break;
 	case STATE_MARIO_RUNNING_RIGHT:
-		isJump = 0;			
 		isRunning = true;
+		
+		isJump = 0;			
+		isKick = false;
+
 		vx = SPEED_MARIO_RUNNING;
 		if (isTurn)  vx = SPEED_MARIO_RUNNING + 0.01f;
 		nx = DIRECTION_MARIO_RIGHT;
 		break;
 	case STATE_MARIO_RUNNING_LEFT:
 		isRunning = true;
+	//	marioStateTorToiSeShell = false;
+		isKick = false;
 		isJump = 0;
 		vx = -SPEED_MARIO_RUNNING;
 		if (isTurn)  vx = -SPEED_MARIO_RUNNING - 0.01f;
@@ -223,32 +269,50 @@ void CMario::SetState(int state)
 			}
 		}
 		isStateSitDown = true;
+	//	marioStateTorToiSeShell = false;
 		break;
 	case STATE_MARIO_JUMP:
+		isKick = false;
 		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
 		isJump = 1;
 		vy = -0.13f - marioSpeechJump;
 		break; 
 	case STATE_MARIO_IDLE:
+		isKick = false;
 		isTurn = false;
 		//isJump = 0;
 		// marioSpeechJump = 0.0f;
 		vx = 0;
 		break;
+	case STATE_MARIO_KICK:
+		isKick = true;
+	//	marioStateTorToiSeShell = false;
+		break;
 	case STATE_MARIO_TURN_RIGHT:
 		isTurn = true;
 		isRunning = false;
+		isKick = false;
+	//	marioStateTorToiSeShell = false;
 		vx = SPEED_MARIO_WALKING;
 		if (isRunning) vx = SPEED_MARIO_WALKING + 0.5f;
 		break;
 	case STATE_MARIO_TURN_LEFT:
 		isTurn = true;
 		isRunning = false;
+	//	marioStateTorToiSeShell = false;
 		vx = -SPEED_MARIO_WALKING;
 		if (isRunning) vx = -SPEED_MARIO_WALKING - 0.5f;
 		break;
 	case STATE_MARIO_DIE:
+		marioStateDie = true;
+	//	marioStateTorToiSeShell = false;
 		vy = -SPEED_MARIO_DIE_DEFLECT;
+		break;
+	case STATE_MARIO_TORTOISESHELL_RIGHT:
+		marioStateTorToiSeShell = true;
+		break;
+	case STATE_MARIO_TORTOISESHELL_LEFT:
+		marioStateTorToiSeShell = true;
 		break;
 	}
 }
@@ -404,11 +468,15 @@ int CMario::RenderLevelMarioSmall() {
 		if (nx > 0) {
 			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_RIGHT;
 			else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_RIGHT;
+			else if (isKick) ani = ANI_MARIO_SMALL_KICK_RIGHT;
+			else if (marioStateTorToiSeShell) ani = ANI_MARIO_SMALL_IDLE_TORTOISESHELL_RIGHT;
 			else ani = ANI_MARIO_SMALL_IDLE_RIGHT;
 		} 
 		else {
 			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_RIGHT;
 			else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_LEFT;
+			else if (isKick) ani = ANI_MARIO_SMALL_KICK_LEFT;
+			else if (marioStateTorToiSeShell) ani = ANI_MARIO_SMALL_IDLE_TORTOISESHELL_LEFT;
 			else ani = ANI_MARIO_SMALL_IDLE_LEFT;
 		}
 	}
@@ -416,12 +484,17 @@ int CMario::RenderLevelMarioSmall() {
 		if (isTurn && !isRunning) ani = ANI_MARIO_SMALL_TURN_RIGHT;
 		else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_RIGHT;
 		else if (isRunning) ani = ANI_MARIO_SMALL_RUN_RIGHT;
+		else if (isKick == 1) ani = ANI_MARIO_SMALL_JUMP_RIGHT;
+		else if (marioStateTorToiSeShell) ani = ANI_MARIO_SMALL_WALK_TORTOISESHELL_RIGHT;
+
 		else ani = ANI_MARIO_SMALL_WALK_RIGHT;
 	} 
 	else {
 		if (isTurn && !isRunning) ani = ANI_MARIO_SMALL_TURN_LEFT;
 		else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_LEFT;
 		else if (isRunning) ani = ANI_MARIO_SMALL_RUN_LEFT;
+		else if (isKick) ani = ANI_MARIO_SMALL_KICK_LEFT;
+		else if (marioStateTorToiSeShell) ani = ANI_MARIO_SMALL_WALK_TORTOISESHELL_LEFT;
 		else ani = ANI_MARIO_SMALL_WALK_LEFT;
 	}
 
@@ -434,11 +507,17 @@ int CMario::RenderLevelMarioBig() {
 		if (nx > 0) {
 			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_RIGHT;
 			else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_RIGHT;
-			else ani = ANI_MARIO_BIG_IDLE_RIGHT;	
+			else if (isKick) ani = ANI_MARIO_BIG_KICK_RIGHT;
+			else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_IDLE_TORTOISESHELL_RIGHT;
+
+			else ani = ANI_MARIO_BIG_IDLE_RIGHT;
 		} 
 		else {
 			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_LEFT;
 			else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_LEFT;
+			else if (isKick) ani = ANI_MARIO_BIG_KICK_LEFT;
+			else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_IDLE_TORTOISESHELL_LEFT;
+
 			else ani = ANI_MARIO_BIG_IDLE_LEFT;
 		}
 	}
@@ -446,12 +525,18 @@ int CMario::RenderLevelMarioBig() {
 		if (isTurn && !isRunning) ani =  ANI_MARIO_BIG_TURN_RIGHT;
 		else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_RIGHT;
 		else if(isRunning) ani = ANI_MARIO_BIG_RUN_RIGHT;
+		else if (isKick) ani = ANI_MARIO_BIG_KICK_RIGHT;
+		else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_IDLE_TORTOISESHELL_RIGHT;
+
 		else ani = ANI_MARIO_BIG_WALK_RIGHT; 
 	} 
 	else {
 		if (isTurn && !isRunning) ani = ANI_MARIO_BIG_TURN_LEFT;
 		else if (isJump == 1 ) ani = ANI_MARIO_BIG_JUMP_LEFT;
 		else if(isRunning) ani = ANI_MARIO_BIG_RUN_LEFT;
+		else if (isKick) ani = ANI_MARIO_BIG_KICK_LEFT;
+		else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_IDLE_TORTOISESHELL_LEFT;
+
 		else ani = ANI_MARIO_BIG_WALK_LEFT; 
 	}
 	

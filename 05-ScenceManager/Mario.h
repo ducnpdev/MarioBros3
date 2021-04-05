@@ -18,11 +18,13 @@ class CMario : public  CCollision
 	bool isStateSitDown = false;
 	bool isStandingFloor = false;
 	bool isTurn = false;
+	bool isKick = false;
 	int isJump = 0;
 	bool marioStateFall = false;
+	bool marioStateDie = false;
+	bool marioStateTorToiSeShell = false;
 
-
-
+	DWORD timeStartKick;
 	DWORD timeWalkingRight;
 	DWORD timeWalkingLeft;
 	DWORD timeMarioJumpStart;
@@ -93,4 +95,7 @@ public:
 
 	int GetBBoxWidthMario();
 	int GetBBoxHeightMario();
+
+	bool GetMarioIsDie() { return marioStateDie; }
+	void SetMarioIsDie(bool stateDie) { marioStateDie = stateDie; }
 };

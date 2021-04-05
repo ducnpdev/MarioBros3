@@ -70,6 +70,9 @@
 #define STATE_MARIO_SITDOWN			            190
 #define STATE_MARIO_TURN_RIGHT                  200
 #define STATE_MARIO_TURN_LEFT                   210
+#define STATE_MARIO_KICK						220
+#define STATE_MARIO_TORTOISESHELL_RIGHT	240
+#define STATE_MARIO_TORTOISESHELL_LEFT		250
 
 #define STATE_MARIO_JUMP					300
 #define STATE_MARIO_DIE						999
