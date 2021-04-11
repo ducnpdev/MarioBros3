@@ -1,4 +1,4 @@
-#include "Koopas.h"
+﻿#include "Koopas.h"
 #include "Road.h"
 #include "Utils.h"
 #include "Pipe.h"
@@ -10,7 +10,7 @@
 CKoopas::CKoopas()
 {
 	//SetState(KOOPAS_STATE_WALKING_RIGHT);
-	SetState(KOOPAS_STATE_WALKING_LEFT);
+	SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
 
 }
 
@@ -32,13 +32,15 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (hidenStateKoopas) return;
 	CGameObject::Update(dt, coObjects);
-	vy += KOOPA_GRAVITY * dt;
-	vx = 0;
+	if (state != KOOPAS_STATE_TAKEN)  vy += KOOPA_GRAVITY * dt;
+	//vx = 0;
 	// vy = 0;
 
+	// koopa chuẩn bị hồi sinh
 	if (stateKoopaTortoiSeShell && GetTickCount() - timeStateTorToiSeShell > 5000 && GetTickCount() - timeStateTorToiSeShell < 7000)  {
 		SetState(KOOPAS_STATE_REBORN);
 	}
+	// hồi sinh qua trạng thái ban đầu
 	else if(stateKoopaTortoiSeShell && GetTickCount() - timeStateTorToiSeShell > 7000) {
 		SetPosition(x, y - 10);
 		SetState(KOOPAS_STATE_WALKING_RIGHT);
@@ -187,6 +189,11 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_REBORN:
 		vx = 0;
 		vy = 0;
+		break;
+	case KOOPAS_STATE_TAKEN:
+		vx = 0;
+		vy = 0;
+		stateKoopaTortoiSeShell = false;
 		break;
 	}
 

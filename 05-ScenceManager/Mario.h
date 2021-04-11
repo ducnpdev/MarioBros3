@@ -30,6 +30,8 @@ class CMario : public  CCollision
 	DWORD timeMarioJumpStart;
 	float marioSpeechJump;
 
+	CGameObject* tortoiseshell;
+
 public: 
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
@@ -98,4 +100,13 @@ public:
 
 	bool GetMarioIsDie() { return marioStateDie; }
 	void SetMarioIsDie(bool stateDie) { marioStateDie = stateDie; }
+
+	bool GetMarioIsTortoiseshell() { return marioStateTorToiSeShell; }
+	void SetMarioIsTortoiseshell(bool stateTortoiseshell) { marioStateTorToiSeShell = stateTortoiseshell; }
+
+	void SetTimeStartKick(DWORD t) { timeStartKick = t; }
+	DWORD GetTimeStartKick() { return timeStartKick; }
+
+	void handleMarioTorToiSeShell();
+	void marioSetUpDownLevel(int level);
 };

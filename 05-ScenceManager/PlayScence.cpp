@@ -294,7 +294,6 @@ void CPlayScene::initCamera() {
 
 	// hub = new CHub();
 	if (hub != NULL) {
-
 		hub->SetCameraHub(camera);
 	}
 	else {
@@ -305,7 +304,8 @@ void CPlayScene::initCamera() {
 void CPlayScene::Update(DWORD dt)
 {
 	if (player->GetMarioIsDie()) {
-		// todo swith to scene intro
+		//TODO: swith to scene intro
+		DebugOut(L"mario is die \n");
 	}
 
 	initCamera();
@@ -385,16 +385,17 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_1:
-		mario->SetLevel(LEVEL_MARIO_SMAIL);
+		mario->marioSetUpDownLevel(LEVEL_MARIO_SMAIL);
 		break;
 	case DIK_2:
-		mario->SetLevel(LEVEL_MARIO_BIG);
+		mario->marioSetUpDownLevel(LEVEL_MARIO_BIG);
 		break;
 	case DIK_3:
-		mario->SetLevel(LEVEL_MARIO_TAIL);
+		mario->marioSetUpDownLevel(LEVEL_MARIO_TAIL);
 		break;
 	case DIK_4:
-		mario->SetLevel(LEVEL_MARIO_FIRE);
+		mario->marioSetUpDownLevel(LEVEL_MARIO_FIRE);
+
 		break;
 	case DIK_5:
 		break;
@@ -439,8 +440,16 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_S: {
 		mario->SetMarioIsJump(-1);
 		break;
-
 	}
+	case DIK_A:
+		if (mario->GetMarioIsTortoiseshell())
+		{
+			DebugOut(L"end tortoiseshell \n");
+			mario->SetTimeStartKick(GetTickCount());
+			mario->SetState(STATE_MARIO_KICK);
+		}
+		break;
+
 	}
 }
 

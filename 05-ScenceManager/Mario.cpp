@@ -27,11 +27,7 @@ CMario::CMario(float x, float y)
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	// Calculate dx, dy 
 	CGameObject::Update(dt);
-	// if (vy > 0) isJump = 1;
-	// DebugOut(L"mario positionX: %f \n",x);
-	// Simple fall down
 	vy += 0.0005*dt;
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -79,87 +75,100 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
-			
-			if (dynamic_cast<CGoomba*>(e->obj))
+			if (untouchable == 0)
 			{
-				CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-				if (e->ny < 0) {
-					if (goomba->GetState() != GOOMBA_STATE_IDLE) {
-						if (goomba->getColorGoomba() != PARA_GOOMBA_BROWN) {
-							goomba->SetState(GOOMBA_STATE_DIE);
+				if (dynamic_cast<CGoomba*>(e->obj))
+				{
+					CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+					if (e->ny < 0) {
+						if (goomba->GetState() != GOOMBA_STATE_IDLE) {
+							if (goomba->getColorGoomba() != PARA_GOOMBA_BROWN) {
+								goomba->SetState(GOOMBA_STATE_DIE);
+							}
+							else {
+								// change paraGoomba -> goomba yellow
+								goomba->setColorGoomba(GOOMBA_YELLOW_COLOR);
+							}
+							// jump when collision goomba
+							vy = -0.2f;
+							isJump = 1;
 						}
-						else {
-							// change paraGoomba -> goomba yellow
-							goomba->setColorGoomba(GOOMBA_YELLOW_COLOR);
-						}
-						// jump when collision goomba
-						vy = -0.2f;
-						isJump = 1;
-					}
 				
-				}
-				else if(e->nx != 0) {
-
-				}
-			}
-
-			if (dynamic_cast<CKoopas*>(e->obj))
-			{
-				CKoopas* koopa = dynamic_cast<CKoopas*>(e->obj);
-				
-				// collision above koopas
-				if (e->ny < 0) {
-					if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN) {
-						koopa->SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
-						vy = -0.2f;
 					}
-					else if (koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_DOWN) {
-						if ( (x + GetBBoxWidthMario()) < (koopa->x + round(KOOPAS_BBOX_WIDTH / 2)) ) {
-							koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
-						}
-						else {
-							koopa->SetState(KOOPAS_STATE_SPIN_LEFT);
-						}
-					}
-					isJump = 1;
-
-				}
-				// 
-				else if (e->nx != 0 || e->ny > 0) {
-					if (untouchable == 0)
-					{
-						if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN || koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN ) {
-							if (level > LEVEL_MARIO_SMAIL) {
-								SetMarioLevel(GetMarioLevel() - 1);
+					else if(e->nx != 0 || e->ny > 0) {
+						if (goomba->GetState() != GOOMBA_STATE_DIE)
+						{
+							if (level > LEVEL_MARIO_SMAIL)
+							{
+								DebugOut(L"level:",GetMarioLevel());
+								SetMarioLevel(GetMarioLevel() - 1 );
 								StartUntouchable();
 							}
-							else {
+							else
 								SetState(STATE_MARIO_DIE);
-							}
 						}
-						else {
-							if (state == STATE_MARIO_RUNNING_RIGHT  || state == STATE_MARIO_RUNNING_LEFT) {
-								
-								if (e->nx < 0) {
-									SetState(STATE_MARIO_TORTOISESHELL_RIGHT);
-								}
-								else SetState(STATE_MARIO_TORTOISESHELL_LEFT);
-							
+					}
+				}
+
+				if (dynamic_cast<CKoopas*>(e->obj))
+				{
+					CKoopas* koopa = dynamic_cast<CKoopas*>(e->obj);
+				
+					// collision above koopas
+					if (e->ny < 0) {
+						if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN) {
+							koopa->SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
+							vy = -0.2f;
+						}
+						else if (koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_DOWN) {
+							if ( (x + GetBBoxWidthMario()) < (koopa->x + round(KOOPAS_BBOX_WIDTH / 2)) ) {
+								koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
 							}
 							else {
-								timeStartKick = GetTickCount();
-								SetState(STATE_MARIO_KICK);
-								if (e->nx < 0)
-								{
-									koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
-								}
-								else
-								{
-									koopa->SetState(KOOPAS_STATE_SPIN_LEFT);
-								}
+								koopa->SetState(KOOPAS_STATE_SPIN_LEFT);
 							}
 						}
+						isJump = 1;
 
+					}
+					// 
+					else if (e->nx != 0 || e->ny > 0) {
+						if (untouchable == 0)
+						{
+							if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN || koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN ) {
+								if (level > LEVEL_MARIO_SMAIL) {
+									SetMarioLevel(GetMarioLevel() - 1);
+									StartUntouchable();
+								}
+								else {
+									SetState(STATE_MARIO_DIE);
+								}
+							}
+							else {
+								if (state == STATE_MARIO_RUNNING_RIGHT  || state == STATE_MARIO_RUNNING_LEFT) {
+									tortoiseshell = koopa;
+									koopa->SetState(KOOPAS_STATE_TAKEN);
+									if (e->nx < 0) {
+										SetState(STATE_MARIO_TORTOISESHELL_RIGHT);
+									}
+									else SetState(STATE_MARIO_TORTOISESHELL_LEFT);
+							
+								}
+								else {
+									timeStartKick = GetTickCount();
+									SetState(STATE_MARIO_KICK);
+									if (e->nx < 0)
+									{
+										koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
+									}
+									else
+									{
+										koopa->SetState(KOOPAS_STATE_SPIN_LEFT);
+									}
+								}
+							}
+
+						}
 					}
 				}
 			}
@@ -210,6 +219,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		SetState(STATE_MARIO_KICK);
 	}
 
+	handleMarioTorToiSeShell();
+
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
@@ -227,7 +238,7 @@ void CMario::SetState(int state)
 		isJump = 0;
 		isTurn = false;
 		isKick = false;
-		//marioStateTorToiSeShell = false;
+		marioStateTorToiSeShell = false;
 		
 		vx = SPEED_MARIO_WALKING;
 		nx = DIRECTION_MARIO_RIGHT;
@@ -236,7 +247,7 @@ void CMario::SetState(int state)
 		isJump = 0;
 		isTurn = false;
 		isKick = false;
-	//	marioStateTorToiSeShell = false;
+		marioStateTorToiSeShell = false;
 		vx = -SPEED_MARIO_WALKING;
 		nx = DIRECTION_MARIO_LEFT;
 		break;
@@ -252,7 +263,7 @@ void CMario::SetState(int state)
 		break;
 	case STATE_MARIO_RUNNING_LEFT:
 		isRunning = true;
-	//	marioStateTorToiSeShell = false;
+		marioStateTorToiSeShell = false;
 		isKick = false;
 		isJump = 0;
 		vx = -SPEED_MARIO_RUNNING;
@@ -269,7 +280,7 @@ void CMario::SetState(int state)
 			}
 		}
 		isStateSitDown = true;
-	//	marioStateTorToiSeShell = false;
+		marioStateTorToiSeShell = false;
 		break;
 	case STATE_MARIO_JUMP:
 		isKick = false;
@@ -280,40 +291,67 @@ void CMario::SetState(int state)
 	case STATE_MARIO_IDLE:
 		isKick = false;
 		isTurn = false;
-		//isJump = 0;
+		// isJump = 0;
 		// marioSpeechJump = 0.0f;
 		vx = 0;
 		break;
 	case STATE_MARIO_KICK:
 		isKick = true;
-	//	marioStateTorToiSeShell = false;
+	//	
+		if (tortoiseshell != NULL)
+		{
+			if (nx > 0) {
+				 tortoiseshell->x = x + GetBBoxWidthMario() ;
+				tortoiseshell->SetState(KOOPAS_STATE_SPIN_RIGHT);
+			}
+			else
+			{
+				tortoiseshell->x = x - GetBBoxWidthMario() ;
+				tortoiseshell->SetState(KOOPAS_STATE_SPIN_LEFT);
+			}
+
+			marioStateTorToiSeShell = false;
+			tortoiseshell = NULL;
+		}
+
 		break;
 	case STATE_MARIO_TURN_RIGHT:
 		isTurn = true;
 		isRunning = false;
 		isKick = false;
-	//	marioStateTorToiSeShell = false;
+		marioStateTorToiSeShell = false;
 		vx = SPEED_MARIO_WALKING;
 		if (isRunning) vx = SPEED_MARIO_WALKING + 0.5f;
 		break;
 	case STATE_MARIO_TURN_LEFT:
 		isTurn = true;
 		isRunning = false;
-	//	marioStateTorToiSeShell = false;
+		marioStateTorToiSeShell = false;
 		vx = -SPEED_MARIO_WALKING;
 		if (isRunning) vx = -SPEED_MARIO_WALKING - 0.5f;
 		break;
 	case STATE_MARIO_DIE:
 		marioStateDie = true;
-	//	marioStateTorToiSeShell = false;
+		marioStateTorToiSeShell = false;
 		vy = -SPEED_MARIO_DIE_DEFLECT;
 		break;
 	case STATE_MARIO_TORTOISESHELL_RIGHT:
 		marioStateTorToiSeShell = true;
+		isRunning = false;
+		isTurn = false;
+		isRunning = false;
+		isJump = 0;
+	//	vx = 0.00008f;
 		break;
 	case STATE_MARIO_TORTOISESHELL_LEFT:
 		marioStateTorToiSeShell = true;
+		isRunning = false;
+		isTurn = false;
+		isRunning = false;
+	//	vx = -0.00008f;
+		isJump = 0;
 		break;
+	
 	}
 }
 
@@ -509,7 +547,6 @@ int CMario::RenderLevelMarioBig() {
 			else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_RIGHT;
 			else if (isKick) ani = ANI_MARIO_BIG_KICK_RIGHT;
 			else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_IDLE_TORTOISESHELL_RIGHT;
-
 			else ani = ANI_MARIO_BIG_IDLE_RIGHT;
 		} 
 		else {
@@ -517,16 +554,19 @@ int CMario::RenderLevelMarioBig() {
 			else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_LEFT;
 			else if (isKick) ani = ANI_MARIO_BIG_KICK_LEFT;
 			else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_IDLE_TORTOISESHELL_LEFT;
-
 			else ani = ANI_MARIO_BIG_IDLE_LEFT;
 		}
 	}
 	else if (vx > 0){
+		
+		
 		if (isTurn && !isRunning) ani =  ANI_MARIO_BIG_TURN_RIGHT;
 		else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_RIGHT;
 		else if(isRunning) ani = ANI_MARIO_BIG_RUN_RIGHT;
 		else if (isKick) ani = ANI_MARIO_BIG_KICK_RIGHT;
-		else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_IDLE_TORTOISESHELL_RIGHT;
+		else if (marioStateTorToiSeShell) {
+			ani = ANI_MARIO_BIG_WALK_TORTOISESHELL_RIGHT;
+		} 
 
 		else ani = ANI_MARIO_BIG_WALK_RIGHT; 
 	} 
@@ -535,8 +575,9 @@ int CMario::RenderLevelMarioBig() {
 		else if (isJump == 1 ) ani = ANI_MARIO_BIG_JUMP_LEFT;
 		else if(isRunning) ani = ANI_MARIO_BIG_RUN_LEFT;
 		else if (isKick) ani = ANI_MARIO_BIG_KICK_LEFT;
-		else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_IDLE_TORTOISESHELL_LEFT;
-
+		else if (marioStateTorToiSeShell) {
+			ani = ANI_MARIO_BIG_WALK_TORTOISESHELL_LEFT;
+		}
 		else ani = ANI_MARIO_BIG_WALK_LEFT; 
 	}
 	
@@ -635,6 +676,59 @@ int CMario::GetBBoxHeightMario()
 		height = MARIO_BIG_BBOX_HEIGHT;
 	}
 	return round(height);
+}
+
+void CMario::handleMarioTorToiSeShell()
+{
+	if (tortoiseshell == NULL) return;
+	
+	if (level == LEVEL_MARIO_SMAIL) {
+
+	}
+	else if (level == LEVEL_MARIO_BIG)
+	{
+		DebugOut(L"mang rua\n");
+		if (nx > 0)
+		{
+			SetState(STATE_MARIO_TORTOISESHELL_RIGHT);
+			tortoiseshell->x = x + 10;
+			tortoiseshell->y = y + 10;
+		}
+		else
+		{
+			SetState(STATE_MARIO_TORTOISESHELL_LEFT);
+			tortoiseshell->x = x - 10;
+			tortoiseshell->y = y + 10;
+		}
+	}
+	else if (level == LEVEL_MARIO_TAIL)
+	{
+	}
+	else if (level == LEVEL_MARIO_FIRE)
+	{
+	}
+
+}
+
+void CMario::marioSetUpDownLevel(int _level)
+{
+	if (level == LEVEL_MARIO_SMAIL && _level != LEVEL_MARIO_SMAIL) SetPosition(x, y - 15);
+
+	switch (_level)
+	{
+	case LEVEL_MARIO_SMAIL:
+		SetLevel(LEVEL_MARIO_SMAIL);
+		break;
+	case LEVEL_MARIO_BIG:
+		SetLevel(LEVEL_MARIO_BIG);
+		break;
+	case LEVEL_MARIO_TAIL:
+		SetLevel(LEVEL_MARIO_TAIL);
+		break;
+	case LEVEL_MARIO_FIRE:
+		SetLevel(LEVEL_MARIO_FIRE);
+		break;
+	}
 }
 
   

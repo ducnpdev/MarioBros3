@@ -17,7 +17,6 @@ CGoomba::CGoomba(int typeColor)
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
-	// DebugOut(L"class goomba \n");
 	if (GetState() != GOOMBA_STATE_DIE && !isVisibleGoomba) {
 		vy += GOOMBA_GRAVITY * dt;
 		vector<LPCOLLISIONEVENT> coEvents;
