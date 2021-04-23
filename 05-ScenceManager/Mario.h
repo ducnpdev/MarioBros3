@@ -2,10 +2,14 @@
 #include "MarioConfig.h"
 #include "Collision.h"
 #include "GameObject.h"
+#include "Coin.h" 
+
 
 class CMario : public  CCollision
-
 {
+	// Object
+	CCoinPlay* coinplayhub; // item coin in hub
+
 	int level;
 	int untouchable;
 	DWORD untouchable_start;
@@ -109,4 +113,8 @@ public:
 
 	void handleMarioTorToiSeShell();
 	void marioSetUpDownLevel(int level);
+
+	// object 
+	void SetCoinHubPlay(CCoinPlay* c) { coinplayhub = c; }
+	CCoinPlay* GetCoinHubPlay() { return coinplayhub; }
 };

@@ -146,10 +146,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CMario*)obj;  
 		DebugOut(L"load class mario \n");
 		break;
-	case OBJECT_TYPE_BRICK: 
-		obj = new CBrick(); 
+	case OBJECT_TYPE_BRICK: {
+		obj = new CBrick();
 		break;
-	
+	}
+	case OBJECT_TYPE_HUB: {
+		obj = new CHub();
+		hub = (CHub*)obj;
+		hub->SetTimeHub(time);
+		hub->SetCoinHub(coinPlay);
+		//hub->SetArrowHub(arrows);
+		//hub->SetCardHub(cards);
+		break;
+	}
 	case OBJECT_TYPE_NUMBER: {
 		int typetmp = atoi(tokens[4].c_str());
 		obj = new CNumber();
@@ -168,23 +177,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		break;
 	}
-	case OBJECT_TYPE_HUB: {
-
-		obj = new CHub();
-		hub = (CHub*)obj;
-		hub->SetTimeHub(time);
-	//	hub->SetCoinHub(coinPlay);
-		//hub->SetArrowHub(arrows);
-		//hub->SetCardHub(cards);
+	
+	case OBJECT_TYPE_HUB_COIN:
+		obj = new CCoinPlay(numCoin);
+		coinPlay = (CCoinPlay*)obj;
 		break;
-	}
 	case OBJECT_TYPE_HUB_TIME: {
 		obj = new CTime(num);
 		time = (CTime*)obj;
 		break;
 	}
 	default:
-		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
+		
 		return;
 	}
 
@@ -291,13 +295,8 @@ void CPlayScene::initCamera() {
 		return;
 	}
 	camera = new CCamera(player, id);
-
-	// hub = new CHub();
 	if (hub != NULL) {
 		hub->SetCameraHub(camera);
-	}
-	else {
-		DebugOut(L"123123 \n");
 	}
 }
 
@@ -359,9 +358,13 @@ void CPlayScene::Render()
 	// render tilemap 
 	mapBackground->RenderMap();
 
-	// render all object in game
-	for (int i = 0; i < objects.size(); i++)
+	/*for (int i = 0; i < objects.size(); i++) {
 		objects[i]->Render();
+	}*/
+	for (int i = objects.size() - 1; i >= 0; i--)
+	{
+		objects[i]->Render();
+	}
 }
 
 /*
@@ -395,7 +398,6 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_4:
 		mario->marioSetUpDownLevel(LEVEL_MARIO_FIRE);
-
 		break;
 	case DIK_5:
 		break;
@@ -444,7 +446,6 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_A:
 		if (mario->GetMarioIsTortoiseshell())
 		{
-			DebugOut(L"end tortoiseshell \n");
 			mario->SetTimeStartKick(GetTickCount());
 			mario->SetState(STATE_MARIO_KICK);
 		}
@@ -469,7 +470,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 
 	if (game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_DOWN)) {
-		//DebugOut(L"DIK_RIGHT \n");
 		mario->SetTimeWalkingRight(GetTickCount());
 		if (GetTickCount() - mario->GetTimeWalkingLeft() > 200) {
 

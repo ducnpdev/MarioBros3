@@ -26,7 +26,6 @@ void CTime::Render()
 	for (int i = numbers.size() - 1; i >= 0; i--)
 	{
 		temp = num % 10;
-		//DebugOut(L"temp: %d\n", temp);
 		num = num / 10;
 		numbers[i]->SetState(temp);
 	}

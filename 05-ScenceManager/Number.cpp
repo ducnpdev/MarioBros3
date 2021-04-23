@@ -1,4 +1,11 @@
 #include "Number.h"
+#include "PlayScence.h"
+#include "Game.h"
+#include "GameObject.h"
+
+
+
+
 
 void CNumber::Render()
 {
@@ -47,6 +54,10 @@ void CNumber::SetState(int state)
 
 void CNumber::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	//CGameObject::Update(dt, coObjects);
+	//x = 200;
+	//y = 50;
+	
 }
 
 void CNumber::GetBoundingBox(float& left, float& top, float& right, float& bottom)

@@ -20,10 +20,12 @@ void CHub::Render()
 
 void CHub::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (camera != NULL) {
-		SetPosition(camera->GetPositionCameraX() - BOARD_CAM_X_PLUS, camera->GetPositionCameraY() + BOARD_CAM_Y_PLUS);
-		time->SetPositionNumbers(camera->GetPositionCameraX() + BOARD_TIME_X_PLUS, camera->GetPositionCameraY() + BOARD_TIME_Y_PLUS);
-	}
+
+	CGameObject::Update(dt);
+	if (camera == NULL) return;
+	SetPosition(camera->GetPositionCameraX() - BOARD_CAM_X_PLUS, camera->GetPositionCameraY() + BOARD_CAM_Y_PLUS);
+	if (time != NULL) time->SetPositionNumbers(camera->GetPositionCameraX() + BOARD_TIME_X_PLUS, camera->GetPositionCameraY() + BOARD_TIME_Y_PLUS);
+	if (coin != NULL)  coin->SetPositionNumbers(camera->GetPositionCameraX() + 160.0f, camera->GetPositionCameraY() + 176.0f);
 }
 
 void CHub::GetBoundingBox(float& l, float& t, float& r, float& b)

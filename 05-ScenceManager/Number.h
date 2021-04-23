@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject.h"
 #include "Utils.h"
+#include "Scence.h"
+
 
 #define NUMBER_STATE_0		0
 #define NUMBER_STATE_1		1
