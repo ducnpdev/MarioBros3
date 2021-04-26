@@ -129,6 +129,7 @@
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Card.cpp" />
+    <ClCompile Include="CardText.cpp" />
     <ClCompile Include="CellResource.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -136,11 +137,13 @@
     <ClCompile Include="Enemies.cpp" />
     <ClCompile Include="FireMario.cpp" />
     <ClCompile Include="Gold.cpp" />
+    <ClCompile Include="GoldCard.cpp" />
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="GridResource.cpp" />
     <ClCompile Include="Hub.cpp" />
     <ClCompile Include="ItemCoin.cpp" />
     <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="Lives.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="Number.cpp" />
@@ -166,6 +169,7 @@
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Card.h" />
+    <ClInclude Include="CardText.h" />
     <ClInclude Include="CellResource.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
@@ -173,6 +177,7 @@
     <ClInclude Include="Enemies.h" />
     <ClInclude Include="FireMario.h" />
     <ClInclude Include="Gold.h" />
+    <ClInclude Include="GoldCard.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="GoombaConfig.h" />
     <ClInclude Include="GridConfig.h" />
@@ -180,6 +185,7 @@
     <ClInclude Include="Hub.h" />
     <ClInclude Include="ItemCoin.h" />
     <ClInclude Include="Koopas.h" />
+    <ClInclude Include="Lives.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MarioConfig.h" />
     <ClInclude Include="Mushroom.h" />

@@ -155,8 +155,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		hub = (CHub*)obj;
 		hub->SetTimeHub(time);
 		hub->SetCoinHub(coinPlay);
-		//hub->SetArrowHub(arrows);
-		//hub->SetCardHub(cards);
+		hub->SetArrowHub(arrows);
+		hub->SetLives(lives);
 		break;
 	}
 	case OBJECT_TYPE_NUMBER: {
@@ -187,6 +187,54 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		time = (CTime*)obj;
 		break;
 	}
+	case OBJECT_TYPE_HUB_ARROW: // 
+	{
+		int type = atoi(tokens[4].c_str());
+		obj = new CArrow(type);
+		arrow.push_back((CArrow*)obj);
+		break;
+	}
+	case OBJECT_TYPE_HUB_LIVES: 
+		obj = new CLives(numLives);
+		lives = (CLives*)obj;
+		break;
+	case OBJECT_TYPE_HUB_SCORE_EFFECT: 
+		obj = new CLives(numLives);
+		lives = (CLives*)obj;
+		break;
+	case OBJECT_TYPE_HUB_CARD:
+		obj = new CCard();
+		{
+			int type = atoi(tokens[4].c_str());
+			if (type == 0)
+			{
+				for (int i = 0; i < 3; i++)
+				{
+					if (cards[i] == NULL)
+					{
+						cards[i] = (CCard*)obj;
+						break;
+					}
+				}
+			}
+			else if (type == 1)
+			{
+				cardT = (CCard*)obj;
+			}
+		}
+
+		break;
+	case OBJECT_TYPE_HUB_CARDTEXT: 
+		obj = new CCardText(cardT);
+		cardText = (CCardText*)obj;
+		break;
+	case OBJECT_TYPE_HUB_GOALCARDS:
+		obj = new CGoalCard(cardText);
+		break;
+	case OBJECT_TYPE_HUB_ARROWS: 
+		obj = new CListArrow(arrow);
+		arrows = (CListArrow*)obj;
+		break;
 	default:
 		
 		return;

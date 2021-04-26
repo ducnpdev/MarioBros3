@@ -15,6 +15,9 @@
 #include "Time.h"
 #include "Arrow.h"
 #include "Coin.h"
+#include "Lives.h"
+#include "CardText.h"
+#include "GoldCard.h"
 
 
 class CPlayScene: public CScene
@@ -28,14 +31,18 @@ protected:
 	vector<CNumber*> numCoin;
 	vector<CNumber*> numScore; // time
 	vector<CNumber*> num; // time
-	vector<CNumber*> numLives;
+	vector<CNumber*> numLives; 
+	vector<CArrow*> arrow;
 
 	CHub* hub;
 	CTime* time;
 	CCoinPlay* coinPlay;
 	CListArrow* arrows;
-	CCard* cards[3];
+	CLives* lives;
 
+	CCard* cards[3];
+	CCard* cardT;
+	CCardText* cardText;
 
 	CMario *player;					// A play scene has to have player, right? 
 	CCamera* camera;

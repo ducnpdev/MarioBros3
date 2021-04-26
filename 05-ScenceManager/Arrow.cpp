@@ -6,15 +6,24 @@ void CArrow::SetState(int state)
 
 void CArrow::Render()
 {
+	int ani;
+	if (!isBlack && !isP) ani = ARROW_ANI_WHITE;
+	else if (isBlack && !isP) ani = ARROW_ANI_BLACK;
+	else if (!isBlack && isP) ani = ARROW_ANI_WHITE_P;
+	else if (isBlack && isP) ani = ARROW_ANI_BLACK_P;
+	animation_set->at(ani)->Render(x, y);
 }
 
 
 void CListArrow::SetPositionListArrow(float x, float y)
 {
-	for (unsigned int i = 0; i < listArrow.size(); i++)
-	{
-		listArrow[i]->SetPosition(x + 8*i, y);
-	}
+	listArrow[0]->SetPosition(x, y);
+	listArrow[1]->SetPosition(x + ARROW_POS_X_PLUS_8, y);
+	listArrow[2]->SetPosition(x + ARROW_POS_X_PLUS_16, y);
+	listArrow[3]->SetPosition(x + ARROW_POS_X_PLUS_24, y);
+	listArrow[4]->SetPosition(x + ARROW_POS_X_PLUS_32, y);
+	listArrow[5]->SetPosition(x + ARROW_POS_X_PLUS_40, y);
+	listArrow[6]->SetPosition(x + ARROW_POS_X_PLUS_48, y);
 }
 
 void CListArrow::SetWhiteListArrow()
@@ -68,11 +77,13 @@ void CListArrow::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
 	// kiểm tra P có null or not null
+	//listArrow[0]->SetPosition(x, y);
 	if (listArrow[6] != NULL)
 	{
 		// nếu mũi tên cuối cùng là mày trắng
-		if (GetPState()) SetPStart((DWORD)GetTickCount64());
-
+		if (GetPState()) {
+			SetPStart((DWORD)GetTickCount64());
+		}
 		// nếu chữ P là màu đen thì bắt đầu reset những mũi tên về trạng thái màu đen
 		else if (!GetPState())
 		{

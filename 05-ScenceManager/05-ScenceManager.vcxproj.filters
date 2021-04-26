@@ -153,6 +153,15 @@
     <ClCompile Include="Koopas.cpp">
       <Filter>Source Files\Games</Filter>
     </ClCompile>
+    <ClCompile Include="Lives.cpp">
+      <Filter>Source Files\HubItem</Filter>
+    </ClCompile>
+    <ClCompile Include="CardText.cpp">
+      <Filter>Source Files\HubItem</Filter>
+    </ClCompile>
+    <ClCompile Include="GoldCard.cpp">
+      <Filter>Source Files\HubItem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -274,6 +283,15 @@
     </ClInclude>
     <ClInclude Include="Koopas.h">
       <Filter>Header Files\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Lives.h">
+      <Filter>Header Files\HubItem</Filter>
+    </ClInclude>
+    <ClInclude Include="CardText.h">
+      <Filter>Header Files\HubItem</Filter>
+    </ClInclude>
+    <ClInclude Include="GoldCard.h">
+      <Filter>Header Files\HubItem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

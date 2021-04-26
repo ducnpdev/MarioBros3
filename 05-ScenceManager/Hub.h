@@ -6,6 +6,8 @@
 #include "Coin.h"
 #include "Card.h"
 #include "Camera.h"
+#include "Lives.h"
+
 
 
 #define MaxShowCards 3
@@ -19,6 +21,7 @@ class CHub : public CGameObject
 {
 	CCamera* camera;
 	CListArrow* arrows;
+	CLives* lives;
 	CTime* time;
 	CCoinPlay* coin;
 	CCard* cards[MaxShowCards];
@@ -33,5 +36,5 @@ public:
 	void SetArrowHub(CListArrow* a);
 	void SetCardHub(CCard* c[MaxShowCards]);
 	void SetCameraHub(CCamera* c);
-
+	void SetLives(CLives* l);
 };
