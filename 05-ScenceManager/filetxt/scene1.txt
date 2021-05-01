@@ -22,304 +22,229 @@
 
 
 [SPRITES]
-#    --- MARIO SMALL --- start with id = 10000
-
+# SMALL MARIO 
 # idle small right
 10000	217	77	229	104	0
 10001	217	89	229	104	0
-
-# walk right
+# walk
 10002	217	89	229	104	0		
 10003	257	89	272	105	0
-
-# jump right
+# jump
 10004	335	89	351	105	0
-
-# kick right
+# kick
 10005	255	129	271	145	0	
-
-# take tortoiseshell right
+# take tortoiseshell
 10006	336	169	350	185	0
 10007	377	169	392	185	0
-
-# turn right
+# turn
 10008	216	129	230	145	0
-
-# run fast right
+# run fast
 10009	215	169	231	185	0
-10010	255	169	271	185	0
-
-#max power right
-10011	336	209	350	225	0
+10101	255	169	271	185	0
+#max power
+10102	336	209	350	225	0
 
 # idle small left
-10016	177	77	189	104	0
-10017	177	89	189	104	0
-# walk left
-10018	177	89	189	104	0
-10019	135	89	150	105	0
-# jump left
-10020	55	89	71	105	0
+10010	177	77	189	104	0
+10011	177	89	189	104	0
+#walk
+10012	177	89	189	104	0
+10013	135	89	150	105	0
+# jump 
+10014	55	89	71	105	0
+# kick
+10015	135	129	151	145	0
+# take tortoiseshell
+10016	56	169	70	185	0
+10017	15	169	30	185	0
+# turn
+10018	176	129	190	145	0
+# run fast
+10019	175	169	191	185	0
+10111	135	169	151	185	0
+#max power
+10112	56	209	70	225	0
+# die 
+10099	375	209	391	225	0
 
-# kick left
-10021	135	129	151	145	0
-
-# take tortoiseshell left
-10022	56	169	70	185	0
-10023	15	169	30	185	0
-
-# turn left
-10024	176	129	190	145	0
-
-# run fast left
-10025	175	169	191	185	0
-10026	135	169	151	185	0
-
-#max power left
-10027	56	209	70	225	0
-
-
-#    --- MARIO BIG --- start with id = 10031
-
+# BIG MARIO
 # idle right
-10031	216	243	230	270	0
-
-# walk right
-10032	255	243	271	270	0
-10033	295	244	311	270	0
-
-# jump right
-10034	335	244	351	270	0
-
-# kick right
-10035	252	283	273	310	0
-
-# take tortoiseshell right
-10036	331	323	345	350	0
-10037	357	323	372	350	0
-10038	382	323	397	350	0
-
-# turn right
-10039	215	283	231	311	0
-
-# run fast right
-10040	213	323	232	350	0
-10041	253	323	272	350	0
-10042	293	324	312	350	0
-
-# sit right
-10043	376	248	390	266	0
-
-# max power right
-10044	333	364	352	390	0
-
-# idle left
-10051	176	243	190	270	0
-
-# walk left
-10052	135	243	151	270	0
-10053	95	244	111	270	0
-
-# jump left
-10054	55	244	71	270	0
-
-# kick left
-10055	133	283	154	310	0
-
-# take tortoiseshell left
-10056	61	323	75	350	0
-10057	35	323	50	350	0
-10058	10	323	25	350	0
-
-# turn left
-10059	175	283	191	311	0
-
-# run fast left
-10060	174	323	193	350	0
-10061	134	323	153	350	0
-10062	94	324	113	350	0
-
-# sit left
-10063	16	248	30	266	0
-
-# max power left
-10064	54	364	73	390	0
-
-
-#    --- MARIO TAIL --- start with id = 10071
-
-# idle right
-10071	212	443	233	471	0
-
-# walk right
-10072	236	443	259	471	0
-10073	262	443	284	471	0
-10074	291	443	314	470	0
-
-# jump right
-10075	331	443	354	470	0
-# kick right
-10076	247	483	269	511	0
-
-# take tortoiseshell right
-10077	322	523	343	551	0
-10078	352	523	374	551	0
-10079	382	523	405	551	0
-
-# turn right
-10080	215	482	231	512	0
-
-# run fast right
-10081	211	523	235	551	0
-10082	251	523	275	551	0
-10083	291	523	315	551	0
-
-# fly low right
-10084	211	603	234	630	0
-10085	252	603	274	631	0
-
-# fly high right
-10086	291	603	315	631	0
-10087	331	603	355	630	0
-10088	371	603	395	630	0
-
-# sit right
-10089	372	448	394	466	0
-
-# idle left
-10095	173	443	194	471	0
-# walk left
-10096	147	443	170	471	0
-10097	122	443	144	471	0
-10098	92	443	115	470	0
-
-# jump left
-10099	52	443	75	470	0
-
-# kick left
-10100	137	483	159	511	0
-
-# take tortoiseshell left
-10101	63	523	84	551	0
-10102	33	523	55	551	0
-10103	2	523	25	551	0
-
-# turn left
-10104	175	482	191	512	0
-
-# run fast left
-10105	171	523	195	551	0
-10106	131	523	155	551	0
-10107	91	523	115	551	0
-
-# fly low left
-10108	172	603	195	630	0
-10109	132	603	154	631	0
-
-# fly high left
-10110	91	603	115	631	0
-10111	51	603	75	630	0
-10112	11	603	35	630	0
-
-# sit left
-10113	12	448	34	466	0
-
-# fight left
-10114	355	483	371	511	0
-10115	147	443	170	471	0
-10116	390	483	406	511	0
-10117	236	443	259	471	0
-
-
-#    --- MARIO FIRE --- start with id = 10121
-
-# idle right
-10121	216	683	230	710	0
-# walk right
-10122	255	683	271	710	0
-10123	295	684	311	710	0
-# jump right
-10124	335	684	351	710	0
-
-# kick right
-10125	252	723	273	750	0
-
-# take tortoiseshell right
-10126	331	763	345	790	0
-10127	357	763	372	790	0
-10128	381	764	397	790	0
-
-# turn right
-10129	215	723	231	751	0
-
-# run fast right
-10130	213	763	232	790	0
-10131	253	763	272	790	0
-10132	293	764	312	790	0	
-
-# sit right
-10133	376	688	390	706	0
-
-# shoot fire right
-10134	366	803	380	830	0
-10135	386	803	400	830	0
-
-# max power right
-10136	333	804	352	830	0
-
-# idle left left
-10141	176	683	190	710	0
-
-# walk left
-10142	135	683	151	710	0
-10143	95	684	111	710	0
-
-# jump left
-10144	55	684	71	710	0
-
-# kick left
-10145	133	723	154	750	0
-
-# take tortoiseshell left
-10146	61	763	75	790	0
-10147	35	763	50	790	0
-10148	10	764	26	790	0
-
-# turn left
-10149	175	723	191	751	0
-
-# run fast left
-10150	174	763	193	790	0
-10151	134	763	153	790	0
-10152	94	764	113	790	0
-
-# sit left
-10153	16	688	30	706	0
-# shoot fire left
-10154	26	803	40	830	0
-10155	6	803	20	830	0
-
+10021	216	243	230	270	0
+# walk
+10022	255	243	271	270	0
+10023	295	244	311	270	0
+# jump
+10024	335	244	351	270	0
+# kick
+10025	252	283	273	310	0
+# take tortoiseshell
+10026	331	323	345	350	0
+10027	357	323	372	350	0
+10028	382	323	397	350	0
+# turn
+10029	215	283	231	311	0
+# run fast
+10121	213	323	232	350	0
+10122	253	323	272	350	0
+10123	293	324	312	350	0
+# sit
+10124	376	248	390	266	0
 # max power
-10156	54	804	73	830	0
+10125	333	364	352	390	0
 
+# idle left
+10031	176	243	190	270	0
+# walk
+10032	135	243	151	270	0
+10033	95	244	111	270	0
+#jump
+10034	55	244	71	270	0
+#kick
+10035	133	283	154	310	0
+# take tortoiseshell
+10036	61	323	75	350	0
+10037	35	323	50	350	0
+10038	10	323	25	350	0
+# turn
+10039	175	283	191	311	0
+#run fast
+10131	174	323	193	350	0
+10132	134	323	153	350	0
+10133	94	324	113	350	0
+# sit
+10134	16	248	30	266	0
+#max power
+10135	54	364	73	390	0
 
+# TAIL MARIO
+# idle right
+10041	212	443	233	471	0
+# walk
+10042	236	443	259	471	0
+10043	262	443	284	471	0
+10044	291	443	314	470	0
+# jump
+10045	331	443	354	470	0
+# kick
+10046	247	483	269	511	0
+# take tortoiseshell
+10047	322	523	343	551	0
+10048	352	523	374	551	0
+10049	382	523	405	551	0
+# turn
+10141	215	482	231	512	0
+# run fast
+10142	211	523	235	551	0
+10143	251	523	275	551	0
+10144	291	523	315	551	0
+# fly low
+10145	211	603	234	630	0
+10146	252	603	274	631	0
+#fly high
+10147	291	603	315	631	0
+10148	331	603	355	630	0
+10149	371	603	395	630	0
+# sit
+10341	372	448	394	466	0
 
-#    --- MARIO SPECIAL --- start with id = 15000
+# idle left
+10051	173	443	194	471	0
+# walk
+10052	147	443	170	471	0
+10053	122	443	144	471	0
+10054	92	443	115	470	0
+# jump
+10055	52	443	75	470	0
+#kick
+10056	137	483	159	511	0
+# take tortoiseshell
+10057	63	523	84	551	0
+10058	33	523	55	551	0
+10059	2	523	25	551	0
+# turn
+10151	175	482	191	512	0
+# run fast
+10152	171	523	195	551	0
+10153	131	523	155	551	0
+10154	91	523	115	551	0
+# fly low
+10155	172	603	195	630	0
+10156	132	603	154	631	0
+# fly high
+10157	91	603	115	631	0
+10158	51	603	75	630	0
+10159	11	603	35	630	0
+#sit
+10441	12	448	34	466	0
+#fight
+10241	355	483	371	511	0
+10242	147	443	170	471	0
+10243	390	483	406	511	0
+10244	236	443	259	471	0
+
+# FIRE MARIO
+# idle right
+10061	216	683	230	710	0
+# walk
+10062	255	683	271	710	0
+10063	295	684	311	710	0
+# jump
+10064	335	684	351	710	0
+#kick
+10065	252	723	273	750	0
+# take tortoiseshell
+10066	331	763	345	790	0
+10067	357	763	372	790	0
+10068	381	764	397	790	0
+#turn
+10069	215	723	231	751	0
+# run fast
+10161	213	763	232	790	0
+10162	253	763	272	790	0
+10163	293	764	312	790	0	
+# sit
+10164	376	688	390	706	0
+# shoot fire
+10165	366	803	380	830	0
+10166	386	803	400	830	0
+# max power
+10167	333	804	352	830	0
+
+# idle left
+10071	176	683	190	710	0
+# walk
+10072	135	683	151	710	0
+10073	95	684	111	710	0
+# jump
+10074	55	684	71	710	0
+#kick
+10075	133	723	154	750	0
+# take tortoiseshell
+10076	61	763	75	790	0
+10077	35	763	50	790	0
+10078	10	764	26	790	0
+# turn
+10079	175	723	191	751	0
+# run fast
+10171	174	763	193	790	0
+10172	134	763	153	790	0
+10173	94	764	113	790	0
+#sit 
+10174	16	688	30	706	0
+# shoot fire
+10175	26	803	40	830	0
+10176	6	803	20	830	0
+# max power
+10177	54	804	73	830	0
 # mario small world map
-15000	16	9	30	25	0
-15001	16	49	30	65	0
-
-# mario big world map
-15002	15	283	31	310	0
-
-# mario tail world map
-15003	35	483	51	511	0
-
-# mario fire world map
-15004	15	723	31	750	0
-
-# mario die
-19999	375	209	391	225	0
+10178	16	9	30	25	0
+10179	16	49	30	65	0
+#mario big world map
+10180	15	283	31	310	0
+#mario tail world map
+10183	35	483	51	511	0
+#mario fire world map
+10184	15	723	31	750	0
 
 # ****** ------ ******
 
@@ -568,279 +493,286 @@
 
 51099	4	348	252	421	21
 
+#TRANS OBJECT
+90099	545	635	561	651	2
+
 [ANIMATIONS]
 
-# ==== MARIO SMALL ==== start with id = 1000 
-# idle small right
-1000	10001	100
-# idle small left
-1001	10017	100
 
-# walk right small
-1002	10003	80	10002	80
-# walk left small
-1003	10019	80	10018	80
-
-# run fast right small
-1004	10009	50	10010	50
-# run fast left small
-1005	10025	50	10026	50
-
-# jump right small
-1006	10004	100
-# jump left small
-1007	10020	100
-
-# kick right small
-1008	10005	100
-# kick left small
-1009	10021	100
-
-# idle small right get tortoiseshell 
-1010	10006	100
-# idle small left get tortoiseshell
-1011	10022	100
-
-# walk right small get tortoiseshell
-1012	10006	50	10007	50
-# walk left small get tortoiseshell
-1013	10022	50	10023	50
-
-# right small jump get tortoiseshell
-1014	10007	100
-# left small jump get tortoiseshell
-1015	10023	100
-
-# turn right small
-1016	10008	100
-#turn right small
-1017	10024	100
-
-# max power small right
-1018	10011	100
-# max power small left
-1019	10017	100
-
-# walk right small
-1020	10003	40	10002	40
-# walk left small
-1021	10019	40	10018	40
-
-# ==== MARIO BIG ==== start with id = 1030
-# idle big right
-1030	10031	100
-# idle big left
-1031	10051	100
-
-# walk right big
-1032	10031	80	10032	80	10033	80
-# walk left big
-1033	10051	80	10052	80	10053	80
-
-# run right big
-1034	10031	40	10032	40	10033	40
-# run left big
-1035	10051	40	10052	40	10053	40
-
-# jump right big
-1036	10034	100
-# jump left big
-1037	10054	100
-
-# kick right big
-1038	10035	100
-# kick left big
-1039	10055	100
-
-# idle big right get tortoiseshell 
-1040	10036	100
-# idle big left get tortoiseshell
-1041	10056	100
-
-# right big get tortoiseshell
-1042	10036	50	10037	50	10038	50
-# left big get tortoiseshell
-1043	10056	50	10057	50	10058	50
-
-# right big jump get tortoiseshell
-1044	10038	100
-# left big jump get tortoiseshell
-1045	10058	100
-
-# turn right big
-1046	10039	100
-# turn left big
-1047	10059	100
-
-# run fast right big
-1048	10040	50	10041	50	10042	50
-# run fast left big
-1049	10060	50	10061	50	10062	50
-
-# sit big right
-1050	10043	100
-# sit big left
-1051	10063	100
-
-# max power big right
-1052	10044	100
-# max power big left
-1053	10064	100
-
-
-# ==== MARIO TAIL ==== start with id = 1060
-# idle tail right
-1060	10071	100
-# idle tail left
-1061	10095	100
-
-# walk right tail
-1062	10072	80	10073	80	10074	80
+# ==== MARIO =========
+#idle SMALL right
+400	10001	100
+#idle SMALL left
+401	10011	100
+#idle big right
+402	10021	100
+#idle big left
+403	10031	100
+#idle tail right
+404	10041	100
+#idle tail left
+405	10051	100
+#idle fire right
+406	10061	100
+#idle fire left
+407	10071	100
+#idle dark right
+4102	110021	100
+#idle dark left
+4103	110031	100
+#walk right small
+500	10003	60	10002	60
+#walk left small
+501	10013	60	10012	60
+#walk right big
+502	10021	50	10022	50	10023	50
+#walk left big
+503	10031	50	10032	50	10033	50
+#walk right tail
+504	10042	100	10043	100	10044	100
 # walk left tail
-1063	10096	80	10097	80	10098	80
-
-# run right tail
-1064	10072	40	10073	40	10074	40
-# run left tail
-1065	10096	40	10097	40	10098	40
-
-# jump right tail
-1066	10075	100
-# jump left tail
-1067	10099	100
-
-# kick right tail
-1068	10076	100
-# kick left tail
-1069	10100	100
-
-# idle tail right get tortoiseshell 
-1070	10077	100
-# idle tail left get tortoiseshell
-1071	10101	100
-
-# right tail get tortoiseshell
-1072	10077	50	10078	50	10079	50
-# left tail get tortoiseshell
-1073	10101	50	10102	50	10103	50
-
-# right tail jump get tortoiseshell
-1074	10079	100
-# left tail jump get tortoiseshell
-1075	10103	100
-
-# turn right tail
-1076	10080	100
-# turn left tail
-1077	10104	100
-
-# run fast right tail
-1078	10081	50	10082	50	10083	50
-# run fast left tail
-1079	10105	50	10106	50	10107	50
-
-# sit tail right
-1080	10089	100
-# sit tail left
-1081	10113	100
-
-# fly low tail right
-1082	10084	50	10085	50
-# fly low tail left
-1083	10108	50	10109	50
-
-# fly high tail right
-1084	10086	50	10087	50	10088	50
-# fly high tail left
-1085	10110	50	10111	50	10112	50
-
-# max power tail right
-1086	10044	100
-# max power tail left
-1087	10064	100
-
-# ==== MARIO FIRE ==== start with id = 1100
-# idle fire right
-1100	10121	100
-# idle fire left
-1101	10141	100
-
-# walk right fire
-1102  10121 100	10122	100	10123	100
+505	10052	100	10053	100	10054	100
+#walk right fire
+506	10061	100	10062	100	10063	100
 # walk left fire
-1103  10141 100	10142	100	10143	100
+507	10071	100	10072	100	10073	100
+#walk right dark
+5102	110021	50	110022	50	110023	50
+#walk left dark
+5103	110031	50	110032	50	110033	50
+#run right small
+520	10002	50	10003	50
+#run left small
+521	10012	50	10013	50
+#run right big
+522	10021	30	10022	30	10023	30
+#run left big
+523	10031	30	10032	30	10033	30
+#run right tail
+524	10042	50	10043	50	10044	50
+#run left tail
+525	10052	50	10053	50	10054	50
+#run right fire
+526	10061	50	10062	50	10063	50
+#run right fire
+527	10071	50	10072	50	10073	50
+#run right dark
+5122	110021	30	110022	30	110023	30
+#run left dark
+5123	110031	30	110032	30	110033	30
+#jump right small
+528	10004	100
+#jump left small
+529	10014	100
+#jump right big
+530	10024	100
+#jump left big
+531	10034	100
+#jump right tail
+532	10045	100
+#jump left tail
+533	10055	100
+#jump right fire
+534	10064	100
+#jump left fire
+535	10074	100
+#jump right dark
+5130	110024	100
+#jump left dark
+5131	110034	100
+#kick right small
+536	10005	100
+#kick left small
+537	10015	100
+#kick right big
+538	10025	100
+#kick left big
+539	10035	100
+#kick right tail
+540	10046	100
+#kick left tail
+541	10056	100
+#kick right fire
+542	10065	100
+#kick left fire
+543	10075	100
+#kick right dark
+5138	110025	100
+#kick left dark
+5139	110035	100
 
-# run right fire
-1104  10121 50	10122	50	10123	50
-# run left fire
-1105  10141 50	10142	50	10143	50
+#idle small right get tortoiseshell 
+544	10006	100
+#idle small left get tortoiseshell
+545	10016	100
+#right small get tortoiseshell
+546	10006	50	10007	50
+#left small get tortoiseshell
+547	10016	50	10017	50
+#right small jump get tortoiseshell
+548	10007	100
+#left small jump get tortoiseshell
+549	10017	100
 
-# jump right fire
-1106	10124	100
-# jump left fire
-1107	10144	100
+#idle big right get tortoiseshell 
+550	10026	100
+#idle big left get tortoiseshell
+551	10036	100
+#right big get tortoiseshell
+552	10026	50	10027	50	10028	50
+#left big get tortoiseshell
+553	10036	50	10037	50	10038	50
+#right big jump get tortoiseshell
+554	10028	100
+#left big jump get tortoiseshell
+555	10038	100
 
-# kick right fire
-1108	10125	100
-# kick left fire
-1109	10145	100
+#idle tail right get tortoiseshell 
+556	10047	100
+#idle tail left get tortoiseshell
+557	10057	100
+#right tail get tortoiseshell
+558	10047	50	10048	50	10049	50
+#left tail get tortoiseshell
+559	10057	50	10058	50	10059	50
+#right tail jump get tortoiseshell
+560	10049	100
+#left big jump get tortoiseshell
+561	10059	100
 
-# idle fire right get tortoiseshell 
-1110	10126	100
-# idle fire left get tortoiseshell
-1111	10146	100
+#idle fire right get tortoiseshell 
+562	10066	100
+#idle fire left get tortoiseshell
+563	10076	100
+#right fire get tortoiseshell
+564	10066	50	10067	50	10068	50
+#left fire get tortoiseshell
+565	10076	50	10077	50	10078	50
+#right fire jump get tortoiseshell
+566	10068	100
+#left fire jump get tortoiseshell
+567	10078	100
 
-# right fire get tortoiseshell
-1112	10126	50	10127	50	10128	50
-# left fire get tortoiseshell
-1113	10146	50	10147	50	10148	50
+#idle dark right get tortoiseshell 
+5150	110026	100
+#idle dark left get tortoiseshell
+5151	110036	100
+#right dark get tortoiseshell
+5152	110026	50	110027	50	110028	50
+#left dark get tortoiseshell
+5153	110036	50	110037	50	110038	50
+#right dark jump get tortoiseshell
+5154	110028	100
+#left dark jump get tortoiseshell
+5155	110038	100
 
-# right fire jump get tortoiseshell
-1114	10128	100
-# left fire jump get tortoiseshell
-1115	10146	100
+#turn left small
+568	10008	100
+#turn right small
+569	10018	100
+#turn left big
+570	10029	100
+#turn right big
+571	10039	100
+#turn left tail
+572	10141	100
+#turn right tail
+573	10151	100
+#turn left fire
+574	10069	100
+#turn right fire
+575	10079	100
+#turn left big
+5170	110029	100
+#turn right big
+5171	110039	100
 
-# turn right fire
-1116	10129	100
-# turn left fire
-1117	10149	100
+#fight
+576	10241	50	10242	50	10243	50	10244	50
+#run fast right small
+577	10009	50	10101	50
+#run fast left small
+578	10019	50	10111	50
+#run fast right big
+579	10121	50	10122	50	10123	50
+#run fast left big
+580	10131	50	10132	50	10133	50
+#run fast right tail
+581	10142	50	10143	50	10144	50
+#run fast left tail
+582	10152	50	10153	50	10154	50
+#run fast right fire
+583	10161	50	10162	50	10163	50
+#run fast left fire
+584	10171	50	10172	50	10173	50
+#run fast right big
+5179	110121	50	110122	50	110123	50
+#run fast left big
+5180	110131	50	110132	50	110133	50
+#fly low right
+585	10145	50	10146	50
+#fly low left
+586	10155	50	10156	50
+#fly high right
+587	10147	50	10148	50	10149	50
+#fly high left
+588	10157	50	10158	50	10159	50
+#sit big right
+589	10124	100
+#sit big left
+590	10134	100
+#sit tail right
+591	10341	100
+#sit tail left
+592	10441	100
+#sit fire right
+593	10164	100
+#sit fire left
+594	10174	100
+#sit dark right
+5189	110124	100
+#sit dark left
+5190	110134	100
+#shoot fire right
+595	10165	100	10166	100
+#shoot fire left
+596	10175	100	10176	100
+#max power small right
+5000	10102	100
+#max power small left
+5001	10112	100
+#max power big right
+5002	10125	100
+#max power big left
+5003	10135	100
+#max power fire right 
+5004	10167	100
+#max power fire left
+5005	10177	100
+#world map small
+5006	10178	100	10179	100
+#world map big
+5007	10180	100
+#world map tail
+5008	10183	100
+#world map fire
+5009	10184	100
 
-# run fast right fire
-1118	10130	50	10131	50	10132	50
-# run fast left fire
-1119	10150	50	10151	50	10152	50
+597	10181	100
+598	10182	100
 
-# sit fire right
-1120	10133	100
-# sit fire left
-1121	10153	100
+#bullet mario
+901	10501	100	10502	100	10503	100	10504	100
+#fire plant
+902	10501	100	10502	100	10503	100	10504	100
+#die
+599	10099	100
+#growup
+6000	10000	100	10021	100
+6001	10010	100	10031	100
 
-# shoot right fire
-1122	10134	100   10135 100
-# shoot left fire
-1123	10154	100   10155 100
-
-# max power fire right
-1124	10136	100
-# max power fire left
-1125	10156	100
-
-# ==== MARIO SPECIAL ==== start with id = 1500
-
-# world map small
-1500	15000	100	15001	100
-
-# world map big
-1501	15002	100
-
-# world map tail
-1502	15003	100
-
-# world map fire
-1503	15004	100
-
-# die
-1999	19999	100
+#energy
+6002	10511	100	10512	100	10513	100	10514	100	10515	100
 
 
 # ==== KOOPA ==== start with id = 2000 
@@ -872,13 +804,13 @@
 
 # **************** ENEMIES **************** 
 # === GOOMBA ===
-401	40001	100	40002	100
-402	40003	100	40004	100
-403	40005	100	40006	100
-404	40007	100	40008	100
+601	40001	100	40002	100
+602	40003	100	40004	100
+603	40005	100	40006	100
+604	40007	100	40008	100
 
-411	40011	500
-412	40012	500
+611	40011	500
+612	40012	500
 
 # === KOOPA ===
 # walking right
@@ -1027,10 +959,12 @@
 
 51099	51099	100
 
+# === TRANS OBJECT =======
+999	90099	100
+
 [ANIMATION_SETS]
 # MARIO
-1	1000	1001	1002	1003	1004	1005	1006	1007	1008	1009	1010	1011	1012	1013	1014	1015	1016	1017	1018	1019	1020	1021	1030	1031	1032	1033	1034	1035	1036	1037	1038	1039	1040	1041	1042	1043	1044	1045	1046	1047	1048	1049	1050	1051	1052	1053	1060	1061	1062	1063	1064	1065	1066	1067	1068	1069	1070	1071	1072	1073	1074	1075	1076	1077	1078	1079	1080	1081	1082	1083	1084	1085	1086	1087	1100	1101	1102	1103	1104	1105	1106	1107	1108	1109	1110	1111	1112	1113	1114	1115	1116	1117	1118	1119	1120	1121	1122	1123	1124	1125	1500	1501	1502	1503	1999
-
+1	400	401	402	403	500	501	502	503	404	405	504	505	406	407	506	507	520	521	522	523	524	525	526	527	528	529	530	531	532	533	534	535	536	537	538	539	540	541	542	543	544	545	546	547	548	549	550	551	552	553	554	555	556	557	558	559	560	561	562	563	564	565	566	567	568	569	570	571	572	573	574	575	576	577	578	579	580	581	582	583	584	585	586	587	588	589	590	591	592	593	594	595	596	597	598	911	6000	6001	4102	4103	5102	5103	5122	5123	5130	5131	5138	5139	5150	5151	5152	5153	5154	5155	5170	5171	5000	5001	5002	5003	5004	5005	5006	5007	5008	5009	599
 #ROAD
 11	311	
 12	312
@@ -1040,8 +974,8 @@
 16	316
 
 # GOOMBA
-4	401	402	403	404	411	412
-
+#4	401	402	403	404	411	412
+4	601	602	603	604	611	612
 # KOOPA
 # 622 la koopa mau xanh, 623 la koopa mau xanh co canh, 663 hide nguoc, 
 3	621	631	641	651	661	622	632	642	652	662	623	633	653	654	663	664	665	666	667	668
@@ -1131,9 +1065,11 @@
 51011	51011	51012	51013	51014
 51099	51099
 
+#TRANS OBJECT
+999	999
 
 [OBJECTS]
-0	2536.0	250.0	1
+0	700.0	250.0	1
 
 # CLASS HUB
 
@@ -1186,6 +1122,8 @@
 # board
 21	0	149	161
 
+#TAIL
+41	0	0	999
 
 [GRIDRESOURCE]
 filetxt\grid-1.txt

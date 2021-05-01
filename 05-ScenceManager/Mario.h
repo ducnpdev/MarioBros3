@@ -3,6 +3,7 @@
 #include "Collision.h"
 #include "GameObject.h"
 #include "Coin.h" 
+#include "Tail.h" 
 
 
 class CMario : public  CCollision
@@ -27,11 +28,13 @@ class CMario : public  CCollision
 	bool marioStateFall = false;
 	bool marioStateDie = false;
 	bool marioStateTorToiSeShell = false;
-
+	bool isJumpFlyLow = false;
+	CTail* tail;
 	DWORD timeStartKick;
 	DWORD timeWalkingRight;
 	DWORD timeWalkingLeft;
 	DWORD timeMarioJumpStart;
+	DWORD timeMarioJumpFlyLow;
 	float marioSpeechJump;
 
 	CGameObject* tortoiseshell;
@@ -87,6 +90,10 @@ public:
 	void SetTimeJumpStart(DWORD t) { timeMarioJumpStart = t; }
 	DWORD GetTimeJumpStart() { return timeMarioJumpStart; }
 
+
+	void SetTimeJumpStartFlyLow(DWORD t) { timeMarioJumpFlyLow = t; }
+	DWORD GetTimeJumpStartFlyLow() { return timeMarioJumpFlyLow; }
+
 	void SetTimeWalkingLeft(DWORD t) { timeWalkingLeft = t; }
 	DWORD GetTimeWalkingLeft() { return timeWalkingLeft; }
 		
@@ -111,10 +118,22 @@ public:
 	void SetTimeStartKick(DWORD t) { timeStartKick = t; }
 	DWORD GetTimeStartKick() { return timeStartKick; }
 
-	void handleMarioTorToiSeShell();
 	void marioSetUpDownLevel(int level);
 
 	// object 
 	void SetCoinHubPlay(CCoinPlay* c) { coinplayhub = c; }
 	CCoinPlay* GetCoinHubPlay() { return coinplayhub; }
+
+	void CreateTail(CTail* t) {
+		if (tail == NULL)
+		{
+			tail = t;
+		}
+	}
+
+
+	// func sub handler
+	void handleMarioTorToiSeShell();
+	void handlerMarioJumpFly();
+	void plustortoiseshellInMario(int numberPlusLeft, int numberPlusRight);
 };

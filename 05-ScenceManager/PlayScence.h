@@ -18,6 +18,7 @@
 #include "Lives.h"
 #include "CardText.h"
 #include "GoldCard.h"
+#include "Tail.h"
 
 
 class CPlayScene: public CScene
@@ -47,6 +48,8 @@ protected:
 	CMario *player;					// A play scene has to have player, right? 
 	CCamera* camera;
 	vector<LPGAMEOBJECT> objects;
+
+	CTail* tail;
 
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);

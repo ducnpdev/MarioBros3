@@ -235,8 +235,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CListArrow(arrow);
 		arrows = (CListArrow*)obj;
 		break;
+	case OBJECT_TYPE_TAIL:
+		obj = new CTail();
+		tail = (CTail*)obj;
+		player->CreateTail(tail);
+		break;
 	default:
-		
 		return;
 	}
 
@@ -463,6 +467,18 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		if (mario->GetMarioIsJump() == 0) {
 			mario->SetTimeJumpStart(GetTickCount64());
 		//	mario->SetState(STATE_MARIO_JUMP);
+		}
+
+		if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL)
+		{
+			if (mario->vy != 0 &&  mario->GetMarioIsJump() == -1)
+			{
+
+				mario->SetTimeJumpStartFlyLow(GetTickCount());
+				if (mario->nx > 0)
+					mario->SetState(900);
+				else mario->SetState(910);
+			}
 		}
 		break;
 	case DIK_Q: 

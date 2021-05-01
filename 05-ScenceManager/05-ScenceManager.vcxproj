@@ -151,6 +151,7 @@
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="QuestionBrick.cpp" />
     <ClCompile Include="Road.cpp" />
+    <ClCompile Include="Tail.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Turtle.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Portal.h" />
     <ClInclude Include="QuestionBrick.h" />
     <ClInclude Include="Road.h" />
+    <ClInclude Include="Tail.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Turtle.h" />
     <ClInclude Include="TurtleConfig.h" />

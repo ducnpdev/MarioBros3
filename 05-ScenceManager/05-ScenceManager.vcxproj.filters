@@ -162,6 +162,9 @@
     <ClCompile Include="GoldCard.cpp">
       <Filter>Source Files\HubItem</Filter>
     </ClCompile>
+    <ClCompile Include="Tail.cpp">
+      <Filter>Source Files\Games</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -292,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="GoldCard.h">
       <Filter>Header Files\HubItem</Filter>
+    </ClInclude>
+    <ClInclude Include="Tail.h">
+      <Filter>Header Files\Games</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

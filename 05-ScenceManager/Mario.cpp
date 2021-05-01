@@ -129,15 +129,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							}
 						}
 						isJump = 1;
-
 					}
 					// 
 					else if (e->nx != 0 || e->ny > 0) {
 						if (untouchable == 0)
 						{
 							if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN || koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN ) {
+								DebugOut(L"111 \n");
 								if (level > LEVEL_MARIO_SMAIL) {
-									SetMarioLevel(GetMarioLevel() - 1);
+									SetMarioLevel(GetMarioLevel() - 1);  
 									StartUntouchable();
 								}
 								else {
@@ -145,7 +145,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 								}
 							}
 							else {
+
 								if (state == STATE_MARIO_RUNNING_RIGHT  || state == STATE_MARIO_RUNNING_LEFT) {
+									DebugOut(L"222 \n");
 									tortoiseshell = koopa;
 									koopa->SetState(KOOPAS_STATE_TAKEN);
 									if (e->nx < 0) {
@@ -155,6 +157,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 							
 								}
 								else {
+									DebugOut(L"333 \n");
 									timeStartKick = GetTickCount();
 									SetState(STATE_MARIO_KICK);
 									if (e->nx < 0)
@@ -219,13 +222,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		SetState(STATE_MARIO_KICK);
 	}
 
+	handlerMarioJumpFly();
+
 	handleMarioTorToiSeShell();
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
 
-
+void CMario::handlerMarioJumpFly() {
+	if (GetTickCount() - timeMarioJumpFlyLow < 300)
+	{
+		if (nx > 0) SetState(900);
+		else SetState(910);
+	}
+	else isJumpFlyLow = false;
+}
 
 void CMario::SetState(int state)
 {
@@ -239,7 +251,8 @@ void CMario::SetState(int state)
 		isTurn = false;
 		isKick = false;
 		marioStateTorToiSeShell = false;
-		
+		isJumpFlyLow = false;
+
 		vx = SPEED_MARIO_WALKING;
 		nx = DIRECTION_MARIO_RIGHT;
 		break;
@@ -253,7 +266,7 @@ void CMario::SetState(int state)
 		break;
 	case STATE_MARIO_RUNNING_RIGHT:
 		isRunning = true;
-		
+
 		isJump = 0;			
 		isKick = false;
 
@@ -265,7 +278,9 @@ void CMario::SetState(int state)
 		isRunning = true;
 		marioStateTorToiSeShell = false;
 		isKick = false;
+
 		isJump = 0;
+
 		vx = -SPEED_MARIO_RUNNING;
 		if (isTurn)  vx = -SPEED_MARIO_RUNNING - 0.01f;
 		nx = DIRECTION_MARIO_LEFT;
@@ -298,6 +313,7 @@ void CMario::SetState(int state)
 	case STATE_MARIO_KICK:
 		isKick = true;
 	//	
+
 		if (tortoiseshell != NULL)
 		{
 			if (nx > 0) {
@@ -320,6 +336,7 @@ void CMario::SetState(int state)
 		isRunning = false;
 		isKick = false;
 		marioStateTorToiSeShell = false;
+
 		vx = SPEED_MARIO_WALKING;
 		if (isRunning) vx = SPEED_MARIO_WALKING + 0.5f;
 		break;
@@ -327,12 +344,14 @@ void CMario::SetState(int state)
 		isTurn = true;
 		isRunning = false;
 		marioStateTorToiSeShell = false;
+
 		vx = -SPEED_MARIO_WALKING;
 		if (isRunning) vx = -SPEED_MARIO_WALKING - 0.5f;
 		break;
 	case STATE_MARIO_DIE:
 		marioStateDie = true;
 		marioStateTorToiSeShell = false;
+
 		vy = -SPEED_MARIO_DIE_DEFLECT;
 		break;
 	case STATE_MARIO_TORTOISESHELL_RIGHT:
@@ -340,6 +359,7 @@ void CMario::SetState(int state)
 		isRunning = false;
 		isTurn = false;
 		isRunning = false;
+
 		isJump = 0;
 	//	vx = 0.00008f;
 		break;
@@ -347,11 +367,26 @@ void CMario::SetState(int state)
 		marioStateTorToiSeShell = true;
 		isRunning = false;
 		isTurn = false;
-		isRunning = false;
+		isKick = false;
 	//	vx = -0.00008f;
 		isJump = 0;
 		break;
-	
+	case 900:
+		isJumpFlyLow = true;
+		marioStateTorToiSeShell = false;
+		isRunning = false;
+		isTurn = false;
+		isKick = false;
+		vy = 0.05f;
+
+		break;
+	case 910:
+		isJumpFlyLow = true;
+		marioStateTorToiSeShell = false;
+		isRunning = false;
+		isTurn = false;
+		vy = 0.05f;
+		break;
 	}
 }
 
@@ -504,36 +539,36 @@ int CMario::RenderLevelMarioSmall() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_RIGHT;
-			else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_RIGHT;
-			else if (isKick) ani = ANI_MARIO_SMALL_KICK_RIGHT;
-			else if (marioStateTorToiSeShell) ani = ANI_MARIO_SMALL_IDLE_TORTOISESHELL_RIGHT;
-			else ani = ANI_MARIO_SMALL_IDLE_RIGHT;
+			if (isStateSitDown) ani = 0;
+			else if (isJump == 1) ani = 24;
+			else if (isKick) ani = 32;
+			else if (marioStateTorToiSeShell) ani = 40;
+			else ani = 0;
 		} 
 		else {
-			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_RIGHT;
-			else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_LEFT;
-			else if (isKick) ani = ANI_MARIO_SMALL_KICK_LEFT;
-			else if (marioStateTorToiSeShell) ani = ANI_MARIO_SMALL_IDLE_TORTOISESHELL_LEFT;
-			else ani = ANI_MARIO_SMALL_IDLE_LEFT;
+			if (isStateSitDown) ani = 1;
+			else if (isJump == 1) ani = 25;
+			else if (isKick) ani = 33;
+			else if (marioStateTorToiSeShell) ani = 41;
+			else ani = 1;
 		}
 	}
 	else if (vx > 0){
-		if (isTurn && !isRunning) ani = ANI_MARIO_SMALL_TURN_RIGHT;
-		else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_RIGHT;
-		else if (isRunning) ani = ANI_MARIO_SMALL_RUN_RIGHT;
-		else if (isKick == 1) ani = ANI_MARIO_SMALL_JUMP_RIGHT;
-		else if (marioStateTorToiSeShell) ani = ANI_MARIO_SMALL_WALK_TORTOISESHELL_RIGHT;
+		if (isTurn && !isRunning) ani = 64;
+		else if (isJump == 1) ani = 24;
+		else if (isRunning) ani = 16;
+		else if (isKick == 1) ani = 32;
+		else if (marioStateTorToiSeShell) ani = 42;
 
-		else ani = ANI_MARIO_SMALL_WALK_RIGHT;
+		else ani = 4;
 	} 
 	else {
-		if (isTurn && !isRunning) ani = ANI_MARIO_SMALL_TURN_LEFT;
-		else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_LEFT;
-		else if (isRunning) ani = ANI_MARIO_SMALL_RUN_LEFT;
-		else if (isKick) ani = ANI_MARIO_SMALL_KICK_LEFT;
-		else if (marioStateTorToiSeShell) ani = ANI_MARIO_SMALL_WALK_TORTOISESHELL_LEFT;
-		else ani = ANI_MARIO_SMALL_WALK_LEFT;
+		if (isTurn && !isRunning) ani = 65;
+		else if (isJump == 1) ani = 25;
+		else if (isRunning) ani = 17;
+		else if (isKick) ani = 33;
+		else if (marioStateTorToiSeShell) ani = 43;
+		else ani = 5;
 	}
 
 	return ani;
@@ -543,42 +578,37 @@ int CMario::RenderLevelMarioBig() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_RIGHT;
-			else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_RIGHT;
-			else if (isKick) ani = ANI_MARIO_BIG_KICK_RIGHT;
-			else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_IDLE_TORTOISESHELL_RIGHT;
-			else ani = ANI_MARIO_BIG_IDLE_RIGHT;
+			if (isStateSitDown) ani = 85;
+			else if (isJump == 1) ani = 26;
+			else if (isKick) ani = 34;
+			else if (marioStateTorToiSeShell) ani = 46;
+			else ani = 2;
 		} 
 		else {
-			if (isStateSitDown) ani = ANI_MARIO_BIG_SIT_LEFT;
-			else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_LEFT;
-			else if (isKick) ani = ANI_MARIO_BIG_KICK_LEFT;
-			else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_IDLE_TORTOISESHELL_LEFT;
-			else ani = ANI_MARIO_BIG_IDLE_LEFT;
+			if (isStateSitDown) ani = 86;
+			else if (isJump == 1) ani = 27;
+			else if (isKick) ani = 35;
+			else if (marioStateTorToiSeShell) ani = 47;
+			else ani = 3;
 		}
 	}
 	else if (vx > 0){
 		
 		
-		if (isTurn && !isRunning) ani =  ANI_MARIO_BIG_TURN_RIGHT;
-		else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_RIGHT;
-		else if(isRunning) ani = ANI_MARIO_BIG_RUN_RIGHT;
-		else if (isKick) ani = ANI_MARIO_BIG_KICK_RIGHT;
-		else if (marioStateTorToiSeShell) {
-			ani = ANI_MARIO_BIG_WALK_TORTOISESHELL_RIGHT;
-		} 
-
-		else ani = ANI_MARIO_BIG_WALK_RIGHT; 
+		if (isTurn && !isRunning) ani =  66;
+		else if (isJump == 1) ani = 26;
+		else if(isRunning) ani = 18;
+		else if (isKick) ani = 34;
+		else if (marioStateTorToiSeShell)	ani = 48;
+		else ani = 6; 
 	} 
 	else {
-		if (isTurn && !isRunning) ani = ANI_MARIO_BIG_TURN_LEFT;
-		else if (isJump == 1 ) ani = ANI_MARIO_BIG_JUMP_LEFT;
-		else if(isRunning) ani = ANI_MARIO_BIG_RUN_LEFT;
-		else if (isKick) ani = ANI_MARIO_BIG_KICK_LEFT;
-		else if (marioStateTorToiSeShell) {
-			ani = ANI_MARIO_BIG_WALK_TORTOISESHELL_LEFT;
-		}
-		else ani = ANI_MARIO_BIG_WALK_LEFT; 
+		if (isTurn && !isRunning) ani = 67;
+		else if (isJump == 1 ) ani = 27;
+		else if(isRunning) ani = 19;
+		else if (isKick) ani = 35;
+		else if (marioStateTorToiSeShell) 	ani = 49;
+		else ani = 7; 
 	}
 	
 	return ani;
@@ -588,29 +618,40 @@ int CMario::RenderLevelMarioTail() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if (isStateSitDown) ani = ANI_MARIO_TAIL_SIT_RIGHT;
-			else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_RIGHT;
-			else ani = ANI_MARIO_TAIL_IDLE_RIGHT;	
+			if (isStateSitDown) ani = 87;
+			else if (isJump == 1) ani = 28;
+			else if (isJumpFlyLow == 1) ani = 81;
+			else if (isKick) ani = 36;
+			else if (marioStateTorToiSeShell) 	ani = 52;
+			else ani = 8;	
 		} 
 		else {
-			if (isStateSitDown) ani = ANI_MARIO_TAIL_SIT_LEFT;
-			else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_LEFT;
-			else ani = ANI_MARIO_TAIL_IDLE_LEFT;
+			if (isStateSitDown) ani = 88;
+			else if (isJump == 1) ani = 29;
+			else if (isJumpFlyLow == 1) ani = 82;
+			else if (isKick) ani = 37;
+			else if (marioStateTorToiSeShell) 	ani = 53;
+			else ani = 9;
 		}
 	}
 	else if (vx > 0){
-		if (isTurn && !isRunning) ani =  ANI_MARIO_TAIL_TURN_RIGHT;
-		else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_RIGHT;
-		else if(isRunning) ani = ANI_MARIO_TAIL_RUN_RIGHT;
-		else ani = ANI_MARIO_TAIL_WALK_RIGHT; 
+		if (isTurn && !isRunning) ani =  68;
+		else if (isJumpFlyLow == 1) ani = 81;
+		else if (isJump == 1) ani = 28;
+		else if(isRunning) ani = 20;
+		else if (isKick) ani = 36;
+		else if (marioStateTorToiSeShell) 	ani = 54;
+		else ani = 10; 
 	} 
 	else {
-		if (isTurn && !isRunning) ani = ANI_MARIO_TAIL_TURN_LEFT;
-		else if (isJump == 1 ) ani = ANI_MARIO_TAIL_JUMP_LEFT;
-		else if(isRunning) ani = ANI_MARIO_TAIL_RUN_LEFT;
-		else ani = ANI_MARIO_TAIL_WALK_LEFT; 
+		if (isTurn && !isRunning) ani = 69;
+		else if (isJump == 1 ) ani = 29;
+		else if (isJumpFlyLow == 1) ani = 82;
+		else if(isRunning) ani = 21;
+		else if (isKick) ani = 37;
+		else if (marioStateTorToiSeShell) 	ani = 55;
+		else ani = 11; 
 	}
-	
 	return ani;
 }
 
@@ -678,36 +719,36 @@ int CMario::GetBBoxHeightMario()
 	return round(height);
 }
 
+
 void CMario::handleMarioTorToiSeShell()
 {
 	if (tortoiseshell == NULL) return;
-	
-	if (level == LEVEL_MARIO_SMAIL) {
-
-	}
-	else if (level == LEVEL_MARIO_BIG)
+	switch (level)
 	{
-		DebugOut(L"mang rua\n");
+	case LEVEL_MARIO_SMAIL:
 		if (nx > 0)
 		{
 			SetState(STATE_MARIO_TORTOISESHELL_RIGHT);
 			tortoiseshell->x = x + 10;
-			tortoiseshell->y = y + 10;
+			tortoiseshell->y = y - 2;
 		}
 		else
 		{
 			SetState(STATE_MARIO_TORTOISESHELL_LEFT);
 			tortoiseshell->x = x - 10;
-			tortoiseshell->y = y + 10;
+			tortoiseshell->y = y - 2;
 		}
+		break;
+	case LEVEL_MARIO_BIG:
+		plustortoiseshellInMario(MARIO_TORTOISESHELL_PLUS_10, MARIO_TORTOISESHELL_PLUS_10);
+		break;
+	case LEVEL_MARIO_TAIL:
+		plustortoiseshellInMario(MARIO_TORTOISESHELL_PLUS_10, MARIO_TORTOISESHELL_PLUS_15);
+		break;
+	case LEVEL_MARIO_FIRE:
+		// SetLevel(LEVEL_MARIO_FIRE);
+		break;
 	}
-	else if (level == LEVEL_MARIO_TAIL)
-	{
-	}
-	else if (level == LEVEL_MARIO_FIRE)
-	{
-	}
-
 }
 
 void CMario::marioSetUpDownLevel(int _level)
@@ -732,3 +773,17 @@ void CMario::marioSetUpDownLevel(int _level)
 }
 
   
+void CMario::plustortoiseshellInMario(int numberPlusLeft, int numberPlusRight) {
+	if (nx > 0)
+	{
+		SetState(STATE_MARIO_TORTOISESHELL_RIGHT);
+		tortoiseshell->x = x + numberPlusRight;
+		tortoiseshell->y = y + numberPlusRight;
+	}
+	else
+	{
+		SetState(STATE_MARIO_TORTOISESHELL_LEFT);
+		tortoiseshell->x = x - numberPlusLeft;
+		tortoiseshell->y = y + numberPlusLeft;
+	}
+}
