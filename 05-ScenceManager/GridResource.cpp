@@ -5,6 +5,8 @@
 #include "Mushroom.h"
 #include "ColorBrick.h"
 #include "ItemCoin.h"
+#include "FirePiranhaPlant.h"
+#include "FirePlantBullet.h"
 
 
 CGridResource::CGridResource(LPCWSTR path) {
@@ -83,8 +85,32 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			obj = new CColorBrick(); 
 			break;
 		}
+		// 16: FIRE PLANT
+		case 16: {
+			obj = new CFirePiranhaPlant(((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer());
+			for (int i = 0; i < 2; i++)
+			{
+				if (firePiranhaPlant[i] == NULL) {
+					firePiranhaPlant[i] = (CFirePiranhaPlant*)obj;
+					break;
+				}
+			}
+			break;
+		}
+		// 17: bullet FIRE PLANT
+		case 17: {
+			obj = new CFirePlantBullet();
+			for (int i = 0; i < 2; i++)
+			{
+				if (firePlantBullet[i] == NULL) {
+					firePlantBullet[i] = (CFirePlantBullet*)obj;
+					firePiranhaPlant[i]->CreateFirePlantBullet(firePlantBullet[i]);
+					break;
+				}
+			}
+			break;
+		}
 
-	
 	}
 
 	 LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);

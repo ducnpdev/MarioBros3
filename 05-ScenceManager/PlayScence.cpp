@@ -355,8 +355,8 @@ void CPlayScene::initCamera() {
 void CPlayScene::Update(DWORD dt)
 {
 	if (player->GetMarioIsDie()) {
-		//TODO: swith to scene intro
-		DebugOut(L"mario is die \n");
+		// TODO: swith to scene intro
+		// DebugOut(L"mario is die \n");
 	}
 
 	initCamera();

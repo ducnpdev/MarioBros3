@@ -12,6 +12,10 @@
 #include "Goomba.h"
 #include "ItemCoin.h"
 #include "Koopas.h"
+#include "FirePlantBullet.h"
+#include "FirePiranhaPlant.h"
+
+
 
 CMario::CMario(float x, float y)
 {
@@ -100,7 +104,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						{
 							if (level > LEVEL_MARIO_SMAIL)
 							{
-								DebugOut(L"level:",GetMarioLevel());
+							//	DebugOut(L"level:",GetMarioLevel());
 								SetMarioLevel(GetMarioLevel() - 1 );
 								StartUntouchable();
 							}
@@ -174,6 +178,44 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						}
 					}
 				}
+
+				if (dynamic_cast<CFirePlantBullet*>(e->obj))
+				{
+					CFirePlantBullet* fireplantbullet = dynamic_cast<CFirePlantBullet*>(e->obj);
+					if (fireplantbullet->GetState() != 100 && fireplantbullet->GetState() != 400)
+					{
+						if (level > LEVEL_MARIO_SMAIL)
+						{
+							// SetLevel(GetMarioLevel() - 1);	
+							SetMarioLevel(GetMarioLevel() - 1);
+							fireplantbullet->SetState(100);
+							StartUntouchable();
+						}
+						else
+							SetState(STATE_MARIO_DIE);
+					}
+				}
+
+				if (dynamic_cast<CFirePiranhaPlant*>(e->obj))
+				{
+					CFirePiranhaPlant* fireplant = dynamic_cast<CFirePiranhaPlant*>(e->obj);
+					if (fireplant->GetState() != 1/* && !fight_state*/)
+					{
+						if (level > LEVEL_MARIO_SMAIL)
+						{
+							SetMarioLevel(GetMarioLevel() - 1);
+							// fireplant->SetState(FIREBULLET_DESTROY_STATE);
+							StartUntouchable();
+						}
+						else
+							SetState(STATE_MARIO_DIE);
+					}
+					/*else if (fight_state)
+					{
+						fireplant->SetState(5);
+					}*/
+				}
+
 			}
 
 			if (dynamic_cast<CRoad*>(e->obj) || dynamic_cast<CColorBrick*>(e->obj)) {
