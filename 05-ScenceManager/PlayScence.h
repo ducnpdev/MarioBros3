@@ -19,6 +19,8 @@
 #include "CardText.h"
 #include "GoldCard.h"
 #include "Tail.h"
+#include "Pipe.h"
+
 
 
 class CPlayScene: public CScene

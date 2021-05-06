@@ -14,6 +14,7 @@
 #include "Koopas.h"
 #include "FirePlantBullet.h"
 #include "FirePiranhaPlant.h"
+#include "PiranhaPlant.h"
 
 
 
@@ -216,6 +217,26 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}*/
 				}
 
+				if (dynamic_cast<CPiranhaPlant*>(e->obj))
+				{
+					CPiranhaPlant* plant = dynamic_cast<CPiranhaPlant*>(e->obj);
+					if (plant->GetState() != PIRANHAPLANT_STATE_HIDE /*&& !fight_state*/)
+					{
+						if (level > LEVEL_MARIO_SMAIL)
+						{
+							SetMarioLevel(GetMarioLevel() - 1);
+							// fireplant->SetState(FIREBULLET_DESTROY_STATE);
+							StartUntouchable();
+						}
+						else
+							SetState(STATE_MARIO_DIE);
+					}
+					/*else if (fight_state)
+					{
+						plant->SetState(PIRANHAPLANT_STATE_DESTROY);
+					}*/
+				}
+
 			}
 
 			if (dynamic_cast<CRoad*>(e->obj) || dynamic_cast<CColorBrick*>(e->obj)) {
@@ -271,6 +292,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
+
+void CMario::MarioCollisionPiranhaPlant()
+{
+
+}
+
 
 void CMario::handlerMarioJumpFly() {
 	if (GetTickCount() - timeMarioJumpFlyLow < 300)
@@ -829,3 +856,4 @@ void CMario::plustortoiseshellInMario(int numberPlusLeft, int numberPlusRight) {
 		tortoiseshell->y = y + numberPlusLeft;
 	}
 }
+

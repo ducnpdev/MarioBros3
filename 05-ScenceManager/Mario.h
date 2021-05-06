@@ -136,4 +136,7 @@ public:
 	void handleMarioTorToiSeShell();
 	void handlerMarioJumpFly();
 	void plustortoiseshellInMario(int numberPlusLeft, int numberPlusRight);
+
+	// collision
+	void MarioCollisionPiranhaPlant();
 };

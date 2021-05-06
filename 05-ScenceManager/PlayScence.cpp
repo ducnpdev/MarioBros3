@@ -415,7 +415,12 @@ void CPlayScene::Render()
 	}*/
 	for (int i = objects.size() - 1; i >= 0; i--)
 	{
-		objects[i]->Render();
+		if (!dynamic_cast<CPipe*>(objects[i])) objects[i]->Render();
+	}
+	for (int i = objects.size() - 1; i >= 0; i--)
+	{
+		if (dynamic_cast<CPipe*>(objects[i]))
+			objects[i]->Render();
 	}
 }
 

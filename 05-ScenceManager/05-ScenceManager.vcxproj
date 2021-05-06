@@ -150,6 +150,7 @@
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="Number.cpp" />
     <ClCompile Include="Pipe.cpp" />
+    <ClCompile Include="PiranhaPlant.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="QuestionBrick.cpp" />
     <ClCompile Include="Road.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="Pipe.h" />
+    <ClInclude Include="PiranhaPlant.h" />
     <ClInclude Include="PlayScenceConfig.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="QuestionBrick.h" />

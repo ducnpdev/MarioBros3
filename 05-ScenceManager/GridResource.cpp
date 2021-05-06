@@ -7,6 +7,9 @@
 #include "ItemCoin.h"
 #include "FirePiranhaPlant.h"
 #include "FirePlantBullet.h"
+#include "PiranhaPlant.h"
+
+
 
 
 CGridResource::CGridResource(LPCWSTR path) {
@@ -108,6 +111,11 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 					break;
 				}
 			}
+			break;
+		}
+		// 22:  PLANT
+		case 22: {
+			obj = new CPiranhaPlant(((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer());
 			break;
 		}
 
