@@ -11,8 +11,10 @@ CMushroom::CMushroom(int _state)
 
 void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	// DebugOut(L"state musrom %d \n", state);
-	if (state == MUSHROOM_STATE_HIDEN) return;
+	 if (state == MUSHROOM_STATE_HIDEN) {
+		// DebugOut(L"state musrom hiden %d \n", state);
+		 return;
+	 } 
 	CGameObject::Update(dt, coObjects);
 
 	if (state == MUSHROOM_STATE_MOVING)
@@ -31,7 +33,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (state == MUSHROOM_STATE_NORMAL) {
 	//	DebugOut(L"MUSHROOM_STATE_NORMAL mushroom \n");
-		vy += MUSHROOM_GRAVITY * dt;
+		vy += 0.000605f * dt;
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 
@@ -85,7 +87,9 @@ void CMushroom::SetState(int state)
 		}
 		break;
 	case MUSHROOM_STATE_HIDEN:
-		vx = 0; vy = 0;
+		vx = 0; 
+		vy = 0;
+		stateMovingMushroom = false;
 		break;
 	case MUSHROOM_STATE_NORMAL:
 		stateMovingMushroom = false;
@@ -110,6 +114,11 @@ void CMushroom::GetBoundingBox(float& l, float& t, float& r, float& b)
 	t = y;
 	r = x + MUSHROOM_BBOX_WIDTH;
 	b = y + MUSHROOM_BBOX_HEIGHT;
+	if (state == MUSHROOM_STATE_HIDEN)
+	{
+		r = 0;
+		b = 0;
+	}
 }
 
 void CMushroom::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLISIONEVENT>& coEventsResult, float& min_tx, float& min_ty, float& nx, float& ny, float& rdx, float& rdy)

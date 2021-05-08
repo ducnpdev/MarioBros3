@@ -12,7 +12,7 @@ void CFirePlantBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
 	CGameObject::Update(dt);
 	
-	DebugOut(L"class fire plant bullet state: %d \n",state);
+	// DebugOut(L"class fire plant bullet state: %d \n",state);
 	if (state != FIREPLANTBULLET_TRANSPARENT_STATE && state != FIREPLANTBULLET_DESTROY_STATE)
 	{
 		vector<LPCOLLISIONEVENT> coEvents;

@@ -98,11 +98,9 @@ void CQuestionBrick::PushItemQuestionBrick(CGameObject* tempItem, int countItem)
 {
 	for (int i = 0; i < 10; i++)
 	{
-	//	DebugOut(L"", itemInBrick[i]);
 		if(itemInBrick[i] == NULL){
 			itemInBrick[i] = tempItem;
 			return;
 		}
-	//	DebugOut(L"1ccccccccccccccccc \ n");
 	}
 }

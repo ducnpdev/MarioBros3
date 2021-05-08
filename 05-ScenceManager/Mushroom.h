@@ -25,6 +25,7 @@ class CMushroom : public CCollision
 public:
 	CMushroom(int _state);
 	void SetState(int state);
+	bool MushroomMoving() { return stateMovingMushroom; }
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects);
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);

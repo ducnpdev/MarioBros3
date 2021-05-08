@@ -145,6 +145,7 @@
     <ClCompile Include="Hub.cpp" />
     <ClCompile Include="ItemCoin.cpp" />
     <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="Lives.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mushroom.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Hub.h" />
     <ClInclude Include="ItemCoin.h" />
     <ClInclude Include="Koopas.h" />
+    <ClInclude Include="Leaf.h" />
     <ClInclude Include="Lives.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MarioConfig.h" />

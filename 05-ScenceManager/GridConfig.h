@@ -34,4 +34,7 @@
 
 // object type question brick in grid 
 #define OBJECT_TYPE_COIN 11
+#define OBJECT_TYPE_MUSHROOM 18
+#define OBJECT_TYPE_LEAF 19
+
 

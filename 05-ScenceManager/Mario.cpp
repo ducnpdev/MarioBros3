@@ -16,6 +16,7 @@
 #include "FirePiranhaPlant.h"
 #include "PiranhaPlant.h"
 
+#include "Mushroom.h"
 
 
 CMario::CMario(float x, float y)
@@ -36,7 +37,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vy += 0.0005*dt;
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
-
+	handlerMarioUpLevelOtherSmall();
 	coEvents.clear();
 
 	if (state == STATE_MARIO_RUNNING_RIGHT || state == STATE_MARIO_RUNNING_LEFT) {
@@ -236,7 +237,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						plant->SetState(PIRANHAPLANT_STATE_DESTROY);
 					}*/
 				}
-
 			}
 
 			if (dynamic_cast<CRoad*>(e->obj) || dynamic_cast<CColorBrick*>(e->obj)) {
@@ -250,14 +250,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<CQuestionBrick*>(e->obj)) {
 				CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
 				if (e->ny > 0) {
-					vy = 0; SetMarioFallState(true);
+					vy = 0; 
+					SetMarioFallState(true);
 
 					if (questionBrick->GetState() == QUESTION_BRICK_STATE_MOVING) {
 						// 200 là BRICK_STATE_INIT_COLLISION_MARIO
 						questionBrick->SetItemWhenCollision(200);
 						questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
 					}
-
 				}
 
 				if (e->ny < 0) {
@@ -274,6 +274,30 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					/*coinplay->AddCoin();
 					coin->SetState(COIN_STATE_HIDEN);*/
 
+				}
+			}
+
+			if (dynamic_cast<CMushroom*>(e->obj))
+			{
+				CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
+				if (mushroom->GetState() != MUSHROOM_STATE_HIDEN)
+				{
+					if (level == LEVEL_MARIO_SMAIL)
+					{
+						SetPosition(x, y - 15);
+						mushroom->SetState(MUSHROOM_STATE_HIDEN);
+						SetState(STATE_MARIO_UP_LEVEL);
+
+						timeMarioUpLevel = GetTickCount();
+						// SetPosition(x, y - MARIO_BIG_BBOX_HEIGHT + MARIO_SMALL_BBOX_HEIGHT - 1);
+						// SetPosition(x, y - MARIO_BIG_BBOX_HEIGHT + MARIO_SMALL_BBOX_HEIGHT - 1);
+					}
+					else
+					{
+						DebugOut(L"1111111 \n");
+						/*mushroom->SetState(MUSHROOM_STATE_HIDEN);
+						if (!intro_state) DisplayScores(4, mushroom->x, mushroom->y, (DWORD)GetTickCount64());*/
+					}
 				}
 			}
 
@@ -456,6 +480,13 @@ void CMario::SetState(int state)
 		isTurn = false;
 		vy = 0.05f;
 		break;
+	case STATE_MARIO_UP_LEVEL:
+		// DebugOut(L"adbfsda \n");
+		marioStateUpLevel = true;
+		vx = 0;
+		vy = 0;
+		break;
+
 	}
 }
 
@@ -494,6 +525,9 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 	default:
 		right = x + MARIO_SMALL_BBOX_WIDTH;
 		bottom = y + MARIO_SMALL_BBOX_HEIGHT;
+		if (marioStateUpLevel) {
+			bottom = y + MARIO_BIG_BBOX_HEIGHT;
+		}
 		break;
 	}
 
@@ -608,14 +642,16 @@ int CMario::RenderLevelMarioSmall() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if (isStateSitDown) ani = 0;
+			if (marioStateUpLevel) ani = 96;
+			else if (isStateSitDown) ani = 0;
 			else if (isJump == 1) ani = 24;
 			else if (isKick) ani = 32;
 			else if (marioStateTorToiSeShell) ani = 40;
 			else ani = 0;
 		} 
 		else {
-			if (isStateSitDown) ani = 1;
+			if (marioStateUpLevel) ani = 97;
+			else if (isStateSitDown) ani = 1;
 			else if (isJump == 1) ani = 25;
 			else if (isKick) ani = 33;
 			else if (marioStateTorToiSeShell) ani = 41;
@@ -623,16 +659,17 @@ int CMario::RenderLevelMarioSmall() {
 		}
 	}
 	else if (vx > 0){
-		if (isTurn && !isRunning) ani = 64;
+		if (marioStateUpLevel) ani = 96;
+		else if (isTurn && !isRunning) ani = 64;
 		else if (isJump == 1) ani = 24;
 		else if (isRunning) ani = 16;
 		else if (isKick == 1) ani = 32;
 		else if (marioStateTorToiSeShell) ani = 42;
-
 		else ani = 4;
 	} 
 	else {
-		if (isTurn && !isRunning) ani = 65;
+		if (marioStateUpLevel) ani = 97;
+		else if (isTurn && !isRunning) ani = 65;
 		else if (isJump == 1) ani = 25;
 		else if (isRunning) ani = 17;
 		else if (isKick) ani = 33;
@@ -855,5 +892,24 @@ void CMario::plustortoiseshellInMario(int numberPlusLeft, int numberPlusRight) {
 		tortoiseshell->x = x - numberPlusLeft;
 		tortoiseshell->y = y + numberPlusLeft;
 	}
+}
+
+void CMario::handlerMarioUpLevelOtherSmall()
+{
+	
+// 	DebugOut(L"level %d \n", level);
+	if (!marioStateUpLevel ) {
+		return;
+	}
+	if (GetTickCount() - timeMarioUpLevel < 2000)
+	{
+		return;
+	}
+	DebugOut(L"level 1213213 %d \n", level);
+	SetState(STATE_MARIO_IDLE);
+	marioStateUpLevel = false;
+	
+	SetLevel(LEVEL_MARIO_BIG);
+	//if (!intro_state) SetLevel(MARIO_LEVEL_BIG);
 }
 

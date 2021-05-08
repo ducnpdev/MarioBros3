@@ -3,6 +3,7 @@
 #include "Pipe.h"
 #include "QuestionBrick.h"
 #include "Mushroom.h"
+#include "Leaf.h"
 #include "ColorBrick.h"
 #include "ItemCoin.h"
 #include "FirePiranhaPlant.h"
@@ -191,30 +192,45 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 	case OBJECT_TYPE_COIN:
 		obj = new CCoin(state);
 		if (state == 0) {
-			for(int i = 0; i < 10; i++){
+			// TODO nếu là 11 sẽ bị crash, 
+			for(int i = 0; i < 10; i++) {
 				if (listItemQuestionBrick[i] == NULL) {
 					listItemQuestionBrick[i] = (CCoin*)(obj);
 					// item_object số lượng item trong 1 question brick
-				//	for (int i = 0; i < item_object; i++) {
+					//for (int j = 0; j < item_object; j++) {
 						questionBrick[i]->PushItemQuestionBrick(listItemQuestionBrick[i], item_object);
-					//}
-
+				//	}
+					break;
 				}
 			}
 		}
 		break;
-	case 18:
+	case OBJECT_TYPE_MUSHROOM: {
 		obj = new CMushroom(state);
-			for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 10; i++)
+		{
+			if (listItemQuestionBrick[i] == NULL)
 			{
-				if (listItemQuestionBrick[i] == NULL)
-				{
-					listItemQuestionBrick[i] = (CMushroom*)obj;
-					questionBrick[i]->PushItemQuestionBrick(listItemQuestionBrick[i], item_object);
-					break;
-				}
+				listItemQuestionBrick[i] = (CMushroom*)obj;
+				questionBrick[i]->PushItemQuestionBrick(listItemQuestionBrick[i], item_object);
+				break;
 			}
+		}
 		break;
+	}
+	case OBJECT_TYPE_LEAF: {
+		obj = new CLeaf();
+		for (int i = 0; i < 10; i++)
+		{
+			if (listItemQuestionBrick[i] == NULL)
+			{
+				listItemQuestionBrick[i] = (CLeaf*)obj;
+				questionBrick[i]->PushItemQuestionBrick(listItemQuestionBrick[i], item_object);
+				break;
+			}
+		}
+		break;
+	}
 	default:
 		break;
 	}
