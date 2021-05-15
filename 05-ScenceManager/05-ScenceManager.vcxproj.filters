@@ -183,6 +183,9 @@
     <ClCompile Include="ListScore.cpp">
       <Filter>Source Files\Object</Filter>
     </ClCompile>
+    <ClCompile Include="WoodBlock.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -334,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="ListScore.h">
       <Filter>Header Files\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="WoodBlock.h">
+      <Filter>Header Files\Items</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

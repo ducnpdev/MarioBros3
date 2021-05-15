@@ -9,7 +9,7 @@
 #include "FirePiranhaPlant.h"
 #include "FirePlantBullet.h"
 #include "PiranhaPlant.h"
-
+#include "WoodBlock.h"
 
 
 
@@ -85,6 +85,9 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			obj = new CPipe(type);
 			break;
 		}
+		case OBJECT_TYPE_WOOD_BLOCK: 
+			obj = new CWoodBlock(); 
+			break;
 		case OBJECT_TYPE_BRICK_MANY_WALL: {
 			obj = new CColorBrick(); 
 			break;
