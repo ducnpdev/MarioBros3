@@ -21,7 +21,7 @@
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_SMAIL;
+	level = LEVEL_MARIO_BIG;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 
@@ -38,6 +38,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 	handlerMarioUpLevelOtherSmall();
+	handlerMarioUpLevelSmoke();
 	coEvents.clear();
 
 	if (state == STATE_MARIO_RUNNING_RIGHT || state == STATE_MARIO_RUNNING_LEFT) {
@@ -283,8 +284,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (leaf->GetState() != LEAF_STATE_HIDEN)
 				{
 					leaf->SetState(LEAF_STATE_HIDEN);
-				/*	SetState(MARIO_STATE_SMOKE);
-					SetPosition(x, y - 2);
+					SetState(STATE_MARIO_SMOKE);
+					timeMarioSmoke = GetTickCount();
+					/*SetPosition(x, y - 2);
 					smoke_start = (DWORD)GetTickCount64();*/
 					//SetLevel(GetLevel() + 1);
 				}
@@ -479,7 +481,6 @@ void CMario::SetState(int state)
 		isRunning = false;
 		isTurn = false;
 		isKick = false;
-	//	vx = -0.00008f;
 		isJump = 0;
 		break;
 	case 900:
@@ -504,7 +505,11 @@ void CMario::SetState(int state)
 		vx = 0;
 		vy = 0;
 		break;
-
+	case STATE_MARIO_SMOKE:
+		marioStateSmoke = true;
+		vy = 0;
+		vx = 0;
+		break;
 	}
 }
 
@@ -702,14 +707,16 @@ int CMario::RenderLevelMarioBig() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if (isStateSitDown) ani = 85;
+			if (marioStateSmoke) ani = 95;
+			else if (isStateSitDown) ani = 85;
 			else if (isJump == 1) ani = 26;
 			else if (isKick) ani = 34;
 			else if (marioStateTorToiSeShell) ani = 46;
 			else ani = 2;
 		} 
 		else {
-			if (isStateSitDown) ani = 86;
+			if (marioStateSmoke) ani = 95;
+			else if (isStateSitDown) ani = 86;
 			else if (isJump == 1) ani = 27;
 			else if (isKick) ani = 35;
 			else if (marioStateTorToiSeShell) ani = 47;
@@ -717,9 +724,8 @@ int CMario::RenderLevelMarioBig() {
 		}
 	}
 	else if (vx > 0){
-		
-		
-		if (isTurn && !isRunning) ani =  66;
+		if (marioStateSmoke) ani = 95;
+		else if (isTurn && !isRunning) ani =  66;
 		else if (isJump == 1) ani = 26;
 		else if(isRunning) ani = 18;
 		else if (isKick) ani = 34;
@@ -727,7 +733,8 @@ int CMario::RenderLevelMarioBig() {
 		else ani = 6; 
 	} 
 	else {
-		if (isTurn && !isRunning) ani = 67;
+		if (marioStateSmoke) ani = 95;
+		else if (isTurn && !isRunning) ani = 67;
 		else if (isJump == 1 ) ani = 27;
 		else if(isRunning) ani = 19;
 		else if (isKick) ani = 35;
@@ -912,10 +919,11 @@ void CMario::plustortoiseshellInMario(int numberPlusLeft, int numberPlusRight) {
 	}
 }
 
+
+
+
 void CMario::handlerMarioUpLevelOtherSmall()
 {
-	
-// 	DebugOut(L"level %d \n", level);
 	if (!marioStateUpLevel ) {
 		return;
 	}
@@ -923,11 +931,23 @@ void CMario::handlerMarioUpLevelOtherSmall()
 	{
 		return;
 	}
-	DebugOut(L"level 1213213 %d \n", level);
+	// DebugOut(L"level 1213213 %d \n", level);
 	SetState(STATE_MARIO_IDLE);
 	marioStateUpLevel = false;
 	
 	SetLevel(LEVEL_MARIO_BIG);
 	//if (!intro_state) SetLevel(MARIO_LEVEL_BIG);
 }
+
+void CMario::handlerMarioUpLevelSmoke()
+{
+	if (!marioStateSmoke) return;
+
+	if (GetTickCount() - timeMarioSmoke < 1000) return;
+
+	marioStateSmoke = false;
+	SetLevel(LEVEL_MARIO_TAIL);
+	SetState(STATE_MARIO_IDLE);
+}
+
 

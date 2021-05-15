@@ -198,7 +198,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CLives(numLives);
 		lives = (CLives*)obj;
 		break;
-	case OBJECT_TYPE_HUB_SCORE_EFFECT: 
+	case OBJECT_TYPE_SCORE_EFFECT: 
 		obj = new CLives(numLives);
 		lives = (CLives*)obj;
 		break;

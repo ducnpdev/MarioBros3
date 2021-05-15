@@ -146,6 +146,7 @@
     <ClCompile Include="ItemCoin.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Leaf.cpp" />
+    <ClCompile Include="ListScore.cpp" />
     <ClCompile Include="Lives.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Mushroom.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="QuestionBrick.cpp" />
     <ClCompile Include="Road.cpp" />
+    <ClCompile Include="Score.cpp" />
     <ClCompile Include="Tail.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Turtle.cpp" />
@@ -193,6 +195,7 @@
     <ClInclude Include="ItemCoin.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Leaf.h" />
+    <ClInclude Include="ListScore.h" />
     <ClInclude Include="Lives.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MarioConfig.h" />
@@ -204,6 +207,7 @@
     <ClInclude Include="Portal.h" />
     <ClInclude Include="QuestionBrick.h" />
     <ClInclude Include="Road.h" />
+    <ClInclude Include="Score.h" />
     <ClInclude Include="Tail.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="Turtle.h" />

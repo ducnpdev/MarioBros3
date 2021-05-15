@@ -29,6 +29,7 @@ class CMario : public  CCollision
 	bool marioStateDie = false;
 	bool marioStateTorToiSeShell = false;
 	bool marioStateUpLevel = false;
+	bool marioStateSmoke = false;
 	bool isJumpFlyLow = false;
 	CTail* tail;
 	DWORD timeStartKick;
@@ -38,6 +39,7 @@ class CMario : public  CCollision
 	DWORD timeMarioJumpFlyLow;
 	float marioSpeechJump;
 	DWORD timeMarioUpLevel;
+	DWORD timeMarioSmoke;
 
 	CGameObject* tortoiseshell;
 
@@ -142,6 +144,8 @@ public:
 	void handlerMarioJumpFly();
 	void plustortoiseshellInMario(int numberPlusLeft, int numberPlusRight);
 	void handlerMarioUpLevelOtherSmall();
+	void handlerMarioUpLevelSmoke(); 
+
 	// collision
 	void MarioCollisionPiranhaPlant();
 };
