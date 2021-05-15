@@ -1,12 +1,28 @@
 #include "Leaf.h"
 #include "Utils.h"
 #include "Animations.h"
+
+CLeaf::CLeaf()
+{
+	SetState(LEAF_STATE_HIDEN);
+	effect_state = 0;
+	// hiden_state = 1;
+	effect_left_time_start = (DWORD)0.0f;
+	effect_left_time = (DWORD)0.0f;
+	effect_right_time = (DWORD)0.0f;
+	effect_right_time_start = (DWORD)0.0f;
+	effect_left_time_start = (DWORD)0.0f;
+	isRight = 0;
+	intro_state = 0;
+	create_time = (DWORD)GetTickCount64();
+}
+
 void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
 	// if (intro_state) CreateIntroAnimationLeaf();
 	if (hiden_state) return;
-	if (state == EFFECT_STATE)
+	if (state == LEAF_STATE_FLY)
 	{
 		DebugOut(L"CLeaf class \n");
 
@@ -64,27 +80,14 @@ void CLeaf::Render()
 	animation_set->at(ani)->Render(x, y);
 }
 
-CLeaf::CLeaf()
-{
-	SetState(EFFECT_STATE);
-	effect_state = 0;
-	// hiden_state = 1;
-	effect_left_time_start = (DWORD)0.0f;
-	effect_left_time = (DWORD)0.0f;
-	effect_right_time = (DWORD)0.0f;
-	effect_right_time_start = (DWORD)0.0f;
-	effect_left_time_start = (DWORD)0.0f;
-	isRight = 0;
-	intro_state = 0;
-	create_time = (DWORD)GetTickCount64();
-}
+
 
 void CLeaf::SetState(int state)
 {
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case EFFECT_STATE:
+	case LEAF_STATE_FLY:
 		hiden_state = 0;
 		if (effect_state == 0)
 		{

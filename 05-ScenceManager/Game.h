@@ -44,6 +44,7 @@ class CGame
 	// class hub
 	int coin = 0;
 	int time = 0;
+	int score = 0;
 	//
 	unordered_map<int, LPSCENE> scenes;
 	int current_scene; 
@@ -59,6 +60,9 @@ public:
 	void SetCoinGame(int c) { coin = c; }
 	int GetCoinGame() { return coin; }
 	// end class hub
+
+	int GetScore() { return score; }
+	void SetScore(int s) { score = s; }
 
 	void InitKeyboard();
 	void SetKeyHandler(LPKEYEVENTHANDLER handler) { keyHandler = handler; }

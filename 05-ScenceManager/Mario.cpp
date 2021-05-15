@@ -15,7 +15,7 @@
 #include "FirePlantBullet.h"
 #include "FirePiranhaPlant.h"
 #include "PiranhaPlant.h"
-
+#include "Leaf.h"
 #include "Mushroom.h"
 
 
@@ -275,6 +275,24 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					coin->SetState(COIN_STATE_HIDEN);*/
 
 				}
+			}
+
+			if (dynamic_cast<CLeaf*>(e->obj))
+			{
+				CLeaf* leaf = dynamic_cast<CLeaf*>(e->obj);
+				if (leaf->GetState() != LEAF_STATE_HIDEN)
+				{
+					leaf->SetState(LEAF_STATE_HIDEN);
+				/*	SetState(MARIO_STATE_SMOKE);
+					SetPosition(x, y - 2);
+					smoke_start = (DWORD)GetTickCount64();*/
+					//SetLevel(GetLevel() + 1);
+				}
+				//else
+				//{
+				//	leaf->SetState(LEAF_STATE_HIDEN);
+				//	// if (!intro_state) DisplayScores(4, leaf->x, leaf->y, (DWORD)GetTickCount64());
+				//}
 			}
 
 			if (dynamic_cast<CMushroom*>(e->obj))

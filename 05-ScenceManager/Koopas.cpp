@@ -5,6 +5,7 @@
 #include "ColorBrick.h"
 #include "Goomba.h"
 #include "QuestionBrick.h"
+#include "Leaf.h"
 
 
 CKoopas::CKoopas()
@@ -79,7 +80,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		for (UINT i = 0; i < coEventsResult.size(); i++) {
 			LPCOLLISIONEVENT e = coEventsResult[i];
-			
+
 			if (state == KOOPAS_STATE_WALKING_LEFT || state == KOOPAS_STATE_WALKING_RIGHT)
 			{
 				if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
@@ -97,14 +98,24 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					SetState(KOOPAS_STATE_SPIN_RIGHT);
 				}
+				
 			}
 			else if (state == KOOPAS_STATE_SPIN_RIGHT)
 			{
-				if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CQuestionBrick*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
+				if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
 				{
-				SetState(KOOPAS_STATE_SPIN_LEFT);
+					SetState(KOOPAS_STATE_SPIN_LEFT);
 				}
-
+				if (dynamic_cast<CQuestionBrick*>(e->obj)) {
+					CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
+					if (questionBrick->GetState() != QUESTION_BRICK_ANI_CRETE) {
+						questionBrick->SetItemWhenCollision(LEAF_STATE_FLY);
+						questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
+					}
+					SetState(KOOPAS_STATE_SPIN_LEFT);
+				}
+				
+				
 			}
 		
 		}
@@ -177,6 +188,7 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_SPIN_RIGHT:
 		stateKoopaTortoiSeShell = false;
 		vx = KOOPAS_SPINNING_SPEED;
+	///	vx = 0.075f;
 		break;
 	case KOOPAS_STATE_SPIN_LEFT:
 		stateKoopaTortoiSeShell = false;
@@ -223,6 +235,7 @@ void CKoopas::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLI
 			if (c->ny < 0) {
 				min_ty = c->t; ny = c->ny; min_iy = i; rdy = c->dy;
 			}
+			// continue;
 		}
 		else if (dynamic_cast<CRoad*>(c->obj)) {	
 			if (c->ny < 0) {

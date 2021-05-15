@@ -2,6 +2,8 @@
 #include "Utils.h"
 #include "ItemCoin.h"
 #include "Mushroom.h"
+#include "Leaf.h"
+
 
 CQuestionBrick::CQuestionBrick(float _originY)
 {
@@ -67,6 +69,13 @@ void CQuestionBrick::SetItemWhenCollision(int state)
 	for (int i = 0; i < 5; i++)
 	{
 		if (itemInBrick[i] != NULL ) {
+
+				// itemInBrick[i] == LEAF_STATE_HIDEN && 
+			if (itemInBrick[i]->GetState() == LEAF_STATE_HIDEN &&  dynamic_cast<CLeaf*>(itemInBrick[i])) {
+				DebugOut(L"ssssssssssssssss: %d \n", itemInBrick[i]->GetState());
+				itemInBrick[i]->SetState(state);
+			}
+
 			/*if (dynamic_cast<CMushroom*>(itemInBrick[i])) {
 				
 			}

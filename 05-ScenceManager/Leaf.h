@@ -8,9 +8,9 @@
 #define LEAF_SPEED_X				0.08f
 #define LEAF_GRAVITY_Y				0.03f
 
-#define LEAF_STATE_HIDEN			0
-#define EFFECT_STATE				1
-#define LEAF_STATE_NORMAL			2
+#define LEAF_STATE_HIDEN			100
+#define LEAF_STATE_FLY				200
+#define LEAF_STATE_NORMAL		300
 
 #define LEAF_EFFECT_LEFT_ANI		0
 #define LEAF_EFFECT_RIGHT_ANI		1
