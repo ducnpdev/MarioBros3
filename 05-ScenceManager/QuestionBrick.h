@@ -7,12 +7,15 @@
 #define QUESTION_BRICK_ANI_MOVING		0
 #define QUESTION_BRICK_ANI_CRETE		1
 #define  QUESTION_BRICK_FALL 2
+#define NUMBER_ITEM_IN_BRICK  10
 
 class CQuestionBrick : public CGameObject
 {
 	// item la vi du nhu coin, mushroom, ..
-	CGameObject* itemInBrick[11];
+//	CGameObject* itemInBrick[11];
 	float brickOriginY;
+
+	CGameObject* itemInBrick[NUMBER_ITEM_IN_BRICK];
 
 public:
 	CQuestionBrick(float _originY);
@@ -22,4 +25,7 @@ public:
 	virtual void SetState(int state);
 	void SetItemWhenCollision(int state);
 	void PushItemQuestionBrick(CGameObject* item, int _countItem);
+
+	CGameObject* GetItemInBrick();
+
 };

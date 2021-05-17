@@ -21,7 +21,7 @@
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_BIG;
+	level = LEVEL_MARIO_SMAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 
@@ -255,8 +255,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					SetMarioFallState(true);
 
 					if (questionBrick->GetState() == QUESTION_BRICK_STATE_MOVING) {
-						// 200 là BRICK_STATE_INIT_COLLISION_MARIO
-						questionBrick->SetItemWhenCollision(200);
+						if (dynamic_cast<CCoin*>(questionBrick->GetItemInBrick())) {
+							DebugOut(L" xin chao 11111111111 \n");
+							coinplay->AddCoinHub();
+						}
+						questionBrick->SetItemWhenCollision(200); // 200 là BRICK_STATE_INIT_COLLISION_MARIO
 						questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
 					}
 				}

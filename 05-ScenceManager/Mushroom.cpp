@@ -12,7 +12,6 @@ CMushroom::CMushroom(int _state)
 void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	 if (state == MUSHROOM_STATE_HIDEN) {
-		// DebugOut(L"state musrom hiden %d \n", state);
 		 return;
 	 } 
 	CGameObject::Update(dt, coObjects);
@@ -33,7 +32,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (state == MUSHROOM_STATE_NORMAL) {
 	//	DebugOut(L"MUSHROOM_STATE_NORMAL mushroom \n");
-		vy += 0.000605f * dt;
+		vy += 0.00069f * dt;
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
 

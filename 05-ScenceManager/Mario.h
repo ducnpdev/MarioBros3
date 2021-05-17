@@ -42,6 +42,9 @@ class CMario : public  CCollision
 	DWORD timeMarioSmoke;
 
 	CGameObject* tortoiseshell;
+	// start hub
+	CCoinPlay* coinplay;
+	// end hub
 
 public: 
 	CMario(float x = 0.0f, float y = 0.0f);
