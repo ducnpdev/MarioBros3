@@ -57,12 +57,14 @@ public:
 	// start class hub
 	void SetTimeGame(int t) { time = t; }
 	int GetTimeGame() { return time; }
+
 	void SetCoinGame(int c) { coin = c; }
 	int GetCoinGame() { return coin; }
-	// end class hub
 
 	int GetScore() { return score; }
 	void SetScore(int s) { score = s; }
+	// end class hub
+
 
 	void InitKeyboard();
 	void SetKeyHandler(LPKEYEVENTHANDLER handler) { keyHandler = handler; }

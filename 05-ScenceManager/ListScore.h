@@ -39,7 +39,7 @@ class CListScore : public CGameObject
 {
 	int score;
 	CScore* itemScore;
-	int display_state;
+//	int display_state;
 	DWORD display_start;
 public:
 	CListScore() { SetState(SCORE_STATE_HIDEN); }

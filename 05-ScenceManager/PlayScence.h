@@ -41,6 +41,8 @@ protected:
 	CTime* time;
 	CCoinPlay* coinPlay;
 	CListArrow* arrows;
+	CScore* score;
+	CListScore* listScore[3];
 	CLives* lives;
 
 	CCard* cards[3];

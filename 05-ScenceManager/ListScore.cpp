@@ -7,10 +7,10 @@ void CListScore::SetState(int state)
 	switch (state)
 	{
 	case SCORE_STATE_HIDEN:
-		display_state = 0;
+	//	display_state = 0;
 		break;
 	default:
-		display_state = 1;
+		// display_state = 1;
 		break;
 	}
 }

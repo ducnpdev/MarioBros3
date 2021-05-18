@@ -19,6 +19,7 @@
 
 class CHub : public CGameObject
 {
+	CScore* score;
 	CCamera* camera;
 	CListArrow* arrows;
 	CLives* lives;
@@ -36,5 +37,6 @@ public:
 	void SetArrowHub(CListArrow* a);
 	void SetCardHub(CCard* c[MaxShowCards]);
 	void SetCameraHub(CCamera* c);
+	void SetScore(CScore* s);
 	void SetLives(CLives* l);
 };

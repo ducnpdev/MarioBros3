@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "GameObject.h"
 #include "Number.h"
 #include "Utils.h"
@@ -13,10 +13,11 @@
 
 class CScore : public CGameObject
 {
-	vector<CNumber*> numbers;
+	vector<CNumber*> numbers;	 // để lưu số lượng các số, loop 
 	int score;
 public:
 	CScore();
+	CScore(vector<CNumber*> num);
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);

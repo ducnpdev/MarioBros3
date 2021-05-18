@@ -2,6 +2,7 @@
 
 CHub::CHub()
 {
+	score = NULL;
 	time = NULL; 
 	camera = NULL;
 	coin = NULL;	
@@ -28,6 +29,7 @@ void CHub::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (coin != NULL)  coin->SetPositionNumbers(camera->GetPositionCameraX() + 160.0f, camera->GetPositionCameraY() + 176.0f);
 	if (arrows != NULL) arrows->SetPositionListArrow(camera->GetPositionCameraX() + 80.0f, camera->GetPositionCameraY() + 176.0f);
 	if (lives != NULL) lives->SetPositionNumbers(camera->GetPositionCameraX() + 56.0f, camera->GetPositionCameraY() + 185.0f);
+	if (score != NULL) score->SetPositionNumbers(camera->GetPositionCameraX() + 80.0f, camera->GetPositionCameraY() + 185.0f);
 }
 
 
@@ -65,4 +67,9 @@ void CHub::SetCardHub(CCard* c[MaxShowCards])
 void CHub::SetCameraHub(CCamera* c)
 {
 	camera = c;
+}
+
+void CHub::SetScore(CScore* s)
+{
+	score = s; 
 }

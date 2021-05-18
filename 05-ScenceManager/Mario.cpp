@@ -88,15 +88,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 					if (e->ny < 0) {
-						if (goomba->GetState() != GOOMBA_STATE_IDLE) {
+						if (goomba->GetState() != GOOMBA_STATE_DIE) {
 							if (goomba->getColorGoomba() != PARA_GOOMBA_BROWN) {
 								goomba->SetState(GOOMBA_STATE_DIE);
+								DisplayListScore(4, goomba->x, goomba->y, GetTickCount());
 							}
 							else {
-								// change paraGoomba -> goomba yellow
 								goomba->setColorGoomba(GOOMBA_YELLOW_COLOR);
 							}
-							// jump when collision goomba
 							vy = -0.2f;
 							isJump = 1;
 						}
@@ -107,7 +106,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						{
 							if (level > LEVEL_MARIO_SMAIL)
 							{
-							//	DebugOut(L"level:",GetMarioLevel());
 								SetMarioLevel(GetMarioLevel() - 1 );
 								StartUntouchable();
 							}
@@ -904,6 +902,40 @@ void CMario::marioSetUpDownLevel(int _level)
 		SetLevel(LEVEL_MARIO_FIRE);
 		break;
 	}
+}
+
+void CMario::CreateListScore(CListScore* s)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		if (listScore[i] == NULL) {
+			listScore[i] = s;
+			break;
+		}
+		else if (listScore[i]->GetState() != SCORE_STATE_HIDEN)
+		{
+			listScore[i]->SetState(SCORE_STATE_HIDEN);
+		}
+	}
+}
+
+void CMario::DisplayListScore(int s, float x, float y, DWORD t)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		if (listScore[i]->GetState() == SCORE_STATE_HIDEN)
+		{
+			listScore[i]->DisplayScores(s, x, y, t);
+			break;
+		}
+	}
+}
+
+void CMario::CreateTail(CTail* t)
+{
+	if (tail != NULL) return;
+
+	tail = t;
 }
 
   

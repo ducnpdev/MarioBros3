@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "Coin.h" 
 #include "Tail.h" 
-
+#include "ListScore.h"
 
 class CMario : public  CCollision
 {
@@ -44,6 +44,7 @@ class CMario : public  CCollision
 	CGameObject* tortoiseshell;
 	// start hub
 	CCoinPlay* coinplay;
+	CListScore* listScore[3];
 	// end hub
 
 public: 
@@ -133,13 +134,9 @@ public:
 	// object 
 	void SetCoinHubPlay(CCoinPlay* c) { coinplayhub = c; }
 	CCoinPlay* GetCoinHubPlay() { return coinplayhub; }
-
-	void CreateTail(CTail* t) {
-		if (tail == NULL)
-		{
-			tail = t;
-		}
-	}
+	void CreateListScore(CListScore* s);
+	void DisplayListScore(int s, float x, float y, DWORD t);
+	void CreateTail(CTail* t);
 
 
 	// func sub handler

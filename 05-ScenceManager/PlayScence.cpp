@@ -8,8 +8,8 @@
 #include "Sprites.h"
 #include "Portal.h"
 #include "Road.h"
-
-
+#include "Score.h"
+#include "ListScore.h"
 
 using namespace std;
 
@@ -144,7 +144,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		obj = new CMario(x,y); 
 		player = (CMario*)obj;  
-		DebugOut(L"load class mario \n");
 		break;
 	case OBJECT_TYPE_BRICK: {
 		obj = new CBrick();
@@ -157,13 +156,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		hub->SetCoinHub(coinPlay);
 		hub->SetArrowHub(arrows);
 		hub->SetLives(lives);
+		hub->SetScore(score);
 		break;
 	}
 	case OBJECT_TYPE_NUMBER: {
 		int typetmp = atoi(tokens[4].c_str());
 		obj = new CNumber();
 		if (typetmp == 0) {
-			// num is time
 			num.push_back((CNumber*)obj);
 		}
 		if (typetmp == 1) {
@@ -198,9 +197,22 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CLives(numLives);
 		lives = (CLives*)obj;
 		break;
-	case OBJECT_TYPE_SCORE_EFFECT: 
-		obj = new CLives(numLives);
-		lives = (CLives*)obj;
+	case OBJECT_TYPE_SCORE:
+		obj = new CScore(numScore);
+		score = (CScore*)obj;
+		break;
+	case OBJECT_TYPE_LIST_SCORE: 
+		obj = new CListScore();
+		for (int i = 0; i < 3; i++)
+		{
+			if (listScore[i] == NULL)
+			{
+				listScore[i] = (CListScore*)obj;
+				listScore[i]->SetScoresPlay(score);
+				player->CreateListScore(listScore[i]);
+				break;
+			}
+		}
 		break;
 	case OBJECT_TYPE_HUB_CARD:
 		obj = new CCard();

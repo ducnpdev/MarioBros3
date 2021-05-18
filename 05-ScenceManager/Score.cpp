@@ -4,6 +4,15 @@ CScore::CScore()
 {
 }
 
+CScore::CScore(vector<CNumber*> num)
+{
+	score = 0;
+	for (unsigned int i = 0; i < num.size(); i++)
+	{
+		numbers.push_back(num[i]);
+	}
+}
+
 void CScore::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGame* game = CGame::GetInstance();
@@ -38,6 +47,8 @@ void CScore::Render()
 }
 void CScore::SetScore(int s)
 {
+	CGame* game = CGame::GetInstance();
+	game->SetScore(game->GetScore() + s);
 }
 void CScore::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
