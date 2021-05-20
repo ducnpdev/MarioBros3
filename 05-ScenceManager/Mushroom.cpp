@@ -92,7 +92,7 @@ void CMushroom::SetState(int state)
 		break;
 	case MUSHROOM_STATE_NORMAL:
 		stateMovingMushroom = false;
-		vx = 0.05f;
+		vx = -0.05f;
 		break;
 	default:
 		break;

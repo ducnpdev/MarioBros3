@@ -1,9 +1,11 @@
 #include "ItemCoin.h"
 #include "Utils.h"
+#include "MarioConfig.h"
 
 CCoin::CCoin(int _state)
 {
-	SetState(COIN_STATE_HIDEN);
+	SetState(_state);
+	listScore = NULL;
 }
 
 void CCoin::SetState(int state)
@@ -15,7 +17,7 @@ void CCoin::SetState(int state)
 	case COIN_STATE_MOVING:
 		if (!stateMoving) {
 			stateMoving = true;
-			timeStateMoving = GetTickCount();
+			timeStateMoving = GetTickCount64();
 		}
 		break;
 	case COIN_STATE_HIDEN:
@@ -36,27 +38,27 @@ void CCoin::Render()
 	int ani = COIN_EFFECT_ANI;
 	if (GetState() == COIN_STATE_NORMAL)
 		ani = COIN_NORMAL_ANI;
-//	DebugOut(L"CCoin upate %f \n", GetState());
-	animation_set->at(1)->Render(x, y);
+	animation_set->at(ani)->Render(x, y);
 }
 
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (GetState() == COIN_STATE_HIDEN) return;
 
-	// DebugOut(L"state CCoin %d\n", state);
 	CGameObject::Update(dt, coObjects);
 	if (state == COIN_STATE_MOVING) {
 
-		if (GetTickCount() - timeStateMoving < 500) {
+		if (GetTickCount64() - timeStateMoving < 500) {
 			vy = 0.1f;
-			if (GetTickCount() - timeStateMoving < 300) {
+			if (GetTickCount64() - timeStateMoving < 300) {
 				vy = -0.1f;
 			}
 			y += dy;
 		}
 		else {
 			SetState(COIN_STATE_HIDEN);
+			// TODO 
+			//listScore->DisplayScores(MARIO_SCORE_100, x, y, GetTickCount64());
 		}
 	}
 }

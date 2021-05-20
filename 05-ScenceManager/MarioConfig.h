@@ -198,9 +198,17 @@
 #define ANI_MARIO_FIRE_WORLD_MAP		103
 #define ANI_MARIO_SMALL_DIE				104
 
-
-
-
 #define MARIO_TORTOISESHELL_PLUS_2					2
 #define MARIO_TORTOISESHELL_PLUS_10					10
 #define MARIO_TORTOISESHELL_PLUS_15					15
+
+// ## mario score number  ##
+
+#define MARIO_SCORE_100					0
+#define MARIO_SCORE_200					1
+#define MARIO_SCORE_400					2
+#define MARIO_SCORE_800				3
+#define MARIO_SCORE_1000					4
+#define MARIO_SCORE_2000					5
+
+

@@ -40,6 +40,8 @@ class CKoopas : public CCollision
 	bool hidenStateKoopas = false;
 	bool stateKoopaTortoiSeShell = false;
 
+	float prePosY;
+
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
@@ -52,6 +54,8 @@ class CKoopas : public CCollision
 		float& ny,
 		float& rdx,
 		float& rdy);
+		
+	void RedirectY();
 
 public:
 	CKoopas();

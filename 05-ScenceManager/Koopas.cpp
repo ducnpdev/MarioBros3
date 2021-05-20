@@ -6,12 +6,14 @@
 #include "Goomba.h"
 #include "QuestionBrick.h"
 #include "Leaf.h"
+#include "Mario.h"
+
 
 
 CKoopas::CKoopas()
 {
-	//SetState(KOOPAS_STATE_WALKING_RIGHT);
-	SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
+	SetState(KOOPAS_STATE_WALKING_RIGHT);
+	// SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
 
 }
 
@@ -31,6 +33,7 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	DebugOut(L"ssssssssssss \n");
 	if (hidenStateKoopas) return;
 	CGameObject::Update(dt, coObjects);
 	if (state != KOOPAS_STATE_TAKEN)  vy += KOOPA_GRAVITY * dt;
@@ -80,6 +83,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		for (UINT i = 0; i < coEventsResult.size(); i++) {
 			LPCOLLISIONEVENT e = coEventsResult[i];
+			if (!dynamic_cast<CMario*>(e->obj) && e->ny != 0)
+			{
+				prePosY = y;
+			}
 
 			if (state == KOOPAS_STATE_WALKING_LEFT || state == KOOPAS_STATE_WALKING_RIGHT)
 			{
@@ -120,7 +127,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		
 		}
 	}
-
+	RedirectY();
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	
 }
@@ -255,6 +262,27 @@ void CKoopas::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLI
 
 	if (min_ix >= 0) coEventsResult.push_back(coEvents[min_ix]);
 	if (min_iy >= 0) coEventsResult.push_back(coEvents[min_iy]);
+}
+
+void CKoopas::RedirectY()
+{
+	if (state == KOOPAS_STATE_WALKING_LEFT || state == KOOPAS_STATE_WALKING_RIGHT)
+	{
+		if (abs(prePosY - y) > 1 && prePosY != 0) {
+			if (vx > 0) {
+				SetPosition(x - 5, prePosY);
+				SetState(KOOPAS_STATE_WALKING_LEFT);
+				prePosY = y;
+			}
+			else {
+				SetPosition(x + 5, prePosY);
+				SetState(KOOPAS_STATE_WALKING_RIGHT);
+				prePosY = y;
+			}
+		}
+
+	}
+
 }
 
 

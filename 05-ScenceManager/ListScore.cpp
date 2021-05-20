@@ -3,34 +3,21 @@
 void CListScore::SetState(int state)
 {
 	CGameObject::SetState(state);
-
-	switch (state)
-	{
-	case SCORE_STATE_HIDEN:
-	//	display_state = 0;
-		break;
-	default:
-		// display_state = 1;
-		break;
-	}
 }
 
-void CListScore::SetScoresPlay(CScore* s)
+void CListScore::SetScoresPlay(CScore* type)
 {
-	itemScore = s; 
+	itemScore = type; 
 }
 
-void CListScore::DisplayScores(int score, float x, float y, DWORD t)
+void CListScore::DisplayScores(int typeNumber, float posX, float posY, DWORD time)
 {
-	SetState(score);
-	SetPosition(x, y);
-	display_start = t;
+	SetState(typeNumber);
+	SetPosition(posX, posY);
+	display_start = time;
 	vy = -SCORE_SPEED_Y;
 
-	if (state == SCORE_STATE_100)
-	{
-		AddScorePlay(SCORE_MINIMUN);
-	}
+	if (state == SCORE_STATE_100) AddScorePlay(SCORE_MINIMUN);
 	else if (state == SCORE_STATE_200) AddScorePlay(SCORE_200);
 	else if (state == SCORE_STATE_400) AddScorePlay(SCORE_400);
 	else if (state == SCORE_STATE_800) AddScorePlay(SCORE_800);
@@ -41,9 +28,9 @@ void CListScore::DisplayScores(int score, float x, float y, DWORD t)
 
 }
 
-void CListScore::AddScorePlay(int s)
+void CListScore::AddScorePlay(int typeNumber)
 { 
-	itemScore->SetScore(s); 
+	itemScore->SetScore(typeNumber);
 }
 
 void CListScore::Render()
@@ -65,15 +52,13 @@ void CListScore::Render()
 void CListScore::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (state == SCORE_STATE_HIDEN) return;
-	else
+	
+	if (GetTickCount64() - display_start < SCORE_DISPLAY_TIME)
 	{
-		if (GetTickCount64() - display_start < SCORE_DISPLAY_TIME)
-		{
-			y += vy * dt;
-		}
-		else SetState(SCORE_STATE_HIDEN);
-
+		y += vy * dt;
 	}
+	else SetState(SCORE_STATE_HIDEN);
+
 }
 
 void CListScore::GetBoundingBox(float& l, float& t, float& r, float& b)
