@@ -124,7 +124,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					if (e->ny < 0) {
 						if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN) {
 							DisplayListScore(MARIO_SCORE_100, koopa->x, koopa->y, (DWORD)GetTickCount64());
-							koopa->SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
+							if (koopa->GetTypeKoopa() == PARAKOOPA_COLOR_GREEN)
+								koopa->SetTypeKoopa(KOOPA_GREEN_FORM);
+							else koopa->SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
 							vy = -0.2f;
 						}
 						else if (koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_DOWN) {
@@ -258,7 +260,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						if (dynamic_cast<CCoin*>(questionBrick->GetItemInBrick())) {
 							coinplay->AddCoinHub();
 						}
-						questionBrick->SetItemWhenCollision(200); // 200 là BRICK_STATE_INIT_COLLISION_MARIO
+						questionBrick->SetItemWhenCollision(COIN_EFFECT_ANI); // 200 là BRICK_STATE_INIT_COLLISION_MARIO
 						questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
 					}
 				}
@@ -271,12 +273,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<CCoin*>(e->obj)) // if e->obj is Koopa
 			{
 				CCoin* coin = dynamic_cast<CCoin*>(e->obj);
-
 				if (coin->GetState() == COIN_STATE_NORMAL)
 				{
+
 					coinplay->AddCoinHub();
 					coin->SetState(COIN_STATE_HIDEN);
-
 				}
 			}
 
@@ -953,7 +954,7 @@ void CMario::handlerMarioUpLevelOtherSmall()
 	if (!marioStateUpLevel ) {
 		return;
 	}
-	if (GetTickCount() - timeMarioUpLevel < 2000)
+	if (GetTickCount64() - timeMarioUpLevel < 2000)
 	{
 		return;
 	}
@@ -969,7 +970,7 @@ void CMario::handlerMarioUpLevelSmoke()
 {
 	if (!marioStateSmoke) return;
 
-	if (GetTickCount() - timeMarioSmoke < 1000) return;
+	if (GetTickCount64() - timeMarioSmoke < 1000) return;
 
 	marioStateSmoke = false;
 	SetLevel(LEVEL_MARIO_TAIL);

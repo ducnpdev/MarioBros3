@@ -69,35 +69,17 @@ void CQuestionBrick::SetItemWhenCollision(int state)
 	for (int i = 0; i < 5; i++)
 	{
 		if (itemInBrick[i] != NULL ) {
-				// itemInBrick[i] == LEAF_STATE_HIDEN && 
 			if (itemInBrick[i]->GetState() == LEAF_STATE_HIDEN &&  dynamic_cast<CLeaf*>(itemInBrick[i])) {
-			//	DebugOut(L"ssssssssssssssss: %d \n", itemInBrick[i]->GetState());
 				itemInBrick[i]->SetState(state);
 			}
-
-			/*if (dynamic_cast<CMushroom*>(itemInBrick[i])) {
-				
-			}
-
-			if (dynamic_cast<CCoin*>(itemInBrick[i])) {
-				
-			}*/
-
-
-			if (itemInBrick[i]->GetState() == 100 && dynamic_cast<CMushroom*>(itemInBrick[i])) {
-				// DebugOut(L"Coin CMushroom %d \n", itemInBrick[i]->GetState());
+			if (itemInBrick[i]->GetState() == MUSHROOM_STATE_HIDEN && dynamic_cast<CMushroom*>(itemInBrick[i])) {
 				itemInBrick[i]->SetPosition(x, y - 16);
-				itemInBrick[i]->SetState(state);
-				// itemInBrick[i] = NULL;
+				itemInBrick[i]->SetState(MUSHROOM_STATE_MOVING);
 			}
-			
-			if (itemInBrick[i]->GetState() == 100 && dynamic_cast<CCoin*>(itemInBrick[i])) {
-				// DebugOut(L"Coin State %d \n", itemInBrick[i]->GetState());
-				itemInBrick[i]->SetPosition(x + 4, y -16);
+			if (itemInBrick[i]->GetState() == COIN_STATE_HIDEN && dynamic_cast<CCoin*>(itemInBrick[i])) {
+				itemInBrick[i]->SetPosition(x + 4, y - 16);
 				itemInBrick[i]->SetState(state);
-				// itemInBrick[i] = NULL;
 			}
-						
 		}
 	}
 }

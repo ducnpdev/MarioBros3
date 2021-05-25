@@ -10,17 +10,22 @@
 
 
 
-CKoopas::CKoopas()
+CKoopas::CKoopas(int type)
 {
-	SetState(KOOPAS_STATE_WALKING_RIGHT);
+	SetState(KOOPAS_STATE_WALKING_LEFT);
 	// SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
+	SetTypeKoopa(type);
+	if (typeKoopa == PARAKOOPA_COLOR_GREEN)	nx = -1;
 
+	
 }
 
 void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x;
 	top = y;
+	if (isKoopaDie) return;
+
 	right = x + KOOPAS_BBOX_WIDTH;
 	bottom = y + KOOPAS_BBOX_HEIGHT;
 	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN || state == KOOPAS_STATE_REBORN) {
@@ -33,7 +38,7 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	DebugOut(L"ssssssssssss \n");
+	//DebugOut(L"ssssssssssss \n");
 	if (hidenStateKoopas) return;
 	CGameObject::Update(dt, coObjects);
 	if (state != KOOPAS_STATE_TAKEN)  vy += KOOPA_GRAVITY * dt;
@@ -41,11 +46,11 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// vy = 0;
 
 	// koopa chuẩn bị hồi sinh
-	if (stateKoopaTortoiSeShell && GetTickCount() - timeStateTorToiSeShell > 5000 && GetTickCount() - timeStateTorToiSeShell < 7000)  {
+	if (stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > 5000 && GetTickCount64() - timeStateTorToiSeShell < 7000)  {
 		SetState(KOOPAS_STATE_REBORN);
 	}
 	// hồi sinh qua trạng thái ban đầu
-	else if(stateKoopaTortoiSeShell && GetTickCount() - timeStateTorToiSeShell > 7000) {
+	else if(stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > 7000) {
 		SetPosition(x, y - 10);
 		SetState(KOOPAS_STATE_WALKING_RIGHT);
 	}
@@ -88,6 +93,16 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				prePosY = y;
 			}
 
+			if (typeKoopa == PARAKOOPA_COLOR_GREEN)
+			{
+				if (e->ny < 0) { 
+					if (GetTickCount64() - timeFly > KOOPAS_TIME_FLY) {
+						vy = -KOOPAS_FLY_INTERVAL;
+						timeFly = GetTickCount64();
+					}
+				}
+			}
+
 			if (state == KOOPAS_STATE_WALKING_LEFT || state == KOOPAS_STATE_WALKING_RIGHT)
 			{
 				if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
@@ -98,7 +113,17 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 					else if (e->nx < 0) SetState(KOOPAS_STATE_WALKING_LEFT);
 				}
+				if (dynamic_cast<CMario*>(e->obj))
+				{
+					/*CMario* mario = dynamic_cast<CMario*>(e->obj);
+					if (mario->GetState() == MARIO_STATE_FIGHT)
+						vy = -KOOPA_JUMP_DEFLECT_SPEED;*/
+					DebugOut(L"1111111111\n");
+
+				}
+
 			}
+
 			if (state == KOOPAS_STATE_SPIN_LEFT)
 			{
 				if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CQuestionBrick*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
@@ -125,9 +150,9 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				
 			}
 		
-		}
+		}	
 	}
-	RedirectY();
+	if (typeKoopa == KOOPA_COLOR_RED)  RedirectY();
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	
 }
@@ -137,8 +162,23 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CKoopas::Render()
 {
 	if (hidenStateKoopas) return;
+
+	switch (typeKoopa)
+	{
+	case KOOPA_COLOR_RED:
+		ani = RenderKoopaRed();
+		break;
+	case PARAKOOPA_COLOR_GREEN:
+		ani = RenderParakoopaGreen();
+		break;
+	default:
+		ani = RenderKoopaGreen();
+		break;
+	}
+
+
 	// koopas color red
-	int ani = KOOPAS_ANI_WALKING_LEFT;
+	/*int ani = KOOPAS_ANI_WALKING_LEFT;
 	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN) {
 		ani = KOOPAS_ANI_RED_TORTOISESHELL_DOWN;
 	}
@@ -152,13 +192,12 @@ void CKoopas::Render()
 	}
 	else if (state == KOOPAS_STATE_TAKEN) {
 		ani = 2;
-	}
+	}*/
 
 	// koopas color green
 
 
 	animation_set->at(ani)->Render(x, y);
-
 	RenderBoundingBox();
 }
 
@@ -172,7 +211,7 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_TORTOISESHELL_DOWN:
 		vx = 0;
 		vy = 0;
-		timeStateTorToiSeShell = GetTickCount();
+		timeStateTorToiSeShell = GetTickCount64();
 		stateKoopaTortoiSeShell = true;
 		break;
 	case KOOPAS_STATE_DIE:
@@ -180,7 +219,7 @@ void CKoopas::SetState(int state)
 		vx = 0;
 		vy = 0;
 		stateKoopaTortoiSeShell = false;
-
+		isKoopaDie = true;
 		break;
 	case KOOPAS_STATE_WALKING_RIGHT:
 		stateKoopaTortoiSeShell = false;
@@ -218,6 +257,63 @@ void CKoopas::SetState(int state)
 
 }
 
+int CKoopas::RenderKoopaRed()
+{
+	int ani = KOOPAS_ANI_RED_WALKING_LEFT;
+	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN) {
+		ani = KOOPAS_ANI_RED_TORTOISESHELL_DOWN;
+	}
+	else if (state == KOOPAS_STATE_SPIN_LEFT || state == KOOPAS_STATE_SPIN_RIGHT)
+		ani = KOOPAS_ANI_RED_SPIN_DOWN;
+	else if (state == KOOPAS_STATE_REBORN) {
+		ani = KOOPA_ANI_RED_REBORN_DOWN;
+	}
+	else if (state == KOOPAS_STATE_WALKING_LEFT) {
+		ani = KOOPAS_ANI_RED_WALKING_RIGHT;
+	}
+	else if (state == KOOPAS_STATE_TAKEN) {
+		ani = 2;
+	}
+	return ani;
+}
+
+int CKoopas::RenderKoopaGreen()
+{
+	if (isKoopaDie) ani = 15;
+	/*else if (intro_state && state == KOOPA_STATE_TAKEN || intro_state && state == KOOPA_STATE_TORTOISESHELL_DOWN)
+		ani = KOOPA_ANI_GREEN_TAKEN_DOWN;*/
+	else if (vx < 0 && state != KOOPAS_STATE_SPIN_LEFT && state != KOOPAS_STATE_SPIN_RIGHT)
+		ani = KOOPA_ANI_GREEN_WALKING_LEFT;
+	else if (state == KOOPAS_STATE_REBORN)
+		ani = KOOPA_ANI_GREEN_REBORN_DOWN;
+	/*else if (state == KOOPAS_STATE_REBORN && !isDown)
+		ani = 19;*/
+	else if (state == KOOPAS_STATE_TORTOISESHELL_DOWN)
+		ani = KOOPA_ANI_GREEN_TORTOISESHELL_DOWN;
+	/*else if (state == KOOPA_STATE_TORTOISESHELL_UP)
+		ani = KOOPA_ANI_GREEN_TORTOISESHELL_UP;*/
+	else if (state == KOOPAS_STATE_SPIN_LEFT || state == KOOPAS_STATE_SPIN_RIGHT)
+		ani = KOOPA_ANI_GREEN_SPIN_DOWN;
+	/*else if (state == KOOPA_STATE_SPIN_LEFT && !isDown || state == KOOPA_STATE_SPIN_RIGHT && !isDown)
+		ani = KOOPA_ANI_GREEN_SPIN_UP;
+	else if (state == KOOPA_STATE_TAKEN && isDown)
+		ani = KOOPA_ANI_GREEN_TAKEN_DOWN;
+	else if (state == KOOPA_STATE_TAKEN && !isDown)
+		ani = KOOPA_ANI_GREEN_TAKEN_UP;*/
+	else ani = KOOPA_ANI_GREEN_WALKING_RIGHT;
+	return ani;
+}
+
+int CKoopas::RenderParakoopaGreen()
+{
+	if (isKoopaDie) ani = KOOPA_ANI_GREEN_TAKEN_UP;
+	else if (nx < 0) ani = PARAKOOPA_ANI_GREEN_JUMPING_LEFT;
+	else ani = PARAKOOPA_ANI_GREEN_JUMPING_RIGHT;
+	return ani;
+}
+
+
+
 
 
 void CKoopas::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLISIONEVENT>& coEventsResult, float& min_tx, float& min_ty, float& nx, float& ny, float& rdx, float& rdy)
@@ -235,14 +331,15 @@ void CKoopas::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLI
 	for (UINT i = 0; i < coEvents.size(); i++)
 	{
 		LPCOLLISIONEVENT c = coEvents[i];
-		if (dynamic_cast<CGoomba*>(c->obj)) {
+		/*if (dynamic_cast<CGoomba*>(c->obj)) {
 			continue;
-		}
-		else if (dynamic_cast<CColorBrick*>(c->obj)) {
+		}*/
+		// else
+		if (dynamic_cast<CColorBrick*>(c->obj)) {
 			if (c->ny < 0) {
 				min_ty = c->t; ny = c->ny; min_iy = i; rdy = c->dy;
 			}
-			// continue;
+			continue;
 		}
 		else if (dynamic_cast<CRoad*>(c->obj)) {	
 			if (c->ny < 0) {

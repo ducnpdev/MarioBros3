@@ -152,12 +152,11 @@ void CGridResource::_ParseSection_Grid_ENEMIES(string line) {
 	switch (type)
 	{
 	case OBJECT_TYPE_GOOMBA: {
-		// DebugOut(L"typeColorGoomba %d \n", state);
 		obj = new CGoomba(state);
 		break;
 	}
 	case OBJECT_TYPE_KOOPAS: {
-		obj = new CKoopas(); 
+		obj = new CKoopas(state);
 		break; 
 	}
 	default:

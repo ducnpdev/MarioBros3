@@ -96,8 +96,8 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	// handle para goomba jump with 
 	if (typeColorGoomba == PARA_GOOMBA_BROWN) {
-		if (GetTickCount() - timeParaGoomba < 2000) {
-			if (GetTickCount() - timeParaGoomba < 700) {
+		if (GetTickCount64() - timeParaGoomba < 2000) {
+			if (GetTickCount64() - timeParaGoomba < 700) {
 				SetState(GOOMBA_STATE_JUMPING);
 			}
 			else {
@@ -105,7 +105,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 		else {
-			timeParaGoomba = GetTickCount();
+			timeParaGoomba = GetTickCount64();
 		}
 	}
 }
@@ -117,10 +117,8 @@ void CGoomba::Render()
 		if (state == GOOMBA_STATE_DIE) {
 			ani = GOOMBA_ANI_YELLOW_DIE;
 		}
-		// 
 		else if (state == GOOMBA_STATE_DEFLECT) {
-			// Todo can thay ani = GOOMBA_ANI_DEFLECT
-			ani = 0;
+			ani = GOOMBA_ANI_DEFLECT;
 		}
 		// GOOMBA_STATE_IDLE sau khi mario collision 
 		else if (state == GOOMBA_STATE_IDLE) {
@@ -133,6 +131,8 @@ void CGoomba::Render()
 	}
 	animation_set->at(ani)->Render(x, y);
 }
+// 0 walking màu vang, 1 walking màu do,2 la do canh len mau do, 3 up canh xg mau do, 4 la xep xg sau va cham mau vang
+// 5 la xep xg sau va cham mau do, 
 
 void CGoomba::SetState(int state)
 {
@@ -202,6 +202,28 @@ void CGoomba::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLI
 	for (UINT i = 0; i < coEvents.size(); i++)
 	{
 		LPCOLLISIONEVENT c = coEvents[i];
+
+		if (dynamic_cast<CKoopas*>(c->obj)) {
+			if (c->nx != 0)
+			{
+				// TODO
+				if (c->t < 1.0f)
+				{
+					DebugOut(L"1111 \n");
+
+					min_tx = c->t; nx = c->nx; rdx = c->dx;
+					coEventsResult.push_back(coEvents[i]);
+				}
+				else {
+					DebugOut(L"2222 \n");
+				}
+			}
+			if (c->ny != 0)
+			{
+				DebugOut(L"3333 \n");
+			}
+		}
+
 
 		if (c->t < min_tx && c->nx != 0) {
 			min_tx = c->t; nx = c->nx; min_ix = i; rdx = c->dx;

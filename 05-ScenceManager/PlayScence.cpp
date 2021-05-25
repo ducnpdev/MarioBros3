@@ -10,6 +10,7 @@
 #include "Road.h"
 #include "Score.h"
 #include "ListScore.h"
+#include "ColorBrick.h"
 
 using namespace std;
 
@@ -422,12 +423,14 @@ void CPlayScene::Render()
 	// render tilemap 
 	mapBackground->RenderMap();
 
-	/*for (int i = 0; i < objects.size(); i++) {
-		objects[i]->Render();
-	}*/
 	for (int i = objects.size() - 1; i >= 0; i--)
 	{
-		if (!dynamic_cast<CPipe*>(objects[i])) objects[i]->Render();
+		if (dynamic_cast<CColorBrick*>(objects[i])) objects[i]->Render();
+	}
+	for (int i = objects.size() - 1; i >= 0; i--)
+	{
+		if (!dynamic_cast<CPipe*>(objects[i]) && (!dynamic_cast<CColorBrick*>(objects[i]))) 
+			objects[i]->Render();
 	}
 	for (int i = objects.size() - 1; i >= 0; i--)
 	{
