@@ -482,6 +482,15 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_8:
 		mario->SetPosition(2357, 80);
 		break;
+	case DIK_A:
+		if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL && !mario->GetMarioIsFight()
+		 && GetTickCount64() - mario->GetTimeIsFight() > 380)
+		{
+			DebugOut(L"aaaaaa \n");
+			mario->SetTimeIsFight(GetTickCount64());
+			mario->SetMarioIsFight(STATE_MARIO_FIGHT);
+		}
+		break;
 	case DIK_S:
 		// if(mario->GetMarioIsStandingFloor()) mario->SetState(STATE_MARIO_JUMP);
 		if (mario->GetMarioIsJump() == 0) {
@@ -494,7 +503,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			if (mario->vy != 0 &&  mario->GetMarioIsJump() == -1)
 			{
 
-				mario->SetTimeJumpStartFlyLow(GetTickCount());
+				mario->SetTimeJumpStartFlyLow(GetTickCount64());
 				if (mario->nx > 0)
 					mario->SetState(900);
 				else mario->SetState(910);

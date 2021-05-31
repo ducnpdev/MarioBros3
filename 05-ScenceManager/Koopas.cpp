@@ -118,8 +118,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					/*CMario* mario = dynamic_cast<CMario*>(e->obj);
 					if (mario->GetState() == MARIO_STATE_FIGHT)
 						vy = -KOOPA_JUMP_DEFLECT_SPEED;*/
-					DebugOut(L"1111111111\n");
-
+					// DebugOut(L"1111111111\n");
 				}
 
 			}

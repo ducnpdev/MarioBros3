@@ -21,7 +21,7 @@
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_SMAIL;
+	level = LEVEL_MARIO_TAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 
@@ -264,8 +264,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
 					}
 				}
-
+				
 				if (e->ny < 0) {
+					DebugOut(L"11111 \n");
 				}
 
 			}
@@ -288,6 +289,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					leaf->SetState(LEAF_STATE_HIDEN);
 					SetState(STATE_MARIO_SMOKE);
+					SetPosition(x, y - 2);
 					timeMarioSmoke = GetTickCount64();
 					DisplayListScore(MARIO_SCORE_1000, leaf->x, leaf->y, GetTickCount64());
 				}
@@ -318,7 +320,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 
-	if (GetTickCount() - timeStartKick < 300) {
+	if (GetTickCount64() - timeStartKick < 300) {
 		SetState(STATE_MARIO_KICK);
 	}
 
@@ -326,6 +328,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	handleMarioTorToiSeShell();
 
+	handlerMarioFight();
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
@@ -337,7 +340,7 @@ void CMario::MarioCollisionPiranhaPlant()
 
 
 void CMario::handlerMarioJumpFly() {
-	if (GetTickCount() - timeMarioJumpFlyLow < 300)
+	if (GetTickCount64() - timeMarioJumpFlyLow < 300)
 	{
 		if (nx > 0) SetState(900);
 		else SetState(910);
@@ -502,6 +505,9 @@ void CMario::SetState(int state)
 		marioStateSmoke = true;
 		vy = 0;
 		vx = 0;
+		break;
+	case STATE_MARIO_FIGHT:
+		marioStateFight = true;
 		break;
 	}
 }
@@ -741,10 +747,12 @@ int CMario::RenderLevelMarioBig() {
 int CMario::RenderLevelMarioTail() {
 	if (vx == 0)
 	{
+		// right
 		if (nx > 0) {
 			if (isStateSitDown) ani = 87;
 			else if (isJump == 1) ani = 28;
 			else if (isJumpFlyLow == 1) ani = 81;
+			else if (marioStateFight) ani = 72;
 			else if (isKick) ani = 36;
 			else if (marioStateTorToiSeShell) 	ani = 52;
 			else ani = 8;	
@@ -753,27 +761,30 @@ int CMario::RenderLevelMarioTail() {
 			if (isStateSitDown) ani = 88;
 			else if (isJump == 1) ani = 29;
 			else if (isJumpFlyLow == 1) ani = 82;
+			else if (marioStateFight) ani = 72;
 			else if (isKick) ani = 37;
 			else if (marioStateTorToiSeShell) 	ani = 53;
 			else ani = 9;
 		}
 	}
 	else if (vx > 0){
-		if (isTurn && !isRunning) ani =  68;
+		if (marioStateFight) ani = 72; 
 		else if (isJumpFlyLow == 1) ani = 81;
 		else if (isJump == 1) ani = 28;
 		else if(isRunning) ani = 20;
 		else if (isKick) ani = 36;
 		else if (marioStateTorToiSeShell) 	ani = 54;
+		else if (isTurn && !isRunning) ani = 68;
 		else ani = 10; 
 	} 
 	else {
-		if (isTurn && !isRunning) ani = 69;
+		 if (marioStateFight) 	ani = 72;
 		else if (isJump == 1 ) ani = 29;
 		else if (isJumpFlyLow == 1) ani = 82;
 		else if(isRunning) ani = 21;
 		else if (isKick) ani = 37;
 		else if (marioStateTorToiSeShell) 	ani = 55;
+		else if (isTurn && !isRunning) ani = 69;
 		else ani = 11; 
 	}
 	return ani;
@@ -975,6 +986,16 @@ void CMario::handlerMarioUpLevelSmoke()
 	marioStateSmoke = false;
 	SetLevel(LEVEL_MARIO_TAIL);
 	SetState(STATE_MARIO_IDLE);
+}
+
+void CMario::handlerMarioFight()
+{
+	if (GetTickCount64() - timeMarioFight < 400) {
+		// SetState(STATE_MARIO_FIGHT);
+		marioStateFight = true;
+		return;
+	}
+	marioStateFight = false;
 }
 
 

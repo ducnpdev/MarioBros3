@@ -24,8 +24,6 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (hiden_state) return;
 	if (state == LEAF_STATE_FLY)
 	{
-		DebugOut(L"CLeaf class \n");
-
 		if (!effect_left_time_start && !effect_right_time_start)
 		{
 			if (GetTickCount64() - effect_time_start < LEAF_EFFECT_RIGHT_TIME)

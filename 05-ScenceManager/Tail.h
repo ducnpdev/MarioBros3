@@ -17,7 +17,7 @@ public:
 	CTail()
 	{
 		fight_start = 0;
-		state = TAIL_STATE_HIDEN;
+		state = TAIL_STATE_FIGHT;
 	}
 	void SetState(int state);
 	virtual void Render();

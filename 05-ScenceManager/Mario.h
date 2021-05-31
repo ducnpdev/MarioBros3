@@ -31,6 +31,9 @@ class CMario : public  CCollision
 	bool marioStateUpLevel = false;
 	bool marioStateSmoke = false;
 	bool isJumpFlyLow = false;
+	bool marioStateFight = false;
+	DWORD timeMarioFight;
+
 	CTail* tail;
 	DWORD timeStartKick;
 	DWORD timeWalkingRight;
@@ -120,6 +123,11 @@ public:
 	bool GetMarioIsDie() { return marioStateDie; }
 	void SetMarioIsDie(bool stateDie) { marioStateDie = stateDie; }
 
+	bool GetMarioIsFight() { return marioStateFight; }
+	void SetMarioIsFight(bool stateFight) { marioStateFight = stateFight; }
+	void SetTimeIsFight(DWORD t) { timeMarioFight = t; }
+	DWORD GetTimeIsFight() { return timeMarioFight; }
+
 	bool GetMarioIsTortoiseshell() { return marioStateTorToiSeShell; }
 	void SetMarioIsTortoiseshell(bool stateTortoiseshell) { marioStateTorToiSeShell = stateTortoiseshell; }
 
@@ -145,6 +153,7 @@ public:
 	void plustortoiseshellInMario(int numberPlusLeft, int numberPlusRight);
 	void handlerMarioUpLevelOtherSmall();
 	void handlerMarioUpLevelSmoke(); 
+	void handlerMarioFight();
 
 	// collision
 	void MarioCollisionPiranhaPlant();

@@ -78,6 +78,7 @@
 
 
 #define STATE_MARIO_JUMP					300
+#define STATE_MARIO_FIGHT					800
 #define STATE_MARIO_DIE						999
 
 // **************** MARIO -> TIME - TIME ****************

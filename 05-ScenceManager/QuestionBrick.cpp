@@ -70,7 +70,7 @@ void CQuestionBrick::SetItemWhenCollision(int state)
 	{
 		if (itemInBrick[i] != NULL ) {
 			if (itemInBrick[i]->GetState() == LEAF_STATE_HIDEN &&  dynamic_cast<CLeaf*>(itemInBrick[i])) {
-				itemInBrick[i]->SetState(state);
+				itemInBrick[i]->SetState(LEAF_STATE_FLY);
 			}
 			if (itemInBrick[i]->GetState() == MUSHROOM_STATE_HIDEN && dynamic_cast<CMushroom*>(itemInBrick[i])) {
 				itemInBrick[i]->SetPosition(x, y - 16);
