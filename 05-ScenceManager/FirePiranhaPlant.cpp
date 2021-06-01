@@ -23,12 +23,8 @@ void CFirePiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	if (y >= y_limit) {
 		y += dy;
-	//	DebugOut(L"y_limit 111111111: %f %f\n", y_limit, y);
-
 	}
 	else {
-	//	DebugOut(L"y_limit 222222: %f %f\n", y_limit, y);
-
 		y = y_limit;
 	}
 	// TODO check lai

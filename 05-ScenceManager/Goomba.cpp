@@ -209,18 +209,18 @@ void CGoomba::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLI
 				// TODO
 				if (c->t < 1.0f)
 				{
-					DebugOut(L"1111 \n");
+					//DebugOut(L"1111 \n");
 
 					min_tx = c->t; nx = c->nx; rdx = c->dx;
 					coEventsResult.push_back(coEvents[i]);
 				}
 				else {
-					DebugOut(L"2222 \n");
+					//DebugOut(L"2222 \n");
 				}
 			}
 			if (c->ny != 0)
 			{
-				DebugOut(L"3333 \n");
+				//DebugOut(L"3333 \n");
 			}
 		}
 

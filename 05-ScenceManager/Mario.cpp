@@ -50,7 +50,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		CalcPotentialCollisions(coObjects, coEvents);
 
 	// reset untouchable timer if untouchable time has passed
-	if ( GetTickCount() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
+	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
 	{
 		untouchable_start = 0;
 		untouchable = 0;
@@ -82,6 +82,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		for (UINT i = 0; i < coEventsResult.size(); i++)
 		{
 			LPCOLLISIONEVENT e = coEventsResult[i];
+			// colission effect
 			if (untouchable == 0)
 			{
 				if (dynamic_cast<CGoomba*>(e->obj))
@@ -119,17 +120,28 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (dynamic_cast<CKoopas*>(e->obj))
 				{
 					CKoopas* koopa = dynamic_cast<CKoopas*>(e->obj);
-				
+					
+					if (marioStateFight && 
+						(koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN || 
+						koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_UP)
+					)
+					{
+						koopa->SetState(KOOPAS_STATE_TORTOISESHELL_UP);
+						koopa->SetDefectStart(GetTickCount64());
+						koopa->SetStateDefect(true);
+					}
 					// collision above koopas
-					if (e->ny < 0) {
+					else if (e->ny < 0) {
 						if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN) {
 							DisplayListScore(MARIO_SCORE_100, koopa->x, koopa->y, (DWORD)GetTickCount64());
 							if (koopa->GetTypeKoopa() == PARAKOOPA_COLOR_GREEN)
 								koopa->SetTypeKoopa(KOOPA_GREEN_FORM);
-							else koopa->SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
+
+							else if (koopa->getIsDown()) koopa->SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
+							else koopa->SetState(KOOPAS_STATE_TORTOISESHELL_UP);
 							vy = -0.2f;
 						}
-						else if (koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_DOWN) {
+						else if (koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_DOWN || koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_UP) {
 							if ( (x + GetBBoxWidthMario()) < (koopa->x + round(KOOPAS_BBOX_WIDTH / 2)) ) {
 								koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
 							}
@@ -143,9 +155,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					else if (e->nx != 0 || e->ny > 0) {
 						if (untouchable == 0)
 						{
-							if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN || 
-								koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN )
+							if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN &&
+								koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_UP && marioStateFight)
 							{
+								DebugOut(L"aaaaaaaaa \n");
 								if (level > LEVEL_MARIO_SMAIL) {
 									SetMarioLevel(GetMarioLevel() - 1);  
 									StartUntouchable();
@@ -155,8 +168,30 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 								}
 							}
 							else {
+								if (state != STATE_MARIO_RUNNING_RIGHT && state != STATE_MARIO_RUNNING_LEFT) { 
+									DisplayListScore(MARIO_SCORE_200, koopa->x, koopa->y, (DWORD)GetTickCount64());
+									timeStartKick = GetTickCount64();
+									SetState(STATE_MARIO_KICK);
+									if (e->nx < 0)
+									{
+										koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
+									}
+									else
+									{
+										koopa->SetState(KOOPAS_STATE_SPIN_LEFT);
+									}
+								}
+								else if (!marioStateFight) {
+									tortoiseshell = koopa;
+									koopa->SetState(KOOPAS_STATE_TAKEN);
+									if (e->nx < 0) {
+										SetState(STATE_MARIO_TORTOISESHELL_RIGHT);
+									}
+									else SetState(STATE_MARIO_TORTOISESHELL_LEFT);
+								}
 
-								if (state == STATE_MARIO_RUNNING_RIGHT  || state == STATE_MARIO_RUNNING_LEFT) {
+
+								/*if (state == STATE_MARIO_RUNNING_RIGHT || state == STATE_MARIO_RUNNING_LEFT) {
 									tortoiseshell = koopa;
 									koopa->SetState(KOOPAS_STATE_TAKEN);
 									if (e->nx < 0) {
@@ -177,7 +212,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 									{
 										koopa->SetState(KOOPAS_STATE_SPIN_LEFT);
 									}
-								}
+								}*/
 							}
 
 						}
@@ -191,7 +226,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					{
 						if (level > LEVEL_MARIO_SMAIL)
 						{
-							// SetLevel(GetMarioLevel() - 1);	
 							SetMarioLevel(GetMarioLevel() - 1);
 							fireplantbullet->SetState(100);
 							StartUntouchable();
@@ -204,7 +238,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (dynamic_cast<CFirePiranhaPlant*>(e->obj))
 				{
 					CFirePiranhaPlant* fireplant = dynamic_cast<CFirePiranhaPlant*>(e->obj);
-					if (fireplant->GetState() != 1/* && !fight_state*/)
+					if (fireplant->GetState() != 1 && !marioStateFight)
 					{
 						if (level > LEVEL_MARIO_SMAIL)
 						{
@@ -215,16 +249,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						else
 							SetState(STATE_MARIO_DIE);
 					}
-					/*else if (fight_state)
+					else if (marioStateFight)
 					{
-						fireplant->SetState(5);
-					}*/
+						fireplant->SetState(FIREPIRANHAPLANT_STATE_DESTROY);
+						DisplayListScore(MARIO_SCORE_100, fireplant->x, fireplant->y, (DWORD)GetTickCount64());
+					}
 				}
 
 				if (dynamic_cast<CPiranhaPlant*>(e->obj))
 				{
 					CPiranhaPlant* plant = dynamic_cast<CPiranhaPlant*>(e->obj);
-					if (plant->GetState() != PIRANHAPLANT_STATE_HIDE /*&& !fight_state*/)
+					if (plant->GetState() != PIRANHAPLANT_STATE_HIDE && !marioStateFight)
 					{
 						if (level > LEVEL_MARIO_SMAIL)
 						{
@@ -235,10 +270,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						else
 							SetState(STATE_MARIO_DIE);
 					}
-					/*else if (fight_state)
+					else if (marioStateFight)
 					{
-						plant->SetState(PIRANHAPLANT_STATE_DESTROY);
-					}*/
+						plant->SetState(FIREPIRANHAPLANT_STATE_DESTROY);
+						DisplayListScore(MARIO_SCORE_100, plant->x, plant->y, (DWORD)GetTickCount64());
+					}
 				}
 			}
 

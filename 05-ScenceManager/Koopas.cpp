@@ -7,7 +7,7 @@
 #include "QuestionBrick.h"
 #include "Leaf.h"
 #include "Mario.h"
-
+#include "PlayScence.h"
 
 
 CKoopas::CKoopas(int type)
@@ -28,7 +28,7 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 	right = x + KOOPAS_BBOX_WIDTH;
 	bottom = y + KOOPAS_BBOX_HEIGHT;
-	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN || state == KOOPAS_STATE_REBORN) {
+	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN || state == KOOPAS_STATE_TORTOISESHELL_UP || state == KOOPAS_STATE_REBORN) {
 		bottom = y + 16;
 	}
 	else if (state == KOOPAS_STATE_SPIN_RIGHT || state == KOOPAS_STATE_SPIN_LEFT){
@@ -44,7 +44,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (state != KOOPAS_STATE_TAKEN)  vy += KOOPA_GRAVITY * dt;
 	//vx = 0;
 	// vy = 0;
-
+	handlerDeflect();
 	// koopa chuẩn bị hồi sinh
 	if (stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > 5000 && GetTickCount64() - timeStateTorToiSeShell < 7000)  {
 		SetState(KOOPAS_STATE_REBORN);
@@ -118,7 +118,6 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					/*CMario* mario = dynamic_cast<CMario*>(e->obj);
 					if (mario->GetState() == MARIO_STATE_FIGHT)
 						vy = -KOOPA_JUMP_DEFLECT_SPEED;*/
-					// DebugOut(L"1111111111\n");
 				}
 
 			}
@@ -212,6 +211,14 @@ void CKoopas::SetState(int state)
 		vy = 0;
 		timeStateTorToiSeShell = GetTickCount64();
 		stateKoopaTortoiSeShell = true;
+		isDown = true;
+		break;
+	case KOOPAS_STATE_TORTOISESHELL_UP:
+		timeStateTorToiSeShell = GetTickCount64();
+		stateKoopaTortoiSeShell = true;
+		isDown = false;
+		vx = 0;
+
 		break;
 	case KOOPAS_STATE_DIE:
 		y += KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_DIE + 1;
@@ -252,6 +259,7 @@ void CKoopas::SetState(int state)
 		vy = 0;
 		stateKoopaTortoiSeShell = false;
 		break;
+	
 	}
 
 }
@@ -261,6 +269,9 @@ int CKoopas::RenderKoopaRed()
 	int ani = KOOPAS_ANI_RED_WALKING_LEFT;
 	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN) {
 		ani = KOOPAS_ANI_RED_TORTOISESHELL_DOWN;
+	}
+	else if (state == KOOPAS_STATE_TORTOISESHELL_UP) {
+		ani = KOOPAS_ANI_RED_TORTOISESHELL_UP;
 	}
 	else if (state == KOOPAS_STATE_SPIN_LEFT || state == KOOPAS_STATE_SPIN_RIGHT)
 		ani = KOOPAS_ANI_RED_SPIN_DOWN;
@@ -289,8 +300,8 @@ int CKoopas::RenderKoopaGreen()
 		ani = 19;*/
 	else if (state == KOOPAS_STATE_TORTOISESHELL_DOWN)
 		ani = KOOPA_ANI_GREEN_TORTOISESHELL_DOWN;
-	/*else if (state == KOOPA_STATE_TORTOISESHELL_UP)
-		ani = KOOPA_ANI_GREEN_TORTOISESHELL_UP;*/
+	else if (state == KOOPAS_STATE_TORTOISESHELL_UP)
+		ani = KOOPA_ANI_GREEN_TORTOISESHELL_UP;
 	else if (state == KOOPAS_STATE_SPIN_LEFT || state == KOOPAS_STATE_SPIN_RIGHT)
 		ani = KOOPA_ANI_GREEN_SPIN_DOWN;
 	/*else if (state == KOOPA_STATE_SPIN_LEFT && !isDown || state == KOOPA_STATE_SPIN_RIGHT && !isDown)
@@ -300,7 +311,7 @@ int CKoopas::RenderKoopaGreen()
 	else if (state == KOOPA_STATE_TAKEN && !isDown)
 		ani = KOOPA_ANI_GREEN_TAKEN_UP;*/
 	else ani = KOOPA_ANI_GREEN_WALKING_RIGHT;
-	return ani;
+	return 15;
 }
 
 int CKoopas::RenderParakoopaGreen()
@@ -309,6 +320,41 @@ int CKoopas::RenderParakoopaGreen()
 	else if (nx < 0) ani = PARAKOOPA_ANI_GREEN_JUMPING_LEFT;
 	else ani = PARAKOOPA_ANI_GREEN_JUMPING_RIGHT;
 	return ani;
+}
+
+void CKoopas::handlerDeflect()
+{
+	if (!stateDeflect) return;
+	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	float ax, ay;
+	mario->GetPosition(ax, ay);
+	bool check = true;
+	if (ax > x) {
+		check = false;
+	}
+	if (GetTickCount64() - timeStartDeflect > 300)
+	{
+		/*if (vx > 0) {
+			vx = vx - 0.015f;
+		}
+		if (vx == 0){
+			stateDeflect = false;
+			vx = 0;
+		}*/
+		vx = 0;
+		stateDeflect = false;
+	}
+	else
+	{
+		SetState(KOOPAS_STATE_TORTOISESHELL_UP);
+		vy = -0.1f;
+		if (check) {
+			vx = 0.1f ;
+		}
+		else {
+			vx = -0.1f;
+		}
+	}
 }
 
 

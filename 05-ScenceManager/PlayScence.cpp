@@ -486,7 +486,6 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL && !mario->GetMarioIsFight()
 		 && GetTickCount64() - mario->GetTimeIsFight() > 380)
 		{
-			DebugOut(L"aaaaaa \n");
 			mario->SetTimeIsFight(GetTickCount64());
 			mario->SetMarioIsFight(STATE_MARIO_FIGHT);
 		}

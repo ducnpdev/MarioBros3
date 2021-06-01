@@ -41,6 +41,8 @@
 #define KOOPA_ANI_GREEN_WALKING_LEFT					6
 #define KOOPA_ANI_GREEN_TORTOISESHELL_DOWN				7
 #define KOOPA_ANI_GREEN_SPIN_DOWN						8
+#define KOOPAS_ANI_RED_TORTOISESHELL_UP				14
+#define KOOPA_ANI_GREEN_TORTOISESHELL_UP			15
 #define KOOPA_ANI_RED_REBORN_DOWN						16
 #define KOOPA_ANI_GREEN_REBORN_DOWN						17
 #define KOOPA_ANI_GREEN_TAKEN_UP						15
@@ -82,6 +84,9 @@ class CKoopas : public CCollision
 		float& rdy);
 		
 	void RedirectY();
+	bool isDown = true;
+	int stateDeflect = false; // after colission with tail
+	DWORD timeStartDeflect;
 
 public:
 	CKoopas(int typeKoopa);
@@ -92,4 +97,9 @@ public:
 	int RenderKoopaRed();
 	int RenderKoopaGreen();
 	int RenderParakoopaGreen();
+	void SetStateDefect(bool is) { stateDeflect = is; }
+	void SetDefectStart(DWORD time) { timeStartDeflect = time; }
+
+	bool getIsDown() { return isDown; }
+	void handlerDeflect();
 };

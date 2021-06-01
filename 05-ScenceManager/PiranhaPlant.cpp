@@ -151,6 +151,7 @@ int CPiranhaPlant::GetState()
 
 void CPiranhaPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+	if (state == PIRANHAPLANT_STATE_DESTROY) return;
 	left = x;
 	top = y;
 	right = x + PIRANHAPLANT_BBOX_WIDTH;
