@@ -13,6 +13,7 @@
 #include "QuestionBrick.h"
 #include "FirePiranhaPlant.h"
 #include "FirePlantBullet.h"
+#include "Brick.h"
 
 class CGridResource {
 
@@ -28,6 +29,9 @@ class CGridResource {
 	CFirePlantBullet* firePlantBullet[2];
 	CFirePiranhaPlant* firePiranhaPlant[2];
 
+	// CBrick* brickcoli[BRICK_AMOUNT];
+
+	CBrick* brick[BRICK_AMOUNT];
 
 	void _ParseSection_Grid_ENEMIES(string line);
 	void _ParseSection_Grid_ITEMS(string line);

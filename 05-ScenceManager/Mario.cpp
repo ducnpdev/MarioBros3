@@ -16,6 +16,7 @@
 #include "FirePiranhaPlant.h"
 #include "PiranhaPlant.h"
 #include "Leaf.h"
+#include "Brick.h"
 #include "Mushroom.h"
 
 
@@ -330,6 +331,18 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					DisplayListScore(MARIO_SCORE_1000, leaf->x, leaf->y, GetTickCount64());
 				}
 			}
+
+			/*if (dynamic_cast<CBrick*>(e->obj)) {
+				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+				if (nx != 0)
+				{
+					if (brick->GetState() == BRICK_STATE_NORMAL && marioStateFight)
+					{
+						DebugOut(L"collision wiht brick: %d \n", brick->GetState());
+						brick->SetState(BRICK_STATE_HIDEN);
+					}
+				}
+			}*/
 
 			if (dynamic_cast<CMushroom*>(e->obj))
 			{

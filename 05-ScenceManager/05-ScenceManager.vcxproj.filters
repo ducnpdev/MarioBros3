@@ -186,6 +186,9 @@
     <ClCompile Include="WoodBlock.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="PieceBrick.cpp">
+      <Filter>Source Files\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -340,6 +343,9 @@
     </ClInclude>
     <ClInclude Include="WoodBlock.h">
       <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="PieceBrick.h">
+      <Filter>Header Files\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

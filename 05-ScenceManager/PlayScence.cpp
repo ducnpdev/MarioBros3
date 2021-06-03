@@ -36,6 +36,7 @@ bool CPlayScene::ObjectInUsing(float x, float y) {
 	return false;
 }
 
+
 void CPlayScene::_ParseSection_TEXTURES(string line)
 {
 	vector<string> tokens = split(line);
@@ -252,6 +253,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CTail();
 		tail = (CTail*)obj;
 		player->CreateTail(tail);
+		break;
+	case OBJECT_PIECE_BRICK:
+		obj = new CPieceBrick();
+		for (int i = 0; i < 16; i++)
+		{
+			if (pieceBrick[i] == NULL)
+			{
+				pieceBrick[i] = (CPieceBrick*)obj;
+				break;
+			}
+		}
 		break;
 	default:
 		return;
@@ -615,4 +627,35 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		}
 	}
 
+}
+
+void CPlayScene::CreatePieceBrick(float x, float y, DWORD t)
+{
+	int count = 0;
+	for (int i = 0; i < 16; i++)
+	{
+		if (pieceBrick[i]->GetState() == 0 && count < 4)
+		{
+			count++;
+			pieceBrick[i]->SetState(1);
+			switch (count)
+			{
+			case 1:
+				pieceBrick[i]->SetDisplay(x, y, -PIECE_BRICK_SPEED, -PIECE_BRICK_SPEED, t);
+				break;
+			case 2:
+				pieceBrick[i]->SetDisplay(x + PIECE_BRICK_X_PLUS, y, PIECE_BRICK_SPEED, -PIECE_BRICK_SPEED, t);
+				break;
+			case 3:
+				pieceBrick[i]->SetDisplay(x, y + PIECE_BRICK_X_PLUS, -PIECE_BRICK_SPEED, PIECE_BRICK_SPEED, t);
+				break;
+			case 4:
+				pieceBrick[i]->SetDisplay(x + PIECE_BRICK_X_PLUS, y + PIECE_BRICK_X_PLUS, PIECE_BRICK_SPEED, PIECE_BRICK_SPEED, t);
+				break;
+			default:
+				break;
+			}
+
+		}
+	}
 }

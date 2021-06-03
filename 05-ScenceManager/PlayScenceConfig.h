@@ -24,3 +24,6 @@
 #define MAX_SCENE_LINE 1024
 
 // hub
+#define PIECE_BRICK_SPEED			0.08f
+#define PIECE_BRICK_X_PLUS			8
+#define PIECE_BRICK_AMOUNT			16

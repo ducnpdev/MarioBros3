@@ -19,6 +19,7 @@
 
 #define OBJECT_TYPE_HUB_CARDTEXT				35
 #define OBJECT_TYPE_HUB_CARDTEXT				35
+#define OBJECT_PIECE_BRICK 36
 #define OBJECT_TYPE_TAIL	41
 
 #define GRID_CELL_WIDTH 200
@@ -31,11 +32,14 @@
 #define OBJECT_TYPE_WOOD_BLOCK	7
 #define OBJECT_TYPE_PIPE	8
 #define OBJECT_TYPE_BRICK_MANY_WALL	9
-
+#define OBJECT_TYPE_BRICK_COLISION 90
 
 // object type question brick in grid 
 #define OBJECT_TYPE_COIN 11
 #define OBJECT_TYPE_MUSHROOM 18
 #define OBJECT_TYPE_LEAF 19
+
+// 
+#define BRICK_AMOUNT 20
 
 

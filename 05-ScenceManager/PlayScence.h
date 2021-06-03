@@ -20,7 +20,7 @@
 #include "GoldCard.h"
 #include "Tail.h"
 #include "Pipe.h"
-
+#include "PieceBrick.h"
 
 
 class CPlayScene: public CScene
@@ -55,6 +55,9 @@ protected:
 
 	CTail* tail;
 
+	CPieceBrick* pieceBrick[16];
+
+	
 	void _ParseSection_TEXTURES(string line);
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -74,6 +77,10 @@ public:
 	void initCamera();
 	bool ObjectInUsing(float x, float y);
 	CMario * GetPlayer() { return player; } 
+
+	// handle when mario collision with brick
+	void CreatePieceBrick(float x, float y, DWORD t);
+	
 
 	//friend class CPlayScenceKeyHandler;
 };

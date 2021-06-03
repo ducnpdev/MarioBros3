@@ -173,28 +173,6 @@ void CKoopas::Render()
 		ani = RenderKoopaGreen();
 		break;
 	}
-
-
-	// koopas color red
-	/*int ani = KOOPAS_ANI_WALKING_LEFT;
-	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN) {
-		ani = KOOPAS_ANI_RED_TORTOISESHELL_DOWN;
-	}
-	else if (state == KOOPAS_STATE_SPIN_LEFT || state == KOOPAS_STATE_SPIN_RIGHT)
-		ani = KOOPAS_ANI_RED_SPIN_DOWN;
-	else if (state == KOOPAS_STATE_REBORN) {
-		ani = 16;
-	}
-	else if (state == KOOPAS_STATE_WALKING_LEFT) {
-		ani = 1;
-	}
-	else if (state == KOOPAS_STATE_TAKEN) {
-		ani = 2;
-	}*/
-
-	// koopas color green
-
-
 	animation_set->at(ani)->Render(x, y);
 	RenderBoundingBox();
 }
@@ -311,7 +289,7 @@ int CKoopas::RenderKoopaGreen()
 	else if (state == KOOPA_STATE_TAKEN && !isDown)
 		ani = KOOPA_ANI_GREEN_TAKEN_UP;*/
 	else ani = KOOPA_ANI_GREEN_WALKING_RIGHT;
-	return 15;
+	return ani;
 }
 
 int CKoopas::RenderParakoopaGreen()

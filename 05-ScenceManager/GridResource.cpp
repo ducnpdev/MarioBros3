@@ -76,8 +76,16 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 		case OBJECT_TYPE_BORDER_ROAD: {
 			obj = new CBorderRoad(); break;
 		}
-		case 90: {
+		case OBJECT_TYPE_BRICK_COLISION: {
 			obj = new CBrick();
+			for (int i = 0; i < BRICK_AMOUNT; i++)
+			{
+				if (brick[i] == NULL)
+				{
+					brick[i] = (CBrick*)obj;
+					break;
+				}
+			}
 			break;	
 		}
 		case OBJECT_TYPE_PIPE:{
