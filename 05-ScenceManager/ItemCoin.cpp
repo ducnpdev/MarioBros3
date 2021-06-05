@@ -4,13 +4,13 @@
 
 CCoin::CCoin(int _state)
 {
+
 	SetState(_state);
 	listScore = NULL;
 }
 
 void CCoin::SetState(int state)
 {
-	CGameObject::SetState(state);
 	CGameObject::SetState(state);
 	switch (state)
 	{
@@ -44,7 +44,6 @@ void CCoin::Render()
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (GetState() == COIN_STATE_HIDEN) return;
-
 	CGameObject::Update(dt, coObjects);
 	if (state == COIN_STATE_MOVING) {
 
@@ -53,10 +52,14 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (GetTickCount64() - timeStateMoving < 300) {
 				vy = -0.1f;
 			}
+			// else vy = COIN_SPEED_Y;
 			y += dy;
 		}
 		else {
-			SetState(COIN_STATE_HIDEN);
+			if (stateMoving)
+			{
+				SetState(COIN_STATE_HIDEN);
+			}
 			// TODO 
 			//listScore->DisplayScores(MARIO_SCORE_100, x, y, GetTickCount64());
 		}
@@ -69,4 +72,11 @@ void CCoin::GetBoundingBox(float& l, float& t, float& r, float& b)
 	t = y;
 	r = x + COIN_BBOX_WIDTH;
 	b = y + COIN_BBOX_HEIGHT;
+	if (state == COIN_STATE_HIDEN)
+	{
+		r = 0;
+		b = 0;
+	}
 }
+
+

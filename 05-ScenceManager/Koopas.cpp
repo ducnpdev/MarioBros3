@@ -38,12 +38,9 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	//DebugOut(L"ssssssssssss \n");
 	if (hidenStateKoopas) return;
 	CGameObject::Update(dt, coObjects);
 	if (state != KOOPAS_STATE_TAKEN)  vy += KOOPA_GRAVITY * dt;
-	//vx = 0;
-	// vy = 0;
 	handlerDeflect();
 	// koopa chuẩn bị hồi sinh
 	if (stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > 5000 && GetTickCount64() - timeStateTorToiSeShell < 7000)  {
@@ -54,14 +51,6 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetPosition(x, y - 10);
 		SetState(KOOPAS_STATE_WALKING_RIGHT);
 	}
-
-	/*if (vx < 0 && x < 500) {
-		x = 500; vx = -1 * vx;
-	}
-	if (vx > 0 && x > 590) {
-		x = 590; vx = -1 * vx;
-	}*/
-
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -103,50 +92,71 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 			}
 
-			if (state == KOOPAS_STATE_WALKING_LEFT || state == KOOPAS_STATE_WALKING_RIGHT)
-			{
-				if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
+			if (typeKoopa != PARAKOOPA_COLOR_GREEN) {
+				if (state == KOOPAS_STATE_WALKING_LEFT || state == KOOPAS_STATE_WALKING_RIGHT)
 				{
-					if (e->nx > 0) {
+					if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
+					{
+						if (e->nx > 0) {
 
-						SetState(KOOPAS_STATE_WALKING_RIGHT);
+							SetState(KOOPAS_STATE_WALKING_RIGHT);
+						}
+						else if (e->nx < 0) SetState(KOOPAS_STATE_WALKING_LEFT);
 					}
-					else if (e->nx < 0) SetState(KOOPAS_STATE_WALKING_LEFT);
-				}
-				if (dynamic_cast<CMario*>(e->obj))
-				{
-					/*CMario* mario = dynamic_cast<CMario*>(e->obj);
-					if (mario->GetState() == MARIO_STATE_FIGHT)
-						vy = -KOOPA_JUMP_DEFLECT_SPEED;*/
-				}
-
-			}
-
-			if (state == KOOPAS_STATE_SPIN_LEFT)
-			{
-				if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CQuestionBrick*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
-				{
-					SetState(KOOPAS_STATE_SPIN_RIGHT);
-				}
-				
-			}
-			else if (state == KOOPAS_STATE_SPIN_RIGHT)
-			{
-				if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
-				{
-					SetState(KOOPAS_STATE_SPIN_LEFT);
-				}
-				if (dynamic_cast<CQuestionBrick*>(e->obj)) {
-					CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
-					if (questionBrick->GetState() != QUESTION_BRICK_ANI_CRETE) {
-						questionBrick->SetItemWhenCollision(LEAF_STATE_FLY);
-						questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
+					if (dynamic_cast<CMario*>(e->obj))
+					{
+						/*CMario* mario = dynamic_cast<CMario*>(e->obj);
+						if (mario->GetState() == MARIO_STATE_FIGHT)
+							vy = -KOOPA_JUMP_DEFLECT_SPEED;*/
 					}
-					SetState(KOOPAS_STATE_SPIN_LEFT);
+
 				}
-				
-				
+
+				if (state == KOOPAS_STATE_SPIN_LEFT)
+				{
+					// DebugOut(L"aaaaaaaa \n");
+					if (dynamic_cast<CPipe*>(e->obj) || 
+						dynamic_cast<CQuestionBrick*>(e->obj) || 
+						dynamic_cast<CBorderRoad*>(e->obj) ||
+						dynamic_cast<CBrick*>(e->obj))
+					{
+						// DebugOut(L"aaaaaaaa  11111111 \n"); 
+						if (dynamic_cast<CBrick*>(e->obj))
+						{
+							CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+							// Bắt đầu va chạm
+							if (brick->y - (y + 16) < 0)
+							{
+								((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+								brick->SetState(BRICK_STATE_HIDEN);
+							}
+
+						}
+						SetState(KOOPAS_STATE_SPIN_RIGHT);
+					}
+
+				}
+				else if (state == KOOPAS_STATE_SPIN_RIGHT)
+				{
+				//	DebugOut(L"vbbbbbbbbbbbb \n");
+					if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
+					{
+						SetState(KOOPAS_STATE_SPIN_LEFT);
+					}
+					if (dynamic_cast<CQuestionBrick*>(e->obj)) {
+						CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
+						if (questionBrick->GetState() != QUESTION_BRICK_ANI_CRETE) {
+							questionBrick->SetItemWhenCollision(LEAF_STATE_FLY);
+							questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
+						}
+						SetState(KOOPAS_STATE_SPIN_LEFT);
+					}
+
+
+				}
 			}
+
+			
 		
 		}	
 	}
@@ -377,7 +387,7 @@ void CKoopas::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLI
 			if (c->t < min_ty && c->ny != 0) {
 				min_ty = c->t; ny = c->ny; min_iy = i; rdy = c->dy;
 			}
-		}
+		 }
 	}
 
 	if (min_ix >= 0) coEventsResult.push_back(coEvents[min_ix]);

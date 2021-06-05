@@ -18,6 +18,7 @@
 #include "Leaf.h"
 #include "Brick.h"
 #include "Mushroom.h"
+#include "Switch.h"
 
 
 CMario::CMario(float x, float y)
@@ -292,8 +293,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (e->ny > 0) {
 					vy = 0; 
 					SetMarioFallState(true);
-
 					if (questionBrick->GetState() == QUESTION_BRICK_STATE_MOVING) {
+						DebugOut(L"111111 \n");
+
 						if (dynamic_cast<CCoin*>(questionBrick->GetItemInBrick())) {
 							coinplay->AddCoinHub();
 						}
@@ -301,19 +303,29 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
 					}
 				}
-				
-				if (e->ny < 0) {
-					DebugOut(L"11111 \n");
+				if (e->nx != 0) {
+				//	DebugOut(L"22222 \n");
+
+					if (marioStateFight) {
+						// TODO 
+						if (questionBrick->GetState() == QUESTION_BRICK_STATE_MOVING) {
+							if (dynamic_cast<CCoin*>(questionBrick->GetItemInBrick()))
+								coinplay->AddCoinHub();
+							questionBrick->SetItemWhenCollision(COIN_EFFECT_ANI);
+							questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
+						}
+					}
 				}
 
 			}
 
 			if (dynamic_cast<CCoin*>(e->obj)) // if e->obj is Koopa
 			{
+				DebugOut(L"marrio collision CCoin \n");
 				CCoin* coin = dynamic_cast<CCoin*>(e->obj);
 				if (coin->GetState() == COIN_STATE_NORMAL)
 				{
-
+					DebugOut(L"marrio collision CCoin and state coin normal = 2. \n");
 					coinplay->AddCoinHub();
 					coin->SetState(COIN_STATE_HIDEN);
 				}
@@ -332,7 +344,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 			}
 
-			/*if (dynamic_cast<CBrick*>(e->obj)) {
+
+			if (dynamic_cast<CSwitch*>(e->obj))
+			{
+				CSwitch* switchs = dynamic_cast<CSwitch*>(e->obj);
+				if (e->ny < 0)
+				{ 
+					if (switchs->GetState() == EFFECT_STATE)
+					{
+						switchs->SetState(SWITCH_STATE_ACTIVE);
+						switchs->SetPosition(switchs->x, switchs->y + 9);
+						switchs->SetSwitch();
+						// switchs->SetSwitchTime((DWORD)GetTickCount64());
+					}
+				}
+			}
+			if (dynamic_cast<CBrick*>(e->obj)) {
 				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 				if (nx != 0)
 				{
@@ -342,7 +369,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						brick->SetState(BRICK_STATE_HIDEN);
 					}
 				}
-			}*/
+			}
 
 			if (dynamic_cast<CMushroom*>(e->obj))
 			{

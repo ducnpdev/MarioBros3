@@ -27,4 +27,12 @@ public:
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void SetState(int state);
+
+	// extende
+	void AddItemBrick(CGameObject* i); 
+	// void SetState(int state) { CGameObject::SetState(state); }
+	void SetItem();
+	CGameObject* GetItem();
+
 };
+

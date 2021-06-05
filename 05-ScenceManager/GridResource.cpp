@@ -10,8 +10,7 @@
 #include "FirePlantBullet.h"
 #include "PiranhaPlant.h"
 #include "WoodBlock.h"
-
-
+#include "Switch.h"
 
 CGridResource::CGridResource(LPCWSTR path) {
 	numRow = 0;
@@ -214,6 +213,19 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 				}
 			}
 		}
+		if (state == 1)
+		{
+			for (int i = 0; i < 20; i++)
+			{
+				if (itemBrick[i] == NULL)
+				{
+				// 	DebugOut(L"state coin: %d \n", state);
+					itemBrick[i] = (CCoin*)obj;
+					brick[i]->AddItemBrick(itemBrick[i]);
+					break;
+				}
+			}
+		}
 		break;
 	case OBJECT_TYPE_MUSHROOM: {
 		obj = new CMushroom(state);
@@ -241,6 +253,21 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 		}
 		break;
 	}
+	case OBJECT_TYPE_SWITCH_P:
+		obj = new CSwitch(brick);
+		if (state == 0)
+		{
+			for (int i = 0; i < 10; i++)
+			{
+				if (listItemQuestionBrick[i] == NULL)
+				{
+					listItemQuestionBrick[i] = (CSwitch*)obj;
+					questionBrick[i]->PushItemQuestionBrick(listItemQuestionBrick[i], item_object);
+					break;
+				}
+			}
+		}
+		break;
 	default:
 		break;
 	}

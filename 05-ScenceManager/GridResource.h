@@ -28,7 +28,7 @@ class CGridResource {
 	
 	CFirePlantBullet* firePlantBullet[2];
 	CFirePiranhaPlant* firePiranhaPlant[2];
-
+	CGameObject* itemBrick[20];
 	// CBrick* brickcoli[BRICK_AMOUNT];
 
 	CBrick* brick[BRICK_AMOUNT];
