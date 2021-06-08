@@ -15,11 +15,14 @@
 #define MARIO_BIG_BBOX_HEIGHT				27
 #define MARIO_SMALL_BBOX_WIDTH				13
 #define MARIO_SMALL_BBOX_HEIGHT				15
-#define MARIO_UNTOUCHABLE_TIME				5000
+#define MARIO_UNTOUCHABLE_TIME				3000
+
+// MARIO SMALL ANI
+// MARIO SMALL BIG
+// MARIO SMALL TAIL
 
 // **************** MARIO -> DYANMIC POSITION ****************
 #define NUMBER_AFTER_MARIO_SIT_DOWN		10
-
 
 
 // **************** MARIO -> BoundingBox - BoundingBox ****************
@@ -213,3 +216,5 @@
 #define MARIO_SCORE_2000					5
 
 
+// ## time
+#define MARIO_TIME_RUNNING		200

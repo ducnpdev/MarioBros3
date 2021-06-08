@@ -2,6 +2,7 @@
 
 void CArrow::SetState(int state)
 {
+	CGameObject::SetState(state);
 }
 
 void CArrow::Render()
@@ -28,6 +29,7 @@ void CListArrow::SetPositionListArrow(float x, float y)
 
 void CListArrow::SetWhiteListArrow()
 {
+	// DebugOut(L"Set white arrow");
 	for (unsigned int i = 0; i < listArrow.size(); i++)
 	{
 		if (listArrow[i]->GetArrowIsBlack())
@@ -40,6 +42,7 @@ void CListArrow::SetWhiteListArrow()
 
 void CListArrow::SetBlackListArrow()
 {
+// 	DebugOut(L"Set black arrow");
 	for (int i = listArrow.size() - 1; i >= 0; i--)
 	{
 		if (!listArrow[i]->GetArrowIsBlack())
@@ -53,6 +56,7 @@ void CListArrow::SetBlackListArrow()
 // chuyển tất cả các mũi tên thành trạng thái ban đầu đó là màu đen
 void CListArrow::ResetListArrow()
 {
+	// DebugOut(L"Reset arrow");
 	// vòng for từ dưới lên vì mũi trên trắng sẽ chuyển sang màu đen từ phải sang trái
 	for (int i = listArrow.size() - 1; i >= 0; i--)
 	{
@@ -63,7 +67,7 @@ void CListArrow::ResetListArrow()
 		}
 	}
 }
-
+// 
 int CListArrow::GetPState()
 {
 	return listArrow[6]->GetArrowIsBlack();
@@ -76,17 +80,21 @@ void CListArrow::Render()
 void CListArrow::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
+	// DebugOut(L"Arrowhub \n");
 	// kiểm tra P có null or not null
 	//listArrow[0]->SetPosition(x, y);
 	if (listArrow[6] != NULL)
 	{
+		// DebugOut(L"list != null \n");
 		// nếu mũi tên cuối cùng là mày trắng
 		if (GetPState()) {
+		//	DebugOut(L"111111 \n");
 			SetPStart((DWORD)GetTickCount64());
 		}
 		// nếu chữ P là màu đen thì bắt đầu reset những mũi tên về trạng thái màu đen
 		else if (!GetPState())
 		{
+		//	DebugOut(L"2222222 \n");
 			if (GetTickCount64() - timePStart > ARROW_RESET_P_TIME) ResetListArrow();
 		}
 	}

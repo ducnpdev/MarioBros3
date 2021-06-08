@@ -159,6 +159,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		hub->SetArrowHub(arrows);
 		hub->SetLives(lives);
 		hub->SetScore(score);
+		player->SetListArrow(arrows);
 		break;
 	}
 	case OBJECT_TYPE_NUMBER: {

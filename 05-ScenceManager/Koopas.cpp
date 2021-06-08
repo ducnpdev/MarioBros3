@@ -13,7 +13,6 @@
 CKoopas::CKoopas(int type)
 {
 	SetState(KOOPAS_STATE_WALKING_LEFT);
-	// SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
 	SetTypeKoopa(type);
 	if (typeKoopa == PARAKOOPA_COLOR_GREEN)	nx = -1;
 
@@ -38,6 +37,7 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	// DebugOut(L" state of koopas %d \n", state);
 	if (hidenStateKoopas) return;
 	CGameObject::Update(dt, coObjects);
 	if (state != KOOPAS_STATE_TAKEN)  vy += KOOPA_GRAVITY * dt;

@@ -5,6 +5,8 @@
 #include "Coin.h" 
 #include "Tail.h" 
 #include "ListScore.h"
+#include "Arrow.h"
+
 
 class CMario : public  CCollision
 {
@@ -32,6 +34,7 @@ class CMario : public  CCollision
 	bool marioStateSmoke = false;
 	bool isJumpFlyLow = false;
 	bool marioStateFight = false;
+	bool marioStateMaxPower = false;
 	DWORD timeMarioFight;
 
 	CTail* tail;
@@ -49,6 +52,8 @@ class CMario : public  CCollision
 	CCoinPlay* coinplay;
 	CListScore* listScore[3];
 	// end hub
+	DWORD timeRunningStart;
+	CListArrow* listArrow;
 
 public: 
 	CMario(float x = 0.0f, float y = 0.0f);
@@ -56,7 +61,7 @@ public:
 
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount(); }
+	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void Reset();
 
@@ -81,6 +86,10 @@ public:
 		//TODO word P in hud 
 		return false;
 	}
+
+	void SetListArrow(CListArrow* list) { listArrow = list; }
+	CListArrow* GetListArrow() { return listArrow; }
+
 
 	// Function Get - Set
 	bool GetMarioIsDead() { return marioIsDead; }
@@ -157,4 +166,10 @@ public:
 
 	// collision
 	void MarioCollisionPiranhaPlant();
+	void CollisionWithKoopa(LPCOLLISIONEVENT collisionEven);
+
+	// 
+	void MarioHanlerProcessArrow();
+
+	bool checkMarioMaxPower();
 };
