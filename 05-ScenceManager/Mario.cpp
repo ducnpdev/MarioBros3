@@ -203,7 +203,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						if (dynamic_cast<CCoin*>(questionBrick->GetItemInBrick())) {
 							coinplay->AddCoinHub();
 						}
-						questionBrick->SetItemWhenCollision(COIN_EFFECT_ANI); // 200 là BRICK_STATE_INIT_COLLISION_MARIO
+						questionBrick->SetItemWhenCollision(COIN_EFFECT_ANI); // 200 lÃ  BRICK_STATE_INIT_COLLISION_MARIO
 						questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
 					}
 				}
@@ -311,6 +311,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	handlerMarioFight();
 
 	MarioHanlerProcessArrow();
+
+	checkMarioMaxPower();
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
@@ -658,43 +660,43 @@ int CMario::RenderLevelMarioSmall() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if (marioStateUpLevel) ani = 96;
-			else if (isStateSitDown) ani = 0;
-			else if (isJump == 1) ani = 24;
-			else if (isKick) ani = 32;
-			else if (marioStateMaxPower) ani = 116;
-			else if (marioStateTorToiSeShell) ani = 40;
-			else ani = 0;
+			if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG;
+			else if (isStateSitDown) ani = ANI_MARIO_SMALL_SITDOWN_RIGHT;
+			else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_RIGHT;
+			else if (isKick) ani = ANI_MARIO_SMALL_KICK_RIGHT;
+			// else if (marioStateMaxPower) ani = 116;
+			else if (marioStateTorToiSeShell) ani = ANI_MARIO_SMALL_IDLE_TORTOISESHELL_RIGHT;
+			else ani = ANI_MARIO_SMALL_IDLE_RIGHT;
 		} 
 		else {
-			if (marioStateUpLevel) ani = 97;
-			else if (isStateSitDown) ani = 1;
-			else if (isJump == 1) ani = 25;
-			else if (marioStateMaxPower) ani = 117;
-			else if (isKick) ani = 33;
-			else if (marioStateTorToiSeShell) ani = 41;
-			else ani = 1;
+			if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG;
+			else if (isStateSitDown) ani = ANI_MARIO_SMALL_SITDOWN_LEFT;
+			else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_LEFT;
+			// else if (marioStateMaxPower) ani = 117;
+			else if (isKick) ani = ANI_MARIO_SMALL_KICK_LEFT;
+			else if (marioStateTorToiSeShell) ani = ANI_MARIO_SMALL_IDLE_TORTOISESHELL_LEFT;
+			else ani = ANI_MARIO_SMALL_IDLE_LEFT;
 		}
 	}
 	else if (vx > 0){
-		if (marioStateUpLevel) ani = 96;
-		else if (isTurn && !isRunning) ani = 64;
-		else if (isJump == 1) ani = 24;
-		else if (marioStateMaxPower) ani = 116;
-		else if (isRunning) ani = 16;
-		else if (isKick == 1) ani = 32;
-		else if (marioStateTorToiSeShell) ani = 42;
-		else ani = 4;
+		if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG;
+		else if (marioStateMaxPower) ani = ANI_MARIO_SMALL_MAX_RUNNING_RIGHT;
+		else if (isTurn && !isRunning) ani = ANI_MARIO_SMALL_TURN_RIGHT;
+		else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_RIGHT;
+		else if (isRunning) ani = ANI_MARIO_SMALL_RUNNING_RIGHT;
+		else if (isKick == 1) ani = ANI_MARIO_SMALL_KICK_RIGHT;
+		else if (marioStateTorToiSeShell) ani = ANI_MARIO_SMALL_WALKING_TORTOISESHELL_RIGHT;
+		else ani = ANI_MARIO_SMALL_WALKING_RIGHT;
 	} 
 	else {
-		if (marioStateUpLevel) ani = 97;
-		else if (isTurn && !isRunning) ani = 65;
-		else if (isJump == 1) ani = 25;
-		else if (isRunning) ani = 17;
-		else if (marioStateMaxPower) ani = 117;
-		else if (isKick) ani = 33;
-		else if (marioStateTorToiSeShell) ani = 43;
-		else ani = 5;
+		if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG;
+		else if (marioStateMaxPower) ani = ANI_MARIO_SMALL_MAX_RUNNING_LEFT;
+		else if (isTurn && !isRunning) ani = ANI_MARIO_SMALL_TURN_LEFT;
+		else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_LEFT;
+		else if (isRunning) ani = ANI_MARIO_SMALL_RUNNING_LEFT;
+		else if (isKick) ani = ANI_MARIO_SMALL_KICK_LEFT;
+		else if (marioStateTorToiSeShell) ani = ANI_MARIO_SMALL_WALKING_TORTOISESHELL_LEFT;
+		else ani = ANI_MARIO_SMALL_WALKING_LEFT;
 	}
 	return ani;
 }
@@ -703,39 +705,41 @@ int CMario::RenderLevelMarioBig() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if (marioStateSmoke) ani = 95;
-			else if (isStateSitDown) ani = 85;
-			else if (isJump == 1) ani = 26;
-			else if (isKick) ani = 34;
-			else if (marioStateTorToiSeShell) ani = 46;
-			else ani = 2;
+			if (marioStateSmoke) ani = ANI_MARIO_UP_LEVEL_BIG_TO_TAIL_SMOKE;
+			else if (isStateSitDown) ani = ANI_MARIO_BIG_SITDOWN_RIGHT;
+			else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_RIGHT;
+			else if (isKick) ani = ANI_MARIO_BIG_KICK_RIGHT;
+			else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_IDLE_TORTOISESHELL_RIGHT;
+			else ani = ANI_MARIO_BIG_IDLE_RIGHT;
 		} 
 		else {
-			if (marioStateSmoke) ani = 95;
-			else if (isStateSitDown) ani = 86;
-			else if (isJump == 1) ani = 27;
-			else if (isKick) ani = 35;
-			else if (marioStateTorToiSeShell) ani = 47;
-			else ani = 3;
+			if (marioStateSmoke) ani = ANI_MARIO_UP_LEVEL_BIG_TO_TAIL_SMOKE;
+			else if (isStateSitDown) ani = ANI_MARIO_BIG_SITDOWN_LEFT;
+			else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_LEFT;
+			else if (isKick) ani = ANI_MARIO_BIG_KICK_LEFT;
+			else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_IDLE_TORTOISESHELL_LEFT;
+			else ani = ANI_MARIO_BIG_IDLE_LEFT;
 		}
 	}
 	else if (vx > 0){
-		if (marioStateSmoke) ani = 95;
-		else if (isTurn && !isRunning) ani =  66;
-		else if (isJump == 1) ani = 26;
-		else if(isRunning) ani = 18;
-		else if (isKick) ani = 34;
-		else if (marioStateTorToiSeShell)	ani = 48;
-		else ani = 6; 
+		if (marioStateSmoke) ani = ANI_MARIO_UP_LEVEL_BIG_TO_TAIL_SMOKE;
+		else if (marioStateMaxPower) ani = ANI_MARIO_BIG_MAX_RUNNING_RIGHT;
+		else if (isTurn && !isRunning) ani =  ANI_MARIO_BIG_TURN_RIGHT;
+		else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_RIGHT;
+		else if(isRunning) ani = ANI_MARIO_BIG_RUNNING_RIGHT;
+		else if (isKick) ani = ANI_MARIO_BIG_KICK_RIGHT;
+		else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_WALKING_TORTOISESHELL_RIGHT;
+		else ani = ANI_MARIO_BIG_WALKING_RIGHT; 
 	} 
 	else {
-		if (marioStateSmoke) ani = 95;
-		else if (isTurn && !isRunning) ani = 67;
-		else if (isJump == 1 ) ani = 27;
-		else if(isRunning) ani = 19;
-		else if (isKick) ani = 35;
-		else if (marioStateTorToiSeShell) 	ani = 49;
-		else ani = 7; 
+		if (marioStateSmoke) ani = ANI_MARIO_UP_LEVEL_BIG_TO_TAIL_SMOKE;
+		else if (marioStateMaxPower) ani = ANI_MARIO_BIG_MAX_RUNNING_LEFT;
+		else if (isTurn && !isRunning) ani = ANI_MARIO_BIG_TURN_LEFT;
+		else if (isJump == 1 ) ani = ANI_MARIO_BIG_JUMP_LEFT;
+		else if(isRunning) ani = ANI_MARIO_BIG_RUNNING_LEFT;
+		else if (isKick) ani = ANI_MARIO_BIG_KICK_LEFT;
+		else if (marioStateTorToiSeShell) ani = ANI_MARIO_BIG_WALKING_TORTOISESHELL_LEFT;
+		else ani = ANI_MARIO_BIG_WALKING_LEFT; 
 	}
 	
 	return ani;
@@ -746,45 +750,47 @@ int CMario::RenderLevelMarioTail() {
 	{
 		// right
 		if (nx > 0) {
-			if (isStateSitDown) ani = 87;
-			else if (isJump == 1) ani = 28;
-			else if (isJumpFlyLow == 1) ani = 81;
-			else if (marioStateFight) ani = 72;
-			else if (isKick) ani = 36;
-			else if (marioStateTorToiSeShell) ani = 52;
-			else ani = 8;	
+			if (isStateSitDown) ani = ANI_MARIO_TAIL_SITDOWN_RIGHT;
+			else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_RIGHT;
+			else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_SITDOWN_RIGHT;
+			else if (marioStateFight) ani = ANI_MARIO_TAIL_FIGHT;
+			else if (isKick) ani = ANI_MARIO_TAIL_KICK_RIGHT;
+			else if (marioStateTorToiSeShell) ani = ANI_MARIO_TAIL_IDLE_TORTOISESHELL_RIGHT;
+			else ani = ANI_MARIO_TAIL_IDLE_RIGHT;	
 		} 
 		else {
-			if (isStateSitDown) ani = 88;
-			else if (isJump == 1) ani = 29;
-			else if (isJumpFlyLow == 1) ani = 82;
-			else if (marioStateFight) ani = 72;
-			else if (isKick) ani = 37;
-			else if (marioStateTorToiSeShell) 	ani = 53;
-			else ani = 9;
+			if (isStateSitDown) ani = ANI_MARIO_TAIL_SITDOWN_LEFT;
+			else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_LEFT;
+			else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_SITDOWN_LEFT;
+			else if (marioStateFight) ani = ANI_MARIO_TAIL_FIGHT;
+			else if (isKick) ani = ANI_MARIO_TAIL_KICK_LEFT;
+			else if (marioStateTorToiSeShell) ani = ANI_MARIO_TAIL_IDLE_TORTOISESHELL_LEFT;
+			else ani = ANI_MARIO_TAIL_IDLE_LEFT;
 		}
 	}
 	else if (vx > 0){
-		if (marioStateFight) ani = 72; 
-		else if (isJumpFlyLow == 1) ani = 81;
-		else if (isJump == 1 && marioStateMaxPower) ani = 118;
-		else if (isJump == 1) ani = 28;
-		else if(isRunning) ani = 20;
-		else if (isKick) ani = 36;
-		else if (marioStateTorToiSeShell) 	ani = 54;
-		else if (isTurn && !isRunning) ani = 68;
-		else ani = 10; 
+		if (marioStateFight) ani = ANI_MARIO_TAIL_FIGHT; 
+		else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_SITDOWN_RIGHT;
+		else if (marioStateMaxPower) ani = ANI_MARIO_TAIL_MAX_RUNNING_RIGHT;
+		else if (isJump == 1 && marioStateMaxPower) ani = ANI_MARIO_TAIL_FLY_HEIGHT_RIGHT;
+		else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_RIGHT;
+		else if(isRunning) ani = ANI_MARIO_TAIL_RUNNING_RIGHT;
+		else if (isKick) ani = ANI_MARIO_TAIL_KICK_RIGHT;
+		else if (marioStateTorToiSeShell) ani = ANI_MARIO_TAIL_WALKING_TORTOISESHELL_RIGHT;
+		else if (isTurn && !isRunning) ani = ANI_MARIO_TAIL_TURN_RIGHT;
+		else ani = ANI_MARIO_TAIL_WALKING_RIGHT; 
 	} 
 	else {
-		if (marioStateFight) ani = 72;
-		else if (isJump == 1 && marioStateMaxPower) ani = 119;
-		else if (isJump == 1 ) ani = 29;
-		else if (isJumpFlyLow == 1) ani = 82;
-		else if(isRunning) ani = 21;
-		else if (isKick) ani = 37;
-		else if (marioStateTorToiSeShell) 	ani = 55;
-		else if (isTurn && !isRunning) ani = 69;
-		else ani = 11; 
+		if (marioStateFight) ani = ANI_MARIO_TAIL_FIGHT;
+		else if (marioStateMaxPower) ani = ANI_MARIO_TAIL_MAX_RUNNING_LEFT;
+		else if (isJump == 1 && marioStateMaxPower) ani = ANI_MARIO_TAIL_FLY_HEIGHT_LEFT;
+		else if (isJump == 1 ) ani = ANI_MARIO_TAIL_JUMP_LEFT;
+		else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_SITDOWN_LEFT;
+		else if(isRunning) ani = ANI_MARIO_TAIL_RUNNING_LEFT;
+		else if (isKick) ani = ANI_MARIO_TAIL_KICK_LEFT;
+		else if (marioStateTorToiSeShell) ani = ANI_MARIO_TAIL_WALKING_TORTOISESHELL_LEFT;
+		else if (isTurn && !isRunning) ani = ANI_MARIO_TAIL_TURN_LEFT;
+		else ani = ANI_MARIO_TAIL_WALKING_LEFT; 
 	}
 	return ani;
 }
@@ -1100,10 +1106,11 @@ void CMario::MarioHanlerProcessArrow()
 bool CMario::checkMarioMaxPower()
 {
 	if (listArrow->GetPState()) {
-		// DebugOut(L"arrow cuoi ko la mau den \n");
+		DebugOut(L"marioStateMaxPower false \n");
 		marioStateMaxPower = false;
 		return false;
 	}
+	DebugOut(L"marioStateMaxPower  true \n");
 	marioStateMaxPower = true;
 	return true;
 }
