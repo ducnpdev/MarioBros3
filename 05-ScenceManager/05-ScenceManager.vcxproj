@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Arrow.cpp" />
+    <ClCompile Include="BackgroundWorldmap.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Card.cpp" />
@@ -149,6 +150,8 @@
     <ClCompile Include="ListScore.cpp" />
     <ClCompile Include="Lives.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Map1.cpp" />
+    <ClCompile Include="MarioWorldmap.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="Number.cpp" />
     <ClCompile Include="PieceBrick.cpp" />
@@ -172,10 +175,13 @@
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="WoodBlock.cpp" />
+    <ClCompile Include="Worldmap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="All.h" />
     <ClInclude Include="Animations.h" />
     <ClInclude Include="Arrow.h" />
+    <ClInclude Include="BackgroundWorldmap.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Card.h" />
@@ -201,7 +207,9 @@
     <ClInclude Include="ListScore.h" />
     <ClInclude Include="Lives.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Map1.h" />
     <ClInclude Include="MarioConfig.h" />
+    <ClInclude Include="MarioWorldmap.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="PieceBrick.h" />
@@ -227,6 +235,7 @@
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="WoodBlock.h" />
+    <ClInclude Include="Worldmap.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

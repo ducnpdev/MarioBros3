@@ -46,6 +46,18 @@
     <Filter Include="Source Files\Object">
       <UniqueIdentifier>{f87d57ac-cab4-4845-b9d0-7334932009c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{cd91fbaa-3d03-4a59-8727-8018d1877054}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{5638a491-2773-4b3a-8f6c-8aad84d19c7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Worldmap">
+      <UniqueIdentifier>{a90bbc0b-c986-4d93-b74c-dc85212b1f15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Worldmap">
+      <UniqueIdentifier>{b114fc25-c4be-40e3-8817-f2c2a569ddc0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -191,6 +203,18 @@
     </ClCompile>
     <ClCompile Include="Switch.cpp">
       <Filter>Source Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Worldmap.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="MarioWorldmap.cpp">
+      <Filter>Source Files\Worldmap</Filter>
+    </ClCompile>
+    <ClCompile Include="Map1.cpp">
+      <Filter>Source Files\Worldmap</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundWorldmap.cpp">
+      <Filter>Source Files\Worldmap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -352,6 +376,21 @@
     </ClInclude>
     <ClInclude Include="Switch.h">
       <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Worldmap.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioWorldmap.h">
+      <Filter>Header Files\Worldmap</Filter>
+    </ClInclude>
+    <ClInclude Include="All.h">
+      <Filter>Header Files\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Map1.h">
+      <Filter>Header Files\Worldmap</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundWorldmap.h">
+      <Filter>Header Files\Worldmap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

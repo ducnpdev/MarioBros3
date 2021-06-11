@@ -1106,11 +1106,11 @@ void CMario::MarioHanlerProcessArrow()
 bool CMario::checkMarioMaxPower()
 {
 	if (listArrow->GetPState()) {
-		DebugOut(L"marioStateMaxPower false \n");
+	//	DebugOut(L"marioStateMaxPower false \n");
 		marioStateMaxPower = false;
 		return false;
 	}
-	DebugOut(L"marioStateMaxPower  true \n");
+	// DebugOut(L"marioStateMaxPower  true \n");
 	marioStateMaxPower = true;
 	return true;
 }
