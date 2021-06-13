@@ -4,10 +4,28 @@
 #include "Game.h"
 #include "MarioWorldmap.h"
 #include "Map1.h"
+#include "Turtle.h"
+#include "Hub.h"
 
 
 class CWorldMap : public CScene
 {
+	// hub
+	CHub* hub;
+	CTime* time;
+	CScore* score;
+	CListArrow* arrows;
+	CCoinPlay* coinPlay;
+	CLives* lives;
+	CCard* cards[3];
+	CCard* cardT;
+	vector<CNumber*> num;
+	vector<CNumber*> numScore;
+	vector<CNumber*> numCoin;
+	vector<CNumber*> numLives;
+	vector<CArrow*> arrow;
+	// end hub
+
 	CMarioWorldmap* player;
 	vector<LPGAMEOBJECT> objects;
 	void _ParseSection_TEXTURES(string line);
@@ -53,12 +71,13 @@ public:
 #define OBJECT_TYPE_MARIOOVERWORLD			4
 #define	OBJECT_TYPE_TURTLE					5
 
-#define OBJECT_TYPE_SCORE_BOARD				21
-#define OBJECT_TYPE_TIME					23
+#define OBJECT_TYPE_HUB						21
+#define OBJECT_TYPE_HUB_TIME					23
 #define OBJECT_TYPE_NUMBER					24
 #define OBJECT_TYPE_SCORE					26
-#define OBJECT_TYPE_ARROW					27
-#define OBJECT_TYPE_ARROWS					28
-#define OBJECT_TYPE_COINPLAY				29
-#define OBJECT_TYPE_LIVES					30
-#define OBJECT_TYPE_CARD					34
+#define OBJECT_TYPE_HUB_ARROW					27
+#define OBJECT_TYPE_HUB_ARROWS					28
+#define OBJECT_TYPE_HUB_COIN				29
+#define OBJECT_TYPE_HUB_LIVES					30
+#define OBJECT_TYPE_HUB_CARD					34
+

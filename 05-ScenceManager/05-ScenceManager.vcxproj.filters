@@ -93,9 +93,6 @@
     <ClCompile Include="Portal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Turtle.cpp">
-      <Filter>Source Files\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="Enemies.cpp">
       <Filter>Source Files\Enemies</Filter>
     </ClCompile>
@@ -216,6 +213,9 @@
     <ClCompile Include="BackgroundWorldmap.cpp">
       <Filter>Source Files\Worldmap</Filter>
     </ClCompile>
+    <ClCompile Include="Turtle.cpp">
+      <Filter>Source Files\Worldmap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -250,9 +250,6 @@
     </ClInclude>
     <ClInclude Include="Portal.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Turtle.h">
-      <Filter>Header Files\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Enemies.h">
       <Filter>Header Files\Enemies</Filter>
@@ -390,6 +387,9 @@
       <Filter>Header Files\Worldmap</Filter>
     </ClInclude>
     <ClInclude Include="BackgroundWorldmap.h">
+      <Filter>Header Files\Worldmap</Filter>
+    </ClInclude>
+    <ClInclude Include="Turtle.h">
       <Filter>Header Files\Worldmap</Filter>
     </ClInclude>
   </ItemGroup>

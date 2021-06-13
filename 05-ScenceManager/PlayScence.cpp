@@ -178,8 +178,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			numLives.push_back((CNumber*)obj);
 		}
 		break;
-	}
-	
+
+	} 
+
 	case OBJECT_TYPE_HUB_COIN:
 		obj = new CCoinPlay(numCoin);
 		coinPlay = (CCoinPlay*)obj;

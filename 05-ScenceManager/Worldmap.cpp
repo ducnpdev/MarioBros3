@@ -215,7 +215,7 @@ void CWorldMap::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_MARIOOVERWORLD:
 		if (player != NULL)
 		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
+			DebugOut(L"[ERROR] World map MARIO object was created before! \n");
 			return;
 		}
 		obj = new CMarioWorldmap();
@@ -230,41 +230,79 @@ void CWorldMap::_ParseSection_OBJECTS(string line)
 		obj = new CBackgroundWorldmap();
 		break;
 	case OBJECT_TYPE_TURTLE:
+		obj = new CTurtle();
 		break;
-	case OBJECT_TYPE_CARD:
-		
-
+	case OBJECT_TYPE_HUB_CARD:
+		obj = new CCard();
+		{
+			int type = atoi(tokens[4].c_str());
+			if (type == 0)
+			{
+				for (int i = 0; i < 3; i++)
+				{
+					if (cards[i] == NULL)
+					{
+						cards[i] = (CCard*)obj;
+						break;
+					}
+				}
+			}
+			else if (type == 1)
+			{
+				cardT = (CCard*)obj;
+			}
+		}
 		break;
-	case OBJECT_TYPE_SCORE_BOARD:
-	
+	case OBJECT_TYPE_HUB:
+		obj = new CHub();
+		hub = (CHub*)obj;
 		break;
 	case OBJECT_TYPE_NUMBER:
 	{
-		
+		int type = atoi(tokens[4].c_str());
+		obj = new CNumber();
+		if (type == 0)
+			num.push_back((CNumber*)obj);
+		if (type == 1)
+			numScore.push_back((CNumber*)obj);
+		if (type == 2)
+			numCoin.push_back((CNumber*)obj);
+		if (type == 3)
+			numLives.push_back((CNumber*)obj);
 		break;
 	}
-	case OBJECT_TYPE_TIME:
-		
+	case OBJECT_TYPE_HUB_TIME:
+		obj = new CTime(num);
+		time = (CTime*)obj;
 		break;
 	case OBJECT_TYPE_SCORE:
-	
+		obj = new CScore(numScore);
+		score = (CScore*)obj;
 		break;
-	case OBJECT_TYPE_ARROW:
+
+	case OBJECT_TYPE_HUB_ARROW:
 	{
+		int type = atoi(tokens[4].c_str());
+		obj = new CArrow(type);
+		arrow.push_back((CArrow*)obj);
 		break;
 	}
 	break;
-	case OBJECT_TYPE_ARROWS:
-		
+	case OBJECT_TYPE_HUB_ARROWS:
+		obj = new CListArrow(arrow);
+		arrows = (CListArrow*)obj;
 		break;
-	case OBJECT_TYPE_COINPLAY:
-		
+
+	case OBJECT_TYPE_HUB_COIN:
+		obj = new CCoinPlay(numCoin);
+		coinPlay = (CCoinPlay*)obj;
 		break;
-	case OBJECT_TYPE_LIVES:
-	
+	case OBJECT_TYPE_HUB_LIVES:
+		obj = new CLives(numLives);
+		lives = (CLives*)obj;
 		break;
 	default:
-		DebugOut(L"[ERR] Invalid object type: %d\n", object_type);
+		DebugOut(L"[ERR] Invalid World map MARIO object type: %d\n", object_type);
 		return;
 	}
 	obj->SetPosition(x, y);
