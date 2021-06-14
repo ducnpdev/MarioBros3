@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Collision.h"
 
-
+#define GOOMBA_DEFLECT		0.09f
 #define GOOMBA_WALKING_SPEED		0.03f
 #define GOONBA_JUMP_DEFLECT_SPEED	0.2f
 #define GOONBA_JUMP_SPEED			0.08f

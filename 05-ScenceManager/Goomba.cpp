@@ -4,6 +4,9 @@
 #include "Pipe.h"
 #include "Koopas.h"
 #include "QuestionBrick.h"
+#include "Game.h"
+#include "Mario.h"
+#include "PlayScence.h"
 
 CGoomba::CGoomba(int typeColor)
 {
@@ -108,6 +111,29 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			timeParaGoomba = GetTickCount64();
 		}
 	}
+
+	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	if (mario->GetMarioIsFight() && state != GOOMBA_STATE_DEFLECT)
+	{
+		if (abs(y - mario->y) <= 50) {
+
+			// mario left of goomba
+			if (mario->x - x < 0 && abs(x - mario->x) <= GOOMBA_AUTO_DEAD_ZONE)
+			{
+				vx = vx + GOOMBA_DEFLECT;
+				SetState(GOOMBA_STATE_DEFLECT);
+			}
+			else
+			{
+				if (abs(mario->x - x) <= GOOMBA_AUTO_DEAD_ZONE) {
+					vx = vx - GOOMBA_DEFLECT;
+					SetState(GOOMBA_STATE_DEFLECT);
+				}
+			}
+		}
+
+	}
+
 }
 
 void CGoomba::Render()
@@ -166,7 +192,7 @@ void CGoomba::SetState(int state)
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	// if (state == GOOMBA_STATE_DEFLECT) return;
+	if (state == GOOMBA_STATE_DEFLECT) return;
 	left = x;
 	top = y;
 	if (typeColorGoomba == PARA_GOOMBA_BROWN) {

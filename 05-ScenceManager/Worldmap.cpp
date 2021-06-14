@@ -11,24 +11,17 @@
 #include "GameObject.h"
 #include "BackgroundWorldmap.h"
 
-CWorldMap::CWorldMap(int id, LPCWSTR filePath) : CScene(id, filePath)
+CWorldMap::CWorldMap(int id, LPCWSTR filePath) 
+	: CScene(id, filePath)
 {
 	player = NULL;
-	/*time = NULL;
+	time = NULL;
 	score = NULL;
 	arrows = NULL;
 	coinPlay = NULL;
 	lives = NULL;
-	sb = NULL;*/
+	hub = NULL;
 	key_handler = new CWorldMapKeyHandler(this);
-}
-
-void CWorldMapKeyHandler::OnKeyDown(int KeyCode)
-{
-	CGame* game = CGame::GetInstance();
-	//CMarioWorldmap* marioWorldmap = ((CMarioWorldmap*)scence)->
-
-		//((CMarioWorldmap*)scence)->GetPlayer();
 }
 
 
@@ -92,9 +85,9 @@ void CWorldMap::Load()
 		if (line == "[OBJECTS]") {
 			section = SCENE_SECTION_OBJECTS; continue;
 		}
-		/*if (line == "[NODES]") {
+		if (line == "[NODES]") {
 			section = SCENE_SECTION_NODES; continue;
-		}*/
+		}
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }
 
 		//
@@ -107,7 +100,7 @@ void CWorldMap::Load()
 		case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
 		case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
 		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
-			// case SCENE_SECTION_NODES: _ParseSection_NODES(line); break;
+		case SCENE_SECTION_NODES: _ParseSection_NODES(line); break;
 		}
 	}
 	f.close();
@@ -311,7 +304,53 @@ void CWorldMap::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
-	
+void CWorldMap::_ParseSection_NODES(string line)
+{
+	vector<string> tokens = split(line);
+
+	//DebugOut(L"--> %s\n",ToWSTR(line).c_str());
+
+	if (tokens.size() < 5) return; // skip invalid lines - an object set must have at least id, x, y
+
+	int object_type = atoi(tokens[0].c_str());
+	float l = (float)atof(tokens[1].c_str());
+	float t = (float)atof(tokens[2].c_str());
+	float r = (float)atof(tokens[3].c_str());
+	float b = (float)atof(tokens[4].c_str());
+
+	int state = atoi(tokens[5].c_str());
+
+	CNode* node = new CNode(l, t, r, b, state);
+	player->PushNode(node);
+}
+
+void CWorldMapKeyHandler::OnKeyDown(int KeyCode)
+{
+	// DebugOut(L"world map onKeyDown\n");
+	CGame* game = CGame::GetInstance();
+	CMarioWorldmap * marioWorldmap = ((CWorldMap*)scence)->GetPlayer();
+	if (game->IsKeyDown(DIK_X))
+	{
+		DebugOut(L"world map onKeyDown: DIK_X \n");
+		if (marioWorldmap->GetTypeCurrentNode() == 1 || marioWorldmap->GetTypeCurrentNode() == 4)
+			CGame::GetInstance()->SwitchScene(marioWorldmap->GetTypeCurrentNode());
+	}
+	else if (game->IsKeyDown(DIK_RIGHT) && !marioWorldmap->GetIsMoving()) {
+		marioWorldmap->SetState(MARIO_STATE_MOVING_RIGHT);
+	}
+
+	else if (game->IsKeyDown(DIK_UP) && !marioWorldmap->GetIsMoving()) {
+		marioWorldmap->SetState(MARIO_STATE_MOVING_UP);
+	}
+
+	else if (game->IsKeyDown(DIK_LEFT) && !marioWorldmap->GetIsMoving()) {
+		marioWorldmap->SetState(MARIO_STATE_MOVING_LEFT);
+	}
+	else if (game->IsKeyDown(DIK_DOWN) && !marioWorldmap->GetIsMoving()) {
+		marioWorldmap->SetState(MARIO_STATE_MOVING_DOWN);
+	}
+
+}
 
 void CWorldMapKeyHandler::OnKeyUp(int KeyCode)
 {

@@ -89,34 +89,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				if (dynamic_cast<CGoomba*>(e->obj))
 				{
-					CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-					if (e->ny < 0) {
-						if (goomba->GetState() != GOOMBA_STATE_DIE) {
-							if (goomba->getColorGoomba() != PARA_GOOMBA_BROWN) {
-								goomba->SetState(GOOMBA_STATE_DIE);
-								DisplayListScore(MARIO_SCORE_100, goomba->x, goomba->y, GetTickCount64());
-							}
-							else {
-								DisplayListScore(MARIO_SCORE_100, goomba->x, goomba->y, GetTickCount64());
-								goomba->setColorGoomba(GOOMBA_YELLOW_COLOR);
-							}
-							vy = -0.2f;
-							isJump = 1;
-						}
-				
-					}
-					else if(e->nx != 0 || e->ny > 0) {
-						if (goomba->GetState() != GOOMBA_STATE_DIE)
-						{
-							if (level > LEVEL_MARIO_SMAIL)
-							{
-								SetMarioLevel(GetMarioLevel() - 1 );
-								StartUntouchable();
-							}
-							else
-								SetState(STATE_MARIO_DIE);
-						}
-					}
+					CollisionWithGoomba(e);
 				}
 
 				if (dynamic_cast<CKoopas*>(e->obj))
@@ -528,10 +501,12 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		if (isStateSitDown) {
 			bottom = y + BBOX_MARIO_BIG_SIT_HEIGHT;
 		}
-		if (nx > 1)
+		if (nx == 1)
 		{
+			right = x + MARIO_BIG_BBOX_WIDTH + 5;
 			left = x + 7;
 		}
+
 		break;	
 	case LEVEL_MARIO_FIRE:
 		right = x + MARIO_BIG_BBOX_WIDTH;
@@ -660,7 +635,7 @@ int CMario::RenderLevelMarioSmall() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG;
+			if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG_RIGHT;
 			else if (isStateSitDown) ani = ANI_MARIO_SMALL_SITDOWN_RIGHT;
 			else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_RIGHT;
 			else if (isKick) ani = ANI_MARIO_SMALL_KICK_RIGHT;
@@ -669,7 +644,7 @@ int CMario::RenderLevelMarioSmall() {
 			else ani = ANI_MARIO_SMALL_IDLE_RIGHT;
 		} 
 		else {
-			if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG;
+			if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG_LEFT;
 			else if (isStateSitDown) ani = ANI_MARIO_SMALL_SITDOWN_LEFT;
 			else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_LEFT;
 			// else if (marioStateMaxPower) ani = 117;
@@ -679,7 +654,7 @@ int CMario::RenderLevelMarioSmall() {
 		}
 	}
 	else if (vx > 0){
-		if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG;
+		if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG_RIGHT;
 		else if (marioStateMaxPower) ani = ANI_MARIO_SMALL_MAX_RUNNING_RIGHT;
 		else if (isTurn && !isRunning) ani = ANI_MARIO_SMALL_TURN_RIGHT;
 		else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_RIGHT;
@@ -689,7 +664,7 @@ int CMario::RenderLevelMarioSmall() {
 		else ani = ANI_MARIO_SMALL_WALKING_RIGHT;
 	} 
 	else {
-		if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG;
+		if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG_LEFT;
 		else if (marioStateMaxPower) ani = ANI_MARIO_SMALL_MAX_RUNNING_LEFT;
 		else if (isTurn && !isRunning) ani = ANI_MARIO_SMALL_TURN_LEFT;
 		else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_LEFT;
@@ -752,7 +727,7 @@ int CMario::RenderLevelMarioTail() {
 		if (nx > 0) {
 			if (isStateSitDown) ani = ANI_MARIO_TAIL_SITDOWN_RIGHT;
 			else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_RIGHT;
-			else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_SITDOWN_RIGHT;
+			else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_FLY_LOW_RIGHT;
 			else if (marioStateFight) ani = ANI_MARIO_TAIL_FIGHT;
 			else if (isKick) ani = ANI_MARIO_TAIL_KICK_RIGHT;
 			else if (marioStateTorToiSeShell) ani = ANI_MARIO_TAIL_IDLE_TORTOISESHELL_RIGHT;
@@ -761,7 +736,7 @@ int CMario::RenderLevelMarioTail() {
 		else {
 			if (isStateSitDown) ani = ANI_MARIO_TAIL_SITDOWN_LEFT;
 			else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_LEFT;
-			else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_SITDOWN_LEFT;
+			else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_FLY_LOW_LEFT;
 			else if (marioStateFight) ani = ANI_MARIO_TAIL_FIGHT;
 			else if (isKick) ani = ANI_MARIO_TAIL_KICK_LEFT;
 			else if (marioStateTorToiSeShell) ani = ANI_MARIO_TAIL_IDLE_TORTOISESHELL_LEFT;
@@ -770,7 +745,7 @@ int CMario::RenderLevelMarioTail() {
 	}
 	else if (vx > 0){
 		if (marioStateFight) ani = ANI_MARIO_TAIL_FIGHT; 
-		else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_SITDOWN_RIGHT;
+		else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_FLY_LOW_RIGHT;
 		else if (marioStateMaxPower) ani = ANI_MARIO_TAIL_MAX_RUNNING_RIGHT;
 		else if (isJump == 1 && marioStateMaxPower) ani = ANI_MARIO_TAIL_FLY_HEIGHT_RIGHT;
 		else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_RIGHT;
@@ -782,10 +757,10 @@ int CMario::RenderLevelMarioTail() {
 	} 
 	else {
 		if (marioStateFight) ani = ANI_MARIO_TAIL_FIGHT;
+		else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_FLY_LOW_LEFT;
 		else if (marioStateMaxPower) ani = ANI_MARIO_TAIL_MAX_RUNNING_LEFT;
 		else if (isJump == 1 && marioStateMaxPower) ani = ANI_MARIO_TAIL_FLY_HEIGHT_LEFT;
 		else if (isJump == 1 ) ani = ANI_MARIO_TAIL_JUMP_LEFT;
-		else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_SITDOWN_LEFT;
 		else if(isRunning) ani = ANI_MARIO_TAIL_RUNNING_LEFT;
 		else if (isKick) ani = ANI_MARIO_TAIL_KICK_LEFT;
 		else if (marioStateTorToiSeShell) ani = ANI_MARIO_TAIL_WALKING_TORTOISESHELL_LEFT;
@@ -1079,6 +1054,42 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 					else SetState(STATE_MARIO_TORTOISESHELL_LEFT);
 				}
 			}
+		}
+	}
+}
+
+void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)
+{
+	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+	if (e->ny < 0) {
+		if (goomba->GetState() != GOOMBA_STATE_DIE) {
+			DisplayListScore(MARIO_SCORE_100, goomba->x, goomba->y, GetTickCount64());
+
+			if (goomba->getColorGoomba() != PARA_GOOMBA_BROWN) {
+				goomba->SetState(GOOMBA_STATE_DIE);
+			}
+			else {
+				goomba->setColorGoomba(GOOMBA_YELLOW_COLOR);
+			}
+			vy = -0.2f;
+			isJump = 1;
+		}
+
+	}
+	else if (e->nx != 0 || e->ny > 0) {
+		if (goomba->GetState() != GOOMBA_STATE_DIE)
+		{
+			if (level > LEVEL_MARIO_SMAIL && !marioStateFight)
+			{
+				SetMarioLevel(GetMarioLevel() - 1);
+				StartUntouchable();
+			}
+			/*else if (marioStateFight) {
+				goomba->SetState(GOOMBA_STATE_DEFLECT);
+			}
+			else {*/
+				SetState(STATE_MARIO_DIE);
+			//}
 		}
 	}
 }

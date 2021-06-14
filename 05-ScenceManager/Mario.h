@@ -96,7 +96,7 @@ public:
 	void SetMarioIsDead(bool isDead) { marioIsDead = isDead; }
 
 	int GetMarioLevel() { return level; }
-	void SetMarioLevel(int le) { level = le; }
+	void SetMarioLevel(int le) { x = x - 10; level = le; }
 
 	bool GetMarioIsStateSitDown() { return isStateSitDown; }
 	void SetMarioIsStateSitDown(bool stateSitDown) { isStateSitDown = stateSitDown; }
@@ -167,6 +167,7 @@ public:
 	// collision
 	void MarioCollisionPiranhaPlant();
 	void CollisionWithKoopa(LPCOLLISIONEVENT collisionEven);
+	void CollisionWithGoomba(LPCOLLISIONEVENT collisionEven);
 
 	// 
 	void MarioHanlerProcessArrow();
