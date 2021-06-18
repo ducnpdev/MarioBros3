@@ -8,6 +8,7 @@
 #include "Leaf.h"
 #include "Mario.h"
 #include "PlayScence.h"
+#include "ItemCoin.h"
 
 
 CKoopas::CKoopas(int type)
@@ -145,9 +146,9 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 					if (dynamic_cast<CQuestionBrick*>(e->obj)) {
 						CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
-						if (questionBrick->GetState() != QUESTION_BRICK_ANI_CRETE) {
+						if (questionBrick->GetState() != QUESTION_BRICK_STATE_CRETE) {
 							questionBrick->SetItemWhenCollision(LEAF_STATE_FLY);
-							questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
+							questionBrick->SetState(QUESTION_BRICK_STATE_CRETE);
 						}
 						SetState(KOOPAS_STATE_SPIN_LEFT);
 					}
@@ -364,9 +365,10 @@ void CKoopas::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLI
 	for (UINT i = 0; i < coEvents.size(); i++)
 	{
 		LPCOLLISIONEVENT c = coEvents[i];
-		/*if (dynamic_cast<CGoomba*>(c->obj)) {
+		if (dynamic_cast<CCoin*>(c->obj)) {
+			// DebugOut(L"koopas collision coin \n");
 			continue;
-		}*/
+		}
 		// else
 		if (dynamic_cast<CColorBrick*>(c->obj)) {
 			if (c->ny < 0) {

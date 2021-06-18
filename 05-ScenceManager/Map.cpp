@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #define TILESET 32
+
 CMap::CMap(int idTture, int colMap, int rMap, int colTileSet, int rTileSet, int maxTSet)
 {
 	this->idTextureOfMap = CTextures::GetInstance()->Get(idTture);

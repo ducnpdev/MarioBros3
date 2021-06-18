@@ -2,14 +2,18 @@
 #include "GameObject.h"
 
 #define QUESTION_BRICK_STATE_MOVING		100
-#define QUESTION_BRICK_STATE_CRETE		200
+//#define QUESTION_BRICK_STATE_CRETE		200
+#define QUESTION_BRICK_STATE_CRETE		1
 
 #define QUESTION_BRICK_ANI_MOVING		0
 #define QUESTION_BRICK_ANI_CRETE		1
 #define  QUESTION_BRICK_FALL 2
 #define NUMBER_ITEM_IN_BRICK  10
 
+#define QUESTION_BRICK_BBOX_WIDTH  16
+#define QUESTION_BRICK_BBOX_HEIGHT 16
 class CQuestionBrick : public CGameObject
+
 {
 	// item la vi du nhu coin, mushroom, ..
 //	CGameObject* itemInBrick[11];

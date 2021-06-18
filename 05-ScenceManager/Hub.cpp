@@ -14,7 +14,7 @@ CHub::CHub()
 
 void CHub::Render()
 {
-	
+	DebugOut(L"Hub render \n");
 	animation_set->at(0)->Render(x, y);
 	// RenderBoundingBox();
 }
@@ -30,6 +30,9 @@ void CHub::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (arrows != NULL) arrows->SetPositionListArrow(camera->GetPositionCameraX() + 80.0f, camera->GetPositionCameraY() + 176.0f);
 	if (lives != NULL) lives->SetPositionNumbers(camera->GetPositionCameraX() + 56.0f, camera->GetPositionCameraY() + 185.0f);
 	if (score != NULL) score->SetPositionNumbers(camera->GetPositionCameraX() + 80.0f, camera->GetPositionCameraY() + 185.0f);
+	if (cards[0] != NULL ) cards[0]->SetPosition(camera->GetPositionCameraX() + 200.0f, camera->GetPositionCameraY() + 171.0f);
+	if (cards[1] != NULL) cards[1]->SetPosition(camera->GetPositionCameraX() + 232.0f, camera->GetPositionCameraY() + 171.0f);
+	if (cards[2] != NULL) cards[2]->SetPosition(camera->GetPositionCameraX() + 264.0f, camera->GetPositionCameraY() + 171.0f);
 }
 
 

@@ -22,6 +22,7 @@ void CQuestionBrick::Render()
 		ani = QUESTION_BRICK_ANI_CRETE;
 	}
 	animation_set->at(ani)->Render(x, y);
+	RenderBoundingBox();
 }
 
 void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -29,7 +30,7 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	
 	y += dy;
-	if (state == QUESTION_BRICK_ANI_CRETE) {
+	if (state == QUESTION_BRICK_STATE_CRETE) {
 		if (y < brickOriginY - 16) {
 			SetState(QUESTION_BRICK_FALL);
 		}
@@ -38,13 +39,17 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (y > brickOriginY) y = brickOriginY;
 }
 
+ 
 
 void CQuestionBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x;
 	t = y;
-	r = x + 16;
-	b = y + 16;
+	/*r = x + 18;
+	b = y + 18;*/
+
+	r = x + QUESTION_BRICK_BBOX_WIDTH;
+	b = y + QUESTION_BRICK_BBOX_HEIGHT;
 }
 
 void CQuestionBrick::SetState(int state)
@@ -55,7 +60,7 @@ void CQuestionBrick::SetState(int state)
 	case QUESTION_BRICK_STATE_MOVING:
 		vx = 0;
 		break;
-	case QUESTION_BRICK_ANI_CRETE:
+	case QUESTION_BRICK_STATE_CRETE:
 		vy = -0.125f;
 		break;
 	case QUESTION_BRICK_FALL:
@@ -67,7 +72,7 @@ void CQuestionBrick::SetState(int state)
 
 void CQuestionBrick::SetItemWhenCollision(int state)
 {
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < NUMBER_ITEM_IN_BRICK; i++)
 	{
 		if (itemInBrick[i] != NULL ) {
 			DebugOut(L"SetItemWhenCollision \n");
@@ -99,7 +104,7 @@ void CQuestionBrick::SetItemWhenCollision(int state)
 
 void CQuestionBrick::PushItemQuestionBrick(CGameObject* tempItem, int countItem)
 {
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < NUMBER_ITEM_IN_BRICK; i++)
 	{
 		if(itemInBrick[i] == NULL){
 			itemInBrick[i] = tempItem;

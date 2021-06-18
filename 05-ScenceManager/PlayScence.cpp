@@ -11,6 +11,8 @@
 #include "Score.h"
 #include "ListScore.h"
 #include "ColorBrick.h"
+#include "Hub.h"
+
 
 using namespace std;
 
@@ -159,6 +161,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		hub->SetArrowHub(arrows);
 		hub->SetLives(lives);
 		hub->SetScore(score);
+		hub->SetCardHub(cards);
 		player->SetListArrow(arrows);
 		break;
 	}
@@ -374,17 +377,24 @@ void CPlayScene::initCamera() {
 		return;
 	}
 	camera = new CCamera(player, id);
-	if (hub != NULL) {
+//	if (hub != NULL) {
 		hub->SetCameraHub(camera);
-	}
+//	}
 }
 
 void CPlayScene::Update(DWORD dt)
 {
-	if (player->GetMarioIsDie()) {
-		// TODO: swith to scene intro
-		// DebugOut(L"mario is die \n");
-	}
+
+	/*if (id == 1)
+	{
+		if (player->GetMarioIsDie())
+		{
+			player->SetMarioIsDie(false);
+			CGame::GetInstance()->SetCamPos(0, 0);
+			CGame::GetInstance()->SwitchScene(0);
+
+		}
+	}*/
 
 	initCamera();
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
@@ -435,15 +445,20 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::Render()
 {
 	// render tilemap 
-	mapBackground->RenderMap();
+	if (mapBackground) {
+		mapBackground->RenderMap();
+	}
 
 	for (int i = objects.size() - 1; i >= 0; i--)
 	{
 		if (dynamic_cast<CColorBrick*>(objects[i])) objects[i]->Render();
 	}
+
 	for (int i = objects.size() - 1; i >= 0; i--)
 	{
-		if (!dynamic_cast<CPipe*>(objects[i]) && (!dynamic_cast<CColorBrick*>(objects[i]))) 
+		if (!dynamic_cast<CPipe*>(objects[i]) && (!dynamic_cast<CColorBrick*>(objects[i]))
+			&& (!dynamic_cast<CHub*>(objects[i])) && (!dynamic_cast<CNumber*>(objects[i])) && (!dynamic_cast<CCard*>(objects[i])) && (!dynamic_cast<CArrow*>(objects[i]))
+			) 
 			objects[i]->Render();
 	}
 	for (int i = objects.size() - 1; i >= 0; i--)
@@ -451,6 +466,13 @@ void CPlayScene::Render()
 		if (dynamic_cast<CPipe*>(objects[i]))
 			objects[i]->Render();
 	}
+	for (int i = objects.size() - 1; i >= 0; i--)
+	{
+		if (dynamic_cast<CNumber*>(objects[i]) || dynamic_cast<CHub*>(objects[i]) || dynamic_cast<CCard*>(objects[i]) || dynamic_cast<CArrow*>(objects[i]))
+			objects[i]->Render();
+	}
+
+
 }
 
 /*
@@ -458,12 +480,15 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (unsigned int i = 0; i < objects.size(); i++) {
+		// system("pause");
 		delete objects[i];
-
+	}
 	objects.clear();
 	player = NULL;
-
+	gridResource->GirdRemoveResource();
+	gridResource = nullptr;
+	delete gridResource;
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
@@ -473,6 +498,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 	switch (KeyCode)
 	{
+	case DIK_L:
+		CGame::GetInstance()->SetCamPos(0, 0);
+		CGame::GetInstance()->SwitchScene(0);
+		DebugOut(L"OnKeyDown DIK_L \n");
+		break;
 	case DIK_1:
 		mario->marioSetUpDownLevel(LEVEL_MARIO_SMAIL);
 		break;
@@ -552,7 +582,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_A:
 		if (mario->GetMarioIsTortoiseshell())
 		{
-			mario->SetTimeStartKick(GetTickCount());
+			mario->SetTimeStartKick(GetTickCount64());
 			mario->SetState(STATE_MARIO_KICK);
 		}
 		break;
@@ -576,8 +606,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 
 	if (game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_DOWN)) {
-		mario->SetTimeWalkingRight(GetTickCount());
-		if (GetTickCount() - mario->GetTimeWalkingLeft() > 200) {
+		mario->SetTimeWalkingRight(GetTickCount64());
+		if (GetTickCount64() - mario->GetTimeWalkingLeft() > 200) {
 
 			if (game->IsKeyDown(DIK_A) || game->IsKeyDown(DIK_A) && game->IsKeyDown(DIK_S)) {
 				if (mario->GetMarioPower()) mario->SetState(STATE_MARIO_RUNNING_FAST_RIGHT);
@@ -595,8 +625,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	else if (game->IsKeyDown(DIK_LEFT) && !game->IsKeyDown(DIK_DOWN) ) {
 		//DebugOut(L"DIK_LEFT \n");
 
-		mario->SetTimeWalkingLeft(GetTickCount());
-		if (GetTickCount() - mario->GetTimeWalkingRight() > 200) {
+		mario->SetTimeWalkingLeft(GetTickCount64());
+		if (GetTickCount64() - mario->GetTimeWalkingRight() > 200) {
 			if(game->IsKeyDown(DIK_A) || game->IsKeyDown(DIK_A) && game->IsKeyDown(DIK_S)){
 				mario->SetState(STATE_MARIO_RUNNING_LEFT);
 			}else {
@@ -614,7 +644,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 	
 	if (game->IsKeyDown(DIK_S)) {
-		if (GetTickCount() - mario->GetTimeJumpStart() < 250 )
+		if (GetTickCount64() - mario->GetTimeJumpStart() < 250 )
 		{
 
 			// && mario->vy <= 0

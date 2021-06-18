@@ -1,4 +1,5 @@
 #pragma once
+#define MAP_MAX_X	2790
 
 // #define MARIO_ANI_BIG_IDLE_RIGHT			0
 // #define MARIO_ANI_BIG_IDLE_LEFT				1
@@ -10,12 +11,12 @@
 // #define MARIO_ANI_SMALL_WALKING_LEFT		7
 // #define	LEVEL_MARIO_SMAIL					1
 // #define	LEVEL_MARIO_BIG						2
-#define MARIO_ANI_DIE						8
 #define MARIO_BIG_BBOX_WIDTH				15
 #define MARIO_BIG_BBOX_HEIGHT				27
 #define MARIO_SMALL_BBOX_WIDTH				13
 #define MARIO_SMALL_BBOX_HEIGHT				15
 #define MARIO_UNTOUCHABLE_TIME				1500
+#define MARIO_ANI_DIE						126
 
 // MARIO SMALL ANI
 #define ANI_MARIO_SMALL_IDLE_RIGHT			0

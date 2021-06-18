@@ -331,6 +331,22 @@ void CGridResource::GridLoadResource(LPCWSTR path) {
 // unload all resource in cell, cell in grid
 void CGridResource::GirdRemoveResource(){
 	// DebugOut(L"CGrid GirdRemoveResource;\n");
+	if (this != nullptr) {
+		if (cellResource)
+		{
+			for (int i = 0; i < numCol; i++)
+			{
+				for (int j = 0; j < numRow; j++)
+				{
+					cellResource[i][j].RemoveResource();
+				}
+			}
+			delete cellResource;
+			cellResource = NULL;
+		}
+	}
+
+
 }
 
 // load all object in game need to render
@@ -345,6 +361,28 @@ void CGridResource::GirdPushResource(vector<LPGAMEOBJECT>& listResource, int xca
 		right++;
 	top = (ycam) / cellHeight;
 	bottom = (ycam + GRID_CELL_HEIGHT) / cellHeight;
+
+	if (right < 0 || left > numCol || bottom < 0 && top > numRow)
+	{
+		return;
+	}
+
+	if (right > numCol)
+	{
+		right = numCol;
+	}
+	if (bottom > numRow)
+	{
+		bottom = numRow;
+	}
+	if (left < 0)
+	{
+		left = 0;
+	}
+	if (top < 0)
+	{
+		top = 0;
+	}
 
 	for (i = left; i <= right; i++)
 	{

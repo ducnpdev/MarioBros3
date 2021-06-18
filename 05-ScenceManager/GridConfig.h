@@ -43,4 +43,5 @@
 // 
 #define BRICK_AMOUNT 20
 
+#define ITEM_IN_BRICK_AMOUNT 20
 

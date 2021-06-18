@@ -74,6 +74,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	
 		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
+
 		x += min_tx*dx + nx*0.1f;
 		y += min_ty*dy + ny*0.1f;
 
@@ -166,30 +167,28 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 		
 			if (dynamic_cast<CQuestionBrick*>(e->obj)) {
+				DebugOut(L"111111111 \n");
+
 				CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
 				if (e->ny > 0) {
 					vy = 0; 
 					SetMarioFallState(true);
 					if (questionBrick->GetState() == QUESTION_BRICK_STATE_MOVING) {
-					//	DebugOut(L"111111 \n");
-
 						if (dynamic_cast<CCoin*>(questionBrick->GetItemInBrick())) {
 							coinplay->AddCoinHub();
 						}
 						questionBrick->SetItemWhenCollision(COIN_EFFECT_ANI); // 200 là BRICK_STATE_INIT_COLLISION_MARIO
-						questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
+						questionBrick->SetState(QUESTION_BRICK_STATE_CRETE);
 					}
 				}
 				if (e->nx != 0) {
-				//	DebugOut(L"22222 \n");
-
 					if (marioStateFight) {
 						// TODO 
 						if (questionBrick->GetState() == QUESTION_BRICK_STATE_MOVING) {
 							if (dynamic_cast<CCoin*>(questionBrick->GetItemInBrick()))
 								coinplay->AddCoinHub();
 							questionBrick->SetItemWhenCollision(COIN_EFFECT_ANI);
-							questionBrick->SetState(QUESTION_BRICK_ANI_CRETE);
+							questionBrick->SetState(QUESTION_BRICK_STATE_CRETE);
 						}
 					}
 				}
@@ -286,6 +285,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	MarioHanlerProcessArrow();
 
 	checkMarioMaxPower();
+
+	if (x > MAP_MAX_X)
+	{
+		x = MAP_MAX_X;
+		//CGame* game = CGame::GetInstance();
+		//SetPosition(0, 0);
+	//	CGame::GetInstance()->SwitchScene(0);
+	}
+
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 }
@@ -372,7 +380,7 @@ void CMario::SetState(int state)
 	//	vy = -0.13f - marioSpeechJump;
 
 		if (marioStateMaxPower) {
-		DebugOut(L"mario Maxpow: true \n");
+		// DebugOut(L"mario Maxpow: true \n");
 			vy = -0.2f - marioSpeechJump;
 		}
 		else {
@@ -429,7 +437,6 @@ void CMario::SetState(int state)
 	case STATE_MARIO_DIE:
 		marioStateDie = true;
 		marioStateTorToiSeShell = false;
-
 		vy = -SPEED_MARIO_DIE_DEFLECT;
 		break;
 	case STATE_MARIO_TORTOISESHELL_RIGHT:
@@ -526,7 +533,11 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 
 }
 
-void CMario::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLISIONEVENT>& coEventsResult, float& min_tx, float& min_ty, float& nx, float& ny, float& rdx, float& rdy)
+void CMario::FilterCollision(
+	vector<LPCOLLISIONEVENT>& coEvents, 
+	vector<LPCOLLISIONEVENT>& coEventsResult, 
+	float& min_tx, float& min_ty, 
+	float& nx, float& ny, float& rdx, float& rdy)
 {
 	min_tx = 1.0f;
 	min_ty = 1.0f;
@@ -572,7 +583,20 @@ void CMario::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLIS
 				coEventsResult.push_back(coEvents[i]);
 			}
 		}*/
+		/*else if (dynamic_cast<CQuestionBrick*>(c->obj)) {
+			if (c->t < min_tx && c->nx != 0) {
+				min_tx = c->t; nx = c->nx; rdx = c->dx;
+				coEventsResult.push_back(coEvents[i]);
+			}
+
+			if (c->t < min_ty && c->ny != 0) {
+				min_ty = c->t; ny = c->ny; rdy = c->dy;
+				coEventsResult.push_back(coEvents[i]);
+			}
+		}*/
+
 		else {
+			
 			if (c->t < min_tx && c->nx != 0) {
 				min_tx = c->t; nx = c->nx; rdx = c->dx;
 				coEventsResult.push_back(coEvents[i]);
@@ -1086,10 +1110,10 @@ void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)
 			}
 			/*else if (marioStateFight) {
 				goomba->SetState(GOOMBA_STATE_DEFLECT);
-			}
-			else {*/
+			}*/
+			else if (level == LEVEL_MARIO_SMAIL){
 				SetState(STATE_MARIO_DIE);
-			//}
+			}
 		}
 	}
 }
