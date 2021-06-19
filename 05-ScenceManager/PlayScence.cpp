@@ -163,6 +163,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		hub->SetScore(score);
 		hub->SetCardHub(cards);
 		player->SetListArrow(arrows);
+		player->SetCards(cards);
 		break;
 	}
 	case OBJECT_TYPE_NUMBER: {
@@ -227,7 +228,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			int type = atoi(tokens[4].c_str());
 			if (type == 0)
 			{
-				for (int i = 0; i < 3; i++)
+				for (int i = 0; i < MaxShowCards; i++)
 				{
 					if (cards[i] == NULL)
 					{
@@ -382,6 +383,15 @@ void CPlayScene::initCamera() {
 //	}
 }
 
+void CPlayScene::initCard() {
+	if (cards[0] == NULL) {
+		return;
+	}
+	if (player->GetCard() == NULL) {
+		player->SetCards(cards);
+	}
+}
+
 void CPlayScene::Update(DWORD dt)
 {
 
@@ -440,6 +450,8 @@ void CPlayScene::Update(DWORD dt)
 		 objects[i]->Update(dt, &coObjects);
 	 }
 	
+	
+//	 initCard();
 }
 
 void CPlayScene::Render()
@@ -480,6 +492,7 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
+	
 	for (unsigned int i = 0; i < objects.size(); i++) {
 		// system("pause");
 		delete objects[i];
@@ -489,6 +502,22 @@ void CPlayScene::Unload()
 	gridResource->GirdRemoveResource();
 	gridResource = nullptr;
 	delete gridResource;
+
+	camera = NULL;
+	num.clear();
+	numScore.clear();
+	numCoin.clear();
+	numLives.clear();
+	arrow.clear();
+
+
+	//for (int i = 0; i < MaxShowCards; i++)
+	//	cards[i] = NULL;
+	for (int i = 0; i < 16; i++)
+		pieceBrick[i] = NULL;
+	for (int i = 0; i < 3; i++)
+		listScore[i] = NULL;
+	
 }
 
 void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)

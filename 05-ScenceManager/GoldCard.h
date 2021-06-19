@@ -24,7 +24,7 @@ class CGoalCard : public CGameObject
 	DWORD create_start;
 	CCardText* cardtext;
 public:
-	CGoalCard(CCardText* c) { create_start = (DWORD)GetTickCount64();  state = 1; cardtext = c; isHiden = 0; hiden_start = 0; }
+	CGoalCard(CCardText* c);
 	void SetState(int state);
 	void SetSwitchScene(DWORD t) {
 		isHiden = 1;

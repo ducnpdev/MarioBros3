@@ -7,10 +7,8 @@
 #include "Card.h"
 #include "Camera.h"
 #include "Lives.h"
+#include "all.h"
 
-
-
-#define MaxShowCards 3
 #define BOARD_TIME_X_PLUS				152.0f
 #define BOARD_TIME_Y_PLUS				185.0f
 

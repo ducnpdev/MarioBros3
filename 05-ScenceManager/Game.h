@@ -5,11 +5,11 @@
 #include <Windows.h>
 #include <d3d9.h>
 #include <d3dx9.h>
+#include "all.h"
 
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
-
 #include "Scence.h"
 
 using namespace std;
@@ -45,6 +45,8 @@ class CGame
 	int coin = 0;
 	int time = 0;
 	int score = 0;
+
+	int itemGoalCard[MaxShowCards];
 	//
 	unordered_map<int, LPSCENE> scenes;
 	int current_scene; 
@@ -63,6 +65,18 @@ public:
 
 	int GetScore() { return score; }
 	void SetScore(int s) { score = s; }
+
+	int GetItemGoalCard(int i) { return itemGoalCard[i]; }
+	void SetItemGoalCard(int s) {
+		for (int i = 0; i < MaxShowCards; i++)
+		{
+			if (itemGoalCard[i] == 0)
+			{
+				itemGoalCard[i] = s;
+				break;
+			}
+		}
+	}
 	// end class hub
 
 

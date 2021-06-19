@@ -14,7 +14,7 @@ CHub::CHub()
 
 void CHub::Render()
 {
-	DebugOut(L"Hub render \n");
+//	DebugOut(L"Hub render \n");
 	animation_set->at(0)->Render(x, y);
 	// RenderBoundingBox();
 }

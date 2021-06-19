@@ -45,7 +45,7 @@ protected:
 	CListScore* listScore[3];
 	CLives* lives;
 
-	CCard* cards[3];
+	CCard* cards[MaxShowCards];
 	CCard* cardT;
 	CCardText* cardText;
 
@@ -75,6 +75,8 @@ public:
 	virtual void Render();
 	virtual void Unload();
 	void initCamera();
+	void initCard();
+
 	bool ObjectInUsing(float x, float y);
 	CMario * GetPlayer() { return player; } 
 

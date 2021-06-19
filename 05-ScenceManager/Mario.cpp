@@ -19,11 +19,12 @@
 #include "Brick.h"
 #include "Mushroom.h"
 #include "Switch.h"
+#include "GoldCard.h"
 
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_TAIL;
+	level = LEVEL_MARIO_SMAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 
@@ -197,14 +198,30 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (dynamic_cast<CCoin*>(e->obj)) // if e->obj is Koopa
 			{
-				DebugOut(L"marrio collision CCoin \n");
+				// DebugOut(L"marrio collision CCoin \n");
 				CCoin* coin = dynamic_cast<CCoin*>(e->obj);
 				if (coin->GetState() == COIN_STATE_NORMAL)
 				{
-					DebugOut(L"marrio collision CCoin and state coin normal = 2. \n");
+					// DebugOut(L"marrio collision CCoin and state coin normal = 2. \n");
 					coinplay->AddCoinHub();
 					coin->SetState(COIN_STATE_HIDEN);
 				}
+			}
+
+			if (dynamic_cast<CGoalCard*>(e->obj)) {
+				CGoalCard* goalCard = dynamic_cast<CGoalCard*>(e->obj);
+				CGame* game = CGame::GetInstance();
+
+				// DebugOut(L"11 mario collision goal card %d \n", goalCard->GetState());
+				if (goalCard->GetState() == GOALCARD_STATE_HIDEN) return;
+				SetCardState(goalCard->GetState());
+				// DebugOut(L"22 mario collision goal card %d \n", goalCard->GetState());
+				game->SetItemGoalCard(goalCard->GetState());
+				goalCard->SetState(COIN_STATE_HIDEN);
+				goalCard->SetSwitchScene((DWORD)GetTickCount64());
+				goalCard->GetCardText()->SetState(1);
+				goalCard->GetCardText()->GetCard()->SetState(goalCard->GetState());
+				// CGame* game = CGame::GetInstance();
 			}
 
 			if (dynamic_cast<CLeaf*>(e->obj))

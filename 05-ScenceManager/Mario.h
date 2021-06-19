@@ -6,6 +6,7 @@
 #include "Tail.h" 
 #include "ListScore.h"
 #include "Arrow.h"
+#include "Card.h"
 
 
 class CMario : public  CCollision
@@ -51,6 +52,7 @@ class CMario : public  CCollision
 	// start hub
 	CCoinPlay* coinplay;
 	CListScore* listScore[3];
+	CCard* card[MaxShowCards];
 	// end hub
 	DWORD timeRunningStart;
 	CListArrow* listArrow;
@@ -92,6 +94,28 @@ public:
 
 
 	// Function Get - Set
+	void SetCards(CCard* c[MaxShowCards]) {
+		for (int i = 0; i < MaxShowCards; i++)
+		{
+			card[i] = c[i];
+		}
+	}
+	void SetCardState(int s)
+	{
+		for (int i = 0; i < MaxShowCards; i++)
+		{
+			if (card[i]->GetState() == CARD_STATE_EMPTY) {
+				card[i]->SetState(s);
+				break;
+			}
+		}
+	}
+	CCard* GetCard() {
+		return card[0]; 
+	}
+
+
+
 	bool GetMarioIsDead() { return marioIsDead; }
 	void SetMarioIsDead(bool isDead) { marioIsDead = isDead; }
 
