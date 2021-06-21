@@ -73,7 +73,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		float rdy = 0;
 		
 	
-		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
+		CMario::FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
 
 
 		x += min_tx*dx + nx*0.1f;
@@ -168,28 +168,26 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 		
 			if (dynamic_cast<CQuestionBrick*>(e->obj)) {
-				DebugOut(L"111111111 \n");
-
 				CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
 				if (e->ny > 0) {
 					vy = 0; 
 					SetMarioFallState(true);
-					if (questionBrick->GetState() == QUESTION_BRICK_STATE_MOVING) {
+					if (questionBrick->GetState() == QUESTIONBLOCK_ITEM_STATE) {
 						if (dynamic_cast<CCoin*>(questionBrick->GetItemInBrick())) {
 							coinplay->AddCoinHub();
 						}
 						questionBrick->SetItemWhenCollision(COIN_EFFECT_ANI); // 200 là BRICK_STATE_INIT_COLLISION_MARIO
-						questionBrick->SetState(QUESTION_BRICK_STATE_CRETE);
+						questionBrick->SetState(QUESTIONBLOCK_DEFLECT_STATE);
 					}
 				}
 				if (e->nx != 0) {
 					if (marioStateFight) {
 						// TODO 
-						if (questionBrick->GetState() == QUESTION_BRICK_STATE_MOVING) {
+						if (questionBrick->GetState() == QUESTIONBLOCK_ITEM_STATE) {
 							if (dynamic_cast<CCoin*>(questionBrick->GetItemInBrick()))
 								coinplay->AddCoinHub();
 							questionBrick->SetItemWhenCollision(COIN_EFFECT_ANI);
-							questionBrick->SetState(QUESTION_BRICK_STATE_CRETE);
+							questionBrick->SetState(QUESTIONBLOCK_DEFLECT_STATE);
 						}
 					}
 				}
@@ -271,7 +269,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					if (level == LEVEL_MARIO_SMAIL)
 					{
-						SetPosition(x, y - 15);
+						SetPosition(x, y - UP_DOWN_POSITOIN_Y);
 						mushroom->SetState(MUSHROOM_STATE_HIDEN);
 						SetState(STATE_MARIO_UP_LEVEL);
 						timeMarioUpLevel = GetTickCount64();
@@ -289,7 +287,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 
-	if (GetTickCount64() - timeStartKick < 300) {
+	if (GetTickCount64() - timeStartKick < TIME_MARIO_KICK) {
 		SetState(STATE_MARIO_KICK);
 	}
 
@@ -319,9 +317,6 @@ void CMario::MarioCollisionPiranhaPlant()
 {
 
 }
-
-
-
 
 void CMario::handlerMarioJumpFly() {
 	if (GetTickCount64() - timeMarioJumpFlyLow < 300)

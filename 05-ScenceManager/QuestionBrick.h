@@ -12,6 +12,18 @@
 
 #define QUESTION_BRICK_BBOX_WIDTH  16
 #define QUESTION_BRICK_BBOX_HEIGHT 16
+
+
+
+#define QUESTIONBLOCK_ITEM_STATE		0
+#define QUESTIONBLOCK_NORMAL_STATE		1
+#define QUESTIONBLOCK_DEFLECT_STATE		2
+#define QUESTIONBLOCK_FALL_STATE		3
+#define AFTER_COLLISION_MARIO 32
+
+
+
+
 class CQuestionBrick : public CGameObject
 
 {
@@ -31,5 +43,7 @@ public:
 	void PushItemQuestionBrick(CGameObject* item, int _countItem);
 
 	CGameObject* GetItemInBrick();
+
+	bool CheckQuestionBrickItem();
 
 };

@@ -350,7 +350,7 @@ void CGame::_ParseSection_SCENES(string line)
 	scenes[id] = scene;
 
 	//LPSCENE scene = new CPlayScene(id, path);
-	scenes[id] = scene;
+	// scenes[id] = scene;
 }
 
 /*
@@ -403,7 +403,18 @@ void CGame::SwitchScene(int scene_id)
 	CAnimations::GetInstance()->Clear();
 
 	current_scene = scene_id;
-	LPSCENE s = scenes[scene_id];
+	if (scene_id == 1) {
+		CPlayScene* s = (CPlayScene*)scenes[scene_id];
+		CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
+		s->Load();
+	}
+
+	if (scene_id == 0) {
+		CWorldMap* s = (CWorldMap*)scenes[scene_id];
+		CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
+		s->Load();
+	}
+	/*LPSCENE s = scenes[scene_id];
 	CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
-	s->Load();	
+	s->Load();*/	
 }

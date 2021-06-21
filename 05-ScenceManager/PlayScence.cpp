@@ -394,21 +394,21 @@ void CPlayScene::initCard() {
 
 void CPlayScene::Update(DWORD dt)
 {
-
-	/*if (id == 1)
+	if (id == 1)
 	{
 		if (player->GetMarioIsDie())
 		{
 			player->SetMarioIsDie(false);
 			CGame::GetInstance()->SetCamPos(0, 0);
 			CGame::GetInstance()->SwitchScene(0);
-
 		}
-	}*/
+	}
 
-	initCamera();
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
+	if (player == NULL) return;
+	// DebugOut(L"1111111111111111111 \n");
+	initCamera();
 
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
@@ -417,8 +417,7 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return; 
-
+	
 	for (size_t i = 1; i < objects.size(); i++)
 	{
 		/*if (dynamic_cast<CKoopas*>(objects[i])) {
@@ -484,7 +483,6 @@ void CPlayScene::Render()
 			objects[i]->Render();
 	}
 
-
 }
 
 /*
@@ -492,9 +490,7 @@ void CPlayScene::Render()
 */
 void CPlayScene::Unload()
 {
-	
 	for (unsigned int i = 0; i < objects.size(); i++) {
-		// system("pause");
 		delete objects[i];
 	}
 	objects.clear();
@@ -510,9 +506,8 @@ void CPlayScene::Unload()
 	numLives.clear();
 	arrow.clear();
 
-
-	//for (int i = 0; i < MaxShowCards; i++)
-	//	cards[i] = NULL;
+	for (int i = 0; i < MaxShowCards; i++)
+		cards[i] = NULL;
 	for (int i = 0; i < 16; i++)
 		pieceBrick[i] = NULL;
 	for (int i = 0; i < 3; i++)
