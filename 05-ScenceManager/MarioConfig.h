@@ -1,7 +1,7 @@
 #pragma once
 #define MAP_MAX_X	2790
 #define UP_DOWN_POSITOIN_Y	15
-
+#define TIME_MARIO_KICK	300
 // #define MARIO_ANI_BIG_IDLE_RIGHT			0
 // #define MARIO_ANI_BIG_IDLE_LEFT				1
 // #define MARIO_ANI_SMALL_IDLE_RIGHT			2

@@ -209,11 +209,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<CGoalCard*>(e->obj)) {
 				CGoalCard* goalCard = dynamic_cast<CGoalCard*>(e->obj);
 				CGame* game = CGame::GetInstance();
-
-				// DebugOut(L"11 mario collision goal card %d \n", goalCard->GetState());
 				if (goalCard->GetState() == GOALCARD_STATE_HIDEN) return;
 				SetCardState(goalCard->GetState());
-				// DebugOut(L"22 mario collision goal card %d \n", goalCard->GetState());
 				game->SetItemGoalCard(goalCard->GetState());
 				goalCard->SetState(COIN_STATE_HIDEN);
 				goalCard->SetSwitchScene((DWORD)GetTickCount64());
@@ -354,10 +351,8 @@ void CMario::SetState(int state)
 		break;
 	case STATE_MARIO_RUNNING_RIGHT:
 		isRunning = true;
-
 		isJump = 0;			
 		isKick = false;
-
 		vx = SPEED_MARIO_RUNNING;
 		if (isTurn)  vx = SPEED_MARIO_RUNNING + 0.01f;
 		nx = DIRECTION_MARIO_RIGHT;

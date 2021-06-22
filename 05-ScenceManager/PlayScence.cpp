@@ -449,8 +449,8 @@ void CPlayScene::Update(DWORD dt)
 		 objects[i]->Update(dt, &coObjects);
 	 }
 	
-	
-//	 initCard();
+	// TODO
+   // initCard();
 }
 
 void CPlayScene::Render()

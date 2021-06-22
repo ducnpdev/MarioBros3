@@ -36,6 +36,10 @@
 
 // object type question brick in grid 
 #define OBJECT_TYPE_COIN 11
+#define OBJECT_TYPE_FIRE_PLANT 16
+#define OBJECT_TYPE_FIRE_BULLET 17
+#define OBJECT_TYPE_PIRANHA_PLANT 22
+
 #define OBJECT_TYPE_MUSHROOM 18
 #define OBJECT_TYPE_LEAF 19
 #define OBJECT_TYPE_SWITCH_P					31

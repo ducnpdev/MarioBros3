@@ -21,7 +21,6 @@ void CHub::Render()
 
 void CHub::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
 	CGameObject::Update(dt);
 	if (camera == NULL) return;
 	SetPosition(camera->GetPositionCameraX() - BOARD_CAM_X_PLUS, camera->GetPositionCameraY() + BOARD_CAM_Y_PLUS);

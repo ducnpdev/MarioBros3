@@ -100,7 +100,7 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			break;
 		}
 		// 16: FIRE PLANT
-		case 16: {
+		case OBJECT_TYPE_FIRE_PLANT: {
 			obj = new CFirePiranhaPlant(((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer());
 			for (int i = 0; i < 2; i++)
 			{
@@ -112,7 +112,7 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			break;
 		}
 		// 17: bullet FIRE PLANT
-		case 17: {
+		case OBJECT_TYPE_FIRE_BULLET: {
 			obj = new CFirePlantBullet();
 			for (int i = 0; i < 2; i++)
 			{
@@ -125,7 +125,7 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			break;
 		}
 		// 22:  PLANT
-		case 22: {
+		case OBJECT_TYPE_PIRANHA_PLANT: {
 			obj = new CPiranhaPlant(((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer());
 			break;
 		}
@@ -182,9 +182,7 @@ void CGridResource::_ParseSection_Grid_ENEMIES(string line) {
 
 void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 	vector<string> tokens = split(line);
-
 	if (tokens.size() < 8) return; // skip invalid lines - an object set must have at least id, x, y
-
 	int object_type = atoi(tokens[0].c_str());
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
@@ -208,7 +206,7 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 					// item_object số lượng item trong 1 question brick
 					//for (int j = 0; j < item_object; j++) {
 						questionBrick[i]->PushItemQuestionBrick(listItemQuestionBrick[i], item_object);
-				//	}
+					//}
 					break;
 				}
 			}
@@ -271,7 +269,6 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 	default:
 		break;
 	}
-
 	
 	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
 
