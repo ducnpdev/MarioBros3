@@ -48,6 +48,13 @@ class CMario : public  CCollision
 	DWORD timeMarioUpLevel;
 	DWORD timeMarioSmoke;
 
+	bool marioStatePipeDown;
+	bool  marioStatePipeUp;
+	// int pipe_down_fast_state;
+	DWORD  timeMarioPipeDown;
+	DWORD  timeMarioPipeUp;
+	// DWORD pipe_down_fast_start;
+
 	CGameObject* tortoiseshell;
 	// start hub
 	CCoinPlay* coinplay;
@@ -187,12 +194,13 @@ public:
 	void handlerMarioUpLevelOtherSmall();
 	void handlerMarioUpLevelSmoke(); 
 	void handlerMarioFight();
-
+	void handlerMarioDownPipe();
+	void handlerMarioUpPipe();
 	// collision
 	void MarioCollisionPiranhaPlant();
 	void CollisionWithKoopa(LPCOLLISIONEVENT collisionEven);
 	void CollisionWithGoomba(LPCOLLISIONEVENT collisionEven);
-
+	void CollisionWithPipe(LPCOLLISIONEVENT collisionEven);
 	// 
 	void MarioHanlerProcessArrow();
 

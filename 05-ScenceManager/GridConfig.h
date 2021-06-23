@@ -42,6 +42,7 @@
 
 #define OBJECT_TYPE_MUSHROOM 18
 #define OBJECT_TYPE_LEAF 19
+#define OBJECT_TYPE_BLUE_BRICK				20
 #define OBJECT_TYPE_SWITCH_P					31
 
 // 

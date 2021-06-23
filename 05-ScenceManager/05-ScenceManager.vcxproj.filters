@@ -219,6 +219,9 @@
     <ClCompile Include="Node.cpp">
       <Filter>Source Files\Worldmap</Filter>
     </ClCompile>
+    <ClCompile Include="BlueBrick.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -397,6 +400,9 @@
     </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>Header Files\Worldmap</Filter>
+    </ClInclude>
+    <ClInclude Include="BlueBrick.h">
+      <Filter>Header Files\Items</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -46,19 +46,48 @@ void CCamera::UpdateCameraScence1() {
 		playerX = CAM_X_MAX;
 		SetPositionCamera(playerX, CAM_Y_MIN); // CAM_Y_MIN
 	}
-	// Mario khi đi đến giữa màn hình game
-	else if (playerX > (game->GetScreenHeight()/2 + 40)) {
+
+	// mario khi đi đến giữa và ở dưới cống 
+	else if (playerX > (game->GetScreenHeight() / 2) && playerY > UNDERGROUND_Y) {
 		playerX -= game->GetScreenWidth() / 2;
-		playerY -= game->GetScreenHeight() / 2 + 16;
-		// thay đổi round(playerY) thành CAM_Y_MIN là fix cứng cameraY
-		CGame::GetInstance()->SetCamPos(round(playerX), round(CAM_Y_MIN));
-		SetPositionCamera(round(playerX), round(CAM_Y_MIN));
+		playerY -= game->GetScreenHeight() / 2;
+		CGame::GetInstance()->SetCamPos(round(playerX), CAM_Y_UNDERGROUND);
+		SetPositionCamera(round(playerX), CAM_Y_UNDERGROUND);
 	}
+
+	// Mario khi đi đến giữa màn hình game
+	else if (playerX > (game->GetScreenHeight()/2)) {
+
+		if (player->GetMarioLevel() == LEVEL_MARIO_TAIL)
+		{
+			playerX -= game->GetScreenWidth() / 2;
+			playerY -= game->GetScreenHeight() / 2 + CAM_Y_PLUS;
+			SetPositionCamera(round(playerX), round(playerY));
+			CGame::GetInstance()->SetCamPos(round(playerX), round(playerY));
+		}
+		else {
+			playerX -= game->GetScreenWidth() / 2;
+			playerY -= game->GetScreenHeight() / 2 ;
+			// thay đổi round(playerY) thành CAM_Y_MIN là fix cứng cameraY
+			CGame::GetInstance()->SetCamPos(round(playerX), round(CAM_Y_MIN));
+			SetPositionCamera(round(playerX), round(CAM_Y_MIN));
+		}
+
+	}
+
 	// Mario khi mới bắt mở game
 	else {
-		playerY -= game->GetScreenHeight() / 2 + 16;
-		CGame::GetInstance()->SetCamPos(0.0f, round(CAM_Y_MIN));
-		SetPositionCamera(0.0f, round(CAM_Y_MIN));
+		if (player->GetMarioLevel() == LEVEL_MARIO_TAIL && playerY < game->GetScreenHeight() / 2)
+		{
+			playerY -= game->GetScreenHeight() / 2;
+			CGame::GetInstance()->SetCamPos(0.0f, round(playerY));
+			SetPositionCamera(0.0f, round(playerY));
+		}
+		else {
+		// playerY -= game->GetScreenHeight() / 2 + 16;
+			CGame::GetInstance()->SetCamPos(0.0f, round(CAM_Y_MIN));
+			SetPositionCamera(0.0f, round(CAM_Y_MIN));
+		}
 	}
 	playerY -= game->GetScreenHeight() / 2;
 }

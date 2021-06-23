@@ -11,6 +11,7 @@
 #include "PiranhaPlant.h"
 #include "WoodBlock.h"
 #include "Switch.h"
+#include "BlueBrick.h"
 
 CGridResource::CGridResource(LPCWSTR path) {
 	numRow = 0;
@@ -87,6 +88,9 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			}
 			break;	
 		}
+		case OBJECT_TYPE_BLUE_BRICK:
+			obj = new CBlueBrick(); 
+			break;
 		case OBJECT_TYPE_PIPE:{
 			int type = atoi(tokens[6].c_str());
 			obj = new CPipe(type);

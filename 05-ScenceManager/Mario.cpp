@@ -20,14 +20,14 @@
 #include "Mushroom.h"
 #include "Switch.h"
 #include "GoldCard.h"
+#include "Pipe.h"
 
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_SMAIL;
+	level = LEVEL_MARIO_TAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
-
 	start_x = x; 
 	start_y = y; 
 	this->x = x; 
@@ -258,7 +258,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			}
-
+			if (dynamic_cast<CPipe*>(e->obj)) {
+				CollisionWithPipe(e);
+			}
 			if (dynamic_cast<CMushroom*>(e->obj))
 			{
 				CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
@@ -305,6 +307,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		//SetPosition(0, 0);
 	//	CGame::GetInstance()->SwitchScene(0);
 	}
+
+	handlerMarioDownPipe();
+	handlerMarioUpPipe();
+
 
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
@@ -492,6 +498,12 @@ void CMario::SetState(int state)
 	case STATE_MARIO_FIGHT:
 		marioStateFight = true;
 		break;
+	case STATE_MARIO_PIPE_DOWN:
+		marioStatePipeDown = true;
+		break;
+	case STATE_MARIO_PIPE_UP:
+		marioStatePipeUp = true;
+		break;
 	}
 }
 
@@ -529,6 +541,9 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			bottom = y + BBOX_MARIO_BIG_SIT_HEIGHT;
 		}
 		break;	
+	/*case STATE_MARIO_PIPE_DOWN:
+		marioStatePipeDown = true;
+		break;*/
 	default:
 		right = x + MARIO_SMALL_BBOX_WIDTH;
 		bottom = y + MARIO_SMALL_BBOX_HEIGHT;
@@ -1009,6 +1024,46 @@ void CMario::handlerMarioFight()
 	marioStateFight = false;
 }
 
+void CMario::handlerMarioDownPipe()
+{
+	if (!marioStatePipeDown) return;
+	if (GetTickCount64() - timeMarioPipeDown < MARIO_PIPE_DOWN_UP_TIME)
+	{
+		SetState(STATE_MARIO_PIPE_DOWN);
+		y += MARIO_PIPE_VY_DOWN;
+	}
+	else
+	{
+		marioStatePipeDown = false;
+		SetState(STATE_MARIO_IDLE);
+		SetPosition(MARIO_PIPE_DOWN_POS_X_4, MARIO_PIPE_DOWN_POS_Y_4);
+	}
+}
+
+void CMario::handlerMarioUpPipe()
+{
+	if (!marioStatePipeUp) return;
+		
+	if (GetTickCount64() - timeMarioPipeUp < MARIO_PIPE_DOWN_UP_TIME)
+	{
+		SetState(STATE_MARIO_PIPE_UP);
+		y -= MARIO_PIPE_VY_UP;
+	}
+	else if (GetTickCount64() - timeMarioPipeUp < MARIO_PIPE_DOWN_1_TIME) {
+		SetPosition(MARIO_PIPE_POS_X_4, MARIO_PIPE_POS_Y_4);
+	}
+	else if (GetTickCount64() - timeMarioPipeUp < MARIO_PIPE_DOWN_2_TIME)
+	{
+		SetState(STATE_MARIO_PIPE_UP);
+		y -= MARIO_PIPE_VY_UP;
+	}
+	else
+	{
+		marioStatePipeUp = false;
+		SetState(STATE_MARIO_IDLE);
+	}
+}
+
 void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopas* koopa = dynamic_cast<CKoopas*>(e->obj);
@@ -1088,6 +1143,28 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 		}
 	}
 }
+
+void CMario::CollisionWithPipe(LPCOLLISIONEVENT e)
+{
+	CPipe* pipe = dynamic_cast<CPipe*>(e->obj);
+	if (e->ny != 0 && isStateSitDown && pipe->GetType() == PIPE_STATE_UP_DOWN) {
+
+		if (!marioStatePipeDown) {
+			SetState(STATE_MARIO_PIPE_DOWN);
+			timeMarioPipeDown = (DWORD)GetTickCount64();
+		}
+	}
+	if (e->ny != 0 && pipe->GetType() == PIPE_STATE_DOWN_UP)
+	{
+		if (!marioStatePipeUp)
+		{
+			DebugOut(L"sssssssssssss up \n");
+			SetState(STATE_MARIO_PIPE_UP);
+			timeMarioPipeUp = (DWORD)GetTickCount64();
+		}
+	}
+}
+
 
 void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)
 {

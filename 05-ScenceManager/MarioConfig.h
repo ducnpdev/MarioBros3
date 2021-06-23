@@ -158,6 +158,9 @@
 #define STATE_MARIO_SMOKE								990
 #define STATE_MARIO_UP_LEVEL								1000
 
+#define STATE_MARIO_PIPE_DOWN							1020
+#define STATE_MARIO_PIPE_UP								1030
+#define STATE_MARIO_PIPE_DOWN_FAST						1040
 
 #define STATE_MARIO_JUMP					300
 #define STATE_MARIO_FIGHT					800
@@ -297,8 +300,19 @@
 
 // ## time
 #define MARIO_TIME_RUNNING		200
+#define  MARIO_PIPE_DOWN_UP_TIME 400
+#define MARIO_PIPE_DOWN_1_TIME							410
+#define MARIO_PIPE_DOWN_2_TIME							800
 
+// class pipe
+#define MARIO_PIPE_POS_X_4								2328
+#define MARIO_PIPE_POS_Y_4								384
 
+#define MARIO_PIPE_DOWN_POS_X_4								2260
+#define MARIO_PIPE_DOWN_POS_Y_4								500
+
+#define MARIO_PIPE_VY_UP 2
+#define MARIO_PIPE_VY_DOWN 1
 
 /* 
 	***
