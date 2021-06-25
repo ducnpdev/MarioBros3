@@ -80,21 +80,16 @@ void CListArrow::Render()
 void CListArrow::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
-	// DebugOut(L"Arrowhub \n");
 	// kiểm tra P có null or not null
-	//listArrow[0]->SetPosition(x, y);
 	if (listArrow[6] != NULL)
 	{
-		// DebugOut(L"list != null \n");
 		// nếu mũi tên cuối cùng là mày trắng
 		if (GetPState()) {
-		//	DebugOut(L"111111 \n");
 			SetPStart((DWORD)GetTickCount64());
 		}
 		// nếu chữ P là màu đen thì bắt đầu reset những mũi tên về trạng thái màu đen
 		else if (!GetPState())
 		{
-		//	DebugOut(L"2222222 \n");
 			if (GetTickCount64() - timePStart > ARROW_RESET_P_TIME) ResetListArrow();
 		}
 	}

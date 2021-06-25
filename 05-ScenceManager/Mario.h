@@ -64,6 +64,11 @@ class CMario : public  CCollision
 	DWORD timeRunningStart;
 	CListArrow* listArrow;
 
+	// fly hight
+	DWORD timeMarioFlyHigh;
+	bool marioStateFlyHigh = false;
+
+
 public: 
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
@@ -93,7 +98,9 @@ public:
 
 	bool GetMarioPower(){
 		//TODO word P in hud 
-		return false;
+	//	return false;
+		if (listArrow->GetPState()) return false;
+		return true;
 	}
 
 	void SetListArrow(CListArrow* list) { listArrow = list; }
@@ -121,7 +128,9 @@ public:
 		return card[0]; 
 	}
 
-
+	DWORD GetMarioFlyHighStart() { return timeMarioFlyHigh; }
+	void SetMarioFlyHighStart(DWORD t) { timeMarioFlyHigh = t; }
+	bool GetMarioFlyHighState() { return marioStateFlyHigh; }
 
 	bool GetMarioIsDead() { return marioIsDead; }
 	void SetMarioIsDead(bool isDead) { marioIsDead = isDead; }
@@ -203,6 +212,9 @@ public:
 	void CollisionWithPipe(LPCOLLISIONEVENT collisionEven);
 	// 
 	void MarioHanlerProcessArrow();
-
 	bool checkMarioMaxPower();
+
+	void handleMarioDead();
+	void handleMarioFlyHigh();
+
 };

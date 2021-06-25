@@ -396,7 +396,7 @@ void CPlayScene::Update(DWORD dt)
 {
 	if (id == 1)
 	{
-		if (player->GetMarioIsDie())
+		if (player->GetMarioIsDie())	
 		{
 			player->SetMarioIsDie(false);
 			CGame::GetInstance()->SetCamPos(0, 0);
@@ -407,7 +407,6 @@ void CPlayScene::Update(DWORD dt)
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
 	if (player == NULL) return;
-	// DebugOut(L"1111111111111111111 \n");
 	initCamera();
 
 	vector<LPGAMEOBJECT> coObjects;
@@ -525,7 +524,6 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_L:
 		CGame::GetInstance()->SetCamPos(0, 0);
 		CGame::GetInstance()->SwitchScene(0);
-		DebugOut(L"OnKeyDown DIK_L \n");
 		break;
 	case DIK_1:
 		mario->marioSetUpDownLevel(LEVEL_MARIO_SMAIL);
@@ -567,9 +565,15 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 		if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL)
 		{
-			if (mario->vy != 0 &&  mario->GetMarioIsJump() == -1)
+			if (mario->GetMarioPower())
 			{
-
+				mario->SetMarioFlyHighStart((DWORD)GetTickCount64());
+				if (mario->nx > 0)
+					mario->SetState(STATE_MARIO_FLYING_HIGH_RIGHT);
+				else mario->SetState(STATE_MARIO_FLYING_HIGH_LEFT);
+			}
+			else if (mario->vy != 0 &&  mario->GetMarioIsJump() == -1)
+			{
 				mario->SetTimeJumpStartFlyLow(GetTickCount64());
 				if (mario->nx > 0)
 					mario->SetState(900);

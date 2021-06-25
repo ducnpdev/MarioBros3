@@ -139,6 +139,9 @@
 #define MARIO_GRAVITY						0.001f
 #define SPEED_MARIO_DIE_DEFLECT				0.5f
 #define MARIO_DIE_DEFLECT_SPEED							0.5f
+
+#define MARIO_FLYING_SPEED_Y							0.05f
+
 // **************** MARIO -> STATE - STATE ****************
 #define STATE_MARIO_IDLE					0
 #define STATE_MARIO_WALKING_RIGHT			110
@@ -157,7 +160,8 @@
 #define STATE_MARIO_TORTOISESHELL_LEFT		250
 #define STATE_MARIO_SMOKE								990
 #define STATE_MARIO_UP_LEVEL								1000
-
+#define STATE_MARIO_FLYING_HIGH_RIGHT					920
+#define STATE_MARIO_FLYING_HIGH_LEFT					930
 #define STATE_MARIO_PIPE_DOWN							1020
 #define STATE_MARIO_PIPE_UP								1030
 #define STATE_MARIO_PIPE_DOWN_FAST						1040
@@ -306,7 +310,7 @@
 
 // class pipe
 #define MARIO_PIPE_POS_X_4								2328
-#define MARIO_PIPE_POS_Y_4								384
+#define MARIO_PIPE_POS_Y_4								300
 
 #define MARIO_PIPE_DOWN_POS_X_4								2260
 #define MARIO_PIPE_DOWN_POS_Y_4								500
