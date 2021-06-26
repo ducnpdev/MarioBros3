@@ -25,13 +25,14 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 	left = x;
 	top = y;
 	if (isKoopaDie) return;
-
 	right = x + KOOPAS_BBOX_WIDTH;
 	bottom = y + KOOPAS_BBOX_HEIGHT;
 	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN || state == KOOPAS_STATE_TORTOISESHELL_UP || state == KOOPAS_STATE_REBORN) {
+		right = x + KOOPAS_BBOX_WIDTH_MEDIUM;
 		bottom = y + 16;
 	}
 	else if (state == KOOPAS_STATE_SPIN_RIGHT || state == KOOPAS_STATE_SPIN_LEFT){
+		right = x + KOOPAS_BBOX_WIDTH_MIN;
 		bottom = y + 16;
 	}
 }

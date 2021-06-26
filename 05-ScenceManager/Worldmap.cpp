@@ -231,18 +231,18 @@ void CWorldMap::_ParseSection_OBJECTS(string line)
 			int type = atoi(tokens[4].c_str());
 			if (type == 0)
 			{
-				for (int i = 0; i < 3; i++)
-				{
-					if (cards[i] == NULL)
-					{
-						cards[i] = (CCard*)obj;
-						break;
-					}
-				}
+for (int i = 0; i < 3; i++)
+{
+	if (cards[i] == NULL)
+	{
+		cards[i] = (CCard*)obj;
+		break;
+	}
+}
 			}
 			else if (type == 1)
 			{
-				cardT = (CCard*)obj;
+			cardT = (CCard*)obj;
 			}
 		}
 		break;
@@ -328,11 +328,14 @@ void CWorldMapKeyHandler::OnKeyDown(int KeyCode)
 {
 	// DebugOut(L"world map onKeyDown\n");
 	CGame* game = CGame::GetInstance();
-	CMarioWorldmap * marioWorldmap = ((CWorldMap*)scence)->GetPlayer();
+	CMarioWorldmap* marioWorldmap = ((CWorldMap*)scence)->GetPlayer();
 	if (game->IsKeyDown(DIK_X))
 	{
-		DebugOut(L"world map onKeyDown: DIK_X \n");
-		if (marioWorldmap->GetTypeCurrentNode() == 1 || marioWorldmap->GetTypeCurrentNode() == 4)
+		if( marioWorldmap->GetTypeCurrentNode() == 3 ){
+			DebugOut(L"world map onKeyDown: DIK_X %d \n", marioWorldmap->GetTypeCurrentNode());
+			 CGame::GetInstance()->SwitchScene(marioWorldmap->GetTypeCurrentNode());
+		}
+		if (marioWorldmap->GetTypeCurrentNode() == 1)
 			CGame::GetInstance()->SwitchScene(marioWorldmap->GetTypeCurrentNode());
 	}
 	else if (game->IsKeyDown(DIK_RIGHT) && !marioWorldmap->GetIsMoving()) {

@@ -43,7 +43,7 @@ void CQuestionBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (state != QUESTIONBLOCK_ITEM_STATE)
 	{
-		DebugOut(L" sdfasd \n");
+		//DebugOut(L" sdfasd \n");
 		if (state == QUESTIONBLOCK_DEFLECT_STATE)
 		{
 			if (y > brickOriginY - AFTER_COLLISION_MARIO) y += dy;

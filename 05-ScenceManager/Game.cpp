@@ -347,6 +347,8 @@ void CGame::_ParseSection_SCENES(string line)
 	if (id == SCENE_0) {
 		scene = new CWorldMap(id, path);
 	}
+	if (id == SCENE_3)
+		scene = new CPlayScene(id, path);
 	scenes[id] = scene;
 
 	//LPSCENE scene = new CPlayScene(id, path);
@@ -403,13 +405,17 @@ void CGame::SwitchScene(int scene_id)
 	CAnimations::GetInstance()->Clear();
 
 	current_scene = scene_id;
-	if (scene_id == 1) {
+	if (scene_id == SCENE_1) {
 		CPlayScene* s = (CPlayScene*)scenes[scene_id];
 		CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
 		s->Load();
 	}
-
-	if (scene_id == 0) {
+	if (scene_id == SCENE_0) {
+		CWorldMap* s = (CWorldMap*)scenes[scene_id];
+		CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
+		s->Load();
+	}
+	if (scene_id == SCENE_3) {
 		CWorldMap* s = (CWorldMap*)scenes[scene_id];
 		CGame::GetInstance()->SetKeyHandler(s->GetKeyEventHandler());
 		s->Load();

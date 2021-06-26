@@ -1115,10 +1115,14 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 		koopa->SetDefectStart(GetTickCount64());
 		koopa->SetStateDefect(true);
 	}
+	// collision tren koopas
 	else if (e->ny < 0) {
-		if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN ||
+		DebugOut(L"1111111 %d \n", koopa->GetState() );
+		if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN &&
 			koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_UP)
 		{
+			DebugOut(L"4444 %d \n", koopa->GetState());
+
 			DisplayListScore(MARIO_SCORE_100, koopa->x, koopa->y, (DWORD)GetTickCount64());
 			if (koopa->GetTypeKoopa() == PARAKOOPA_COLOR_GREEN)
 				koopa->SetTypeKoopa(KOOPA_GREEN_FORM);
@@ -1129,10 +1133,13 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 		}
 		else if (koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_DOWN || 
 			koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_UP) {
-			if ((x + GetBBoxWidthMario()) < (koopa->x + round(KOOPAS_BBOX_WIDTH / 2))) {
+			DebugOut(L"2222 \n");
+			if ((x + GetBBoxWidthMario()+1) < (koopa->x + round(KOOPAS_BBOX_WIDTH / 2))) {
 				koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
 			}
 			else {
+				DebugOut(L"3333 \n");
+
 				koopa->SetState(KOOPAS_STATE_SPIN_LEFT);
 			}
 		}
@@ -1194,7 +1201,7 @@ void CMario::CollisionWithPipe(LPCOLLISIONEVENT e)
 	{
 		if (!marioStatePipeUp)
 		{
-			DebugOut(L"sssssssssssss up \n");
+			// DebugOut(L"sssssssssssss up \n");
 			SetState(STATE_MARIO_PIPE_UP);
 			timeMarioPipeUp = (DWORD)GetTickCount64();
 		}
@@ -1272,10 +1279,8 @@ bool CMario::checkMarioMaxPower()
 
 void CMario::handleMarioDead()
 {
-	DebugOut(L"hand dead \n");
 	if (y > 448 && state != STATE_MARIO_PIPE_UP && state != STATE_MARIO_PIPE_DOWN)
 	{
-		DebugOut(L"hand dead 111 \n");
 		if (x > 2128 && y < 496)
 			marioStateDie = true;
 		else if (x <= 2128)

@@ -145,7 +145,7 @@ void CMarioWorldmap::SetState(int state)
 	}
 }
 
-
+// 
 int CMarioWorldmap::GetTypeCurrentNode()
 {
 	for (size_t i = 0; i < nodes.size(); i++)

@@ -394,7 +394,7 @@ void CPlayScene::initCard() {
 
 void CPlayScene::Update(DWORD dt)
 {
-	if (id == 1)
+	if (id == SCENE_1)
 	{
 		if (player->GetMarioIsDie())	
 		{
