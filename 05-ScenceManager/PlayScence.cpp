@@ -296,10 +296,10 @@ void CPlayScene::_ParseSection_MAPBACKGROUND(string line) {
 	int totalColumnsMap = atoi(tokens[4].c_str());
 	int totalTiles = atoi(tokens[5].c_str());
 	wstring file_path = ToWSTR(tokens[6]);
-
+	DebugOut(L"scene id %d \n",id);
 	mapBackground = new CMap(idTileSet, totalRowsTileSet, totalColumnsTileSet, totalRowsMap, totalColumnsMap, totalTiles);
 	mapBackground->LoadResourceTilesMap(file_path.c_str());
-	mapBackground->LoadTilesSet();
+	mapBackground->LoadTilesSet(id);
 }
 
 void CPlayScene::_ParseSection_GRID_RESOURCE(string line)
@@ -456,7 +456,7 @@ void CPlayScene::Render()
 {
 	// render tilemap 
 	if (mapBackground) {
-		mapBackground->RenderMap();
+		mapBackground->RenderMap(id);
 	}
 
 	for (int i = objects.size() - 1; i >= 0; i--)

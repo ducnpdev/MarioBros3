@@ -22,8 +22,6 @@
 # idtexture columnMap rowMap columnTileSet rowTileSet maxTileSet pathfile
 30000	88	22	12	21	243	textures\tilemap\map1.txt
 
-
-
 [SPRITES]
 # SMALL MARIO 
 # idle small right

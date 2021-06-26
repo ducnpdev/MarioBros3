@@ -21,6 +21,8 @@
 #define CAM_Y_UNDERGROUND			507.0f
 
 #define CAM_Y_MIN					267.0f
+#define CAM_Y_MIN_SCENE_3		395.0f
+
 
 #define CAM_X_SPEED_1_4				0.0315f 
 #define CAM_X_RANGE_AUTO_1_4		1743

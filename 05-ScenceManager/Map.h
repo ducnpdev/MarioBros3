@@ -18,8 +18,8 @@ class CMap {
 public:
 	CMap(int idtextture, int columnMap, int rowMap, int columnTileSet, int rowTileSet, int maxTileSet);
 	~CMap();
-	void RenderMap();
+	void RenderMap(int sceneID);
 	void LoadResourceTilesMap(LPCWSTR pathFile); // load index of tileset in texture
-	void LoadTilesSet();
+	void LoadTilesSet(int sceneID);
 
 };

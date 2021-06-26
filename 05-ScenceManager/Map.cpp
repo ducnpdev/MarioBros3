@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 #define TILESET 32
+#define TILESET16 16
+
 
 CMap::CMap(int idTture, int colMap, int rMap, int colTileSet, int rTileSet, int maxTSet)
 {
@@ -19,16 +21,38 @@ CMap::~CMap()
 {
 }
 
-void CMap::RenderMap()
+void CMap::RenderMap(int sceneID)
 {
-	for (int rowMapIndex = 0; rowMapIndex < rowMap; rowMapIndex++) {
-		for (int columnMapIndex = 0; columnMapIndex < columnMap; columnMapIndex++)
-		{
-			float drawX = columnMapIndex * TILESET;
-			float drawY = rowMapIndex * TILESET;
-			spritesTiles[TiledMap[rowMapIndex][columnMapIndex] - 1]->Draw((float)drawX, (float)drawY, 255); //(x,y,alpha)
+	int tile = TILESET;
+	switch (sceneID)
+	{
+	case 1:
+		for (int rowMapIndex = 0; rowMapIndex < rowMap; rowMapIndex++) {
+			for (int columnMapIndex = 0; columnMapIndex < columnMap; columnMapIndex++)
+			{
+				float drawX = columnMapIndex * tile;
+				float drawY = rowMapIndex * tile;
+				spritesTiles[TiledMap[rowMapIndex][columnMapIndex] - 1]->Draw((float)drawX, (float)drawY, 255); //(x,y,alpha)
+			}
 		}
+		break;
+	case 3: {
+		int ite = 1;
+		for (int rowMapIndex = 0; rowMapIndex < rowMap; rowMapIndex++) {
+			for (int columnMapIndex = 0; columnMapIndex < columnMap; columnMapIndex++)
+			{
+				float drawX = columnMapIndex * tile;
+				float drawY = rowMapIndex * tile;
+				if (rowMapIndex > 0) drawX -= 32;
+				spritesTiles[TiledMap[rowMapIndex][columnMapIndex]]->Draw((float)drawX, (float)drawY, 255); //(x,y,alpha)
+			}
+		}
+		break;
 	}
+	default:
+		break;
+	}
+	
 }
 void CMap::LoadResourceTilesMap(LPCWSTR pathFileTileMap)
 {
@@ -36,7 +60,6 @@ void CMap::LoadResourceTilesMap(LPCWSTR pathFileTileMap)
 
 	// open file save position map
 	fStream.open(pathFileTileMap);
-
 	// new instance TiledMap
 	this->TiledMap = new int* [rowMap];
 	for (int i = 0; i < rowMap; i++)
@@ -51,14 +74,15 @@ void CMap::LoadResourceTilesMap(LPCWSTR pathFileTileMap)
 }
 
 
-void CMap::LoadTilesSet()
+void CMap::LoadTilesSet(int sceneID)
 {
+	int tile = TILESET;
 	for (int i = 0; i < maxTileSet; i++) 
 	{
-		int left = i % columnTileSet * TILESET;
-		int top = i / columnTileSet * TILESET;
-		int right = left + TILESET;
-		int bottom = top + TILESET;
+		int left = i % columnTileSet * tile;
+		int top = i / columnTileSet * tile;
+		int right = left + tile;
+		int bottom = top + tile;
 		LPSPRITE spriteTile = new CSprite(i, left, top, right, bottom, idTextureOfMap);
 		this->spritesTiles.push_back(spriteTile);
 	}
