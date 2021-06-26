@@ -21,8 +21,6 @@
 #define CAM_Y_UNDERGROUND			507.0f
 
 #define CAM_Y_MIN					267.0f
-#define CAM_Y_MIN_SCENE_3		395.0f
-
 
 #define CAM_X_SPEED_1_4				0.0315f 
 #define CAM_X_RANGE_AUTO_1_4		1743
@@ -32,6 +30,12 @@
 
 #define ID_SCENE_MAP_1				1
 #define ID_SCENE_MAP_4				4
+
+// camera scene 3
+#define CAM_3_X_MIN				16.0f
+#define CAM_3_X_DEFAULT			667.0f
+
+
 
 class CCamera {
 	float cameraX;

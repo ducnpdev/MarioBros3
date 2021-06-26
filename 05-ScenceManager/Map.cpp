@@ -43,7 +43,6 @@ void CMap::RenderMap(int sceneID)
 			{
 				float drawX = columnMapIndex * tile;
 				float drawY = rowMapIndex * tile;
-				if (rowMapIndex > 0) drawX -= 32;
 				spritesTiles[TiledMap[rowMapIndex][columnMapIndex]]->Draw((float)drawX, (float)drawY, 255); //(x,y,alpha)
 			}
 		}
