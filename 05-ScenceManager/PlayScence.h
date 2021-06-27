@@ -83,7 +83,7 @@ public:
 	// handle when mario collision with brick
 	void CreatePieceBrick(float x, float y, DWORD t);
 	
-
+	void CheckSwitchScene();
 	//friend class CPlayScenceKeyHandler;
 };
 

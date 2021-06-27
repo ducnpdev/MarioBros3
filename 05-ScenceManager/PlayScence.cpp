@@ -394,15 +394,7 @@ void CPlayScene::initCard() {
 
 void CPlayScene::Update(DWORD dt)
 {
-	if (id == SCENE_1)
-	{
-		if (player->GetMarioIsDie())	
-		{
-			player->SetMarioIsDie(false);
-			CGame::GetInstance()->SetCamPos(0, 0);
-			CGame::GetInstance()->SwitchScene(0);
-		}
-	}
+	CheckSwitchScene();
 
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
 	// TO-DO: This is a "dirty" way, need a more organized way 
@@ -521,9 +513,17 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 	switch (KeyCode)
 	{
-	case DIK_L:
+	case DIK_J:
 		CGame::GetInstance()->SetCamPos(0, 0);
 		CGame::GetInstance()->SwitchScene(0);
+		break;
+	case DIK_K:
+		CGame::GetInstance()->SetCamPos(0, 0);
+		CGame::GetInstance()->SwitchScene(1);
+		break;
+	case DIK_L:
+		CGame::GetInstance()->SetCamPos(0, 0);
+		CGame::GetInstance()->SwitchScene(3);
 		break;
 	case DIK_1:
 		mario->marioSetUpDownLevel(LEVEL_MARIO_SMAIL);
@@ -716,6 +716,19 @@ void CPlayScene::CreatePieceBrick(float x, float y, DWORD t)
 				break;
 			}
 
+		}
+	}
+}
+
+void CPlayScene::CheckSwitchScene()
+{
+	if (id == SCENE_1 || id == SCENE_3)
+	{
+		if (player->GetMarioIsDie())
+		{
+			player->SetMarioIsDie(false);
+			CGame::GetInstance()->SetCamPos(0, 0);
+			CGame::GetInstance()->SwitchScene(0);
 		}
 	}
 }
