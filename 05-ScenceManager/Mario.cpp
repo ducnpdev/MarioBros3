@@ -36,6 +36,7 @@ CMario::CMario(float x, float y)
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	DebugOut(L"x %f", x);
 	CGameObject::Update(dt);
 	vy += 0.0005*dt;
 	vector<LPCOLLISIONEVENT> coEvents;

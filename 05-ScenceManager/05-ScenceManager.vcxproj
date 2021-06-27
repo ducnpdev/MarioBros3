@@ -187,6 +187,7 @@
     <ClInclude Include="BlueBrick.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraConfig.h" />
     <ClInclude Include="Card.h" />
     <ClInclude Include="CardText.h" />
     <ClInclude Include="CellResource.h" />

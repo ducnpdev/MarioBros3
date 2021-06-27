@@ -404,5 +404,8 @@
     <ClInclude Include="BlueBrick.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
+    <ClInclude Include="CameraConfig.h">
+      <Filter>Header Files\Config</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
