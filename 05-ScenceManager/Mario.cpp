@@ -21,11 +21,11 @@
 #include "Switch.h"
 #include "GoldCard.h"
 #include "Pipe.h"
-
+#include "GoombaConfig.h"	
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_SMAIL;
+	level = LEVEL_MARIO_TAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 	start_x = x; 
@@ -36,7 +36,7 @@ CMario::CMario(float x, float y)
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	DebugOut(L"x %f", x);
+	// DebugOut(L"x %f", x);
 	CGameObject::Update(dt);
 	vy += 0.0005*dt;
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -102,7 +102,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 				if (dynamic_cast<CFirePlantBullet*>(e->obj))
 				{
-					DebugOut(L"Mario Collision Plant bullet \n");
+					//DebugOut(L"Mario Collision Plant bullet \n");
 					CFirePlantBullet* fireplantbullet = dynamic_cast<CFirePlantBullet*>(e->obj);
 					if (fireplantbullet->GetState() != 100 && fireplantbullet->GetState() != 400)
 					{
@@ -1280,12 +1280,19 @@ bool CMario::checkMarioMaxPower()
 
 void CMario::handleMarioDead()
 {
-	if (y > 448 && state != STATE_MARIO_PIPE_UP && state != STATE_MARIO_PIPE_DOWN)
-	{
-		if (x > 2128 && y < 496)
-			marioStateDie = true;
-		else if (x <= 2128)
-			marioStateDie = true;
+	int sceneID = CGame::GetInstance()->GetScene();
+	if (sceneID == SCENE_1) {
+		if (y > 448 && state != STATE_MARIO_PIPE_UP && state != STATE_MARIO_PIPE_DOWN)
+		{
+			if (x > 2128 && y < 496)
+				marioStateDie = true;
+			else if (x <= 2128)
+				marioStateDie = true;
+		}
+	}
+	else {
+		// scene 3
+		// DebugOut(L"switch scene dead %d\n", CGame::GetInstance()->GetScene());
 	}
 }
 

@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include "PlayScence.h"
 #include "ItemCoin.h"
+#include "GoombaConfig.h"
 
 CBrick::CBrick()
 {

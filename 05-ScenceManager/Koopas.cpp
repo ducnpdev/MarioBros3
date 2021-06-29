@@ -9,7 +9,7 @@
 #include "Mario.h"
 #include "PlayScence.h"
 #include "ItemCoin.h"
-
+#include "WoodBlock.h"
 
 CKoopas::CKoopas(int type)
 {
@@ -84,6 +84,16 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				prePosY = y;
 			}
 
+		/*	if (dynamic_cast<CWoodBlock*>(e->obj))
+			{
+				DebugOut(L"Koopas collision wood \n");
+				CWoodBlock* woodBlock = dynamic_cast<CWoodBlock*>(e->obj);
+				if (e->nx != 0) {
+					vx = -1 * vx;
+					woodBlock->vx = -1 * woodBlock->vx;
+				}
+			}*/
+
 			if (typeKoopa == PARAKOOPA_COLOR_GREEN)
 			{
 				if (e->ny < 0) { 
@@ -93,11 +103,14 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 				}
 			}
-
+			
 			if (typeKoopa != PARAKOOPA_COLOR_GREEN) {
 				if (state == KOOPAS_STATE_WALKING_LEFT || state == KOOPAS_STATE_WALKING_RIGHT)
 				{
-					if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
+					if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj)
+						|| dynamic_cast<CWoodBlock*>(e->obj)
+						|| dynamic_cast<CBrick*>(e->obj)
+						)
 					{
 						if (e->nx > 0) {
 
@@ -116,13 +129,12 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				if (state == KOOPAS_STATE_SPIN_LEFT)
 				{
-					// DebugOut(L"aaaaaaaa \n");
 					if (dynamic_cast<CPipe*>(e->obj) || 
 						dynamic_cast<CQuestionBrick*>(e->obj) || 
 						dynamic_cast<CBorderRoad*>(e->obj) ||
-						dynamic_cast<CBrick*>(e->obj))
+						dynamic_cast<CBrick*>(e->obj) ||
+						dynamic_cast<CWoodBlock*>(e->obj))
 					{
-						// DebugOut(L"aaaaaaaa  11111111 \n"); 
 						if (dynamic_cast<CBrick*>(e->obj))
 						{
 							CBrick* brick = dynamic_cast<CBrick*>(e->obj);
@@ -140,8 +152,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 				else if (state == KOOPAS_STATE_SPIN_RIGHT)
 				{
-				//	DebugOut(L"vbbbbbbbbbbbb \n");
-					if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj))
+					if (dynamic_cast<CPipe*>(e->obj) || 
+						dynamic_cast<CBorderRoad*>(e->obj) ||
+						dynamic_cast<CWoodBlock*>(e->obj)
+						)
 					{
 						SetState(KOOPAS_STATE_SPIN_LEFT);
 					}

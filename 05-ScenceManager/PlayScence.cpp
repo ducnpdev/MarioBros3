@@ -513,7 +513,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 	switch (KeyCode)
 	{
-	case DIK_J:
+	/*case DIK_J:
 		CGame::GetInstance()->SetCamPos(0, 0);
 		CGame::GetInstance()->SwitchScene(0);
 		break;
@@ -524,7 +524,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_L:
 		CGame::GetInstance()->SetCamPos(0, 0);
 		CGame::GetInstance()->SwitchScene(3);
-		break;
+		break;*/
 	case DIK_1:
 		mario->marioSetUpDownLevel(LEVEL_MARIO_SMAIL);
 		break;
@@ -726,6 +726,7 @@ void CPlayScene::CheckSwitchScene()
 	{
 		if (player->GetMarioIsDie())
 		{
+		//	DebugOut(L"switch scene dead %d\n", CGame::GetInstance()->GetCurrentScene());
 			player->SetMarioIsDie(false);
 			CGame::GetInstance()->SetCamPos(0, 0);
 			CGame::GetInstance()->SwitchScene(0);

@@ -7,12 +7,16 @@
 #include "Game.h"
 #include "Mario.h"
 #include "PlayScence.h"
+#include "GoombaConfig.h"
+#include "WoodBlock.h"
+
 
 CGoomba::CGoomba(int typeColor)
 {
 	timeParaGoomba = GetTickCount();
 	setColorGoomba(typeColor);
 	SetState(GOOMBA_STATE_WALKING);
+	vx = -GOOMBA_WALKING_SPEED;
 }
 
 
@@ -54,6 +58,16 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					}
 				}
 			
+				if (dynamic_cast<CWoodBlock*>(e->obj))
+				{
+					DebugOut(L"Goomba collision wood \n");
+					CWoodBlock* woodBlock = dynamic_cast<CWoodBlock*>(e->obj);
+					if (e->nx != 0) {
+						vx = -1 * vx;
+					//	woodBlock->vx = -1 * woodBlock->vx;
+					}
+				}
+
 				if (dynamic_cast<CGoomba*>(e->obj))
 				{
 					CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
@@ -78,7 +92,6 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					/*if (e->nx != 0) {
 						
 					}*/
-
 					// Todo xu li va cham sau do bien goomba thanh deftect
 				}
 
@@ -98,19 +111,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	// handle para goomba jump with 
-	if (typeColorGoomba == PARA_GOOMBA_BROWN) {
-		if (GetTickCount64() - timeParaGoomba < 2000) {
-			if (GetTickCount64() - timeParaGoomba < 700) {
-				SetState(GOOMBA_STATE_JUMPING);
-			}
-			else {
-				SetState(GOOMBA_STATE_WALKING);
-			}
-		}
-		else {
-			timeParaGoomba = GetTickCount64();
-		}
-	}
+	handleGoombaJumpInterval();
 
 	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetMarioIsFight() && state != GOOMBA_STATE_DEFLECT)
@@ -135,6 +136,24 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 }
+
+void CGoomba::handleGoombaJumpInterval()
+{
+	if (typeColorGoomba == PARA_GOOMBA_BROWN) {
+		if (GetTickCount64() - timeParaGoomba < 2000) {
+			if (GetTickCount64() - timeParaGoomba < 500) {
+				SetState(GOOMBA_STATE_JUMPING);
+			}
+			else {
+				SetState(GOOMBA_STATE_WALKING);
+			}
+		}
+		else {
+			timeParaGoomba = GetTickCount64();
+		}
+	}
+}
+
 
 void CGoomba::Render()
 {
@@ -167,7 +186,7 @@ void CGoomba::SetState(int state)
 	{
 	case GOOMBA_STATE_WALKING:
 		goomStateJump = false;
-		vx = -GOOMBA_WALKING_SPEED;
+		// vx = -GOOMBA_WALKING_SPEED;
 		break;
 	case GOOMBA_STATE_DIE:
 		break;
