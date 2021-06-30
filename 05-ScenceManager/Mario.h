@@ -217,4 +217,6 @@ public:
 	void handleMarioDead();
 	void handleMarioFlyHigh();
 
+	void upLevelMario();
+
 };

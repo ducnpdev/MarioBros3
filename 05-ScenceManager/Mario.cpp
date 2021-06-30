@@ -21,7 +21,9 @@
 #include "Switch.h"
 #include "GoldCard.h"
 #include "Pipe.h"
-#include "GoombaConfig.h"	
+#include "GoombaConfig.h"
+#include "WoodBlock.h"	
+
 
 CMario::CMario(float x, float y)
 {
@@ -98,6 +100,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (dynamic_cast<CKoopas*>(e->obj))
 				{
 					CollisionWithKoopa(e);
+				}
+
+				if (dynamic_cast<CWoodBlock*>(e->obj)) {
+					isJump = 0;
 				}
 
 				if (dynamic_cast<CFirePlantBullet*>(e->obj))
@@ -269,14 +275,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
 				if (mushroom->GetState() != MUSHROOM_STATE_HIDEN)
 				{
-					if (level == LEVEL_MARIO_SMAIL)
-					{
+					/*if (level == LEVEL_MARIO_SMAIL)
+					{*/
 						SetPosition(x, y - UP_DOWN_POSITOIN_Y);
 						mushroom->SetState(MUSHROOM_STATE_HIDEN);
 						SetState(STATE_MARIO_UP_LEVEL);
 						timeMarioUpLevel = GetTickCount64();
 						DisplayListScore(MARIO_SCORE_1000, mushroom->x, mushroom->y, GetTickCount64());
-					}
+				//	}
 					/*else
 					{
 						DisplayListScore(MARIO_SCORE_1000, mushroom->x, mushroom->y, GetTickCount64());
@@ -342,7 +348,6 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
-
 	case STATE_MARIO_FLYING_HIGH_RIGHT:
 		nx = 1;
 		isRunning = false;
@@ -362,19 +367,16 @@ void CMario::SetState(int state)
 		vy = -MARIO_FLYING_SPEED_Y;
 		break;
 	case STATE_MARIO_WALKING_RIGHT:
-	//	marioStateFlyHigh = false;
 		isRunning = false;
 		isJump = 0;
 		isTurn = false;
 		isKick = false;
 		marioStateTorToiSeShell = false;
 		isJumpFlyLow = false;
-
 		vx = SPEED_MARIO_WALKING;
 		nx = DIRECTION_MARIO_RIGHT;
 		break;
 	case STATE_MARIO_WALKING_LEFT: 
-	//	marioStateFlyHigh = false;
 		isJump = 0;
 		isTurn = false;
 		isKick = false;
@@ -383,8 +385,6 @@ void CMario::SetState(int state)
 		nx = DIRECTION_MARIO_LEFT;
 		break;
 	case STATE_MARIO_RUNNING_RIGHT:
-	//	marioStateFlyHigh = false;
-
 		isRunning = true;
 		isJump = 0;			
 		isKick = false;
@@ -393,9 +393,6 @@ void CMario::SetState(int state)
 		nx = DIRECTION_MARIO_RIGHT;
 		break;
 	case STATE_MARIO_RUNNING_LEFT:
-	//	marioStateFlyHigh = false;
-
-
 		isRunning = true;
 		marioStateTorToiSeShell = false;
 		isKick = false;
@@ -420,17 +417,12 @@ void CMario::SetState(int state)
 		break;
 	case STATE_MARIO_JUMP:
 		isKick = false;
-		// TODO: need to check if Mario is *current* on a platform before allowing to jump again
 		isJump = 1;
-	//	vy = -0.13f - marioSpeechJump;
-
 		if (marioStateMaxPower) {
-		// DebugOut(L"mario Maxpow: true \n");
 			vy = -0.2f - marioSpeechJump;
 		}
 		else {
 			vy = -0.13f - marioSpeechJump;
-			// DebugOut(L"mario Maxpow: false \n");
 		}
 
 		break; 
@@ -518,7 +510,6 @@ void CMario::SetState(int state)
 		vy = 0.05f;
 		break;
 	case STATE_MARIO_UP_LEVEL:
-		// DebugOut(L"adbfsda \n");
 		marioStateUpLevel = true;
 		vx = 0;
 		vy = 0;
@@ -814,7 +805,7 @@ int CMario::RenderLevelMarioTail() {
 			else ani = ANI_MARIO_TAIL_IDLE_RIGHT;	
 		} 
 		else {
-			if (marioStateFlyHigh) ani = 84;
+			 if (marioStateFlyHigh) ani = 84;
 			else if (isStateSitDown) ani = ANI_MARIO_TAIL_SITDOWN_LEFT;
 			else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_LEFT;
 			else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_FLY_LOW_LEFT;
@@ -825,7 +816,7 @@ int CMario::RenderLevelMarioTail() {
 		}
 	}
 	else if (vx > 0){
-		if (marioStateFlyHigh) ani = 83;
+		 if (marioStateFlyHigh) ani = 83;
 		else if (marioStateFight) ani = ANI_MARIO_TAIL_FIGHT; 
 		else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_FLY_LOW_RIGHT;
 		else if (marioStateMaxPower) ani = ANI_MARIO_TAIL_MAX_RUNNING_RIGHT;
@@ -1028,14 +1019,13 @@ void CMario::handlerMarioUpLevelOtherSmall()
 	if (!marioStateUpLevel ) {
 		return;
 	}
-	if (GetTickCount64() - timeMarioUpLevel < 2000)
+	if (GetTickCount64() - timeMarioUpLevel < MARIO_UP_LEVEL_TIME)
 	{
 		return;
 	}
-	// DebugOut(L"level 1213213 %d \n", level);
 	SetState(STATE_MARIO_IDLE);
 	marioStateUpLevel = false;
-	
+
 	SetLevel(LEVEL_MARIO_BIG);
 	//if (!intro_state) SetLevel(MARIO_LEVEL_BIG);
 }
@@ -1053,7 +1043,7 @@ void CMario::handlerMarioUpLevelSmoke()
 
 void CMario::handlerMarioFight()
 {
-	if (GetTickCount64() - timeMarioFight < 400) {
+	if (GetTickCount64() - timeMarioFight < MARIO_FIGHT_TIME) {
 		// SetState(STATE_MARIO_FIGHT);
 		marioStateFight = true;
 		return;
@@ -1104,7 +1094,7 @@ void CMario::handlerMarioUpPipe()
 void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopas* koopa = dynamic_cast<CKoopas*>(e->obj);
-	DebugOut(L"Mario collisoin with Koopas \n");
+	// DebugOut(L"Mario collisoin with Koopas \n");
 	if (koopa->GetState() == KOOPAS_STATE_TAKEN) return;
 
 	if (marioStateFight &&
@@ -1305,3 +1295,19 @@ void CMario::handleMarioFlyHigh()
 	}
 	else marioStateFlyHigh = 0;
 }
+
+void CMario::upLevelMario()
+{
+	if (level == LEVEL_MARIO_SMAIL) {
+		SetLevel(LEVEL_MARIO_BIG);
+		DebugOut(L"update mario level big \n");
+	}
+	else if (level == LEVEL_MARIO_BIG) {
+		DebugOut(L"update mario level tail \n");
+		SetLevel(LEVEL_MARIO_TAIL);
+	}
+	else if (level == LEVEL_MARIO_BIG) {
+		SetLevel(LEVEL_MARIO_TAIL);
+	}
+}
+

@@ -308,6 +308,12 @@
 #define MARIO_PIPE_DOWN_1_TIME							410
 #define MARIO_PIPE_DOWN_2_TIME							800
 
+#define MARIO_FIGHT_TIME							400
+
+#define MARIO_UP_LEVEL_TIME							2000
+
+
+
 // class pipe
 #define MARIO_PIPE_POS_X_4								2328
 #define MARIO_PIPE_POS_Y_4								300
