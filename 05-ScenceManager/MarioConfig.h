@@ -311,7 +311,7 @@
 #define MARIO_FIGHT_TIME							400
 
 #define MARIO_UP_LEVEL_TIME							2000
-
+#define MARIO_FLY_HIGH_TIME 1000
 
 
 // class pipe

@@ -21,6 +21,7 @@
 #include "Tail.h"
 #include "Pipe.h"
 #include "PieceBrick.h"
+#include "BoomerangConfig.h"
 
 
 class CPlayScene: public CScene
@@ -28,7 +29,7 @@ class CPlayScene: public CScene
 protected: 
 	// defination
 	CMap* mapBackground;
-
+	//CBoomerang* boomerang[BOOMERANG_AMOUNT];
 	CGridResource* gridResource;
 
 	vector<CNumber*> numCoin;

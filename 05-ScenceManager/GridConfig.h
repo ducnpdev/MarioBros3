@@ -3,6 +3,9 @@
 // object type in loadphayscence
 #define OBJECT_TYPE_BRICK	1
 #define OBJECT_TYPE_KOOPAS	2
+#define OBJECT_TYPE_KOOPAS_HAMMER	210
+
+
 #define OBJECT_TYPE_GOOMBA	3
 #define OBJECT_TYPE_NUMBER	24
 #define OBJECT_TYPE_HUB		21
@@ -44,7 +47,8 @@
 #define OBJECT_TYPE_LEAF 19
 #define OBJECT_TYPE_BLUE_BRICK				20
 #define OBJECT_TYPE_SWITCH_P					31
-
+#define OBJECT_TYPE_BOOMERANG_BRO			38
+#define OBJECT_TYPE_BOOMERANG				39
 // 
 #define BRICK_AMOUNT 20
 

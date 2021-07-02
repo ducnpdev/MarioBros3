@@ -8,14 +8,12 @@ void CCard::SetState(int state)
 
 void CCard::Render()
 {
-	// DebugOut(L"CCard Render \n");
 	int ani = CARD_ANI_EMPTY;
 	if (state == CARD_STATE_HIDEN) return;
 	if (state == CARD_STATE_EMPTY) ani = CARD_ANI_EMPTY;
 	else if (state == CARD_STATE_STAR) ani = CARD_ANI_STAR;
 	else if (state == CARD_STATE_FLOWER) ani = CARD_ANI_FLOWER;
 	else if (state == CARD_STATE_MUSHROOM) ani = CARD_ANI_MUSHROOM;
-	//  DebugOut(L"CCard Render ani %d \n", ani);
 	animation_set->at(ani)->Render(x, y);
 }
 

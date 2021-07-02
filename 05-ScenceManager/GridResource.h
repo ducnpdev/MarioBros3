@@ -14,6 +14,8 @@
 #include "FirePiranhaPlant.h"
 #include "FirePlantBullet.h"
 #include "Brick.h"
+#include "BoomerangConfig.h"
+#include "Boomerang.h"
 
 class CGridResource {
 
@@ -22,7 +24,7 @@ class CGridResource {
 	int cellWidth;
 	int cellHeight;
 	CCellResource** cellResource;
-
+	CBoomerang* boomerang[BOOMERANG_AMOUNT];
 	CGameObject* listItemQuestionBrick[11];
 	CQuestionBrick* questionBrick[11];
 	

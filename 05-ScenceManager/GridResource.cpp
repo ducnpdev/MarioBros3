@@ -12,6 +12,9 @@
 #include "WoodBlock.h"
 #include "Switch.h"
 #include "BlueBrick.h"
+#include "KoopasHammer.h"
+#include "BoomerangBros.h"
+#include "Boomerang.h"
 
 CGridResource::CGridResource(LPCWSTR path) {
 	numRow = 0;
@@ -133,7 +136,20 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			obj = new CPiranhaPlant(((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer());
 			break;
 		}
-
+		case OBJECT_TYPE_BOOMERANG:
+			obj = new CBoomerang();
+			for (int i = 0; i < BOOMERANG_AMOUNT; i++)
+			{
+				if (boomerang[i] == NULL)
+				{
+					boomerang[i] = (CBoomerang*)obj;
+					break;
+				}
+			}
+			break;
+		case OBJECT_TYPE_BOOMERANG_BRO:
+			obj = new CBoomerangBro(boomerang);
+			break;
 	}
 
 	 LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
@@ -169,6 +185,10 @@ void CGridResource::_ParseSection_Grid_ENEMIES(string line) {
 	case OBJECT_TYPE_KOOPAS: {
 		obj = new CKoopas(state);
 		break; 
+	case OBJECT_TYPE_KOOPAS_HAMMER: {
+		obj = new CKoopasHammer(state);
+		break;
+	}
 	}
 	default:
 		return;

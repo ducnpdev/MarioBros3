@@ -48,7 +48,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	coEvents.clear();
 
 	if (state == STATE_MARIO_RUNNING_RIGHT || state == STATE_MARIO_RUNNING_LEFT) {
-	//	DebugOut(L"11111111111111111111 \n");
 	}
 
 	// turn off collision when die 
@@ -74,10 +73,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		float min_tx, min_ty, nx = 0, ny;
 		float rdx = 0; 
 		float rdy = 0;
-		
 	
 		CMario::FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny, rdx, rdy);
-
 
 		x += min_tx*dx + nx*0.1f;
 		y += min_ty*dy + ny*0.1f;
@@ -224,7 +221,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				goalCard->SetSwitchScene((DWORD)GetTickCount64());
 				goalCard->GetCardText()->SetState(1);
 				goalCard->GetCardText()->GetCard()->SetState(goalCard->GetState());
-				// CGame* game = CGame::GetInstance();
 			}
 
 			if (dynamic_cast<CLeaf*>(e->obj))
@@ -262,7 +258,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					if (brick->GetState() == BRICK_STATE_NORMAL && marioStateFight)
 					{
-						DebugOut(L"collision wiht brick: %d \n", brick->GetState());
+						//DebugOut(L"collision wiht brick: %d \n", brick->GetState());
 						brick->SetState(BRICK_STATE_HIDEN);
 					}
 				}
@@ -1288,7 +1284,8 @@ void CMario::handleMarioDead()
 
 void CMario::handleMarioFlyHigh()
 {
-	if (GetTickCount64() - timeMarioFlyHigh < 1000)
+	
+	if (GetTickCount64() - timeMarioFlyHigh < MARIO_FLY_HIGH_TIME)
 	{
 		if (nx > 0) SetState(STATE_MARIO_FLYING_HIGH_RIGHT);
 		else SetState(STATE_MARIO_FLYING_HIGH_LEFT);
@@ -1300,10 +1297,10 @@ void CMario::upLevelMario()
 {
 	if (level == LEVEL_MARIO_SMAIL) {
 		SetLevel(LEVEL_MARIO_BIG);
-		DebugOut(L"update mario level big \n");
+		// DebugOut(L"update mario level big \n");
 	}
 	else if (level == LEVEL_MARIO_BIG) {
-		DebugOut(L"update mario level tail \n");
+		// DebugOut(L"update mario level tail \n");
 		SetLevel(LEVEL_MARIO_TAIL);
 	}
 	else if (level == LEVEL_MARIO_BIG) {

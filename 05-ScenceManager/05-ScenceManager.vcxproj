@@ -128,6 +128,8 @@
     <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="BackgroundWorldmap.cpp" />
     <ClCompile Include="BlueBrick.cpp" />
+    <ClCompile Include="Boomerang.cpp" />
+    <ClCompile Include="BoomerangBros.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Card.cpp" />
@@ -147,6 +149,7 @@
     <ClCompile Include="Hub.cpp" />
     <ClCompile Include="ItemCoin.cpp" />
     <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="KoopasHammer.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="ListScore.cpp" />
     <ClCompile Include="Lives.cpp" />
@@ -185,6 +188,9 @@
     <ClInclude Include="Arrow.h" />
     <ClInclude Include="BackgroundWorldmap.h" />
     <ClInclude Include="BlueBrick.h" />
+    <ClInclude Include="Boomerang.h" />
+    <ClInclude Include="BoomerangBros.h" />
+    <ClInclude Include="BoomerangConfig.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraConfig.h" />
@@ -207,6 +213,7 @@
     <ClInclude Include="Hub.h" />
     <ClInclude Include="ItemCoin.h" />
     <ClInclude Include="Koopas.h" />
+    <ClInclude Include="KoopasHammer.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="ListScore.h" />
     <ClInclude Include="Lives.h" />

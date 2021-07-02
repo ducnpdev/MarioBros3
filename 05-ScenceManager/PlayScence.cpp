@@ -249,7 +249,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		cardText = (CCardText*)obj;
 		break;
 	case OBJECT_TYPE_HUB_GOALCARDS:
-		obj = new CGoalCard(cardText);
+		 obj = new CGoalCard(cardText);
 		break;
 	case OBJECT_TYPE_HUB_ARROWS: 
 		obj = new CListArrow(arrow);
@@ -497,8 +497,8 @@ void CPlayScene::Unload()
 	numLives.clear();
 	arrow.clear();
 
-	for (int i = 0; i < MaxShowCards; i++)
-		cards[i] = NULL;
+	/*for (int i = 0; i < MaxShowCards; i++)
+		cards[i] = NULL;*/
 	for (int i = 0; i < 16; i++)
 		pieceBrick[i] = NULL;
 	for (int i = 0; i < 3; i++)

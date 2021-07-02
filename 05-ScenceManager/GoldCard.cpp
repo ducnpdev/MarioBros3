@@ -23,7 +23,7 @@ void CGoalCard::Render()
 	else if (state == GOALCARD_STATE_FLOWER) ani = GOALCARD_ANI_FLOWER;
 	else if (state == GOALCARD_STATE_STAR) ani = GOALCARD_ANI_STAR;
 	else if (state == GOALCARD_STATE_MUSHROOM) ani = GOALCARD_ANI_MUSHROOM;
-	animation_set->at(ani)->Render(x, y);
+	 animation_set->at(ani)->Render(x, y);
 }
 
 void CGoalCard::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
