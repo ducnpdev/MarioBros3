@@ -95,6 +95,12 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					woodBlock->vx = -1 * woodBlock->vx;
 				}
 		}*/
+			if (dynamic_cast<CKoopas*>(e->obj)) {
+				DebugOut(L"collision other koopas");
+				if (e->nx != 0) {
+
+				}
+			}
 
 			if (dynamic_cast<CBoomerangBro*>(e->obj))
 			{

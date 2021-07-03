@@ -107,7 +107,6 @@ void CCamera::UpdateCameraScence1() {
 void CCamera::UpdateCameraScence3() {
 	player->GetPosition(playerX, playerY);
 	CGame* game = CGame::GetInstance();
-
 	// Mario khi đi đến sát biên bên trái
 	if (playerX < WIDTH_MIN_MAP_2) {
 		player->SetPosition(CAM_X_MIN, playerY);
@@ -115,10 +114,10 @@ void CCamera::UpdateCameraScence3() {
 	}
 
 	// Mario khi đi đến sát biên bên phải 
-	if (playerX > NEAR_WIDTH_LIMIT_MAP_1)
+	if (playerX > 2400)
 	{
-		if (playerX > WIDTH_MAX_MAP_1) player->SetPosition(WIDTH_MAX_MAP_1, playerY);
-		playerX = CAM_X_MAX;
+		if (playerX > 2528) player->SetPosition(2528, playerY);
+		playerX = 2232;
 		SetPositionCamera(playerX, CAM_3_Y_DEFAULT); // CAM_Y_MIN
 	}
 
