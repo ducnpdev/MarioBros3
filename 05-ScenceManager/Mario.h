@@ -67,7 +67,8 @@ class CMario : public  CCollision
 	// fly hight
 	DWORD timeMarioFlyHigh;
 	bool marioStateFlyHigh = false;
-
+	DWORD timeMarioDead;
+	bool isMarioAcceptSwitchScene = false;
 
 public: 
 	CMario(float x = 0.0f, float y = 0.0f);
@@ -221,4 +222,9 @@ public:
 
 	void upLevelMario();
 
+	void handleMarioDeadFly();
+	void SetTimeMarioDead(DWORD t) { timeMarioDead = t; }
+	DWORD GetTimeMarioDead() { return timeMarioDead; }
+	bool GetMarioIsAcceptSwitchScene() { return isMarioAcceptSwitchScene; }
+	void SetMarioIsAcceptSwitchScene(bool c) { isMarioAcceptSwitchScene = c; }
 };

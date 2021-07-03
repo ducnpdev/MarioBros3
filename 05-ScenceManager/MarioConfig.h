@@ -313,6 +313,10 @@
 #define MARIO_UP_LEVEL_TIME							2000
 #define MARIO_FLY_HIGH_TIME 1000
 
+#define MARIO_TIME_DEAD_TOP 250
+#define MARIO_TIME_DEAD_BOTTOM 550
+#define MARIO_SPEED_DEAD 0.2f
+ 
 
 // class pipe
 #define MARIO_PIPE_POS_X_4								2328

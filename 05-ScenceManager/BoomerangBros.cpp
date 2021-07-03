@@ -41,22 +41,24 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
-		// mario bên phải của boomerangbros
-		if (mario->x - x >= BOOMERANGBRO_RANGE_ATTACK_PLAYER_RIGHT)
-		{
-			SetState(STATE_BOOMERANGBRO_WALKING);
-			isBoomerangBrosRight = true;
-			vx = BOOMERANG_WALKING_SPEED;
-		}
-		// mario bên phải của boomerangbros
-		else if (mario->x - x <= BOOMERANGBRO_RANGE_ATTACK_PLAYER_LEFT)
-		{
-			isBoomerangBrosRight = false;
-			SetState(STATE_BOOMERANGBRO_WALKING);
-			vx = -BOOMERANG_WALKING_SPEED;
-		}
 
 		if (GetTickCount64() - timeBoomerangBrosStart < BOOMERANGBRO_SHOOT_TIME) {
+			isBoomerangBrosGoBack = false;
+			// mario bên phải của boomerangbros
+			if (mario->x - x >= BOOMERANGBRO_RANGE_ATTACK_PLAYER_RIGHT)
+			{
+				SetState(STATE_BOOMERANGBRO_WALKING);
+				isBoomerangBrosRight = true;
+				vx = BOOMERANG_WALKING_SPEED;
+			}
+			// mario bên phải của boomerangbros
+			else if (mario->x - x <= BOOMERANGBRO_RANGE_ATTACK_PLAYER_LEFT)
+			{
+				isBoomerangBrosRight = false;
+				SetState(STATE_BOOMERANGBRO_WALKING);
+				vx = -BOOMERANG_WALKING_SPEED;
+			}
+
 			if (!isBoomerangBrosShoot) {
 				for (int i = 0; i < BOOMERANG_AMOUNT; i++)
 				{
@@ -81,14 +83,58 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 			}
 		}
+
+		else if (GetTickCount64() - timeBoomerangBrosStart < BOOMERANGBRO_SHOOT_BACH_TIME) {
+			isBoomerangBrosShoot = false;
+			isBoomerangBrosGoBack = true;
+			if (mario->x - x >= BOOMERANGBRO_RANGE_ATTACK_PLAYER_RIGHT)
+			{
+				SetState(STATE_BOOMERANGBRO_WALKING);
+				isBoomerangBrosRight = true;
+				vx = -BOOMERANG_WALKING_SPEED;
+			}
+			// mario bên phải của boomerangbros
+			else if (mario->x - x <= BOOMERANGBRO_RANGE_ATTACK_PLAYER_LEFT)
+			{
+				isBoomerangBrosRight = false;
+				SetState(STATE_BOOMERANGBRO_WALKING);
+				vx = BOOMERANG_WALKING_SPEED;
+			}
+		}
+		else if (GetTickCount64() - timeBoomerangBrosStart < BOOMERANGBRO_SHOOT_TWO_TIME) {
+			// mario bên phải của boomerangbros 
+			if (!isBoomerangBrosShoot) {
+				for (int i = 0; i < BOOMERANG_AMOUNT; i++)
+				{
+					if (boomerang[i]->GetState() == STATE_BOOMERANG_HIDEN)
+					{
+						isBoomerangBrosShoot = true;
+						if (isBoomerangBrosRight)
+						{
+							boomerang[i]->SetPosition(x, y - BOOMERANGBRO_BOOMERANG_LEFT_Y);
+							boomerang[i]->SetState(STATE_BOOMERANG_FLYING_RIGHT);
+							boomerang[i]->SetShootStartBoomerang((DWORD)GetTickCount64());
+							break;
+						}
+						else
+						{
+							boomerang[i]->SetPosition(x, y - BOOMERANGBRO_BOOMERANG_RIGHT_Y);
+							boomerang[i]->SetState(STATE_BOOMERANG_FLYING_LEFT);
+							boomerang[i]->SetShootStartBoomerang((DWORD)GetTickCount64());
+							break;
+						}
+					}
+				}
+			}
+		}
 		// set biến check để được bắn lại
 		else if (GetTickCount64() - timeBoomerangBrosStart < BOOMERANGBRO_START_SHOOT_TIME) {
+			vx = 0;
+			vy = 0;
 			isBoomerangBrosShoot = false;
-		}
-		// set biến time check để được bắn lại
-		else if (GetTickCount64() - timeBoomerangBrosStart > BOOMERANGBRO_SHOOT_START_TIME) {
 			timeBoomerangBrosStart = (DWORD)GetTickCount64();
 		}
+	
 	}
 	handleDead();
 }
@@ -101,9 +147,20 @@ void CBoomerangBro::Render()
 		 ani = ANI_BOOMERANGBRO_DIE_LEFT;
 		 if (nx < 0) ani = ANI_BOOMERANGBRO_DIE_RIGHT;
 	}
-	else if (state == STATE_BOOMERANGBRO_WALKING) {
+
+	else if ( vx > 0 && state == STATE_BOOMERANGBRO_WALKING ) {
+		ani = ANI_BOOMERANGBRO_WALKING_RIGHT;
+		if (isBoomerangBrosGoBack) {
+
 		ani = ANI_BOOMERANGBRO_WALKING_LEFT;
-		if (vx > 0 ) ani = ANI_BOOMERANGBRO_WALKING_RIGHT;
+		}
+	}
+	else if (vx < 0 && state == STATE_BOOMERANGBRO_WALKING) {
+			ani = ANI_BOOMERANGBRO_WALKING_LEFT;
+		if (isBoomerangBrosGoBack) {
+		ani = ANI_BOOMERANGBRO_WALKING_RIGHT;
+
+		}
 	}
 	else if (!isBoomerangBrosRight) ani = ANI_BOOMERANGBRO_THROWING_LEFT;
 	else if (isBoomerangBrosRight) ani = ANI_BOOMERANGBRO_THROWING_RIGHT;

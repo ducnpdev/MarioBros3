@@ -35,13 +35,15 @@ CMario::CMario(float x, float y)
 	start_y = y; 
 	this->x = x; 
 	this->y = y; 
+	marioStateDie = false;
+	timeMarioDead = 0;
 }
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	// DebugOut(L"x %f", x);
 	CGameObject::Update(dt);
-	vy += 0.0005*dt;
+	if (!marioStateDie) vy += 0.0005*dt;
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 	handlerMarioUpLevelOtherSmall();
@@ -50,7 +52,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (state == STATE_MARIO_RUNNING_RIGHT || state == STATE_MARIO_RUNNING_LEFT) {
 	}
-
+	 
 	// turn off collision when die 
 	if (state!=STATE_MARIO_DIE)
 		CalcPotentialCollisions(coObjects, coEvents);
@@ -327,6 +329,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	handleMarioFlyHigh();
 	
 	handleMarioDead();
+	 handleMarioDeadFly();
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
@@ -478,9 +481,11 @@ void CMario::SetState(int state)
 		if (isRunning) vx = -SPEED_MARIO_WALKING - 0.5f;
 		break;
 	case STATE_MARIO_DIE:
+		DebugOut(L"start dea\n");
 		marioStateDie = true;
+		timeMarioDead = GetTickCount64();
 		marioStateTorToiSeShell = false;
-		vy = -SPEED_MARIO_DIE_DEFLECT;
+	//	vy = -SPEED_MARIO_DIE_DEFLECT;
 		break;
 	case STATE_MARIO_TORTOISESHELL_RIGHT:
 		marioStateTorToiSeShell = true;
@@ -664,7 +669,6 @@ void CMario::FilterCollision(
 
 //	if (min_ix >= 0) coEventsResult.push_back(coEvents[min_ix]);
 	// if (min_iy >= 0) coEventsResult.push_back(coEvents[min_iy]);
-
 }
 
 /*
@@ -940,7 +944,6 @@ void CMario::handleMarioTorToiSeShell()
 		plustortoiseshellInMario(MARIO_TORTOISESHELL_PLUS_10, MARIO_TORTOISESHELL_PLUS_15);
 		break;
 	case LEVEL_MARIO_FIRE:
-		// SetLevel(LEVEL_MARIO_FIRE);
 		break;
 	}
 }
@@ -1016,9 +1019,6 @@ void CMario::plustortoiseshellInMario(int numberPlusLeft, int numberPlusRight) {
 	}
 }
 
-
-
-
 void CMario::handlerMarioUpLevelOtherSmall()
 {
 	if (!marioStateUpLevel ) {
@@ -1032,7 +1032,6 @@ void CMario::handlerMarioUpLevelOtherSmall()
 	marioStateUpLevel = false;
 
 	SetLevel(LEVEL_MARIO_BIG);
-	//if (!intro_state) SetLevel(MARIO_LEVEL_BIG);
 }
 
 void CMario::handlerMarioUpLevelSmoke()
@@ -1314,11 +1313,9 @@ void CMario::MarioHanlerProcessArrow()
 bool CMario::checkMarioMaxPower()
 {
 	if (listArrow->GetPState()) {
-	//	DebugOut(L"marioStateMaxPower false \n");
 		marioStateMaxPower = false;
 		return false;
 	}
-	// DebugOut(L"marioStateMaxPower  true \n");
 	marioStateMaxPower = true;
 	return true;
 }
@@ -1337,7 +1334,6 @@ void CMario::handleMarioDead()
 	}
 	else {
 		// scene 3
-		// DebugOut(L"switch scene dead %d\n", CGame::GetInstance()->GetScene());
 	}
 }
 
@@ -1351,7 +1347,21 @@ void CMario::handleMarioFlyHigh()
 	}
 	else marioStateFlyHigh = 0;
 }
-
+void CMario::handleMarioDeadFly()
+{
+	if (!marioStateDie) return;
+	vx = 0;
+	if (GetTickCount64() - timeMarioDead < MARIO_TIME_DEAD_TOP) {
+		vy = -MARIO_SPEED_DEAD;
+	}
+	else if (GetTickCount64() - timeMarioDead < MARIO_TIME_DEAD_BOTTOM) {
+		vy = MARIO_SPEED_DEAD;
+	}
+	else {
+		DebugOut(L"accept switch sene \n");
+		 isMarioAcceptSwitchScene = true;
+	}
+}
 void CMario::upLevelMario()
 {
 	if (level == LEVEL_MARIO_SMAIL) {

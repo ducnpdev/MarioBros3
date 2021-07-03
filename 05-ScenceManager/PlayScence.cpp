@@ -722,6 +722,9 @@ void CPlayScene::CreatePieceBrick(float x, float y, DWORD t)
 
 void CPlayScene::CheckSwitchScene()
 {
+	if (!player->GetMarioIsAcceptSwitchScene()) {
+		return;
+	}
 	if (id == SCENE_1 || id == SCENE_3)
 	{
 		if (player->GetMarioIsDie())
