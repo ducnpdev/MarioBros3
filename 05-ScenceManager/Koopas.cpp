@@ -10,6 +10,8 @@
 #include "PlayScence.h"
 #include "ItemCoin.h"
 #include "WoodBlock.h"
+#include "BoomerangBros.h"
+
 
 CKoopas::CKoopas(int type)
 {
@@ -84,7 +86,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				prePosY = y;
 			}
 
-		/*	if (dynamic_cast<CWoodBlock*>(e->obj))
+		/*if (dynamic_cast<CWoodBlock*>(e->obj))
 			{
 				DebugOut(L"Koopas collision wood \n");
 				CWoodBlock* woodBlock = dynamic_cast<CWoodBlock*>(e->obj);
@@ -92,7 +94,18 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					vx = -1 * vx;
 					woodBlock->vx = -1 * woodBlock->vx;
 				}
-			}*/
+		}*/
+
+			if (dynamic_cast<CBoomerangBro*>(e->obj))
+			{
+				CBoomerangBro* boomerangBro = dynamic_cast<CBoomerangBro*>(e->obj);
+				if (boomerangBro->GetState() != STATE_BOOMERANGBRO_DIE)
+				{
+					CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+					mario->DisplayListScore(MARIO_SCORE_100, boomerangBro->x, boomerangBro->y, (DWORD)GetTickCount64());
+					boomerangBro->SetState(STATE_BOOMERANGBRO_DIE);
+				}
+			}
 
 			if (typeKoopa == PARAKOOPA_COLOR_GREEN)
 			{

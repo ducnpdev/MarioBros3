@@ -37,7 +37,7 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 
 	}
 
-	 if (!isBoomerangFly) return;
+	if (!isBoomerangFly) return;
 
 	if (state == STATE_BOOMERANG_FLYING_LEFT) {
 		if (GetTickCount64() - shootStartBoomerangTime < STATE_BOOMERANG_FLYING_ONE_TIME) {

@@ -210,6 +210,8 @@ public:
 	void CollisionWithKoopa(LPCOLLISIONEVENT collisionEven);
 	void CollisionWithGoomba(LPCOLLISIONEVENT collisionEven);
 	void CollisionWithPipe(LPCOLLISIONEVENT collisionEven);
+	void CollisionWithBoomerang(LPCOLLISIONEVENT collisionEven);
+	void CollisionWithBoomerangBros(LPCOLLISIONEVENT collisionEven);
 	// 
 	void MarioHanlerProcessArrow();
 	bool checkMarioMaxPower();

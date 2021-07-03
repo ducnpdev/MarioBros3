@@ -23,7 +23,8 @@
 #include "Pipe.h"
 #include "GoombaConfig.h"
 #include "WoodBlock.h"	
-
+#include "BoomerangBros.h"	
+#include "Boomerang.h"	
 
 CMario::CMario(float x, float y)
 {
@@ -101,6 +102,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 				if (dynamic_cast<CWoodBlock*>(e->obj)) {
 					isJump = 0;
+				}
+
+				if (dynamic_cast<CBoomerang*>(e->obj)) {
+					CollisionWithBoomerang(e);
+				}
+
+				if (dynamic_cast<CBoomerangBro*>(e->obj)) {
+					CollisionWithBoomerangBros(e);
 				}
 
 				if (dynamic_cast<CFirePlantBullet*>(e->obj))
@@ -1120,13 +1129,10 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 		}
 		else if (koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_DOWN || 
 			koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_UP) {
-			DebugOut(L"2222 \n");
 			if ((x + GetBBoxWidthMario()+1) < (koopa->x + round(KOOPAS_BBOX_WIDTH / 2))) {
 				koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
 			}
 			else {
-				DebugOut(L"3333 \n");
-
 				koopa->SetState(KOOPAS_STATE_SPIN_LEFT);
 			}
 		}
@@ -1191,6 +1197,56 @@ void CMario::CollisionWithPipe(LPCOLLISIONEVENT e)
 			// DebugOut(L"sssssssssssss up \n");
 			SetState(STATE_MARIO_PIPE_UP);
 			timeMarioPipeUp = (DWORD)GetTickCount64();
+		}
+	}
+}
+
+void CMario::CollisionWithBoomerang(LPCOLLISIONEVENT e)
+{
+	CBoomerang* boomerang = dynamic_cast<CBoomerang*>(e->obj);
+	if (boomerang->GetState() != STATE_BOOMERANG_HIDEN)
+	{
+		if (level > LEVEL_MARIO_SMAIL)
+		{
+			SetMarioLevel(GetMarioLevel() - 1);
+			StartUntouchable();
+		}
+		else SetState(STATE_MARIO_DIE);
+	}
+}
+
+void CMario::CollisionWithBoomerangBros(LPCOLLISIONEVENT e)
+{
+	CBoomerangBro* boomerangbro = dynamic_cast<CBoomerangBro*>(e->obj);
+	// top of boomerangbro
+	if (e->ny < 0)
+	{
+		if (boomerangbro->GetState() != STATE_BOOMERANGBRO_DIE)
+		{
+			DisplayListScore(MARIO_SCORE_100, boomerangbro->x, boomerangbro->y, (DWORD)GetTickCount64());
+			boomerangbro->SetState(STATE_BOOMERANGBRO_DIE);
+			vy = -SPEED_MARIO_JUMP_DEFLECT;
+		}
+	}
+
+	else if (e->nx != 0)
+	{
+		if (untouchable == 0)
+		{
+			if (boomerangbro->GetState() != STATE_BOOMERANGBRO_DIE)
+			{
+				if (level > LEVEL_MARIO_SMAIL && !marioStateFight)
+				{
+					SetMarioLevel(GetMarioLevel() - 1);
+					StartUntouchable();
+				}
+				else if (marioStateFight)
+				{
+					boomerangbro->SetState(STATE_BOOMERANGBRO_DIE);
+				}
+				else
+					SetState(STATE_MARIO_DIE);
+			}
 		}
 	}
 }
