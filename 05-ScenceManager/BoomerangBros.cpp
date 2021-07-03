@@ -12,6 +12,7 @@ CBoomerangBro::CBoomerangBro(CBoomerang* weapon[BOOMERANG_AMOUNT])
 
 void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+
 	CGameObject::Update(dt);
 	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	vy += BOOMERANGBRO_GRAVITY * dt;
@@ -43,8 +44,8 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		// mario bên phải của boomerangbros
 		if (mario->x - x >= BOOMERANGBRO_RANGE_ATTACK_PLAYER_RIGHT)
 		{
-			isBoomerangBrosRight = true;
 			SetState(STATE_BOOMERANGBRO_WALKING);
+			isBoomerangBrosRight = true;
 			vx = BOOMERANG_WALKING_SPEED;
 		}
 		// mario bên phải của boomerangbros
@@ -89,6 +90,7 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			timeBoomerangBrosStart = (DWORD)GetTickCount64();
 		}
 	}
+	handleDead();
 }
 
 void CBoomerangBro::Render()
@@ -162,6 +164,18 @@ void CBoomerangBro::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<L
 
 
 
+	}
+}
+
+void CBoomerangBro::handleDead()
+{
+	if (state != STATE_BOOMERANGBRO_DIE) return;
+	vx = 0;
+	if (GetTickCount64() - timeBoomerangBrosDead < STATE_BOOMERANGBRO_DEAD) {
+		vy = -BOOMERANGBRO_DEAD;
+	}
+	else {
+		vy = BOOMERANGBRO_DEAD;
 	}
 }
 

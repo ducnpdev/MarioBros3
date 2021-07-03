@@ -104,6 +104,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 					mario->DisplayListScore(MARIO_SCORE_100, boomerangBro->x, boomerangBro->y, (DWORD)GetTickCount64());
 					boomerangBro->SetState(STATE_BOOMERANGBRO_DIE);
+					boomerangBro->SetBoomerangTimeDead(GetTickCount64());
+
 				}
 			}
 

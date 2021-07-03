@@ -1225,6 +1225,7 @@ void CMario::CollisionWithBoomerangBros(LPCOLLISIONEVENT e)
 		{
 			DisplayListScore(MARIO_SCORE_100, boomerangbro->x, boomerangbro->y, (DWORD)GetTickCount64());
 			boomerangbro->SetState(STATE_BOOMERANGBRO_DIE);
+			boomerangbro->SetBoomerangTimeDead(GetTickCount64());
 			vy = -SPEED_MARIO_JUMP_DEFLECT;
 		}
 	}
@@ -1243,6 +1244,8 @@ void CMario::CollisionWithBoomerangBros(LPCOLLISIONEVENT e)
 				else if (marioStateFight)
 				{
 					boomerangbro->SetState(STATE_BOOMERANGBRO_DIE);
+					boomerangbro->SetBoomerangTimeDead(GetTickCount64());
+
 				}
 				else
 					SetState(STATE_MARIO_DIE);

@@ -14,6 +14,9 @@ class CBoomerangBro : public CCollision
 	bool isBoomerangBrosBack;
 	bool isBoomerangBrosShoot;
 	bool isBoomerangBrosRight;
+
+	DWORD timeBoomerangBrosDead;
+
 public:
 	CBoomerangBro(CBoomerang* boomerang[BOOMERANG_AMOUNT]);
 	void SetState(int state);
@@ -29,4 +32,7 @@ public:
 		float& ny,
 		float& rdx,
 		float& rdy);
+
+	void handleDead();
+	void SetBoomerangTimeDead(DWORD t) { timeBoomerangBrosDead = t; }
 };
