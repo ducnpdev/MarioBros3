@@ -433,7 +433,7 @@ void CPlayScene::Update(DWORD dt)
 
 	int Xcam = (int)camera->GetPositionCameraX();
 	int Ycam = (int)camera->GetPositionCameraY();
-
+	
 	gridResource->GirdPushResource(objects, Xcam, Ycam);
 	 for (size_t i = 0; i < objects.size(); i++)
 	 {
@@ -520,11 +520,13 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_K:
 		CGame::GetInstance()->SetCamPos(0, 0);
 		CGame::GetInstance()->SwitchScene(1);
-		break;
-	case DIK_L:
-		CGame::GetInstance()->SetCamPos(0, 0);
-		CGame::GetInstance()->SwitchScene(3);
 		break;*/
+	case DIK_Z:
+		if (mario->GetMarioIsInPortal()) {
+		//	DebugOut(L"is in portal \n");
+			mario->SetMarioIsAcceptPortal(true);
+		}
+		break;
 	case DIK_1:
 		mario->marioSetUpDownLevel(LEVEL_MARIO_SMAIL);
 		break;

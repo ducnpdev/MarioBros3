@@ -11,14 +11,13 @@
 #include "ItemCoin.h"
 #include "WoodBlock.h"
 #include "BoomerangBros.h"
-
+#include "Portal.h"
 
 CKoopas::CKoopas(int type)
 {
 	SetState(KOOPAS_STATE_WALKING_LEFT);
 	SetTypeKoopa(type);
 	if (typeKoopa == PARAKOOPA_COLOR_GREEN)	nx = -1;
-
 	
 }
 
@@ -401,7 +400,7 @@ void CKoopas::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLI
 	for (UINT i = 0; i < coEvents.size(); i++)
 	{
 		LPCOLLISIONEVENT c = coEvents[i];
-		if (dynamic_cast<CCoin*>(c->obj)) {
+		if (dynamic_cast<CCoin*>(c->obj) || dynamic_cast<CPortal*>(c->obj)) {
 			// DebugOut(L"koopas collision coin \n");
 			continue;
 		}

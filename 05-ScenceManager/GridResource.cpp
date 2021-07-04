@@ -15,6 +15,7 @@
 #include "KoopasHammer.h"
 #include "BoomerangBros.h"
 #include "Boomerang.h"
+#include "Portal.h"
 
 CGridResource::CGridResource(LPCWSTR path) {
 	numRow = 0;
@@ -100,7 +101,7 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			break;
 		}
 		case OBJECT_TYPE_WOOD_BLOCK: 
-			obj = new CWoodBlock(); 
+			obj = new CWoodBlock(0, NULL, NULL);
 			break;
 		case OBJECT_TYPE_BRICK_MANY_WALL: {
 			obj = new CColorBrick(); 
@@ -149,6 +150,10 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			break;
 		case OBJECT_TYPE_BOOMERANG_BRO:
 			obj = new CBoomerangBro(boomerang);
+			break;
+		case 50:
+			obj = new CPortal(x,y, x +10,y+2,1);
+			break;
 			break;
 	}
 
@@ -204,6 +209,49 @@ void CGridResource::_ParseSection_Grid_ENEMIES(string line) {
 	cellResource[XCell][YCell].PushObjectToCellResource(obj);
 }
 
+void CGridResource::_ParseSection_ITEMS_BRICK(string line) {
+	vector<string> tokens = split(line);
+	if (tokens.size() < 7) return;
+	int type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+	int ani_set_id = atoi(tokens[3].c_str());
+	int XCell = atoi(tokens[4].c_str());
+	int YCell = atoi(tokens[5].c_str());
+	int typeOf = atoi(tokens[6].c_str());
+
+	CAnimationSets* animation_sets = CAnimationSets::GetInstance();
+	CGameObject* obj = NULL;
+	switch (type)
+	{
+	/*case OBJECT_TYPE_GOOMBA: {
+		obj = new CGoomba(state);
+		break;
+	}
+	case OBJECT_TYPE_KOOPAS: {
+		obj = new CKoopas(state);
+		break;
+	case OBJECT_TYPE_KOOPAS_HAMMER: {
+		obj = new CKoopasHammer(state);
+		break;
+		}*/
+	case OBJECT_TYPE_WOOD_BLOCK:
+			obj = new CWoodBlock(typeOf, mushroomOfBrick, leafOfBrick);
+		break;
+	default:
+		return;
+	}
+	LPANIMATION_SET ani_set = animation_sets->Get(ani_set_id);
+
+	if (obj == NULL) return;
+
+	int add = 0;
+	obj->SetPosition(x, y);
+	obj->SetAnimationSet(ani_set);
+	obj->SetOriginObject((float)x, (float)y, obj->GetState());
+	cellResource[XCell][YCell].PushObjectToCellResource(obj);
+}
+
 void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 	vector<string> tokens = split(line);
 	if (tokens.size() < 8) return; // skip invalid lines - an object set must have at least id, x, y
@@ -249,6 +297,12 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 			}
 		}
 		break;
+	case 188:
+		obj = new CMushroom(state);
+		if (mushroomOfBrick == NULL) {
+			mushroomOfBrick = (CMushroom*)obj;
+		}
+		break;
 	case OBJECT_TYPE_MUSHROOM: {
 		obj = new CMushroom(state);
 		for (int i = 0; i < 10; i++)
@@ -262,6 +316,12 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 		}
 		break;
 	}
+	case 199:
+		obj = new CLeaf();
+		if (leafOfBrick == NULL) {
+			leafOfBrick = (CLeaf*)obj;
+		}
+		break;
 	case OBJECT_TYPE_LEAF: {
 		obj = new CLeaf();
 		for (int i = 0; i < 10; i++)
@@ -328,6 +388,11 @@ void CGridResource::GridLoadResource(LPCWSTR path) {
 			section = GRID_RESOURCE_OBJECT_QUESTION; continue;
 		}
 
+		if (line == "[OBJECTITEM123]") {
+			// excample road, brick, pipe
+			section = GRID_RESOURCE_OBJECT_BRICK; continue;
+		}
+
 		if (line == "[GRIDENEMIES]") { section = GRID_RESOURCE_ENEMIES; continue; }
 		
 		if (line == "[INITIAL]") { section = GRID_RESOURCE_INITIAL; continue; }
@@ -342,6 +407,7 @@ void CGridResource::GridLoadResource(LPCWSTR path) {
 		case GRID_RESOURCE_OBJECT_ITEM: _ParseSection_Grid_ITEMS(line); break;
 		case GRID_RESOURCE_ENEMIES: _ParseSection_Grid_ENEMIES(line); break;
 		case GRID_RESOURCE_INITIAL: _ParseSection_Grid_INITIAL(line); break;
+		case GRID_RESOURCE_OBJECT_BRICK:	_ParseSection_ITEMS_BRICK(line); break;
 		}
 	}
 

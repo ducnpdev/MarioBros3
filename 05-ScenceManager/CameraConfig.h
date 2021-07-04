@@ -34,3 +34,6 @@
 // camera scene 3
 #define CAM_3_X_MIN				0.0f
 #define CAM_3_Y_DEFAULT			667.0f
+#define CAM_3_X_SCENE_RIGHT_DEFAULT			2647.0f
+#define CAM_3_X_SCENE_RIGHT_POS_MARIO			2700.0f
+

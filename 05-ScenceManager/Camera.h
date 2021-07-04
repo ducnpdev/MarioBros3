@@ -54,5 +54,6 @@ public:
 	void UpdateCameraScence1();
 	void UpdateCameraScence2();
 	void UpdateCameraScence3();
+	void UpdateCameraScence3Right();
 	void UpdateCameraScence4();
 };

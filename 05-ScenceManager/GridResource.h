@@ -16,6 +16,8 @@
 #include "Brick.h"
 #include "BoomerangConfig.h"
 #include "Boomerang.h"
+#include "Mushroom.h"
+#include "Leaf.h"
 
 class CGridResource {
 
@@ -38,7 +40,11 @@ class CGridResource {
 	void _ParseSection_Grid_ITEMS(string line);
 	void _ParseSection_Grid_INITIAL(string line);
 	void _ParseSection_ITEMS_QUESTION(string line);
+	void _ParseSection_ITEMS_BRICK(string line);
 
+
+	CMushroom* mushroomOfBrick;
+	CLeaf* leafOfBrick;
 public:
 	CGridResource(LPCWSTR pathFileGrid);
 	void GridLoadResource(LPCWSTR pathFileGrid);

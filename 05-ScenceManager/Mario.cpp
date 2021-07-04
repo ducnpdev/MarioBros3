@@ -25,6 +25,7 @@
 #include "WoodBlock.h"	
 #include "BoomerangBros.h"	
 #include "Boomerang.h"	
+#include "BlueBrick.h"	
 
 CMario::CMario(float x, float y)
 {
@@ -104,11 +105,17 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 				if (dynamic_cast<CWoodBlock*>(e->obj)) {
 					isJump = 0;
+					CollisionWithWoodBlock(e);
 				}
-
+				if (dynamic_cast<CBlueBrick*>(e->obj)) {
+					isJump = 0;
+				}
 				if (dynamic_cast<CBoomerang*>(e->obj)) {
 					CollisionWithBoomerang(e);
 				}
+
+				
+
 
 				if (dynamic_cast<CBoomerangBro*>(e->obj)) {
 					CollisionWithBoomerangBros(e);
@@ -334,6 +341,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 
 	if (y < 30) y = 30;
+
+	vector<LPGAMEOBJECT> colidingObjects;
+	isCollidingObject(coObjects, colidingObjects);
+	for (UINT i = 0; i < colidingObjects.size(); i++)
+	{
+		LPGAMEOBJECT c = colidingObjects[i];
+		if (dynamic_cast<CPortal*>(c))
+		{
+			isMarioInPortal = true;
+		//	DebugOut(L"collision aaa \n");
+		}
+		else {
+			isMarioInPortal = false;
+		}
+	}
 }
 
 void CMario::MarioCollisionPiranhaPlant()
@@ -607,7 +629,8 @@ void CMario::FilterCollision(
 	{
 		LPCOLLISIONEVENT c = coEvents[i];
 
-		if (dynamic_cast<CColorBrick*>(c->obj))
+		if (dynamic_cast<CPortal*>(c->obj)) continue;
+		else if (dynamic_cast<CColorBrick*>(c->obj))
 		{
 			if (c->ny < 0 && c->t < min_tx)
 			{
@@ -680,6 +703,31 @@ void CMario::Reset()
 	SetLevel(LEVEL_MARIO_BIG);
 	SetPosition(start_x, start_y);
 	SetSpeed(0, 0);
+}
+
+void CMario::isCollidingObject(vector<LPGAMEOBJECT>* coObjects, vector<LPGAMEOBJECT>& colidingObjects)
+{
+	float otherL;
+	float otherT;
+	float otherB;
+	float otherR;
+
+	float objectL;
+	float objectT;
+	float objectB;
+	float objectR;
+	GetBoundingBox(objectL, objectT, objectR, objectB);
+	for (int i = 0; i < coObjects->size(); i++)
+	{
+		coObjects->at(i)->GetBoundingBox(otherL, otherT, otherR, otherB);
+		if (otherL <= objectR &&
+			otherR >= objectL &&
+			otherT <= objectB &&
+			otherB >= objectT)
+		{
+			colidingObjects.push_back(coObjects->at(i));
+		}
+	}
 }
 
 void CMario::Render()
@@ -1253,6 +1301,28 @@ void CMario::CollisionWithBoomerangBros(LPCOLLISIONEVENT e)
 	}
 }
 
+void CMario::CollisionWithWoodBlock(LPCOLLISIONEVENT e)
+{
+	CWoodBlock* woodBlock = dynamic_cast<CWoodBlock*>(e->obj);
+	if (e->nx != 0 && woodBlock->GetWoodBlockType() == 1) {
+		woodBlock->SetWoodBlockActive(true);
+	}
+}
+
+void CMario::CollisionWithPortal(LPCOLLISIONEVENT e)
+{
+
+	CPortal* portal = dynamic_cast<CPortal*>(e->obj);
+	/*if (e->ny < 0) {
+	DebugOut(L"marrio collisoin Portal e->ny \n");
+		y += dy;
+	}
+	if (e->nx != 0) {
+		x += dx;
+		DebugOut(L"marrio collisoin Portal e->nx != 0 \n");
+
+	}*/
+}
 
 void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)
 {
@@ -1324,16 +1394,19 @@ void CMario::handleMarioDead()
 {
 	int sceneID = CGame::GetInstance()->GetScene();
 	if (sceneID == SCENE_1) {
-		if (y > 448 && state != STATE_MARIO_PIPE_UP && state != STATE_MARIO_PIPE_DOWN)
+		if (y > POSITION_Y_SCENE_1_MARIO_DEAD && state != STATE_MARIO_PIPE_UP && state != STATE_MARIO_PIPE_DOWN)
 		{
-			if (x > 2128 && y < 496)
+			if (x > POSITION_X_SCENE_1_MARIO_DEAD && y < 496)
 				marioStateDie = true;
-			else if (x <= 2128)
+			else if (x <= POSITION_X_SCENE_1_MARIO_DEAD)
 				marioStateDie = true;
 		}
 	}
 	else {
 		// scene 3
+		if (y > POSITION_Y_SCENE_3_MARIO_DEAD) {
+			marioStateDie = true;
+		}
 	}
 }
 

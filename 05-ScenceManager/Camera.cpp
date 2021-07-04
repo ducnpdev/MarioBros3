@@ -12,7 +12,6 @@ CCamera::CCamera(CMario* m, int id) {
 }
 
 void CCamera::UpdateCamera() {
-	
 	switch (sceneID)
 	{
 	case SCENE_1:
@@ -104,9 +103,27 @@ void CCamera::UpdateCameraScence1() {
 	playerY -= game->GetScreenHeight() / 2;
 }
 
+void CCamera::UpdateCameraScence3Right() {
+	if (!player->GetMarioScene3Right()) {
+		player->SetPosition(CAM_3_X_SCENE_RIGHT_POS_MARIO, playerY);
+		player->SetMarioScene3Right(true);
+	}
+	else {
+		player->SetPosition(playerX, playerY);
+	}
+	SetPositionCamera(CAM_3_X_SCENE_RIGHT_DEFAULT, CAM_3_Y_DEFAULT);
+	CGame::GetInstance()->SetCamPos(round(CAM_3_X_SCENE_RIGHT_DEFAULT), round(CAM_3_Y_DEFAULT));
+}
+
 void CCamera::UpdateCameraScence3() {
 	player->GetPosition(playerX, playerY);
 	CGame* game = CGame::GetInstance();
+	
+	if (player->GetMarioIsAcceptPortal()) {
+		UpdateCameraScence3Right();
+		return;
+	}
+
 	// Mario khi đi đến sát biên bên trái
 	if (playerX < WIDTH_MIN_MAP_2) {
 		player->SetPosition(CAM_X_MIN, playerY);

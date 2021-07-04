@@ -70,6 +70,13 @@ class CMario : public  CCollision
 	DWORD timeMarioDead;
 	bool isMarioAcceptSwitchScene = false;
 
+	bool isMarioInPortal = false;
+	bool isMarioAcceptPortal = false;
+	bool isMarioScene3Right = false;
+	bool isMarioScene3Top = false;
+
+
+
 public: 
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
@@ -79,7 +86,7 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void Reset();
-
+	void isCollidingObject(vector<LPGAMEOBJECT>* coObjects, vector<LPGAMEOBJECT>& colidingObjects);
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void FilterCollision(
 		vector<LPCOLLISIONEVENT>& coEvents,
@@ -213,6 +220,10 @@ public:
 	void CollisionWithPipe(LPCOLLISIONEVENT collisionEven);
 	void CollisionWithBoomerang(LPCOLLISIONEVENT collisionEven);
 	void CollisionWithBoomerangBros(LPCOLLISIONEVENT collisionEven);
+	void CollisionWithWoodBlock(LPCOLLISIONEVENT collisionEven);
+	void CollisionWithPortal(LPCOLLISIONEVENT collisionEven);
+
+
 	// 
 	void MarioHanlerProcessArrow();
 	bool checkMarioMaxPower();
@@ -227,4 +238,17 @@ public:
 	DWORD GetTimeMarioDead() { return timeMarioDead; }
 	bool GetMarioIsAcceptSwitchScene() { return isMarioAcceptSwitchScene; }
 	void SetMarioIsAcceptSwitchScene(bool c) { isMarioAcceptSwitchScene = c; }
+
+	bool GetMarioIsInPortal() { return isMarioInPortal; }
+	void SetMarioIsInPortal(bool c) { isMarioInPortal = c; }
+
+
+	bool GetMarioIsAcceptPortal() { return isMarioAcceptPortal; }
+	void SetMarioIsAcceptPortal(bool c) { isMarioAcceptPortal = c; }
+
+	bool GetMarioScene3Right() { return isMarioScene3Right; }
+	void SetMarioScene3Right(bool c) { isMarioScene3Right = c; }
+
+	bool GetMarioScene3Top() { return isMarioScene3Top; }
+	void SetMarioScene3Top(bool c) { isMarioScene3Top = c; }
 };
