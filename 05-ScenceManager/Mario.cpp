@@ -114,9 +114,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					CollisionWithBoomerang(e);
 				}
 
-				
-
-
 				if (dynamic_cast<CBoomerangBro*>(e->obj)) {
 					CollisionWithBoomerangBros(e);
 				}
@@ -316,7 +313,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	handlerMarioJumpFly();
 
 	handleMarioTorToiSeShell();
-
 	handlerMarioFight();
 
 	MarioHanlerProcessArrow();
@@ -329,19 +325,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		//SetPosition(0, 0);
 	//	CGame::GetInstance()->SwitchScene(0);
 	}
-
 	handlerMarioDownPipe();
 	handlerMarioUpPipe();
-
 	handleMarioFlyHigh();
-	
 	handleMarioDead();
 	 handleMarioDeadFly();
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
-
 	if (y < 30) y = 30;
-
 	vector<LPGAMEOBJECT> colidingObjects;
 	isCollidingObject(coObjects, colidingObjects);
 	for (UINT i = 0; i < colidingObjects.size(); i++)
@@ -350,7 +341,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (dynamic_cast<CPortal*>(c))
 		{
 			isMarioInPortal = true;
-		//	DebugOut(L"collision aaa \n");
 		}
 		else {
 			isMarioInPortal = false;
@@ -360,14 +350,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 void CMario::MarioCollisionPiranhaPlant()
 {
-
 }
 
 void CMario::handlerMarioJumpFly() {
-	if (GetTickCount64() - timeMarioJumpFlyLow < 300)
+	if (GetTickCount64() - timeMarioJumpFlyLow < MARIO_TIME_FLY_LOW)
 	{
-		if (nx > 0) SetState(900);
-		else SetState(910);
+		if (nx > 0) SetState(STATE_MARIO_FLYING_LOW_RIGHT);
+		else SetState(STATE_MARIO_FLYING_LOW_LEFT);
 	}
 	else isJumpFlyLow = false;
 }
@@ -375,7 +364,6 @@ void CMario::handlerMarioJumpFly() {
 void CMario::SetState(int state)
 {
 	CGameObject::SetState(state);
-
 	switch (state)
 	{
 	case STATE_MARIO_FLYING_HIGH_RIGHT:
@@ -426,7 +414,6 @@ void CMario::SetState(int state)
 		isRunning = true;
 		marioStateTorToiSeShell = false;
 		isKick = false;
-
 		isJump = 0;
 
 		vx = -SPEED_MARIO_RUNNING;
@@ -466,8 +453,6 @@ void CMario::SetState(int state)
 		break;
 	case STATE_MARIO_KICK:
 		isKick = true;
-	//	
-
 		if (tortoiseshell != NULL)
 		{
 			if (nx > 0) {
@@ -479,11 +464,9 @@ void CMario::SetState(int state)
 				tortoiseshell->x = x - GetBBoxWidthMario() ;
 				tortoiseshell->SetState(KOOPAS_STATE_SPIN_LEFT);
 			}
-
 			marioStateTorToiSeShell = false;
 			tortoiseshell = NULL;
 		}
-
 		break;
 	case STATE_MARIO_TURN_RIGHT:
 		isTurn = true;
@@ -503,7 +486,6 @@ void CMario::SetState(int state)
 		if (isRunning) vx = -SPEED_MARIO_WALKING - 0.5f;
 		break;
 	case STATE_MARIO_DIE:
-		DebugOut(L"start dea\n");
 		marioStateDie = true;
 		timeMarioDead = GetTickCount64();
 		marioStateTorToiSeShell = false;
@@ -525,16 +507,15 @@ void CMario::SetState(int state)
 		isKick = false;
 		isJump = 0;
 		break;
-	case 900:
+	case STATE_MARIO_FLYING_LOW_RIGHT:
 		isJumpFlyLow = true;
 		marioStateTorToiSeShell = false;
 		isRunning = false;
 		isTurn = false;
 		isKick = false;
 		vy = 0.05f;
-
 		break;
-	case 910:
+	case STATE_MARIO_FLYING_LOW_LEFT:
 		isJumpFlyLow = true;
 		marioStateTorToiSeShell = false;
 		isRunning = false;
@@ -585,10 +566,9 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		}
 		if (nx == 1)
 		{
-			right = x + MARIO_BIG_BBOX_WIDTH + 5;
-			left = x + 7;
+			right = x + MARIO_BIG_BBOX_WIDTH + MARIO_BIG_BBOX_WIDTH_RIGHT_PLUS;
+			left = x + MARIO_BIG_BBOX_WIDTH_LEFT_PLUS;
 		}
-
 		break;	
 	case LEVEL_MARIO_FIRE:
 		right = x + MARIO_BIG_BBOX_WIDTH;
@@ -852,7 +832,7 @@ int CMario::RenderLevelMarioTail() {
 	{
 		// right
 		if (nx > 0) {
-			if (marioStateFlyHigh) ani = 83;
+			if (marioStateFlyHigh) ani = ANI_MARIO_TAIL_FLY_HIGH_RIGHT;
 			else if (isStateSitDown) ani = ANI_MARIO_TAIL_SITDOWN_RIGHT;
 			else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_RIGHT;
 			else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_FLY_LOW_RIGHT;
@@ -862,7 +842,7 @@ int CMario::RenderLevelMarioTail() {
 			else ani = ANI_MARIO_TAIL_IDLE_RIGHT;	
 		} 
 		else {
-			 if (marioStateFlyHigh) ani = 84;
+			 if (marioStateFlyHigh) ani = ANI_MARIO_TAIL_FLY_HIGH_LEFT;
 			else if (isStateSitDown) ani = ANI_MARIO_TAIL_SITDOWN_LEFT;
 			else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_LEFT;
 			else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_FLY_LOW_LEFT;
@@ -873,7 +853,7 @@ int CMario::RenderLevelMarioTail() {
 		}
 	}
 	else if (vx > 0){
-		 if (marioStateFlyHigh) ani = 83;
+		 if (marioStateFlyHigh) ani = ANI_MARIO_TAIL_FLY_HIGH_RIGHT;
 		else if (marioStateFight) ani = ANI_MARIO_TAIL_FIGHT; 
 		else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_FLY_LOW_RIGHT;
 		else if (marioStateMaxPower) ani = ANI_MARIO_TAIL_MAX_RUNNING_RIGHT;
@@ -886,7 +866,7 @@ int CMario::RenderLevelMarioTail() {
 		else ani = ANI_MARIO_TAIL_WALKING_RIGHT; 
 	} 
 	else {
-		if (marioStateFlyHigh) ani = 84;
+		if (marioStateFlyHigh) ani = ANI_MARIO_TAIL_FLY_HIGH_LEFT;
 		else if (marioStateFight) ani = ANI_MARIO_TAIL_FIGHT;
 		else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_FLY_LOW_LEFT;
 		else if (marioStateMaxPower) ani = ANI_MARIO_TAIL_MAX_RUNNING_LEFT;
@@ -1086,7 +1066,7 @@ void CMario::handlerMarioUpLevelSmoke()
 {
 	if (!marioStateSmoke) return;
 
-	if (GetTickCount64() - timeMarioSmoke < 1000) return;
+	if (GetTickCount64() - timeMarioSmoke < MARIO_TIME_UP_LEVEL_SMOLE) return;
 
 	marioStateSmoke = false;
 	SetLevel(LEVEL_MARIO_TAIL);
@@ -1160,11 +1140,9 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 	}
 	// collision tren koopas
 	else if (e->ny < 0) {
-		DebugOut(L"1111111 %d \n", koopa->GetState() );
 		if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN &&
 			koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_UP)
 		{
-			DebugOut(L"4444 %d \n", koopa->GetState());
 
 			DisplayListScore(MARIO_SCORE_100, koopa->x, koopa->y, (DWORD)GetTickCount64());
 			if (koopa->GetTypeKoopa() == PARAKOOPA_COLOR_GREEN)
@@ -1241,7 +1219,6 @@ void CMario::CollisionWithPipe(LPCOLLISIONEVENT e)
 	{
 		if (!marioStatePipeUp)
 		{
-			// DebugOut(L"sssssssssssss up \n");
 			SetState(STATE_MARIO_PIPE_UP);
 			timeMarioPipeUp = (DWORD)GetTickCount64();
 		}

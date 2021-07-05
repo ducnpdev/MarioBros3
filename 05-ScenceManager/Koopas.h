@@ -58,7 +58,7 @@
 #define KOOPA_GREEN_FORM								1
 
 #define PARAKOOPA_COLOR_GREEN						2	
-
+#define PARAKOOPA_TIME_DEFECT				300
 // 
 
 class CKoopas : public CCollision

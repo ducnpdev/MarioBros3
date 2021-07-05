@@ -134,6 +134,9 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			isBoomerangBrosShoot = false;
 			timeBoomerangBrosStart = (DWORD)GetTickCount64();
 		}
+		else {
+			timeBoomerangBrosStart = (DWORD)GetTickCount64();
+		}
 	
 	}
 	handleDead();

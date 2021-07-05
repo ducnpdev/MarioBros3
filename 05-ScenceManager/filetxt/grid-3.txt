@@ -21,8 +21,6 @@
 # **** KOOPA Hammer****
 #210	300	770	210	3	7	0
 
-
-
 [OBJECTITEM]
 
 ## BOOMERANG BRO

@@ -80,9 +80,19 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		for (UINT i = 0; i < coEventsResult.size(); i++) {
 			LPCOLLISIONEVENT e = coEventsResult[i];
-			if (!dynamic_cast<CMario*>(e->obj) && e->ny != 0)
+			if (!dynamic_cast<CMario*>(e->obj) && e->ny != 0  )
 			{
 				prePosY = y;
+			}
+
+			if (dynamic_cast<CColorBrick*>(e->obj)) {
+				if (e->nx != 0) {
+					DebugOut(L"koopas collision color brick \n");
+
+				}
+				else {
+
+				}
 			}
 
 		/*if (dynamic_cast<CWoodBlock*>(e->obj))
@@ -97,7 +107,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CKoopas*>(e->obj)) {
 				DebugOut(L"collision other koopas");
 				if (e->nx != 0) {
-
+					SetState(KOOPAS_STATE_DIE);
 				}
 			}
 
@@ -144,7 +154,6 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						if (mario->GetState() == MARIO_STATE_FIGHT)
 							vy = -KOOPA_JUMP_DEFLECT_SPEED;*/
 					}
-
 				}
 
 				if (state == KOOPAS_STATE_SPIN_LEFT)
@@ -168,7 +177,6 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 						SetState(KOOPAS_STATE_SPIN_RIGHT);
 					}
-
 				}
 				else if (state == KOOPAS_STATE_SPIN_RIGHT)
 				{
@@ -187,16 +195,11 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						}
 						SetState(KOOPAS_STATE_SPIN_LEFT);
 					}
-
-
 				}
 			}
-
-			
-		
 		}	
 	}
-	if (typeKoopa == KOOPA_COLOR_RED)  RedirectY();
+	if (typeKoopa == KOOPA_COLOR_RED) RedirectY();
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	
 }
@@ -356,7 +359,7 @@ void CKoopas::handlerDeflect()
 	if (ax > x) {
 		check = false;
 	}
-	if (GetTickCount64() - timeStartDeflect > 300)
+	if (GetTickCount64() - timeStartDeflect > PARAKOOPA_TIME_DEFECT)
 	{
 		/*if (vx > 0) {
 			vx = vx - 0.015f;
@@ -435,6 +438,7 @@ void CKoopas::RedirectY()
 {
 	if (state == KOOPAS_STATE_WALKING_LEFT || state == KOOPAS_STATE_WALKING_RIGHT)
 	{
+		//DebugOut(L"change direction \n");
 		if (abs(prePosY - y) > 1 && prePosY != 0) {
 			if (vx > 0) {
 				SetPosition(x - 5, prePosY);
