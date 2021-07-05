@@ -1,4 +1,4 @@
-#include "FirePiranhaPlant.h"
+﻿#include "FirePiranhaPlant.h"
 #include "Mario.h"
 #include "FirePlantBullet.h"
 
@@ -8,66 +8,58 @@ CFirePiranhaPlant::CFirePiranhaPlant(CGameObject* mario)
 	found_player = false;
 	SetState(FIREPIRANHAPLANT_STATE_HIDE);
 	player = mario;
+	y_limit = FIREPIRANHAPLANT_Y_LIMIT;
 }
 
 void CFirePiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt, coObjects);
 	if (state == FIREPIRANHAPLANT_STATE_DESTROY) return;
-	// DebugOut(L"update CFirePiranhaPlant \n");
-
-	if (check_y_limit == false)
-	{
-		y_limit = y - 33;
-		check_y_limit = true;
-	}
+	// accept đi xuống
 	if (y >= y_limit) {
 		y += dy;
 	}
 	else {
 		y = y_limit;
 	}
-	// TODO check lai
+
 	sx = x - player->x;
 	sy = y - player->y;
 	tan = sx / sy;
-	// DebugOut(L"sx sy tan: %f %f %f\n", sx, sy, tan);
 
-	if (abs(x - player->x) < 150)
+	if (abs(x - player->x) < FIREPIRANHAPLANT_RANGE_EFFECT_MARIO)
 	{
-
 		if (state == FIREPIRANHAPLANT_STATE_HIDE && tan > 1.0f || state == FIREPIRANHAPLANT_STATE_HIDE && tan < -1.0f)
 			found_player = true;
 	}
 	if (found_player)
 	{
-	//	DebugOut(L"y_limit 3333333: %f %f\n", y_limit, y);
-
 		if (stateHide)
 		{
+			// start move up
 			stateMoveUp = true;
-			timeMoveUp = (DWORD)GetTickCount();
+			timeMoveUp = (DWORD)GetTickCount64();
 		}
 
 		if (stateMoveUp)
 		{
-			if (GetTickCount() - timeMoveUp < 920)
+			if (GetTickCount64() - timeMoveUp < FIREPIRANHAPLANT_MOVE_UP_TIME)
 				SetState(FIREPIRANHAPLANT_STATE_MOVE_UP);
 			else SetState(FIREPIRANHAPLANT_STATE_APPEARANCE);
 		}
 
 		if (appearance_state)
 		{
-			if (GetTickCount() - timeMoveUp < 3000)
+			if (GetTickCount64() - timeMoveUp < 3000)
 				SetState(FIREPIRANHAPLANT_STATE_APPEARANCE);
-			if (GetTickCount() - timeMoveUp > FIREPIRANHAPLANT_SHOOT_TIME && firePlantBullet->GetState() == FIREPLANTBULLET_TRANSPARENT_STATE)
+			if (GetTickCount64() - timeMoveUp > FIREPIRANHAPLANT_SHOOT_TIME && firePlantBullet->GetState() == FIREPLANTBULLET_TRANSPARENT_STATE)
 				ShootFirePlantBullet();
-			if (GetTickCount() - timeMoveUp > 3500)
+			if (GetTickCount64() - timeMoveUp > 3500)
 				SetState(FIREPIRANHAPLANT_STATE_MOVE_DOWN);
 		}
 		if (move_down_state)
 		{
-			if (GetTickCount() - timeMoveUp < 4420)
+			if (GetTickCount64() - timeMoveUp < 4420)
 				SetState(FIREPIRANHAPLANT_STATE_MOVE_DOWN);
 			else
 			{
@@ -76,11 +68,10 @@ void CFirePiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 	}
-
-
-	// Check direction
+	// cao hơn mario
 	if (y - player->y < 0)
 	{
+		// bên trái của mario
 		if (x - player->x < 0)
 		{
 			nx = 1;
@@ -97,7 +88,6 @@ void CFirePiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			down_right_state = 0;
 			top_right_state = 0;
 		}
-
 	}
 	else
 	{
@@ -122,8 +112,6 @@ void CFirePiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CFirePiranhaPlant::Render()
 {
-	// animation_set->at(4)->Render(x, y);
-	// return;
 	if (stateHide) return;
 	else if (state == FIREPIRANHAPLANT_STATE_DESTROY) return;
 	else {
@@ -139,8 +127,7 @@ void CFirePiranhaPlant::Render()
 void CFirePiranhaPlant::ShootFirePlantBullet()
 {
 	if (firePlantBullet->GetState() != FIREPLANTBULLET_TRANSPARENT_STATE) return;
-
-	// handler shoot
+	// handler shoot bên phải
 	if (nx > 0)
 	{
 		firePlantBullet->SetPosition(x + FIREPIRANHAPLANT_POSITION_RIGHT_X, y);
@@ -180,7 +167,6 @@ void CFirePiranhaPlant::ShootFirePlantBullet()
 	{
 		firePlantBullet->SetState(FIREPLANTBULLET_SHOOTED_LEFT_60_STATE);
 	}
-
 }
 
 void CFirePiranhaPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -227,8 +213,6 @@ void CFirePiranhaPlant::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vect
 	if (min_iy >= 0) coEventsResult.push_back(coEvents[min_iy]);
 }
 
-
-
 void CFirePiranhaPlant::SetState(int state)
 {
 	CGameObject::SetState(state);
@@ -237,7 +221,6 @@ void CFirePiranhaPlant::SetState(int state)
 	case FIREPIRANHAPLANT_STATE_DESTROY:
 		break;
 	case FIREPIRANHAPLANT_STATE_MOVE_UP:
-		//appearance_state = 0;
 		stateHide = 0;
 		stateMoveUp = true;
 		vy = -0.035f;
@@ -249,7 +232,6 @@ void CFirePiranhaPlant::SetState(int state)
 		break;
 	case FIREPIRANHAPLANT_STATE_HIDE:
 		CreateFirePlantBullet(NULL);
-		//DebugOut(L"da vao hiden\n");
 		is_shoot = 0;
 		stateHide = 1;
 		appearance_state = 0;
@@ -258,7 +240,6 @@ void CFirePiranhaPlant::SetState(int state)
 		vy = 0;
 		break;
 	case FIREPIRANHAPLANT_STATE_APPEARANCE:
-		//DebugOut(L"da vao appearance\n");
 		appearance_state = 1;
 		stateHide = 0;
 		stateMoveUp = false;

@@ -189,6 +189,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<CQuestionBrick*>(e->obj)) {
 				isJump = 0;
 				CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
+
 				if (e->ny > 0) {
 					vy = 0; 
 					SetMarioFallState(true);

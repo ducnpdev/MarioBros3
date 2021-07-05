@@ -87,13 +87,23 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CColorBrick*>(e->obj)) {
 				if (e->nx != 0) {
-					DebugOut(L"koopas collision color brick \n");
-
+				//	DebugOut(L"koopas collision color brick \n");
 				}
 				else {
 
 				}
 			}
+
+			if (dynamic_cast<CRoad*>(e->obj)) {
+				if (e->nx != 0) {
+				//	DebugOut(L"koopas collision CRoad \n");
+				}
+				else if (e->ny < 0){
+					DebugOut(L"ny < 0 koopas collision CRoad \n");
+				}
+			}
+
+
 
 		/*if (dynamic_cast<CWoodBlock*>(e->obj))
 			{
@@ -164,36 +174,50 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						dynamic_cast<CBrick*>(e->obj) ||
 						dynamic_cast<CWoodBlock*>(e->obj))
 					{
-						if (dynamic_cast<CBrick*>(e->obj))
-						{
-							CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-							// Bắt đầu va chạm
-							if (brick->y - (y + 16) < 0)
+						if (e->nx > 0) {
+							if (dynamic_cast<CBrick*>(e->obj))
 							{
-								((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
-								brick->SetState(BRICK_STATE_HIDEN);
-							}
+								CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+								// Bắt đầu va chạm
+								if (brick->y - (y + 16) < 0)
+								{
+									((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+									brick->SetState(BRICK_STATE_HIDEN);
+								}
 
+							}
+							SetState(KOOPAS_STATE_SPIN_RIGHT);
 						}
-						SetState(KOOPAS_STATE_SPIN_RIGHT);
 					}
 				}
 				else if (state == KOOPAS_STATE_SPIN_RIGHT)
 				{
-					if (dynamic_cast<CPipe*>(e->obj) || 
-						dynamic_cast<CBorderRoad*>(e->obj) ||
-						dynamic_cast<CWoodBlock*>(e->obj)
-						)
-					{
-						SetState(KOOPAS_STATE_SPIN_LEFT);
-					}
-					if (dynamic_cast<CQuestionBrick*>(e->obj)) {
-						CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
-						if (questionBrick->GetState() != QUESTION_BRICK_STATE_CRETE) {
-							questionBrick->SetItemWhenCollision(LEAF_STATE_FLY);
-							questionBrick->SetState(QUESTION_BRICK_STATE_CRETE);
+					if (e->nx < 0) {
+						if ( dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CPipe*>(e->obj) ||
+							dynamic_cast<CBorderRoad*>(e->obj) ||
+							dynamic_cast<CWoodBlock*>(e->obj)
+							)
+						{
+							if (dynamic_cast<CBrick*>(e->obj))
+							{
+								CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+								brick->SetState(BRICK_STATE_HIDEN);
+								((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+								 // SetState(KOOPAS_STATE_SPIN_LEFT);
+							}
+
+							SetState(KOOPAS_STATE_SPIN_LEFT);
+						}
+						if (dynamic_cast<CQuestionBrick*>(e->obj)) {
+							CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
+							if (questionBrick->GetState() != QUESTION_BRICK_STATE_CRETE) {
+								questionBrick->SetItemWhenCollision(LEAF_STATE_FLY);
+								questionBrick->SetState(QUESTION_BRICK_STATE_CRETE);
+							}
+						//	SetState(KOOPAS_STATE_SPIN_LEFT);
 						}
 						SetState(KOOPAS_STATE_SPIN_LEFT);
+
 					}
 				}
 			}
