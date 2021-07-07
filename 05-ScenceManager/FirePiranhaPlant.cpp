@@ -149,6 +149,7 @@ void CFirePiranhaPlant::ShootFirePlantBullet()
 		}
 		return;
 	}
+	// handler shoot bên trái
 
 	firePlantBullet->SetPosition(x, y);
 	if (tan > 0 && tan < FIREPIRANHAPLANT_TAN_ANGLE_ATTACK)

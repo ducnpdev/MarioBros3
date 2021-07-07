@@ -1,4 +1,5 @@
 #pragma once
+#define GAME_POSITION_Y_LIMIT	30
 #define MAP_MAX_X	2790
 #define UP_DOWN_POSITOIN_Y	15
 #define TIME_MARIO_KICK	300

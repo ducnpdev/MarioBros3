@@ -174,6 +174,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						dynamic_cast<CBrick*>(e->obj) ||
 						dynamic_cast<CWoodBlock*>(e->obj))
 					{
+						// colision right
 						if (e->nx > 0) {
 							if (dynamic_cast<CBrick*>(e->obj))
 							{
