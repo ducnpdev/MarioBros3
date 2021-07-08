@@ -122,6 +122,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					CFirePlantBullet* fireplantbullet = dynamic_cast<CFirePlantBullet*>(e->obj);
 					if (fireplantbullet->GetState() != 100 && fireplantbullet->GetState() != 400)
 					{
+						if (e->ny > 0) {
+							y = y - MARIO_DEFECT_Y_COLLISION;
+						}
 						if (level > LEVEL_MARIO_SMAIL)
 						{
 							SetMarioLevel(GetMarioLevel() - 1);
@@ -1111,7 +1114,9 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 	CKoopas* koopa = dynamic_cast<CKoopas*>(e->obj);
 	// DebugOut(L"Mario collisoin with Koopas \n");
 	if (koopa->GetState() == KOOPAS_STATE_TAKEN) return;
-
+	if (e->ny > 0) {
+		y = y - MARIO_DEFECT_Y_COLLISION;
+	}
 	if (marioStateFight &&
 		(koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN ||
 		koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_UP)
@@ -1213,6 +1218,9 @@ void CMario::CollisionWithBoomerang(LPCOLLISIONEVENT e)
 	CBoomerang* boomerang = dynamic_cast<CBoomerang*>(e->obj);
 	if (boomerang->GetState() != STATE_BOOMERANG_HIDEN)
 	{
+		if (e->ny > 0) {
+			y = y - MARIO_DEFECT_Y_COLLISION;
+		}
 		if (level > LEVEL_MARIO_SMAIL)
 		{
 			SetMarioLevel(GetMarioLevel() - 1);
@@ -1287,6 +1295,9 @@ void CMario::CollisionWithPortal(LPCOLLISIONEVENT e)
 void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+	if (e->ny > 0) {
+		y = y - MARIO_DEFECT_Y_COLLISION;
+	}
 	if (e->ny < 0) {
 		if (goomba->GetState() != GOOMBA_STATE_DIE) {
 			DisplayListScore(MARIO_SCORE_100, goomba->x, goomba->y, GetTickCount64());

@@ -151,6 +151,9 @@
 
 #define MARIO_FLYING_SPEED_Y							0.05f
 
+#define MARIO_DEFECT_Y_COLLISION							0.3f
+
+
 // **************** MARIO -> STATE - STATE ****************
 #define STATE_MARIO_IDLE					0
 #define STATE_MARIO_WALKING_RIGHT			110
