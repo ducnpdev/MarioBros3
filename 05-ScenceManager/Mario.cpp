@@ -93,13 +93,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			// colission effect
 			if (untouchable == 0)
 			{
-				if (dynamic_cast<CGoomba*>(e->obj))
-				{
+				if (dynamic_cast<CGoomba*>(e->obj)) {
 					CollisionWithGoomba(e);
 				}
 
-				if (dynamic_cast<CKoopas*>(e->obj))
-				{
+				if (dynamic_cast<CKoopas*>(e->obj)) {
 					CollisionWithKoopa(e);
 				}
 
@@ -212,7 +210,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						}
 					}
 				}
-
 			}
 
 			if (dynamic_cast<CCoin*>(e->obj)) // if e->obj is Koopa
@@ -221,7 +218,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				CCoin* coin = dynamic_cast<CCoin*>(e->obj);
 				if (coin->GetState() == COIN_STATE_NORMAL)
 				{
-					// DebugOut(L"marrio collision CCoin and state coin normal = 2. \n");
 					coinplay->AddCoinHub();
 					coin->SetState(COIN_STATE_HIDEN);
 				}
@@ -274,7 +270,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				{
 					if (brick->GetState() == BRICK_STATE_NORMAL && marioStateFight)
 					{
-						//DebugOut(L"collision wiht brick: %d \n", brick->GetState());
 						brick->SetState(BRICK_STATE_HIDEN);
 					}
 				}
@@ -302,38 +297,25 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}*/
 				}
 			}
-
-
 		}
 	}
 
 	if (GetTickCount64() - timeStartKick < TIME_MARIO_KICK) {
 		SetState(STATE_MARIO_KICK);
 	}
-
 	handlerMarioJumpFly();
-
 	handleMarioTorToiSeShell();
 	handlerMarioFight();
-
 	MarioHanlerProcessArrow();
 	checkMarioMaxPower();
-
-	if (x > MAP_MAX_X)
-	{
-		x = MAP_MAX_X;
-		//CGame* game = CGame::GetInstance();
-		//SetPosition(0, 0);
-	//	CGame::GetInstance()->SwitchScene(0);
-	}
 	handlerMarioDownPipe();
 	handlerMarioUpPipe();
 	handleMarioFlyHigh();
 	handleMarioDead();
-	 handleMarioDeadFly();
+	handleMarioDeadFly();
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
-	if (y < 30) y = 30;
+	if (y < GAME_POSITION_Y_LIMIT) y = GAME_POSITION_Y_LIMIT;
 	vector<LPGAMEOBJECT> colidingObjects;
 	isCollidingObject(coObjects, colidingObjects);
 	for (UINT i = 0; i < colidingObjects.size(); i++)
