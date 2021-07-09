@@ -497,8 +497,15 @@ void CPlayScene::Unload()
 	numLives.clear();
 	arrow.clear();
 
-	/*for (int i = 0; i < MaxShowCards; i++)
-		cards[i] = NULL;*/
+	hub = NULL;
+	time = NULL;;
+	coinPlay = NULL;;
+	arrows = NULL;;
+	score = NULL;;
+	lives = NULL;;
+
+	for (int i = 0; i < MaxShowCards; i++)
+		cards[i] = NULL;
 	for (int i = 0; i < 16; i++)
 		pieceBrick[i] = NULL;
 	for (int i = 0; i < 3; i++)
@@ -578,8 +585,8 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			{
 				mario->SetTimeJumpStartFlyLow(GetTickCount64());
 				if (mario->nx > 0)
-					mario->SetState(900);
-				else mario->SetState(910);
+					mario->SetState(STATE_MARIO_FLYING_LOW_RIGHT);
+				else mario->SetState(STATE_MARIO_FLYING_LOW_LEFT);
 			}
 		}
 		break;

@@ -18,9 +18,9 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (state == MUSHROOM_STATE_MOVING)
 	{
-		if (GetTickCount64() - timeStateMovingMushroom < 1000)
+		if (GetTickCount64() - timeStateMovingMushroom < MUSHROOM_TIME_NORMAL)
 		{
-			if (GetTickCount64() - timeStateMovingMushroom > 200)
+			if (GetTickCount64() - timeStateMovingMushroom > MUSHROOM_TIME_START_MOVING)
 			{
 				// hiden_state = 0;
 				vy = -MUSHROOM_SPEED_Y;
@@ -31,7 +31,6 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 	if (state == MUSHROOM_STATE_NORMAL) {
-	//	DebugOut(L"MUSHROOM_STATE_NORMAL mushroom \n");
 		vy += 0.00069f * dt;
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
@@ -82,7 +81,7 @@ void CMushroom::SetState(int state)
 		if (!stateMovingMushroom)
 		{
 			stateMovingMushroom = true;
-			timeStateMovingMushroom = GetTickCount();
+			timeStateMovingMushroom = GetTickCount64();
 		}
 		break;
 	case MUSHROOM_STATE_HIDEN:

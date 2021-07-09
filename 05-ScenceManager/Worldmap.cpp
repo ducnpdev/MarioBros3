@@ -54,7 +54,23 @@ void CWorldMap::Unload()
 	for (unsigned int i = 0; i < objects.size(); i++)
 		delete objects[i];
 
-	objects.clear();	
+	objects.clear();
+	player = NULL;
+	num.clear();
+	numScore.clear();
+	numCoin.clear();
+	numLives.clear();
+	arrow.clear();
+	time = NULL;
+	score = NULL;
+	arrows = NULL;
+	coinPlay = NULL;
+	lives = NULL;
+	hub = NULL;
+	cardT = NULL;
+
+	for (int i = 0; i < 3; i++)
+		cards[i] = NULL;
 }
 
 void CWorldMap::Load()
@@ -64,7 +80,6 @@ void CWorldMap::Load()
 
 	// current resource section flag
 	int section = SCENE_SECTION_UNKNOWN;
-
 	char str[MAX_SCENE_LINE];
 	while (f.getline(str, MAX_SCENE_LINE))
 	{
@@ -95,12 +110,29 @@ void CWorldMap::Load()
 		//
 		switch (section)
 		{
-		case SCENE_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
-		case SCENE_SECTION_SPRITES: _ParseSection_SPRITES(line); break;
-		case SCENE_SECTION_ANIMATIONS: _ParseSection_ANIMATIONS(line); break;
-		case SCENE_SECTION_ANIMATION_SETS: _ParseSection_ANIMATION_SETS(line); break;
-		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
-		case SCENE_SECTION_NODES: _ParseSection_NODES(line); break;
+			case SCENE_SECTION_TEXTURES: {
+				_ParseSection_TEXTURES(line); break;
+			}
+			case SCENE_SECTION_SPRITES: {
+				_ParseSection_SPRITES(line); break;
+			}
+
+			case SCENE_SECTION_ANIMATIONS: {
+				_ParseSection_ANIMATIONS(line); break;
+			}
+
+			case SCENE_SECTION_ANIMATION_SETS: {
+				_ParseSection_ANIMATION_SETS(line); break;
+			}
+
+			case SCENE_SECTION_OBJECTS: {
+				_ParseSection_OBJECTS(line); break;
+			}
+
+			case SCENE_SECTION_NODES: {
+				_ParseSection_NODES(line); break;
+			}
+		
 		}
 	}
 	f.close();
@@ -231,18 +263,18 @@ void CWorldMap::_ParseSection_OBJECTS(string line)
 			int type = atoi(tokens[4].c_str());
 			if (type == 0)
 			{
-for (int i = 0; i < 3; i++)
-{
-	if (cards[i] == NULL)
-	{
-		cards[i] = (CCard*)obj;
-		break;
-	}
-}
+				for (int i = 0; i < 3; i++)
+				{
+					if (cards[i] == NULL)
+					{
+						cards[i] = (CCard*)obj;
+						break;
+					}
+				}
 			}
 			else if (type == 1)
 			{
-			cardT = (CCard*)obj;
+				cardT = (CCard*)obj;
 			}
 		}
 		break;
@@ -332,7 +364,7 @@ void CWorldMapKeyHandler::OnKeyDown(int KeyCode)
 	if (game->IsKeyDown(DIK_X))
 	{
 		if( marioWorldmap->GetTypeCurrentNode() == 3 ){
-			DebugOut(L"world map onKeyDown: DIK_X %d \n", marioWorldmap->GetTypeCurrentNode());
+			//DebugOut(L"world map onKeyDown: DIK_X %d \n", marioWorldmap->GetTypeCurrentNode());
 			 CGame::GetInstance()->SwitchScene(marioWorldmap->GetTypeCurrentNode());
 		}
 		if (marioWorldmap->GetTypeCurrentNode() == 1)

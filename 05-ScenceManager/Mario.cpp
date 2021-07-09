@@ -29,7 +29,7 @@
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_TAIL;
+	level = LEVEL_MARIO_SMAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 	start_x = x; 
@@ -499,14 +499,14 @@ void CMario::SetState(int state)
 		isRunning = false;
 		isTurn = false;
 		isKick = false;
-		vy = 0.05f;
+		vy = MARIO_SPEED_Y_FYL_SLOW;
 		break;
 	case STATE_MARIO_FLYING_LOW_LEFT:
 		isJumpFlyLow = true;
 		marioStateTorToiSeShell = false;
 		isRunning = false;
 		isTurn = false;
-		vy = 0.05f;
+		vy = MARIO_SPEED_Y_FYL_SLOW;
 		break;
 	case STATE_MARIO_UP_LEVEL:
 		marioStateUpLevel = true;

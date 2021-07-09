@@ -152,6 +152,8 @@
 #define MARIO_FLYING_SPEED_Y							0.05f
 
 #define MARIO_DEFECT_Y_COLLISION							0.3f
+#define MARIO_SPEED_Y_FYL_SLOW							0.05f
+
 
 
 // **************** MARIO -> STATE - STATE ****************

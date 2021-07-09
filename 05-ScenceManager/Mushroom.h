@@ -18,6 +18,11 @@
 
 #define MUSHROOM_RED_ANI		0
 
+#define MUSHROOM_TIME_START_MOVING	200
+#define MUSHROOM_TIME_NORMAL	400
+
+
+
 class CMushroom : public CCollision
 {
 	bool stateMovingMushroom = false;
