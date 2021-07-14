@@ -139,6 +139,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="ColorBrick.cpp" />
     <ClCompile Include="Enemies.cpp" />
+    <ClCompile Include="FireBullet.cpp" />
     <ClCompile Include="FireMario.cpp" />
     <ClCompile Include="FirePiranhaPlant.cpp" />
     <ClCompile Include="FirePlantBullet.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="ColorBrick.h" />
     <ClInclude Include="Enemies.h" />
+    <ClInclude Include="FireBullet.h" />
     <ClInclude Include="FireMario.h" />
     <ClInclude Include="FirePiranhaPlant.h" />
     <ClInclude Include="FirePlantBullet.h" />

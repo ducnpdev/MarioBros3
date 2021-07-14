@@ -3,6 +3,8 @@
 #define MAP_MAX_X	2790
 #define UP_DOWN_POSITOIN_Y	15
 #define TIME_MARIO_KICK	300
+
+#define FIRE_BULLET_AMOUNT 2
 // #define MARIO_ANI_BIG_IDLE_RIGHT			0
 // #define MARIO_ANI_BIG_IDLE_LEFT				1
 // #define MARIO_ANI_SMALL_IDLE_RIGHT			2
@@ -184,6 +186,8 @@
 
 #define STATE_MARIO_JUMP					300
 #define STATE_MARIO_FIGHT					800
+#define STATE_MARIO_SHOOT_FIRE_BULLET_RIGHT				950
+#define STATE_MARIO_SHOOT_FIRE_BULLET_LEFT				960
 #define STATE_MARIO_DIE						999
 
 // **************** MARIO -> TIME - TIME ****************
@@ -319,6 +323,7 @@
 
 
 // ## time
+#define MARIO_TIME_SHOOT_FIRE 2000
 #define MARIO_TIME_RUNNING		200
 #define  MARIO_PIPE_DOWN_UP_TIME 400
 #define MARIO_PIPE_DOWN_1_TIME							410

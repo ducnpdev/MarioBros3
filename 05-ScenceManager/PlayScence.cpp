@@ -12,7 +12,7 @@
 #include "ListScore.h"
 #include "ColorBrick.h"
 #include "Hub.h"
-
+#include "FireBullet.h"
 
 using namespace std;
 
@@ -166,6 +166,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player->SetCards(cards);
 		break;
 	}
+	case OBJECT_TYPE_MARIO_FIRE_BULLET:
+		obj = new CFireBullet();
+		player->CreateFireBullet(obj);
+		break;
 	case OBJECT_TYPE_NUMBER: {
 		int typetmp = atoi(tokens[4].c_str());
 		obj = new CNumber();
@@ -564,6 +568,17 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			mario->SetTimeIsFight(GetTickCount64());
 			mario->SetMarioIsFight(STATE_MARIO_FIGHT);
 		}
+		if (mario->GetMarioLevel() == LEVEL_MARIO_FIRE 
+			&& !mario->GetMarioShootFire())
+		{
+			mario->SetMarioShootFire((DWORD)GetTickCount64());
+			mario->ShootFireBullet();
+			if (mario->nx > 0)
+				mario->SetState(STATE_MARIO_SHOOT_FIRE_BULLET_RIGHT);
+			else mario->SetState(STATE_MARIO_SHOOT_FIRE_BULLET_LEFT);
+		}
+
+
 		break;
 	case DIK_S:
 		// if(mario->GetMarioIsStandingFloor()) mario->SetState(STATE_MARIO_JUMP);

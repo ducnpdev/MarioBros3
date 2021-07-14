@@ -24,6 +24,7 @@ CMap::~CMap()
 void CMap::RenderMap(int sceneID)
 {
 	int tile = TILESET;
+
 	switch (sceneID)
 	{
 	case 1:

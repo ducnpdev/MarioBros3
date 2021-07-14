@@ -75,9 +75,13 @@ class CMario : public  CCollision
 	bool isMarioScene3Right = false;
 	bool isMarioScene3Top = false;
 
-
+	bool marioStateShootFire;
+	DWORD timeMarioShootFire;
+	CGameObject* fireBullet[FIRE_BULLET_AMOUNT];
 
 public: 
+	
+
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
 
@@ -135,6 +139,8 @@ public:
 	CCard* GetCard() {
 		return card[0]; 
 	}
+	void CreateFireBullet(CGameObject* fireBullet);
+	void ShootFireBullet();
 
 	DWORD GetMarioFlyHighStart() { return timeMarioFlyHigh; }
 	void SetMarioFlyHighStart(DWORD t) { timeMarioFlyHigh = t; }
@@ -158,6 +164,11 @@ public:
 	void SetTimeJumpStart(DWORD t) { timeMarioJumpStart = t; }
 	DWORD GetTimeJumpStart() { return timeMarioJumpStart; }
 
+	bool GetMarioShootFire() { return marioStateShootFire; }
+	void SetMarioShootFire(int shoot) { marioStateShootFire = shoot; }
+
+	DWORD GetMarioShootFireStart() { return timeMarioShootFire; }
+	void SetMarioShootFireStart(DWORD time) { timeMarioShootFire = time; }
 
 	void SetTimeJumpStartFlyLow(DWORD t) { timeMarioJumpFlyLow = t; }
 	DWORD GetTimeJumpStartFlyLow() { return timeMarioJumpFlyLow; }
@@ -213,6 +224,8 @@ public:
 	void handlerMarioFight();
 	void handlerMarioDownPipe();
 	void handlerMarioUpPipe();
+	void handlerMarioShootFire();
+
 	// collision
 	void MarioCollisionPiranhaPlant();
 	void CollisionWithKoopa(LPCOLLISIONEVENT collisionEven);

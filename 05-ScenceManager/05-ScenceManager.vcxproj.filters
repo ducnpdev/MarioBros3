@@ -231,6 +231,9 @@
     <ClCompile Include="Boomerang.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="FireBullet.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -427,6 +430,9 @@
     </ClInclude>
     <ClInclude Include="BoomerangConfig.h">
       <Filter>Header Files\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBullet.h">
+      <Filter>Header Files\Items</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -26,10 +26,11 @@
 #include "BoomerangBros.h"	
 #include "Boomerang.h"	
 #include "BlueBrick.h"	
+#include "FireBullet.h"	
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_SMAIL;
+	level = LEVEL_MARIO_FIRE;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 	start_x = x; 
@@ -316,6 +317,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	handleMarioFlyHigh();
 	handleMarioDead();
 	handleMarioDeadFly();
+	handlerMarioShootFire();
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	if (y < GAME_POSITION_Y_LIMIT) y = GAME_POSITION_Y_LIMIT;
@@ -324,12 +326,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	for (UINT i = 0; i < colidingObjects.size(); i++)
 	{
 		LPGAMEOBJECT c = colidingObjects[i];
-		if (dynamic_cast<CPortal*>(c))
+		if (untouchable == 0)
 		{
-			isMarioInPortal = true;
-		}
-		else {
-			isMarioInPortal = false;
+			if (dynamic_cast<CPortal*>(c))
+			{
+				isMarioInPortal = true;
+			}
+			else {
+				isMarioInPortal = false;
+			}
 		}
 	}
 }
@@ -526,6 +531,14 @@ void CMario::SetState(int state)
 		break;
 	case STATE_MARIO_PIPE_UP:
 		marioStatePipeUp = true;
+		break;
+	case STATE_MARIO_SHOOT_FIRE_BULLET_RIGHT: 
+		nx = 1;
+		marioStateShootFire = true;
+		break;
+	case STATE_MARIO_SHOOT_FIRE_BULLET_LEFT: 
+		nx = -1;
+		marioStateShootFire = true;
 		break;
 	}
 }
@@ -871,31 +884,47 @@ int CMario::RenderLevelMarioFire() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if (isStateSitDown) ani = ANI_MARIO_FIRE_SIT_RIGHT;
-			else if (isJump == 1 || isJump == -1) ani = ANI_MARIO_FIRE_JUMP_RIGHT;
-			else ani = ANI_MARIO_FIRE_IDLE_RIGHT;	
+			if (marioStateShootFire) ani = 91;
+			else if (isStateSitDown) ani = 89;
+			else if (isJump == 1) ani = 30;
+			else if (isKick) ani = 38;
+			else if (marioStateTorToiSeShell) ani = 58;
+		//	else if (isJump == 1 || isJump == -1) ani = ANI_MARIO_FIRE_JUMP_RIGHT;
+			else ani = 12;	
 		} 
 		else {
-			if (isStateSitDown) ani = ANI_MARIO_FIRE_SIT_LEFT;
-			else if (isJump == 1 || isJump == -1) ani = ANI_MARIO_FIRE_JUMP_LEFT;
-			else ani = ANI_MARIO_FIRE_IDLE_LEFT;
+			if (marioStateShootFire) ani = 92;
+			else if (isStateSitDown) ani = 90;
+			else if (isJump == 1) ani = 31;
+			else if (isKick) ani = 39;
+			else if (marioStateTorToiSeShell) ani = 59;
+		//	else if (isJump == 1 || isJump == -1) ani = ANI_MARIO_FIRE_JUMP_LEFT;
+			else ani = 13;
 		}
 	}
 	else if (vx > 0){
-		if (isTurn && !isRunning) ani =  ANI_MARIO_FIRE_TURN_RIGHT;
-		else if (isJump == 1) ani = ANI_MARIO_FIRE_JUMP_RIGHT;
-		else if (isRunning) ani = ANI_MARIO_FIRE_RUN_RIGHT;
-		else ani = ANI_MARIO_FIRE_WALK_RIGHT; 
+		if (marioStateShootFire) ani = 91;
+		else if (isTurn && !isRunning) ani =  70;
+		else if (isJump == 1) ani = 30;
+		else if (isKick) ani = 38;
+		else if (marioStateMaxPower) ani = 79;
+		else if (isRunning) ani = 22;
+		else if (marioStateTorToiSeShell) ani = 60;
+		else ani = 14; 
 	} 
 	else {
-		if (isTurn && !isRunning) ani = ANI_MARIO_FIRE_TURN_LEFT;
-		else if (isJump == 1 ) ani = ANI_MARIO_FIRE_JUMP_LEFT;
-		else if(isRunning) ani = ANI_MARIO_FIRE_RUN_LEFT;
-		else ani = ANI_MARIO_FIRE_WALK_LEFT; 
+		if (marioStateShootFire) ani = 92;
+		else if (isTurn && !isRunning) ani = 71;
+		else if (isJump == 1 ) ani = 31;
+		else if (isKick) ani = 39;
+		else if (marioStateMaxPower) ani = 80;
+		else if(isRunning) ani = 23;
+		else if (marioStateTorToiSeShell) ani = 61;
+		else ani = 15; 
 	}
-	
 	return ani;
 }
+
 
 int CMario::GetBBoxWidthMario()
 {
@@ -1106,6 +1135,20 @@ void CMario::handlerMarioUpPipe()
 	{
 		marioStatePipeUp = false;
 		SetState(STATE_MARIO_IDLE);
+	}
+}
+
+void CMario::handlerMarioShootFire()
+{
+	if (GetTickCount64() - timeMarioShootFire < MARIO_TIME_SHOOT_FIRE)
+	{
+		if (nx > 0) SetState(STATE_MARIO_SHOOT_FIRE_BULLET_RIGHT);
+		else SetState(STATE_MARIO_SHOOT_FIRE_BULLET_LEFT);
+	}
+	else
+	{
+		marioStateShootFire = false;
+		CreateFireBullet(NULL);
 	}
 }
 
@@ -1421,3 +1464,41 @@ void CMario::upLevelMario()
 	}
 }
 
+
+void CMario::ShootFireBullet()
+{
+	for (int i = 0; i < FIRE_BULLET_AMOUNT; i++)
+	{
+		if (fireBullet[i]->GetState() != FIRE_BULLET_SHOOTED_RIGHT_STATE &&
+			fireBullet[i]->GetState() != FIRE_BULLET_SHOOTED_LEFT_STATE)
+		{
+			if (nx > 0)
+			{
+				fireBullet[i]->SetPosition(x + 14, y);
+				fireBullet[i]->SetState(FIRE_BULLET_SHOOTED_RIGHT_STATE);
+			}
+			else
+			{
+				fireBullet[i]->SetPosition(x, y);
+				fireBullet[i]->SetState(FIRE_BULLET_SHOOTED_LEFT_STATE);
+			}
+			break;
+		}
+	}
+}
+
+void CMario::CreateFireBullet(CGameObject* fire)
+{
+	for (int i = 0; i < FIRE_BULLET_AMOUNT; i++)
+	{
+		if (fireBullet[i] == NULL)
+		{
+			fireBullet[i] = fire;
+			break;
+		}
+		else if (fireBullet[i]->GetState() == FIRE_BULLET_DESTROY_STATE)
+		{
+			fireBullet[i]->SetState(FIRE_BULLET_TRANSPARENT_STATE);
+		}
+	}
+}
