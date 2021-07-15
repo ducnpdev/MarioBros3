@@ -20,7 +20,7 @@
 
 [MAPBACKGROUND]
 # idtexture columnMap rowMap columnTileSet rowTileSet maxTileSet pathfile
-30000	88	22	12	21	243	textures\tilemap\map1.txt
+30000	88	22	12	21	243	textures\tilemap\map1.txt	1
 
 [SPRITES]
 # SMALL MARIO 
@@ -1197,7 +1197,7 @@
 999	999
 
 [OBJECTS]
-0	100.0	300.0	1
+0	500.0	300.0	1
 
 # CLASS HUB
 # number

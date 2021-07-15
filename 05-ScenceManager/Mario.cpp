@@ -39,11 +39,12 @@ CMario::CMario(float x, float y)
 	this->y = y; 
 	marioStateDie = false;
 	timeMarioDead = 0;
+	timeMarioShootFire = 0;
 }
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	// DebugOut(L"x %f", x);
+
 	CGameObject::Update(dt);
 	if (!marioStateDie) vy += 0.0005*dt;
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -218,7 +219,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (dynamic_cast<CCoin*>(e->obj)) // if e->obj is Koopa
 			{
-				// DebugOut(L"marrio collision CCoin \n");
 				CCoin* coin = dynamic_cast<CCoin*>(e->obj);
 				if (coin->GetState() == COIN_STATE_NORMAL)
 				{
@@ -884,13 +884,20 @@ int CMario::RenderLevelMarioFire() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if (marioStateShootFire) ani = 91;
+			if (marioStateShootFire) {
+				//DebugOut(L"sssssssss shoot \n");
+				ani = 91;
+			}
 			else if (isStateSitDown) ani = 89;
 			else if (isJump == 1) ani = 30;
 			else if (isKick) ani = 38;
 			else if (marioStateTorToiSeShell) ani = 58;
 		//	else if (isJump == 1 || isJump == -1) ani = ANI_MARIO_FIRE_JUMP_RIGHT;
-			else ani = 12;	
+			else { 
+			//	DebugOut(L"sssssssss idle \n");
+
+				ani = 12; 
+			}
 		} 
 		else {
 			if (marioStateShootFire) ani = 92;
@@ -1155,7 +1162,6 @@ void CMario::handlerMarioShootFire()
 void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopas* koopa = dynamic_cast<CKoopas*>(e->obj);
-	// DebugOut(L"Mario collisoin with Koopas \n");
 	if (koopa->GetState() == KOOPAS_STATE_TAKEN) return;
 	if (e->ny > 0) {
 		y = y - MARIO_DEFECT_Y_COLLISION;
@@ -1445,7 +1451,6 @@ void CMario::handleMarioDeadFly()
 		vy = MARIO_SPEED_DEAD;
 	}
 	else {
-		DebugOut(L"accept switch sene \n");
 		 isMarioAcceptSwitchScene = true;
 	}
 }
@@ -1453,10 +1458,8 @@ void CMario::upLevelMario()
 {
 	if (level == LEVEL_MARIO_SMAIL) {
 		SetLevel(LEVEL_MARIO_BIG);
-		// DebugOut(L"update mario level big \n");
 	}
 	else if (level == LEVEL_MARIO_BIG) {
-		// DebugOut(L"update mario level tail \n");
 		SetLevel(LEVEL_MARIO_TAIL);
 	}
 	else if (level == LEVEL_MARIO_BIG) {

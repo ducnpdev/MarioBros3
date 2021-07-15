@@ -300,8 +300,8 @@ void CPlayScene::_ParseSection_MAPBACKGROUND(string line) {
 	int totalColumnsMap = atoi(tokens[4].c_str());
 	int totalTiles = atoi(tokens[5].c_str());
 	wstring file_path = ToWSTR(tokens[6]);
-	DebugOut(L"scene id %d \n",id);
-	mapBackground = new CMap(idTileSet, totalRowsTileSet, totalColumnsTileSet, totalRowsMap, totalColumnsMap, totalTiles);
+	int indexTileMap = atoi(tokens[7].c_str());
+	mapBackground = new CMap(idTileSet, totalRowsTileSet, totalColumnsTileSet, totalRowsMap, totalColumnsMap, totalTiles, indexTileMap);
 	mapBackground->LoadResourceTilesMap(file_path.c_str());
 	mapBackground->LoadTilesSet(id);
 }
@@ -571,7 +571,8 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		if (mario->GetMarioLevel() == LEVEL_MARIO_FIRE 
 			&& !mario->GetMarioShootFire())
 		{
-			mario->SetMarioShootFire((DWORD)GetTickCount64());
+			// mario->SetMarioShootFire((DWORD)GetTickCount64());
+			mario->SetMarioShootFireStart(GetTickCount64());
 			mario->ShootFireBullet();
 			if (mario->nx > 0)
 				mario->SetState(STATE_MARIO_SHOOT_FIRE_BULLET_RIGHT);

@@ -45,15 +45,17 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt, coObjects);
 	if (state != KOOPAS_STATE_TAKEN)  vy += KOOPA_GRAVITY * dt;
 	handlerDeflect();
-	// koopa chuẩn bị hồi sinh
-	if (stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > 5000 && GetTickCount64() - timeStateTorToiSeShell < 7000)  {
-		SetState(KOOPAS_STATE_REBORN);
-	}
-	// hồi sinh qua trạng thái ban đầu
-	else if(stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > 7000) {
-		SetPosition(x, y - 10);
-		SetState(KOOPAS_STATE_WALKING_RIGHT);
-	}
+	handleReborn();
+	//// koopa chuẩn bị hồi sinh
+	//if (stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > KOOPA_TIME_REBORN_START 
+	//	&& GetTickCount64() - timeStateTorToiSeShell < KOOPA_TIME_REBORN_END) {
+	//	SetState(KOOPAS_STATE_REBORN);
+	//}
+	//// hồi sinh qua trạng thái ban đầu
+	//else if(stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > KOOPA_TIME_REBORN_END) {
+	//	SetPosition(x, y - 10);
+	//	SetState(KOOPAS_STATE_WALKING_RIGHT);
+	//}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -76,7 +78,6 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		y += min_ty * dy + ny * 0.35f;
 
 		if (ny != 0) vy = 0;
-		
 
 		for (UINT i = 0; i < coEventsResult.size(); i++) {
 			LPCOLLISIONEVENT e = coEventsResult[i];
@@ -87,35 +88,19 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CColorBrick*>(e->obj)) {
 				if (e->nx != 0) {
-				//	DebugOut(L"koopas collision color brick \n");
 				}
 				else {
-
 				}
 			}
 
 			if (dynamic_cast<CRoad*>(e->obj)) {
 				if (e->nx != 0) {
-				//	DebugOut(L"koopas collision CRoad \n");
 				}
 				else if (e->ny < 0){
-					DebugOut(L"ny < 0 koopas collision CRoad \n");
 				}
 			}
 
-
-
-		/*if (dynamic_cast<CWoodBlock*>(e->obj))
-			{
-				DebugOut(L"Koopas collision wood \n");
-				CWoodBlock* woodBlock = dynamic_cast<CWoodBlock*>(e->obj);
-				if (e->nx != 0) {
-					vx = -1 * vx;
-					woodBlock->vx = -1 * woodBlock->vx;
-				}
-		}*/
 			if (dynamic_cast<CKoopas*>(e->obj)) {
-				DebugOut(L"collision other koopas");
 				if (e->nx != 0) {
 					SetState(KOOPAS_STATE_DIE);
 				}
@@ -261,12 +246,12 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_TORTOISESHELL_DOWN:
 		vx = 0;
 		vy = 0;
-		timeStateTorToiSeShell = GetTickCount64();
+		if (!stateKoopaTortoiSeShell) timeStateTorToiSeShell = GetTickCount64();
 		stateKoopaTortoiSeShell = true;
 		isDown = true;
 		break;
 	case KOOPAS_STATE_TORTOISESHELL_UP:
-		timeStateTorToiSeShell = GetTickCount64();
+		if (!stateKoopaTortoiSeShell) timeStateTorToiSeShell = GetTickCount64();
 		stateKoopaTortoiSeShell = true;
 		isDown = false;
 		vx = 0;
@@ -309,7 +294,7 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_TAKEN:
 		vx = 0;
 		vy = 0;
-		stateKoopaTortoiSeShell = false;
+		stateKoopaTortoiSeShell = false;	
 		break;
 	
 	}
@@ -406,6 +391,30 @@ void CKoopas::handlerDeflect()
 		else {
 			vx = -0.1f;
 		}
+	}
+}
+
+void CKoopas::handleReborn()
+{
+	if (stateKoopaTortoiSeShell) {
+		DebugOut(L"true true true \n");
+	}
+
+	if (!stateKoopaTortoiSeShell) {
+		DebugOut(L"false false  false \n");
+	}
+	// koopa chuẩn bị hồi sinh
+	if (stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > KOOPA_TIME_REBORN_START
+		&& GetTickCount64() - timeStateTorToiSeShell < KOOPA_TIME_REBORN_END) {
+		SetState(KOOPAS_STATE_REBORN);
+		DebugOut(L"KOOPAS_STATE_REBORN start \n");
+	}
+	// hồi sinh qua trạng thái ban đầu
+	else if (stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > KOOPA_TIME_REBORN_END) {
+		SetPosition(x, y - 15);
+		SetState(KOOPAS_STATE_WALKING_RIGHT);
+		DebugOut(L"KOOPAS_STATE_REBORN end \n");
+
 	}
 }
 

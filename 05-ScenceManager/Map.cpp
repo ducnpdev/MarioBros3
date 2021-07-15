@@ -7,7 +7,7 @@
 #define TILESET16 16
 
 
-CMap::CMap(int idTture, int colMap, int rMap, int colTileSet, int rTileSet, int maxTSet)
+CMap::CMap(int idTture, int colMap, int rMap, int colTileSet, int rTileSet, int maxTSet, int indexTile)
 {
 	this->idTextureOfMap = CTextures::GetInstance()->Get(idTture);
 	this->columnMap = colMap;
@@ -15,6 +15,7 @@ CMap::CMap(int idTture, int colMap, int rMap, int colTileSet, int rTileSet, int 
 	this->columnTileSet = colTileSet;
 	this->rowTileSet = rTileSet;
 	this->maxTileSet = maxTSet;
+	this->indexTileMap = indexTile;
 }
 
 CMap::~CMap()
@@ -24,34 +25,41 @@ CMap::~CMap()
 void CMap::RenderMap(int sceneID)
 {
 	int tile = TILESET;
-
-	switch (sceneID)
-	{
-	case 1:
-		for (int rowMapIndex = 0; rowMapIndex < rowMap; rowMapIndex++) {
-			for (int columnMapIndex = 0; columnMapIndex < columnMap; columnMapIndex++)
-			{
-				float drawX = columnMapIndex * tile;
-				float drawY = rowMapIndex * tile;
-				spritesTiles[TiledMap[rowMapIndex][columnMapIndex] - 1]->Draw((float)drawX, (float)drawY, 255); //(x,y,alpha)
-			}
+	for (int rowMapIndex = 0; rowMapIndex < rowMap; rowMapIndex++) {
+		for (int columnMapIndex = 0; columnMapIndex < columnMap; columnMapIndex++)
+		{
+			float drawX = columnMapIndex * tile;
+			float drawY = rowMapIndex * tile;
+			spritesTiles[TiledMap[rowMapIndex][columnMapIndex] - indexTileMap]->Draw((float)drawX, (float)drawY, 255); //(x,y,alpha)
 		}
-		break;
-	case 3: {
-		int ite = 1;
-		for (int rowMapIndex = 0; rowMapIndex < rowMap; rowMapIndex++) {
-			for (int columnMapIndex = 0; columnMapIndex < columnMap; columnMapIndex++)
-			{
-				float drawX = columnMapIndex * tile;
-				float drawY = rowMapIndex * tile;
-				spritesTiles[TiledMap[rowMapIndex][columnMapIndex]]->Draw((float)drawX, (float)drawY, 255); //(x,y,alpha)
-			}
-		}
-		break;
 	}
-	default:
-		break;
-	}
+	//switch (sceneID)
+	//{
+	//case 1:
+	//	for (int rowMapIndex = 0; rowMapIndex < rowMap; rowMapIndex++) {
+	//		for (int columnMapIndex = 0; columnMapIndex < columnMap; columnMapIndex++)
+	//		{
+	//			float drawX = columnMapIndex * tile;
+	//			float drawY = rowMapIndex * tile;
+	//			spritesTiles[TiledMap[rowMapIndex][columnMapIndex] - 1]->Draw((float)drawX, (float)drawY, 255); //(x,y,alpha)
+	//		}
+	//	}
+	//	break;
+	//case 3: {
+	//	
+	//	for (int rowMapIndex = 0; rowMapIndex < rowMap; rowMapIndex++) {
+	//		for (int columnMapIndex = 0; columnMapIndex < columnMap; columnMapIndex++)
+	//		{
+	//			float drawX = columnMapIndex * tile;
+	//			float drawY = rowMapIndex * tile;
+	//			spritesTiles[TiledMap[rowMapIndex][columnMapIndex]-0]->Draw((float)drawX, (float)drawY, 255); //(x,y,alpha)
+	//		}
+	//	}
+	//	break;
+	//}
+	//default:
+	//	break;
+	//}
 	
 }
 void CMap::LoadResourceTilesMap(LPCWSTR pathFileTileMap)

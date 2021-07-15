@@ -15,8 +15,9 @@ class CMap {
 	LPDIRECT3DTEXTURE9 idTextureOfMap; 
 	vector<LPSPRITE> spritesTiles;
 	int maxTileSet;
+	int indexTileMap; 
 public:
-	CMap(int idtextture, int columnMap, int rowMap, int columnTileSet, int rowTileSet, int maxTileSet);
+	CMap(int idtextture, int columnMap, int rowMap, int columnTileSet, int rowTileSet, int maxTileSet,int indexTile);
 	~CMap();
 	void RenderMap(int sceneID);
 	void LoadResourceTilesMap(LPCWSTR pathFile); // load index of tileset in texture

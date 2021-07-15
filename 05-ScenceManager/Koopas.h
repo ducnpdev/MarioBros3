@@ -59,6 +59,11 @@
 
 #define PARAKOOPA_COLOR_GREEN						2	
 #define PARAKOOPA_TIME_DEFECT				300
+
+#define KOOPA_TIME_REBORN_START			5000
+#define KOOPA_TIME_REBORN_END			7000
+
+
 // 
 
 class CKoopas : public CCollision
@@ -105,4 +110,5 @@ public:
 
 	bool getIsDown() { return isDown; }
 	void handlerDeflect();
+	void handleReborn();
 };
