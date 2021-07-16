@@ -31,6 +31,7 @@ void CBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+//	DebugOut(L"mario with brick \n");
 	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetMarioIsFight() && state == BRICK_STATE_NORMAL)
 	{

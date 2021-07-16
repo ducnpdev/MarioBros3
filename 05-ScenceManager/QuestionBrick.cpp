@@ -121,7 +121,6 @@ void CQuestionBrick::SetItemWhenCollision(int state)
 	for (int i = 0; i < NUMBER_ITEM_IN_BRICK; i++)
 	{
 		if (itemInBrick[i] != NULL ) {
-		//	DebugOut(L"SetItemWhenCollision \n");
 			if (itemInBrick[i]->GetState() == LEAF_STATE_HIDEN &&  dynamic_cast<CLeaf*>(itemInBrick[i])) {
 			//	DebugOut(L"Question brick is Cleaf");
 				itemInBrick[i]->SetState(LEAF_STATE_FLY);
@@ -129,7 +128,6 @@ void CQuestionBrick::SetItemWhenCollision(int state)
 				break;
 			}
 			if (itemInBrick[i]->GetState() == MUSHROOM_STATE_HIDEN && dynamic_cast<CMushroom*>(itemInBrick[i])) {
-			//	DebugOut(L"Question brick is CMushroom");
 				itemInBrick[i]->SetPosition(x, y - 16);
 				itemInBrick[i]->SetState(MUSHROOM_STATE_MOVING);
 				itemInBrick[i] = NULL;

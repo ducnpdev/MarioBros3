@@ -30,7 +30,7 @@
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_FIRE;
+	level = LEVEL_MARIO_TAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 	start_x = x; 
@@ -263,7 +263,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						switchs->SetState(SWITCH_STATE_ACTIVE);
 						switchs->SetPosition(switchs->x, switchs->y + 9);
 						switchs->SetSwitch();
-						// switchs->SetSwitchTime((DWORD)GetTickCount64());
+						switchs->SetSwitchTime((DWORD)GetTickCount64());
 					}
 				}
 			}

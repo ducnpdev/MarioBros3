@@ -1,4 +1,5 @@
 #include "Switch.h"
+#include "ItemCoin.h"
 
 CSwitch::CSwitch(CBrick* b[SWITCH_BRICK_AMOUNT])
 {
@@ -33,10 +34,10 @@ void CSwitch::ResetItem()
 {
 	for (int i = 0; i < SWITCH_BRICK_AMOUNT - 1; i++)
 	{
-		if (brick[i]->GetItem()->GetState() == 2)
+		if (brick[i]->GetItem()->GetState() == COIN_STATE_NORMAL)
 		{
-			// brick[i]->SetState(0);
-			// brick[i]->GetItem()->SetState(0);
+			brick[i]->SetState(BRICK_STATE_NORMAL);
+			brick[i]->GetItem()->SetState(COIN_STATE_HIDEN);
 		}
 	}
 }
@@ -54,8 +55,10 @@ void CSwitch::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
 	if (state == SWITCH_STATE_ACTIVE)
 	{
-		if (GetTickCount64() - switch_time > SWICH_RESET_TIME)
+		if (GetTickCount64() - switch_time > SWICH_RESET_TIME) {
+		
 			ResetItem();
+		}
 	}
 }
 

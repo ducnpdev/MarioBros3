@@ -3,9 +3,10 @@
 #include "Pipe.h"
 #include "Road.h"
 
-CMushroom::CMushroom(int _state)
+CMushroom::CMushroom(int _state, int _type)
 {
 	SetState(MUSHROOM_STATE_HIDEN);
+	typeMushroom = _type;
 }
 
 
@@ -14,23 +15,41 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	 if (state == MUSHROOM_STATE_HIDEN) {
 		 return;
 	 } 
+	// DebugOut(L"Mushtoom haha %d \n", state );
 	CGameObject::Update(dt, coObjects);
-
-	if (state == MUSHROOM_STATE_MOVING)
-	{
-		if (GetTickCount64() - timeStateMovingMushroom < MUSHROOM_TIME_NORMAL)
+	if (typeMushroom == 0) {
+		if (state == MUSHROOM_STATE_MOVING)
 		{
-			if (GetTickCount64() - timeStateMovingMushroom > MUSHROOM_TIME_START_MOVING)
+			if (GetTickCount64() - timeStateMovingMushroom < MUSHROOM_TIME_NORMAL)
 			{
-				// hiden_state = 0;
-				vy = -MUSHROOM_SPEED_Y;
-				y += dy;
+				if (GetTickCount64() - timeStateMovingMushroom > MUSHROOM_TIME_START_MOVING)
+				{
+					// hiden_state = 0;
+					vy = -MUSHROOM_SPEED_Y;
+					y += dy;
+				}
 			}
+			else SetState(MUSHROOM_STATE_NORMAL);
 		}
-		else SetState(MUSHROOM_STATE_NORMAL);
 	}
 
-	if (state == MUSHROOM_STATE_NORMAL) {
+	if (typeMushroom == 1) {
+		if (state == MUSHROOM_STATE_MOVING)
+		{
+			if (GetTickCount64() - timeStateMovingMushroom < MUSHROOM_TIME_NORMAL)
+			{
+				if (GetTickCount64() - timeStateMovingMushroom > MUSHROOM_TIME_START_MOVING)
+				{
+					// hiden_state = 0;
+					vy = -MUSHROOM_SPEED_Y;
+					y += dy;
+				}
+			}
+			else SetState(MUSHROOM_STATE_NOT_SPEED_X);
+		}
+	}
+
+	if (state == MUSHROOM_STATE_NORMAL || state == MUSHROOM_STATE_NOT_SPEED_X) {
 		vy += 0.00069f * dt;
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
@@ -42,7 +61,6 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			x += dx;
 			y += dy;
-
 		}
 		else
 		{
@@ -92,6 +110,10 @@ void CMushroom::SetState(int state)
 	case MUSHROOM_STATE_NORMAL:
 		stateMovingMushroom = false;
 		vx = -0.05f;
+		break;
+	case MUSHROOM_STATE_NOT_SPEED_X:
+		stateMovingMushroom = false;
+		vx = 0;
 		break;
 	default:
 		break;

@@ -298,13 +298,15 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 		}
 		break;
 	case 188:
-		obj = new CMushroom(state);
+		obj = new CMushroom(state,0);
 		if (mushroomOfBrick == NULL) {
 			mushroomOfBrick = (CMushroom*)obj;
 		}
 		break;
 	case OBJECT_TYPE_MUSHROOM: {
-		obj = new CMushroom(state);
+		int type = atoi(tokens[7].c_str());
+
+		obj = new CMushroom(state, type);
 		for (int i = 0; i < 10; i++)
 		{
 			if (listItemQuestionBrick[i] == NULL)

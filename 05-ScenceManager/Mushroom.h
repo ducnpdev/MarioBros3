@@ -12,6 +12,7 @@
 #define MUSHROOM_STATE_HIDEN	100
 #define MUSHROOM_STATE_MOVING		200
 #define MUSHROOM_STATE_NORMAL	300
+#define MUSHROOM_STATE_NOT_SPEED_X	400
 
 #define MUSHROOM_EFFECT_TIME		1010
 #define MUSHROOM_EFFECT_MOVE_TIME	200
@@ -27,8 +28,10 @@ class CMushroom : public CCollision
 {
 	bool stateMovingMushroom = false;
 	DWORD timeStateMovingMushroom;
+	int typeMushroom;
 public:
-	CMushroom(int _state);
+
+	CMushroom(int _state,  int _type);
 	void SetState(int state);
 	bool MushroomMoving() { return stateMovingMushroom; }
 	virtual void Render();
