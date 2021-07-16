@@ -62,6 +62,8 @@
 
 #define KOOPA_TIME_REBORN_START			5000
 #define KOOPA_TIME_REBORN_END			7000
+#define KOOPA_TIME_BORN_DONE			7200
+#define KOOPA_SUB_Y_POSITION			10
 
 
 // 
@@ -95,6 +97,7 @@ class CKoopas : public CCollision
 	bool isDown = true;
 	int stateDeflect = false; // after colission with tail
 	DWORD timeStartDeflect;
+	DWORD timeNotEffect;
 
 public:
 	CKoopas(int typeKoopa);
@@ -111,4 +114,7 @@ public:
 	bool getIsDown() { return isDown; }
 	void handlerDeflect();
 	void handleReborn();
+
+	DWORD GetNotEffectReborn() { return timeNotEffect; }
+	void SetNotEffectReborn(DWORD time) { timeNotEffect = time; }
 };

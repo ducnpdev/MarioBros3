@@ -480,6 +480,7 @@ void CMario::SetState(int state)
 		marioStateDie = true;
 		timeMarioDead = GetTickCount64();
 		marioStateTorToiSeShell = false;
+		tortoiseshell == NULL;
 	//	vy = -SPEED_MARIO_DIE_DEFLECT;
 		break;
 	case STATE_MARIO_TORTOISESHELL_RIGHT:
@@ -994,6 +995,7 @@ void CMario::handleMarioTorToiSeShell()
 		plustortoiseshellInMario(MARIO_TORTOISESHELL_PLUS_10, MARIO_TORTOISESHELL_PLUS_15);
 		break;
 	case LEVEL_MARIO_FIRE:
+		plustortoiseshellInMario(MARIO_TORTOISESHELL_PLUS_10, MARIO_TORTOISESHELL_PLUS_10);
 		break;
 	}
 }

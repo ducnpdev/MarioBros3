@@ -119,6 +119,8 @@ public:
 	CListArrow* GetListArrow() { return listArrow; }
 
 
+	void MarioSetTortoiseshell(CGameObject* _tortoiseshell) { tortoiseshell = _tortoiseshell; };
+
 	// Function Get - Set
 	void SetCards(CCard* c[MaxShowCards]) {
 		for (int i = 0; i < MaxShowCards; i++)

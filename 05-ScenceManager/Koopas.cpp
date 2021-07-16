@@ -17,6 +17,7 @@ CKoopas::CKoopas(int type)
 {
 	SetState(KOOPAS_STATE_WALKING_LEFT);
 	SetTypeKoopa(type);
+	timeNotEffect;
 	if (typeKoopa == PARAKOOPA_COLOR_GREEN)	nx = -1;
 	
 }
@@ -26,8 +27,7 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 	left = x;
 	top = y;
 	if (isKoopaDie) return;
-	right = x + KOOPAS_BBOX_WIDTH;
-	bottom = y + KOOPAS_BBOX_HEIGHT;
+	
 	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN || state == KOOPAS_STATE_TORTOISESHELL_UP || state == KOOPAS_STATE_REBORN) {
 		right = x + KOOPAS_BBOX_WIDTH_MEDIUM;
 		bottom = y + 16;
@@ -36,6 +36,10 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 		right = x + KOOPAS_BBOX_WIDTH_MIN;
 		bottom = y + 16;
 	}
+	else {
+		right = x + KOOPAS_BBOX_WIDTH;
+		bottom = y + KOOPAS_BBOX_HEIGHT;
+	}
 }
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -43,19 +47,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// DebugOut(L" state of koopas %d \n", state);
 	if (hidenStateKoopas) return;
 	CGameObject::Update(dt, coObjects);
-	if (state != KOOPAS_STATE_TAKEN)  vy += KOOPA_GRAVITY * dt;
+	if (state != KOOPAS_STATE_TAKEN )  vy += KOOPA_GRAVITY * dt;
 	handlerDeflect();
 	handleReborn();
 	//// koopa chuẩn bị hồi sinh
-	//if (stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > KOOPA_TIME_REBORN_START 
-	//	&& GetTickCount64() - timeStateTorToiSeShell < KOOPA_TIME_REBORN_END) {
-	//	SetState(KOOPAS_STATE_REBORN);
-	//}
-	//// hồi sinh qua trạng thái ban đầu
-	//else if(stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > KOOPA_TIME_REBORN_END) {
-	//	SetPosition(x, y - 10);
-	//	SetState(KOOPAS_STATE_WALKING_RIGHT);
-	//}
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -104,6 +99,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->nx != 0) {
 					SetState(KOOPAS_STATE_DIE);
 				}
+			}
+
+			if (dynamic_cast<CGoomba*>(e->obj)) {
+				DebugOut(L"Koopas collision goomba \n");
 			}
 
 			if (dynamic_cast<CBoomerangBro*>(e->obj))
@@ -268,6 +267,8 @@ void CKoopas::SetState(int state)
 		stateKoopaTortoiSeShell = false;
 		vx = KOOPAS_WALKING_SPEED;
 		nx = 1;
+		if (GetTickCount64() - timeStateTorToiSeShell > KOOPA_TIME_REBORN_END &&
+			GetTickCount64() - timeStateTorToiSeShell < KOOPA_TIME_BORN_DONE) y = y - KOOPA_SUB_Y_POSITION;
 		break;
 	case KOOPAS_STATE_WALKING_LEFT:
 		nx = -1;
@@ -294,7 +295,7 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_TAKEN:
 		vx = 0;
 		vy = 0;
-		stateKoopaTortoiSeShell = false;	
+		// stateKoopaTortoiSeShell = false;	
 		break;
 	
 	}
@@ -396,25 +397,34 @@ void CKoopas::handlerDeflect()
 
 void CKoopas::handleReborn()
 {
+	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
 	if (stateKoopaTortoiSeShell) {
-		DebugOut(L"true true true \n");
 	}
 
 	if (!stateKoopaTortoiSeShell) {
-		DebugOut(L"false false  false \n");
 	}
 	// koopa chuẩn bị hồi sinh
 	if (stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > KOOPA_TIME_REBORN_START
 		&& GetTickCount64() - timeStateTorToiSeShell < KOOPA_TIME_REBORN_END) {
 		SetState(KOOPAS_STATE_REBORN);
-		DebugOut(L"KOOPAS_STATE_REBORN start \n");
 	}
+
 	// hồi sinh qua trạng thái ban đầu
 	else if (stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > KOOPA_TIME_REBORN_END) {
-		SetPosition(x, y - 15);
+		timeNotEffect = GetTickCount64();
+		mario->SetState(STATE_MARIO_IDLE);
+		mario->SetMarioIsTortoiseshell(false);
+		mario->MarioSetTortoiseshell(NULL);
+		if (mario->GetMarioLevel() == LEVEL_MARIO_SMAIL) {
+			mario->SetState(STATE_MARIO_DIE);
+		}
+		else {
+			mario->SetMarioLevel(mario->GetMarioLevel() - 1);
+			mario->StartUntouchable();
+		}
 		SetState(KOOPAS_STATE_WALKING_RIGHT);
-		DebugOut(L"KOOPAS_STATE_REBORN end \n");
-
+	
 	}
 }
 
