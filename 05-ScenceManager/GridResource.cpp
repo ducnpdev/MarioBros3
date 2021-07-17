@@ -276,9 +276,9 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 				if (listItemQuestionBrick[i] == NULL) {
 					listItemQuestionBrick[i] = (CCoin*)(obj);
 					// item_object số lượng item trong 1 question brick
-					//for (int j = 0; j < item_object; j++) {
+					for (int j = 0; j < item_object; j++) {
 						questionBrick[i]->PushItemQuestionBrick(listItemQuestionBrick[i], item_object);
-					//}
+					}
 					break;
 				}
 			}

@@ -568,6 +568,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			mario->SetTimeIsFight(GetTickCount64());
 			mario->SetMarioIsFight(STATE_MARIO_FIGHT);
 		}
+	
 		if (mario->GetMarioLevel() == LEVEL_MARIO_FIRE 
 			&& !mario->GetMarioShootFire())
 		{

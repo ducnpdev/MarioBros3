@@ -21,6 +21,9 @@ void CQuestionBrick::Render()
 	if (state == QUESTIONBLOCK_ITEM_STATE) {
 		ani =  QUESTION_BRICK_ANI_MOVING;
 	}
+	/*else if (state == QUESTIONBLOCK_NORMAL_STATE) {
+		ani = QUESTION_BRICK_ANI_MOVING;
+	}*/
 	else {
 		 ani = QUESTION_BRICK_ANI_CRETE;
 	}

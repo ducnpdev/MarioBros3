@@ -33,33 +33,6 @@ void CMap::RenderMap(int sceneID)
 			spritesTiles[TiledMap[rowMapIndex][columnMapIndex] - indexTileMap]->Draw((float)drawX, (float)drawY, 255); //(x,y,alpha)
 		}
 	}
-	//switch (sceneID)
-	//{
-	//case 1:
-	//	for (int rowMapIndex = 0; rowMapIndex < rowMap; rowMapIndex++) {
-	//		for (int columnMapIndex = 0; columnMapIndex < columnMap; columnMapIndex++)
-	//		{
-	//			float drawX = columnMapIndex * tile;
-	//			float drawY = rowMapIndex * tile;
-	//			spritesTiles[TiledMap[rowMapIndex][columnMapIndex] - 1]->Draw((float)drawX, (float)drawY, 255); //(x,y,alpha)
-	//		}
-	//	}
-	//	break;
-	//case 3: {
-	//	
-	//	for (int rowMapIndex = 0; rowMapIndex < rowMap; rowMapIndex++) {
-	//		for (int columnMapIndex = 0; columnMapIndex < columnMap; columnMapIndex++)
-	//		{
-	//			float drawX = columnMapIndex * tile;
-	//			float drawY = rowMapIndex * tile;
-	//			spritesTiles[TiledMap[rowMapIndex][columnMapIndex]-0]->Draw((float)drawX, (float)drawY, 255); //(x,y,alpha)
-	//		}
-	//	}
-	//	break;
-	//}
-	//default:
-	//	break;
-	//}
 	
 }
 void CMap::LoadResourceTilesMap(LPCWSTR pathFileTileMap)
