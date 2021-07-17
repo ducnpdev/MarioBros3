@@ -26,7 +26,7 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 {
 	left = x;
 	top = y;
-	if (isKoopaDie) return;
+	if (isKoopaDie || state == KOOPAS_STATE_HIDEN) return;
 	
 	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN || state == KOOPAS_STATE_TORTOISESHELL_UP || state == KOOPAS_STATE_REBORN) {
 		right = x + KOOPAS_BBOX_WIDTH_MEDIUM;
@@ -217,7 +217,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CKoopas::Render()
 {
-	if (hidenStateKoopas) return;
+	if (hidenStateKoopas || state == KOOPAS_STATE_HIDEN) return;
 
 	switch (typeKoopa)
 	{

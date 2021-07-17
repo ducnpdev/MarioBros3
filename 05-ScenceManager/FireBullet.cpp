@@ -5,6 +5,8 @@
 #include "Road.h"
 #include "FirePiranhaPlant.h"
 #include "PiranhaPlant.h"
+#include "Koopas.h"
+#include "Goomba.h"
 
 CFireBullet::CFireBullet()
 {
@@ -89,6 +91,18 @@ void CFireBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						SetState(FIRE_BULLET_DESTROY_STATE);
 					}
 				}
+				if (dynamic_cast<CGoomba*>(e->obj)) {
+					CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+					destroyStart = (DWORD)GetTickCount64();
+					SetState(FIRE_BULLET_DESTROY_STATE);
+					goomba->SetState(500);
+				}
+				if (dynamic_cast<CKoopas*>(e->obj)) {
+					CKoopas* koopa = dynamic_cast<CKoopas*>(e->obj);
+					destroyStart = (DWORD)GetTickCount64();
+					SetState(FIRE_BULLET_DESTROY_STATE);
+					koopa->SetState(KOOPAS_STATE_HIDEN);
+				}
 			}
 
 		}
@@ -113,8 +127,8 @@ void CFireBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CFireBullet::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-		l = x;
-		t = y;
+	l = x;
+	t = y;
 	if (state == FIRE_BULLET_DESTROY_STATE)
 	{
 		r = 0;

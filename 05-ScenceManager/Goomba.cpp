@@ -23,6 +23,8 @@ CGoomba::CGoomba(int typeColor)
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (state == GOOMBA_STATE_HIDEN) return;
+
 	CGameObject::Update(dt, coObjects);
 	if (GetState() != GOOMBA_STATE_DIE && !isVisibleGoomba) {
 		vy += GOOMBA_GRAVITY * dt;
@@ -157,6 +159,8 @@ void CGoomba::handleGoombaJumpInterval()
 
 void CGoomba::Render()
 {
+	if (state == GOOMBA_STATE_HIDEN) return;
+
 	int ani = GOOMBA_ANI_YELLOW_WALKING;
 	if (typeColorGoomba == GOOMBA_YELLOW_COLOR) {
 		if (state == GOOMBA_STATE_DIE) {
@@ -184,6 +188,7 @@ void CGoomba::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
+	case GOOMBA_STATE_HIDEN: break;
 	case GOOMBA_STATE_WALKING:
 		goomStateJump = false;
 		// vx = -GOOMBA_WALKING_SPEED;
@@ -211,6 +216,7 @@ void CGoomba::SetState(int state)
 
 void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
+	if (state == GOOMBA_STATE_HIDEN) return;
 	if (state == GOOMBA_STATE_DEFLECT) return;
 	left = x;
 	top = y;

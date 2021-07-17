@@ -280,6 +280,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			if (dynamic_cast<CPipe*>(e->obj)) {
 				CollisionWithPipe(e);
+				isJump = 0;
 			}
 			if (dynamic_cast<CMushroom*>(e->obj))
 			{
