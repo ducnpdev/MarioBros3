@@ -27,7 +27,7 @@
 #define ID_SCENE_MAP_1				1
 #define ID_SCENE_MAP_4				4
 
-#define CAM_1_Y_MIN				100.0f
+#define CAM_1_Y_MIN				80.0f
 #define CAM_1_Y_BETWEEN				130.0f
 
 

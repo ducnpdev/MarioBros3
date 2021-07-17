@@ -79,6 +79,9 @@ class CMario : public  CCollision
 	DWORD timeMarioShootFire;
 	CGameObject* fireBullet[FIRE_BULLET_AMOUNT];
 
+	bool isAcceptFlyCamera = false;
+
+
 public: 
 	
 
@@ -107,6 +110,8 @@ public:
 	int RenderLevelMarioBig();
 	int RenderLevelMarioTail();
 	int RenderLevelMarioFire();
+
+
 
 	bool GetMarioPower(){
 		//TODO word P in hud 
@@ -159,6 +164,10 @@ public:
 
 	bool GetMarioIsStandingFloor() { return isStandingFloor; }
 	void SetMarioIsStandingFloor(bool stading) { isStandingFloor = stading; }
+
+
+	bool GetMarioAcceptFlyCamera() { return isAcceptFlyCamera; }
+	void SetMarioAcceptFlyCamera(bool accpe) { isAcceptFlyCamera = accpe; }
 
 	int GetMarioIsJump() { return isJump; }
 	void SetMarioIsJump(int i) { isJump = i; }

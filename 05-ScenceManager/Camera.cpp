@@ -48,7 +48,7 @@ void CCamera::UpdateCameraScence1() {
 	}
 
 	// mario khi đi đến giữa và ở dưới cống 
-	else if (playerX > (game->GetScreenWidth() / 2) && playerY > UNDERGROUND_Y) {
+	else if (playerX > game->GetScreenWidth() / 2 && playerY > UNDERGROUND_Y) {
 		playerX -= game->GetScreenWidth() / 2;
 		playerY -= game->GetScreenHeight() / 2;
 		CGame::GetInstance()->SetCamPos(round(playerX), CAM_Y_UNDERGROUND);
@@ -56,30 +56,61 @@ void CCamera::UpdateCameraScence1() {
 	}
 
 	// Mario khi đi đến giữa màn hình game
-	else if (playerX > (game->GetScreenWidth()/2)) {
-
-		if (player->GetMarioLevel() == LEVEL_MARIO_TAIL)
+	else if (playerX > game->GetScreenWidth() / 2 ) {
+		float speedX; float speedY;
+		player->GetSpeed(speedX, speedY);
+		if (player->GetMarioLevel() == LEVEL_MARIO_TAIL 
+		//	&& playerY < CAM_1_Y_MIN
+			// && player->GetMarioPower() 
+			&& player->GetMarioAcceptFlyCamera()
+			)
 		{
-			playerX -= game->GetScreenWidth() / 2;
-			playerY -= game->GetScreenHeight() / 2 + CAM_Y_PLUS;
-			if (playerY < CAM_1_Y_MIN) {
+			if (playerY < game->GetScreenHeight() / 2 + 30) {
+				playerX -= game->GetScreenWidth() / 2;
 				SetPositionCamera(round(playerX), 0);
 				CGame::GetInstance()->SetCamPos(round(playerX), 0);
 			}
-			else if (playerY < CAM_1_Y_BETWEEN) {
+			else {
+
+
+			playerX -= game->GetScreenWidth() / 2;
+			playerY -= game->GetScreenHeight() / 2 + CAM_Y_PLUS;
+		/*	if (playerY < CAM_1_Y_MIN) {
+				SetPositionCamera(round(playerX), 0);
+				CGame::GetInstance()->SetCamPos(round(playerX), 0);
+			}*/
+		/*	else if (playerY < CAM_1_Y_BETWEEN) {
+				SetPositionCamera(round(playerX), round(playerY));
+				CGame::GetInstance()->SetCamPos(round(playerX), round(playerY));
+			}*/
+			//else {
+				SetPositionCamera(round(playerX), round(playerY));
+				CGame::GetInstance()->SetCamPos(round(playerX), round(playerY));
+		//	}
+
+			}
+
+		}
+		/*else if (player->GetMarioLevel() == LEVEL_MARIO_TAIL) {
+			if (playerY < game->GetScreenHeight() / 2 + 30) {
+				playerX -= game->GetScreenWidth() / 2;
+				SetPositionCamera(round(playerX), 0);
+				CGame::GetInstance()->SetCamPos(round(playerX), 0);
+			}
+			else {
+				playerX -= game->GetScreenWidth() / 2;
+				playerY -= game->GetScreenHeight() / 2 + CAM_Y_PLUS;
 				SetPositionCamera(round(playerX), round(playerY));
 				CGame::GetInstance()->SetCamPos(round(playerX), round(playerY));
 			}
-			else {
-				SetPositionCamera(round(playerX), round(CAM_Y_MIN));
-				CGame::GetInstance()->SetCamPos(round(playerX), round(CAM_Y_MIN));
-			}
-		}
+		}*/
+
 		else {
 			playerX -= game->GetScreenWidth() / 2;
 			playerY -= game->GetScreenHeight() / 2;
 			// thay đổi round(playerY) thành CAM_Y_MIN là fix cứng cameraY
 			CGame::GetInstance()->SetCamPos(round(playerX), round(CAM_Y_MIN));
+			// SetPositionCamera(round(playerX), round(CAM_Y_MIN));
 			SetPositionCamera(round(playerX), round(CAM_Y_MIN));
 		}
 

@@ -30,7 +30,7 @@
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_BIG;
+	level = LEVEL_MARIO_TAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 	start_x = x; 
@@ -180,8 +180,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					}
 				}
 			}
-
-			if (dynamic_cast<CRoad*>(e->obj) || dynamic_cast<CColorBrick*>(e->obj)) {
+			if (dynamic_cast<CRoad*>(e->obj)) {
+				marioSpeechJump = 0.0f;
+				isJump = 0;
+				vy = 0;
+				marioStateFall = false;
+				SetMarioFallState(false);
+				isAcceptFlyCamera = false;
+				y = y - 0.3;
+			}
+			if ( dynamic_cast<CColorBrick*>(e->obj)) {
 				marioSpeechJump = 0.0f;
 				isJump = 0;
 				vy = 0;
@@ -1438,8 +1446,10 @@ void CMario::handleMarioFlyHigh()
 	
 	if (GetTickCount64() - timeMarioFlyHigh < MARIO_FLY_HIGH_TIME)
 	{
+		DebugOut(L"111111111111 \n");
 		if (nx > 0) SetState(STATE_MARIO_FLYING_HIGH_RIGHT);
 		else SetState(STATE_MARIO_FLYING_HIGH_LEFT);
+		isAcceptFlyCamera = true;
 	}
 	else marioStateFlyHigh = 0;
 }
