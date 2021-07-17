@@ -101,7 +101,7 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			break;
 		}
 		case OBJECT_TYPE_WOOD_BLOCK: 
-			obj = new CWoodBlock(0, NULL, NULL);
+			obj = new CWoodBlock(0, NULL, NULL, x);
 			break;
 		case OBJECT_TYPE_BRICK_MANY_WALL: {
 			obj = new CColorBrick(); 
@@ -236,7 +236,7 @@ void CGridResource::_ParseSection_ITEMS_BRICK(string line) {
 		break;
 		}*/
 	case OBJECT_TYPE_WOOD_BLOCK:
-			obj = new CWoodBlock(typeOf, mushroomOfBrick, leafOfBrick);
+			obj = new CWoodBlock(typeOf, mushroomOfBrick, leafOfBrick,x);
 		break;
 	default:
 		return;
@@ -297,7 +297,7 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 			}
 		}
 		break;
-	case 188:
+	case OBJECT_TYPE_MUSHROOM_OF_BRICK:
 		obj = new CMushroom(state,0);
 		if (mushroomOfBrick == NULL) {
 			mushroomOfBrick = (CMushroom*)obj;
@@ -318,7 +318,7 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 		}
 		break;
 	}
-	case 199:
+	case OBJECT_TYPE_LEAF_OF_BRICK:
 		obj = new CLeaf();
 		if (leafOfBrick == NULL) {
 			leafOfBrick = (CLeaf*)obj;

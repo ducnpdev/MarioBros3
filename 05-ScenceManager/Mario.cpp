@@ -1335,6 +1335,15 @@ void CMario::CollisionWithWoodBlock(LPCOLLISIONEVENT e)
 	CWoodBlock* woodBlock = dynamic_cast<CWoodBlock*>(e->obj);
 	if (e->nx != 0 && woodBlock->GetWoodBlockType() == 1) {
 		woodBlock->SetWoodBlockActive(true);
+		float woodBlockX, woodBlockY;
+		woodBlock->GetPosition(woodBlockX, woodBlockY);
+		if (woodBlockX > x) {
+			woodBlock->SetState(WOOD_BLOCK_MOVING_RIGHT);
+		}
+		else {
+			woodBlock->SetState(WOOD_BLOCK_MOVING_LEFT);
+		}
+	
 	}
 }
 
@@ -1444,10 +1453,8 @@ void CMario::handleMarioDead()
 
 void CMario::handleMarioFlyHigh()
 {
-	
 	if (GetTickCount64() - timeMarioFlyHigh < MARIO_FLY_HIGH_TIME)
 	{
-		DebugOut(L"111111111111 \n");
 		if (nx > 0) SetState(STATE_MARIO_FLYING_HIGH_RIGHT);
 		else SetState(STATE_MARIO_FLYING_HIGH_LEFT);
 		isAcceptFlyCamera = true;

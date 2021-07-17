@@ -102,7 +102,6 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 
 			if (dynamic_cast<CGoomba*>(e->obj)) {
-				DebugOut(L"Koopas collision goomba \n");
 			}
 
 			if (dynamic_cast<CBoomerangBro*>(e->obj))
@@ -136,17 +135,17 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						|| dynamic_cast<CBrick*>(e->obj)
 						)
 					{
-						if (e->nx > 0) {
-
+					/*	if (e->nx > 0) {
+							DebugOut(L"11111111 \n");
 							SetState(KOOPAS_STATE_WALKING_RIGHT);
 						}
-						else if (e->nx < 0) SetState(KOOPAS_STATE_WALKING_LEFT);
+						else if (e->nx < 0) {
+							DebugOut(L"222222 \n");
+							SetState(KOOPAS_STATE_WALKING_LEFT);
+						}*/
 					}
 					if (dynamic_cast<CMario*>(e->obj))
 					{
-						/*CMario* mario = dynamic_cast<CMario*>(e->obj);
-						if (mario->GetState() == MARIO_STATE_FIGHT)
-							vy = -KOOPA_JUMP_DEFLECT_SPEED;*/
 					}
 				}
 
@@ -222,18 +221,18 @@ void CKoopas::Render()
 	switch (typeKoopa)
 	{
 	case KOOPA_COLOR_RED:
-		DebugOut(L"111111111 \n");
 		ani = RenderKoopaRed();
 		break;
 	case PARAKOOPA_COLOR_GREEN:
-		DebugOut(L"2222222 \n");
-
 		ani = RenderParakoopaGreen();
 		break;
+	case KOOPA_GREEN_FORM:
+		ani = RenderKoopaGreen();
 	default:
 		ani = RenderKoopaGreen();
 		break;
 	}
+	
 	animation_set->at(ani)->Render(x, y);
 	RenderBoundingBox();
 }
@@ -330,29 +329,52 @@ int CKoopas::RenderKoopaRed()
 
 int CKoopas::RenderKoopaGreen()
 {
-	if (isKoopaDie) ani = 15;
-	/*else if (intro_state && state == KOOPA_STATE_TAKEN || intro_state && state == KOOPA_STATE_TORTOISESHELL_DOWN)
-		ani = KOOPA_ANI_GREEN_TAKEN_DOWN;*/
+	//if (isKoopaDie) ani = 15;
+	///*else if (intro_state && state == KOOPA_STATE_TAKEN || intro_state && state == KOOPA_STATE_TORTOISESHELL_DOWN)
+	//	ani = KOOPA_ANI_GREEN_TAKEN_DOWN;*/
+	//else if (vx < 0 && state != KOOPAS_STATE_SPIN_LEFT && state != KOOPAS_STATE_SPIN_RIGHT)
+	//	ani = KOOPA_ANI_GREEN_WALKING_LEFT;
+	//else if (state == KOOPAS_STATE_REBORN)
+	//	ani = KOOPA_ANI_GREEN_REBORN_DOWN;
+	///*else if (state == KOOPAS_STATE_REBORN && !isDown)
+	//	ani = 19;*/
+	//else if (state == KOOPAS_STATE_TORTOISESHELL_DOWN)
+	//	ani = KOOPA_ANI_GREEN_TORTOISESHELL_DOWN;
+	//else if (state == KOOPAS_STATE_TORTOISESHELL_UP)
+	//	ani = KOOPA_ANI_GREEN_TORTOISESHELL_UP;
+	//else if (state == KOOPAS_STATE_SPIN_LEFT || state == KOOPAS_STATE_SPIN_RIGHT)
+	//	ani = KOOPA_ANI_GREEN_SPIN_DOWN;
+	///*else if (state == KOOPA_STATE_SPIN_LEFT && !isDown || state == KOOPA_STATE_SPIN_RIGHT && !isDown)
+	//	ani = KOOPA_ANI_GREEN_SPIN_UP;
+	//else if (state == KOOPA_STATE_TAKEN && isDown)
+	//	ani = KOOPA_ANI_GREEN_TAKEN_DOWN;
+	//else if (state == KOOPA_STATE_TAKEN && !isDown)
+	//	ani = KOOPA_ANI_GREEN_TAKEN_UP;*/
+	//else ani = KOOPA_ANI_GREEN_WALKING_RIGHT;
+	//return ani;
+
+	if (isKoopaDie) ani = KOOPA_ANI_GREEN_TAKEN_UP;
 	else if (vx < 0 && state != KOOPAS_STATE_SPIN_LEFT && state != KOOPAS_STATE_SPIN_RIGHT)
 		ani = KOOPA_ANI_GREEN_WALKING_LEFT;
-	else if (state == KOOPAS_STATE_REBORN)
+	else if (state == KOOPAS_STATE_REBORN && isDown)
 		ani = KOOPA_ANI_GREEN_REBORN_DOWN;
-	/*else if (state == KOOPAS_STATE_REBORN && !isDown)
-		ani = 19;*/
+	else if (state == KOOPAS_STATE_REBORN && !isDown)
+		ani = KOOPA_ANI_GREEN_REBORN_UP;
 	else if (state == KOOPAS_STATE_TORTOISESHELL_DOWN)
 		ani = KOOPA_ANI_GREEN_TORTOISESHELL_DOWN;
 	else if (state == KOOPAS_STATE_TORTOISESHELL_UP)
 		ani = KOOPA_ANI_GREEN_TORTOISESHELL_UP;
-	else if (state == KOOPAS_STATE_SPIN_LEFT || state == KOOPAS_STATE_SPIN_RIGHT)
+	else if (state == KOOPAS_STATE_SPIN_LEFT && isDown || state == KOOPAS_STATE_SPIN_RIGHT && isDown)
 		ani = KOOPA_ANI_GREEN_SPIN_DOWN;
-	/*else if (state == KOOPA_STATE_SPIN_LEFT && !isDown || state == KOOPA_STATE_SPIN_RIGHT && !isDown)
+	else if (state == KOOPAS_STATE_SPIN_LEFT && !isDown || state == KOOPAS_STATE_SPIN_RIGHT && !isDown)
 		ani = KOOPA_ANI_GREEN_SPIN_UP;
-	else if (state == KOOPA_STATE_TAKEN && isDown)
+	else if (state == KOOPAS_STATE_TAKEN && isDown)
 		ani = KOOPA_ANI_GREEN_TAKEN_DOWN;
-	else if (state == KOOPA_STATE_TAKEN && !isDown)
-		ani = KOOPA_ANI_GREEN_TAKEN_UP;*/
-	else ani = KOOPA_ANI_GREEN_WALKING_RIGHT;
+	else if (state == KOOPAS_STATE_TAKEN && !isDown)
+		ani = KOOPA_ANI_GREEN_TAKEN_UP;
+	else  ani = KOOPA_ANI_GREEN_WALKING_RIGHT;
 	return ani;
+
 }
 
 int CKoopas::RenderParakoopaGreen()
@@ -485,7 +507,6 @@ void CKoopas::RedirectY()
 {
 	if (state == KOOPAS_STATE_WALKING_LEFT || state == KOOPAS_STATE_WALKING_RIGHT)
 	{
-		//DebugOut(L"change direction \n");
 		if (abs(prePosY - y) > 1 && prePosY != 0) {
 			if (vx > 0) {
 				SetPosition(x - 5, prePosY);
