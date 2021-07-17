@@ -222,9 +222,12 @@ void CKoopas::Render()
 	switch (typeKoopa)
 	{
 	case KOOPA_COLOR_RED:
+		DebugOut(L"111111111 \n");
 		ani = RenderKoopaRed();
 		break;
 	case PARAKOOPA_COLOR_GREEN:
+		DebugOut(L"2222222 \n");
+
 		ani = RenderParakoopaGreen();
 		break;
 	default:

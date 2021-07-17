@@ -248,6 +248,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 
 		break;
+		// TODO
 	case OBJECT_TYPE_HUB_CARDTEXT: 
 		obj = new CCardText(cardT);
 		cardText = (CCardText*)obj;

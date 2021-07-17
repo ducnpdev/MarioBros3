@@ -240,11 +240,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				CGame* game = CGame::GetInstance();
 				if (goalCard->GetState() == GOALCARD_STATE_HIDEN) return;
 				SetCardState(goalCard->GetState());
+			
 				game->SetItemGoalCard(goalCard->GetState());
-				goalCard->SetState(COIN_STATE_HIDEN);
 				goalCard->SetSwitchScene((DWORD)GetTickCount64());
 				goalCard->GetCardText()->SetState(1);
 				goalCard->GetCardText()->GetCard()->SetState(goalCard->GetState());
+				goalCard->SetState(COIN_STATE_HIDEN);
 			}
 
 			if (dynamic_cast<CLeaf*>(e->obj))

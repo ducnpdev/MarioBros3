@@ -14,10 +14,8 @@ void CCardText::SetState(int state)
 
 void CCardText::Render()
 {
-	// DebugOut(L"card text render \n");
-	// int i = 0;
-	// if (i == 0) return;
+	// TODO
 	int ani = CARDTEXT_STATE_HIDEN;
 	if (state == CARDTEXT_STATE_HIDEN) return;
-	animation_set->at(ani)->Render(x, y);
+	animation_set->at(0)->Render(x, y);
 }
