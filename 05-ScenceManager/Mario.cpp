@@ -27,6 +27,7 @@
 #include "Boomerang.h"	
 #include "BlueBrick.h"	
 #include "FireBullet.h"	
+#include "Music.h"	
 
 CMario::CMario(float x, float y)
 {
@@ -101,6 +102,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 				if (dynamic_cast<CKoopas*>(e->obj)) {
 					CollisionWithKoopa(e);
+				}
+
+				if (dynamic_cast<CMusic*>(e->obj)) {
+					CollisionWithMusic(e);
 				}
 
 				if (dynamic_cast<CWoodBlock*>(e->obj)) {
@@ -1371,6 +1376,18 @@ void CMario::CollisionWithBrick(LPCOLLISIONEVENT e)
 		// vy = -vy;
 		y = y + 3;
 	}
+}
+
+void CMario::CollisionWithMusic(LPCOLLISIONEVENT e)
+{
+	CMusic* music = dynamic_cast<CMusic*>(e->obj);
+	if (e->ny < 0) {
+		vy = -SPEED_MARIO_MUSIC_Y;
+		music->SetState(MUSIC_DOWN_STATE);
+		if (nx > 0) vx = SPEED_MARIO_MUSIC_X;
+		if (nx < 0) vx = -SPEED_MARIO_MUSIC_X;
+	}
+
 }
 
 void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)

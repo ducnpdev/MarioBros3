@@ -473,6 +473,10 @@
 # Portal
 50	1664	730	0	16	7	1
 
+# music
+100	480	768	990	4	7	0	200
+100	544	768	990	5	7	1	100
+
 [ITEM_QUESTION]
 # coin
 # type, x, y, ani, cellX, cellY, state, itemObject

@@ -247,6 +247,7 @@ public:
 	void CollisionWithWoodBlock(LPCOLLISIONEVENT collisionEven);
 	void CollisionWithPortal(LPCOLLISIONEVENT collisionEven);
 	void CollisionWithBrick(LPCOLLISIONEVENT e);
+	void CollisionWithMusic(LPCOLLISIONEVENT e);
 
 
 	// 

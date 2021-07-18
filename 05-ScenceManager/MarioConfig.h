@@ -142,6 +142,11 @@
 
 
 // **************** MARIO -> SPEED - SPEED ****************
+
+#define SPEED_MARIO_MUSIC_Y				0.2f 
+#define SPEED_MARIO_MUSIC_X		0.25f 
+
+
 #define SPEED_MARIO_WALKING					0.08f 
 #define SPEED_MARIO_RUNNING					0.1f
 #define SPEED_MARIO_RUNNING_FAST			0.12f

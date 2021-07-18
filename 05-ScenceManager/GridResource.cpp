@@ -16,6 +16,7 @@
 #include "BoomerangBros.h"
 #include "Boomerang.h"
 #include "Portal.h"
+#include "Music.h"
 
 CGridResource::CGridResource(LPCWSTR path) {
 	numRow = 0;
@@ -60,79 +61,85 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 	CGameObject* obj = NULL;
 	switch (type)
 	{
-		case OBJECT_TYPE_ROAD:{
-			int type = atoi(tokens[6].c_str());
-	 		obj = new CRoad(type);
-			break;
-		}
-		case OBJECT_TYPE_QUESTION_BRICK: {
-			obj = new CQuestionBrick(y);
-			for (int i = 0; i < 11; i++)
+	case OBJECT_TYPE_ROAD: {
+		int type = atoi(tokens[6].c_str());
+		obj = new CRoad(type);
+		break;
+	}
+	case OBJECT_TYPE_QUESTION_BRICK: {
+		obj = new CQuestionBrick(y);
+		for (int i = 0; i < 11; i++)
+		{
+			if (questionBrick[i] == NULL)
 			{
-				if (questionBrick[i] == NULL)
-				{
-					questionBrick[i] = (CQuestionBrick*)obj;
-					break;
-				}
+				questionBrick[i] = (CQuestionBrick*)obj;
+				break;
 			}
-			break;
 		}
-		case OBJECT_TYPE_BORDER_ROAD: {
-			obj = new CBorderRoad(); break;
-		}
-		case OBJECT_TYPE_BRICK_COLISION: {
-			int stateS = atoi(tokens[6].c_str());
-			obj = new CBrick(x,y, stateS);
-			for (int i = 0; i < BRICK_AMOUNT; i++)
+		break;
+	}
+	case OBJECT_TYPE_BORDER_ROAD: {
+		obj = new CBorderRoad(); break;
+	}
+	case OBJECT_TYPE_BRICK_COLISION: {
+		int stateS = atoi(tokens[6].c_str());
+		obj = new CBrick(x, y, stateS);
+		for (int i = 0; i < BRICK_AMOUNT; i++)
+		{
+			if (brick[i] == NULL)
 			{
-				if (brick[i] == NULL)
-				{
-					brick[i] = (CBrick*)obj;
-					break;
-				}
+				brick[i] = (CBrick*)obj;
+				break;
 			}
-			break;	
 		}
-		case OBJECT_TYPE_BLUE_BRICK:
-			obj = new CBlueBrick(); 
-			break;
-		case OBJECT_TYPE_PIPE:{
-			int type = atoi(tokens[6].c_str());
-			obj = new CPipe(type);
-			break;
-		}
-		case OBJECT_TYPE_WOOD_BLOCK: 
-			obj = new CWoodBlock(0, NULL, NULL, x);
-			break;
-		case OBJECT_TYPE_BRICK_MANY_WALL: {
-			obj = new CColorBrick(); 
-			break;
-		}
-		// 16: FIRE PLANT
-		case OBJECT_TYPE_FIRE_PLANT: {
-			obj = new CFirePiranhaPlant(((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer());
-			for (int i = 0; i < 2; i++)
-			{
-				if (firePiranhaPlant[i] == NULL) {
-					firePiranhaPlant[i] = (CFirePiranhaPlant*)obj;
-					break;
-				}
+		break;
+	}
+	case OBJECT_TYPE_BLUE_BRICK:
+		obj = new CBlueBrick();
+		break;
+	case OBJECT_TYPE_PIPE: {
+		int type = atoi(tokens[6].c_str());
+		obj = new CPipe(type);
+		break;
+	}
+	case OBJECT_TYPE_WOOD_BLOCK:
+		obj = new CWoodBlock(0, NULL, NULL, x);
+		break;
+	case OBJECT_TYPE_BRICK_MANY_WALL: {
+		obj = new CColorBrick();
+		break;
+	}
+									// 16: FIRE PLANT
+	case OBJECT_TYPE_FIRE_PLANT: {
+		obj = new CFirePiranhaPlant(((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer());
+		for (int i = 0; i < 2; i++)
+		{
+			if (firePiranhaPlant[i] == NULL) {
+				firePiranhaPlant[i] = (CFirePiranhaPlant*)obj;
+				break;
 			}
-			break;
 		}
-		// 17: bullet FIRE PLANT
-		case OBJECT_TYPE_FIRE_BULLET: {
-			obj = new CFirePlantBullet();
-			for (int i = 0; i < 2; i++)
-			{
-				if (firePlantBullet[i] == NULL) {
-					firePlantBullet[i] = (CFirePlantBullet*)obj;
-					firePiranhaPlant[i]->CreateFirePlantBullet(firePlantBullet[i]);
-					break;
-				}
+		break;
+	}
+							   // 17: bullet FIRE PLANT
+	case OBJECT_TYPE_FIRE_BULLET: {
+		obj = new CFirePlantBullet();
+		for (int i = 0; i < 2; i++)
+		{
+			if (firePlantBullet[i] == NULL) {
+				firePlantBullet[i] = (CFirePlantBullet*)obj;
+				firePiranhaPlant[i]->CreateFirePlantBullet(firePlantBullet[i]);
+				break;
 			}
-			break;
 		}
+		break;
+	}
+	case OBJECT_TYPE_MUSIC: {
+			int temType = atoi(tokens[6].c_str());
+			int tempStatus = atoi(tokens[7].c_str());
+			obj = new CMusic(temType, tempStatus, y);
+			break;
+	}
 		// 22:  PLANT
 		case OBJECT_TYPE_PIRANHA_PLANT: {
 			obj = new CPiranhaPlant(((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer());
@@ -154,7 +161,6 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			break;
 		case 50:
 			obj = new CPortal(x,y, x +10,y+2,1);
-			break;
 			break;
 	}
 

@@ -234,6 +234,9 @@
     <ClCompile Include="FireBullet.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="Music.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -432,6 +435,9 @@
       <Filter>Header Files\Config</Filter>
     </ClInclude>
     <ClInclude Include="FireBullet.h">
+      <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Music.h">
       <Filter>Header Files\Items</Filter>
     </ClInclude>
   </ItemGroup>
