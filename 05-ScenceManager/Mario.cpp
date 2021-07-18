@@ -278,14 +278,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			if (dynamic_cast<CBrick*>(e->obj)) {
 				isJump = 0;
-				CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-				if (nx != 0)
-				{
-					if (brick->GetState() == BRICK_STATE_NORMAL && marioStateFight)
-					{
-						brick->SetState(BRICK_STATE_HIDEN);
-					}
-				}
+				
+				CollisionWithBrick(e);
+
 			}
 			if (dynamic_cast<CPipe*>(e->obj)) {
 				CollisionWithPipe(e);
@@ -1360,6 +1355,23 @@ void CMario::CollisionWithPortal(LPCOLLISIONEVENT e)
 		DebugOut(L"marrio collisoin Portal e->nx != 0 \n");
 
 	}*/
+}
+
+void CMario::CollisionWithBrick(LPCOLLISIONEVENT e)
+{
+	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+	if (nx != 0)
+	{
+		if (brick->GetState() == BRICK_STATE_NORMAL && marioStateFight)
+		{
+			brick->SetState(BRICK_STATE_HIDEN);
+		}
+	}
+	if (e->ny > 0) {
+
+		brick->SetState(BRICK_STATE_310);
+		vy = -vy;
+	}
 }
 
 void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)

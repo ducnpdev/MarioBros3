@@ -17,12 +17,20 @@
 #define DISTANCE_BRICK_WITH_MARIO_MIN		5
 #define PIECE_BRICK_ANIMATIONSET	440
 
+#define BRICK_STATE_310	310
+
+
+
 class CBrick : public CGameObject
 {
 	CGameObject* item[ITEM_AMOUNT];
 
+	int type;
+	float originX;
+	float originY;
+
 public:
-	CBrick();
+	CBrick(float _originX, float _originY);
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

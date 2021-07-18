@@ -81,7 +81,8 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			obj = new CBorderRoad(); break;
 		}
 		case OBJECT_TYPE_BRICK_COLISION: {
-			obj = new CBrick();
+			// int state = atoi(tokens[6].c_str());
+			obj = new CBrick(x,y);
 			for (int i = 0; i < BRICK_AMOUNT; i++)
 			{
 				if (brick[i] == NULL)
@@ -289,9 +290,10 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 			{
 				if (itemBrick[i] == NULL)
 				{
-				// 	DebugOut(L"state coin: %d \n", state);
 					itemBrick[i] = (CCoin*)obj;
-					brick[i]->AddItemBrick(itemBrick[i]);
+					for (int j = 0; j < item_object; j++) {
+						brick[i]->AddItemBrick(itemBrick[i]);
+					}
 					break;
 				}
 			}

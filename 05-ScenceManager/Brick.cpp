@@ -4,13 +4,15 @@
 #include "ItemCoin.h"
 #include "GoombaConfig.h"
 
-CBrick::CBrick()
+CBrick::CBrick(float _originX, float _originY)
 {
 	state = BRICK_STATE_NORMAL;
 	for (int i = 0; i < ITEM_AMOUNT; i++)
 	{
 		item[i] = NULL;
 	}
+	originX = _originX;
+	originY = _originY;
 }
 
 void CBrick::Render()
@@ -31,7 +33,7 @@ void CBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-//	DebugOut(L"mario with brick \n");
+	// DebugOut(L"mario with brick \n");
 	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetMarioIsFight() && state == BRICK_STATE_NORMAL)
 	{
@@ -55,6 +57,28 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}
 	}
+
+	
+	if (state == BRICK_STATE_310) {
+		for (int i = 0; i < ITEM_AMOUNT; i++)
+		{
+			SetState(320);
+			if (item[i] != NULL) {
+				item[i]->SetPosition(originX, originY);
+				item[i]->SetState(3);
+				item[i] = NULL;
+				break;
+			}
+			if (i == ITEM_AMOUNT-1 && item[i] == NULL) {
+			//	DebugOut(L"Okk %d \n", i);
+				SetState(BRICK_STATE_HIDEN);
+				((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+			}
+		}
+	
+	}
+
+
 }
 
 void CBrick::SetState(int state)
@@ -68,6 +92,7 @@ void CBrick::AddItemBrick(CGameObject* obj)
 	{
 		if (item[i] == NULL)
 		{
+			DebugOut(L"add new coin \n");
 			item[i] = obj;
 			return;
 		}

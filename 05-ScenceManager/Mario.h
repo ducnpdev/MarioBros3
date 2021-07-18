@@ -246,6 +246,7 @@ public:
 	void CollisionWithBoomerangBros(LPCOLLISIONEVENT collisionEven);
 	void CollisionWithWoodBlock(LPCOLLISIONEVENT collisionEven);
 	void CollisionWithPortal(LPCOLLISIONEVENT collisionEven);
+	void CollisionWithBrick(LPCOLLISIONEVENT e);
 
 
 	// 

@@ -150,7 +150,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CMario*)obj;  
 		break;
 	case OBJECT_TYPE_BRICK: {
-		obj = new CBrick();
+		obj = new CBrick(x,y);
 		break;
 	}
 	case OBJECT_TYPE_HUB: {
