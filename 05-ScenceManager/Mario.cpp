@@ -278,7 +278,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 			if (dynamic_cast<CBrick*>(e->obj)) {
 				isJump = 0;
-				
 				CollisionWithBrick(e);
 
 			}
@@ -1368,9 +1367,9 @@ void CMario::CollisionWithBrick(LPCOLLISIONEVENT e)
 		}
 	}
 	if (e->ny > 0) {
-
 		brick->SetState(BRICK_STATE_310);
-		vy = -vy;
+		// vy = -vy;
+		y = y + 3;
 	}
 }
 

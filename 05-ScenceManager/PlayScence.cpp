@@ -150,7 +150,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CMario*)obj;  
 		break;
 	case OBJECT_TYPE_BRICK: {
-		obj = new CBrick(x,y);
+		obj = new CBrick(x,y,0);
 		break;
 	}
 	case OBJECT_TYPE_HUB: {
@@ -739,7 +739,7 @@ void CPlayScene::CreatePieceBrick(float x, float y, DWORD t)
 			case 4:
 				pieceBrick[i]->SetDisplay(x + PIECE_BRICK_X_PLUS, y + PIECE_BRICK_X_PLUS, PIECE_BRICK_SPEED, PIECE_BRICK_SPEED, t);
 				break;
-			default:
+			default:	
 				break;
 			}
 

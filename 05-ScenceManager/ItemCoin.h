@@ -14,6 +14,7 @@
 #define COIN_STATE_HIDEN			0
 #define COIN_STATE_MOVING			1
 #define COIN_STATE_NORMAL			2
+#define COIN_STATE_MOVING_OF_BRICK	3
 
 // trang thai dung yen tai cho
 #define COIN_NORMAL_ANI				0

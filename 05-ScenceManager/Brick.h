@@ -10,6 +10,7 @@
 #define BRICK_STATE_NORMAL	0
 #define BRICK_STATE_HIDEN	1
 #define BRICK_STATE_DESTROY	2
+
 #define BRICK_ITEM_COIN				0
 #define BRICK_ITEM_QUESTIONBLOCK	1
 #define ITEM_AMOUNT		10
@@ -18,7 +19,9 @@
 #define PIECE_BRICK_ANIMATIONSET	440
 
 #define BRICK_STATE_310	310
+#define BRICK_STATE_320	320
 
+#define BRICK_TYPE_HAVE_ITEM	1
 
 
 class CBrick : public CGameObject
@@ -30,7 +33,7 @@ class CBrick : public CGameObject
 	float originY;
 
 public:
-	CBrick(float _originX, float _originY);
+	CBrick(float _originX, float _originY, int _type);
 	virtual void Render();
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -40,6 +43,8 @@ public:
 	void AddItemBrick(CGameObject* i); 
 	// void SetState(int state) { CGameObject::SetState(state); }
 	void SetItem();
+	int GetBrickType() { return type; };
+
 	CGameObject* GetItem();
 
 };

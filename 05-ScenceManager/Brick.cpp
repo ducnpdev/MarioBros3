@@ -4,7 +4,7 @@
 #include "ItemCoin.h"
 #include "GoombaConfig.h"
 
-CBrick::CBrick(float _originX, float _originY)
+CBrick::CBrick(float _originX, float _originY, int _type)
 {
 	state = BRICK_STATE_NORMAL;
 	for (int i = 0; i < ITEM_AMOUNT; i++)
@@ -13,6 +13,7 @@ CBrick::CBrick(float _originX, float _originY)
 	}
 	originX = _originX;
 	originY = _originY;
+	type = _type;
 }
 
 void CBrick::Render()
@@ -62,18 +63,24 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (state == BRICK_STATE_310) {
 		for (int i = 0; i < ITEM_AMOUNT; i++)
 		{
-			SetState(320);
-			if (item[i] != NULL) {
-				item[i]->SetPosition(originX, originY);
-				item[i]->SetState(3);
-				item[i] = NULL;
-				break;
+			SetState(BRICK_STATE_320);
+			if (type == 1) {
+				if (item[i] != NULL) {
+					item[i]->SetPosition(originX, originY);
+					item[i]->SetState(COIN_STATE_MOVING_OF_BRICK);
+					item[i] = NULL;
+					break;
+				}
+				if (i == ITEM_AMOUNT-1 && item[i] == NULL) {
+					SetState(BRICK_STATE_HIDEN);
+					((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+				}
 			}
-			if (i == ITEM_AMOUNT-1 && item[i] == NULL) {
-			//	DebugOut(L"Okk %d \n", i);
-				SetState(BRICK_STATE_HIDEN);
-				((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+			if (type == 0) {
+					SetState(BRICK_STATE_HIDEN);
+					((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
 			}
+		
 		}
 	
 	}

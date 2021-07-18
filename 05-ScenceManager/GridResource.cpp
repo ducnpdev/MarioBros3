@@ -81,8 +81,8 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 			obj = new CBorderRoad(); break;
 		}
 		case OBJECT_TYPE_BRICK_COLISION: {
-			// int state = atoi(tokens[6].c_str());
-			obj = new CBrick(x,y);
+			int stateS = atoi(tokens[6].c_str());
+			obj = new CBrick(x,y, stateS);
 			for (int i = 0; i < BRICK_AMOUNT; i++)
 			{
 				if (brick[i] == NULL)
@@ -271,6 +271,8 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 	{
 	case OBJECT_TYPE_COIN:
 		obj = new CCoin(state);
+		// state = 0 -> của questionBlock
+		// state = 1 -> của questionBlock
 		if (state == 0) {
 			// TODO nếu là 11 sẽ bị crash, 
 			for(int i = 0; i < 10; i++) {
@@ -285,6 +287,22 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 			}
 		}
 		if (state == 1)
+		{
+			for (int i = 0; i < 20; i++)
+			{
+				if (itemBrick[i] == NULL)
+				{
+					itemBrick[i] = (CCoin*)obj;
+					if (brick[i] != NULL && brick[i]->GetBrickType() == 1) {
+						for (int j = 0; j < item_object; j++) {
+							brick[i]->AddItemBrick(itemBrick[i]);
+						}
+					break;
+					}
+				}
+			}
+		}
+		if (state == 3)
 		{
 			for (int i = 0; i < 20; i++)
 			{
