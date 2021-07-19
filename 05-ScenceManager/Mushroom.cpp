@@ -17,7 +17,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	 } 
 	// DebugOut(L"Mushtoom haha %d \n", state );
 	CGameObject::Update(dt, coObjects);
-	if (typeMushroom == 0) {
+	if (typeMushroom == MUSHROOM_TYPE_RED ) {
 		if (state == MUSHROOM_STATE_MOVING)
 		{
 			if (GetTickCount64() - timeStateMovingMushroom < MUSHROOM_TIME_NORMAL)
@@ -33,7 +33,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-	if (typeMushroom == 1) {
+	if (typeMushroom == MUSHROOM_TYPE_GREEN) {
 		if (state == MUSHROOM_STATE_MOVING)
 		{
 			if (GetTickCount64() - timeStateMovingMushroom < MUSHROOM_TIME_NORMAL)
@@ -49,7 +49,10 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-	if (state == MUSHROOM_STATE_NORMAL || state == MUSHROOM_STATE_NOT_SPEED_X) {
+	if (state == MUSHROOM_STATE_NORMAL 
+		 || state == MUSHROOM_STATE_NOT_SPEED_X
+		
+		) {
 		vy += 0.00069f * dt;
 		vector<LPCOLLISIONEVENT> coEvents;
 		vector<LPCOLLISIONEVENT> coEventsResult;
@@ -124,6 +127,7 @@ void CMushroom::Render()
 {
 	 if (GetState() == MUSHROOM_STATE_HIDEN) return;
 	int ani = MUSHROOM_RED_ANI;
+	if (typeMushroom == MUSHROOM_TYPE_GREEN) ani = MUSHROOM_GREEN_ANI;
 	animation_set->at(ani)->Render(x, y);
 }
 

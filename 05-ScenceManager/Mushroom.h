@@ -18,10 +18,13 @@
 #define MUSHROOM_EFFECT_MOVE_TIME	200
 
 #define MUSHROOM_RED_ANI		0
+#define MUSHROOM_GREEN_ANI      1
 
 #define MUSHROOM_TIME_START_MOVING	200
 #define MUSHROOM_TIME_NORMAL	400
 
+#define MUSHROOM_TYPE_GREEN	1
+#define MUSHROOM_TYPE_RED 0
 
 
 class CMushroom : public CCollision
@@ -30,6 +33,7 @@ class CMushroom : public CCollision
 	DWORD timeStateMovingMushroom;
 	int typeMushroom;
 public:
+	int GetMushroomType() { return typeMushroom; }
 
 	CMushroom(int _state,  int _type);
 	void SetState(int state);

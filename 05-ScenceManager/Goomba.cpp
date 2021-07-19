@@ -62,7 +62,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			
 				if (dynamic_cast<CWoodBlock*>(e->obj))
 				{
-					DebugOut(L"Goomba collision wood \n");
+					// DebugOut(L"Goomba collision wood \n");
 					CWoodBlock* woodBlock = dynamic_cast<CWoodBlock*>(e->obj);
 					if (e->nx != 0) {
 						vx = -1 * vx;
@@ -141,6 +141,8 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CGoomba::handleGoombaJumpInterval()
 {
+	if (state == GOOMBA_STATE_BROWN_WALKING || state == GOOMBA_STATE_DIE) return;
+
 	if (typeColorGoomba == PARA_GOOMBA_BROWN) {
 		if (GetTickCount64() - timeParaGoomba < 2000) {
 			if (GetTickCount64() - timeParaGoomba < 500) {
@@ -160,7 +162,6 @@ void CGoomba::handleGoombaJumpInterval()
 void CGoomba::Render()
 {
 	if (state == GOOMBA_STATE_HIDEN) return;
-
 	int ani = GOOMBA_ANI_YELLOW_WALKING;
 	if (typeColorGoomba == GOOMBA_YELLOW_COLOR) {
 		if (state == GOOMBA_STATE_DIE) {
@@ -175,8 +176,18 @@ void CGoomba::Render()
 		}
 	}
 	else if(typeColorGoomba == PARA_GOOMBA_BROWN) {
-		ani = PARA_GOOMBA_ANI_BROWN_JUMPING;
-		if (!goomStateJump) ani = PARA_GOOMBA_ANI_BROWN_WALKING;
+		if (state == GOOMBA_STATE_DIE) {
+		//DebugOut(L" 1111 \n");
+			ani = 5;
+		}
+		else if (state == GOOMBA_STATE_BROWN_WALKING) {
+			//DebugOut(L" 222222 \n");
+			ani = 1;
+		}
+		else {
+			ani = PARA_GOOMBA_ANI_BROWN_JUMPING;
+			if (!goomStateJump) ani = PARA_GOOMBA_ANI_BROWN_WALKING;
+		}
 	}
 	animation_set->at(ani)->Render(x, y);
 }
@@ -188,6 +199,7 @@ void CGoomba::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
+
 	case GOOMBA_STATE_HIDEN: break;
 	case GOOMBA_STATE_WALKING:
 		goomStateJump = false;
@@ -208,6 +220,9 @@ void CGoomba::SetState(int state)
 		}
 		vy = -0.06f;
 		break;
+	case GOOMBA_STATE_BROWN_WALKING: 
+		goomStateJump = false;
+		break;
 	default: 
 		break;
 	}
@@ -222,12 +237,18 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 	top = y;
 	if (typeColorGoomba == PARA_GOOMBA_BROWN) {
 		if (goomStateJump) {
+			// DebugOut(L" 111 \n");
 			right = x + PARA_GOOMBA_JUMPING_BBOX_WIDTH;
 			bottom = y + PARA_GOOMBA_JUMPING_BBOX_HEIGHT;
 		}
 		else {
+	//		DebugOut(L" 2222 \n");
 			right = x + PARA_GOOMBA_BBOX_WIDTH;
 			bottom = y + PARA_GOOMBA_BBOX_HEIGHT;
+			if (state == GOOMBA_STATE_BROWN_WALKING) {
+				right = x + GOOMBA_BBOX_WIDTH;
+				bottom = y + GOOMBA_BBOX_HEIGHT;
+			}
 		}
 	}
 	else {

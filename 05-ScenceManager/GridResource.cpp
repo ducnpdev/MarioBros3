@@ -330,8 +330,8 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 		}
 		break;
 	case OBJECT_TYPE_MUSHROOM: {
-		int type = atoi(tokens[7].c_str());
-
+		int tsype = atoi(tokens[7].c_str());
+		int type = atoi(tokens[8].c_str());
 		obj = new CMushroom(state, type);
 		for (int i = 0; i < 10; i++)
 		{

@@ -10,9 +10,9 @@ class CLives : public CGameObject
 	int lives;
 
 public:
-	CLives() { lives = 3; }
+	CLives() { lives =4; }
 	CLives(vector<CNumber*> num) {
-		lives = 3;
+		lives = 4;
 		for (int i = 0; i < (int)num.size(); i++)
 		{
 			numbers.push_back(num[i]);

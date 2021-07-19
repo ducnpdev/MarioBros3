@@ -7,7 +7,7 @@
 #include "ListScore.h"
 #include "Arrow.h"
 #include "Card.h"
-
+#include "Lives.h"
 
 class CMario : public  CCollision
 {
@@ -63,6 +63,7 @@ class CMario : public  CCollision
 	// end hub
 	DWORD timeRunningStart;
 	CListArrow* listArrow;
+	CLives* lives;
 
 	// fly hight
 	DWORD timeMarioFlyHigh;
@@ -122,7 +123,7 @@ public:
 
 	void SetListArrow(CListArrow* list) { listArrow = list; }
 	CListArrow* GetListArrow() { return listArrow; }
-
+	void SetLives(CLives* _live) { lives = _live; }
 
 	void MarioSetTortoiseshell(CGameObject* _tortoiseshell) { tortoiseshell = _tortoiseshell; };
 
@@ -248,6 +249,7 @@ public:
 	void CollisionWithPortal(LPCOLLISIONEVENT collisionEven);
 	void CollisionWithBrick(LPCOLLISIONEVENT e);
 	void CollisionWithMusic(LPCOLLISIONEVENT e);
+	void CollisionWithMushroom(LPCOLLISIONEVENT e);
 
 
 	// 

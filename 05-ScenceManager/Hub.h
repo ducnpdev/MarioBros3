@@ -37,4 +37,5 @@ public:
 	void SetCameraHub(CCamera* c);
 	void SetScore(CScore* s);
 	void SetLives(CLives* l);
+	CLives* GetCLives() { return lives; }
 };

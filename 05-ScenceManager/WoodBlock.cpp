@@ -14,7 +14,11 @@ CWoodBlock::CWoodBlock(int _type, CMushroom* _mushroom, CLeaf* _leaf, float _ori
 
 void CWoodBlock::Render()
 {
-	animation_set->at(0)->Render(x, y);
+	int ani = 0;
+	if (state == WOOD_BLOCK_MOVING_LEFT 
+		|| state == WOOD_BLOCK_MOVING_RIGHT
+		) ani = 1;
+	animation_set->at(ani)->Render(x, y);
 }
 
 void CWoodBlock::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -31,7 +35,6 @@ void CWoodBlock::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	RenderItemUpLevelMario();
 
 	if (type == 0) return;
-	
 	if (type == WOOD_BLOCK_EFFECT_MARIO) {
 		x += dx;
 		if (state == WOOD_BLOCK_MOVING_RIGHT) {

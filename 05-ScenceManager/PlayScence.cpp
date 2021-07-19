@@ -164,6 +164,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		hub->SetCardHub(cards);
 		player->SetListArrow(arrows);
 		player->SetCards(cards);
+		player->SetLives(lives);
 		break;
 	}
 	case OBJECT_TYPE_MARIO_FIRE_BULLET:
