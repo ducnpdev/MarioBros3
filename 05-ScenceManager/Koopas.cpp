@@ -117,6 +117,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 			}
 
+			CollisionWithBrick(e);
+
 			if (typeKoopa == PARAKOOPA_COLOR_GREEN)
 			{
 				if (e->ny < 0) { 
@@ -132,7 +134,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj)
 						|| dynamic_cast<CWoodBlock*>(e->obj)
-						|| dynamic_cast<CBrick*>(e->obj)
+						// || dynamic_cast<CBrick*>(e->obj)
 						)
 					{
 					/*	if (e->nx > 0) {
@@ -144,9 +146,9 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							SetState(KOOPAS_STATE_WALKING_LEFT);
 						}*/
 					}
-					if (dynamic_cast<CMario*>(e->obj))
+					/*if (dynamic_cast<CMario*>(e->obj))
 					{
-					}
+					}*/
 				}
 
 				if (state == KOOPAS_STATE_SPIN_LEFT)
@@ -207,6 +209,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			}
 		}	
 	}
+
 	if (typeKoopa == KOOPA_COLOR_RED) RedirectY();
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	
@@ -453,9 +456,24 @@ void CKoopas::handleReborn()
 	}
 }
 
-
-
-
+void CKoopas::CollisionWithBrick(LPCOLLISIONEVENT e)
+{
+	CBrick* music = dynamic_cast<CBrick*>(e->obj);
+	if (typeKoopa == KOOPA_COLOR_RED) {
+		// TODO
+	}
+	if (typeKoopa == KOOPA_GREEN_FORM) {
+		if (state == KOOPAS_STATE_WALKING_LEFT || state == KOOPAS_STATE_WALKING_RIGHT)
+		{
+			if (e->nx > 0) {
+				SetState(KOOPAS_STATE_WALKING_RIGHT);
+			}
+			else if (e->nx < 0) {
+				SetState(KOOPAS_STATE_WALKING_LEFT);
+			}
+		}
+	}
+}
 
 void CKoopas::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLISIONEVENT>& coEventsResult, float& min_tx, float& min_ty, float& nx, float& ny, float& rdx, float& rdy)
 {

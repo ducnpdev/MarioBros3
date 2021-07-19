@@ -122,4 +122,7 @@ public:
 
 	DWORD GetNotEffectReborn() { return timeNotEffect; }
 	void SetNotEffectReborn(DWORD time) { timeNotEffect = time; }
+
+	void CollisionWithBrick(LPCOLLISIONEVENT e);
+
 };

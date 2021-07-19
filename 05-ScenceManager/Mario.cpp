@@ -1364,6 +1364,16 @@ void CMario::CollisionWithPortal(LPCOLLISIONEVENT e)
 void CMario::CollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
+	if (e->nx < 0)
+	{
+		DebugOut(L"quay lai left \n");
+	}
+	if (e->nx > 0)
+	{
+		DebugOut(L"quay lai right \n");
+	}
+
 	if (nx != 0)
 	{
 		if (brick->GetState() == BRICK_STATE_NORMAL && marioStateFight)

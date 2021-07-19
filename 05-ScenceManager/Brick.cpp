@@ -99,7 +99,7 @@ void CBrick::AddItemBrick(CGameObject* obj)
 	{
 		if (item[i] == NULL)
 		{
-			DebugOut(L"add new coin \n");
+		
 			item[i] = obj;
 			return;
 		}
