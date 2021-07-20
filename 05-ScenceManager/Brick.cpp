@@ -77,6 +77,9 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 			}
 			if (type == 0) {
+				float mariovx, mariovy;
+					mario->GetSpeed(mariovx, mariovy);
+					mario->SetSpeed(mariovx, 0.01f);
 					SetState(BRICK_STATE_HIDEN);
 					((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
 			}

@@ -526,17 +526,8 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 
 	switch (KeyCode)
 	{
-	/*case DIK_J:
-		CGame::GetInstance()->SetCamPos(0, 0);
-		CGame::GetInstance()->SwitchScene(0);
-		break;
-	case DIK_K:
-		CGame::GetInstance()->SetCamPos(0, 0);
-		CGame::GetInstance()->SwitchScene(1);
-		break;*/
 	case DIK_Z:
 		if (mario->GetMarioIsInPortal()) {
-		//	DebugOut(L"is in portal \n");
 			mario->SetMarioIsAcceptPortal(true);
 		}
 		break;
@@ -662,11 +653,14 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 
 	if (game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_DOWN)) {
+
 		mario->SetTimeWalkingRight(GetTickCount64());
 		if (GetTickCount64() - mario->GetTimeWalkingLeft() > 200) {
-
 			if (game->IsKeyDown(DIK_A) || game->IsKeyDown(DIK_A) && game->IsKeyDown(DIK_S)) {
-				if (mario->GetMarioPower()) mario->SetState(STATE_MARIO_RUNNING_FAST_RIGHT);
+				if (mario->GetMarioPower()) {
+					// DebugOut(L"DIK_RIGHT \n");
+					mario->SetState(STATE_MARIO_RUNNING_FAST_RIGHT);
+				}
 				else mario->SetState(STATE_MARIO_RUNNING_RIGHT);
 			}
 			else {
@@ -679,7 +673,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		
 	}
 	else if (game->IsKeyDown(DIK_LEFT) && !game->IsKeyDown(DIK_DOWN) ) {
-		//DebugOut(L"DIK_LEFT \n");
 
 		mario->SetTimeWalkingLeft(GetTickCount64());
 		if (GetTickCount64() - mario->GetTimeWalkingRight() > 200) {

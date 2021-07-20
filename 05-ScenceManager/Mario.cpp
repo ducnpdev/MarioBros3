@@ -46,6 +46,7 @@ CMario::CMario(float x, float y)
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 
+
 	CGameObject::Update(dt);
 	if (!marioStateDie) vy += 0.0005*dt;
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -232,12 +233,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 			if (dynamic_cast<CCoin*>(e->obj)) // if e->obj is Koopa
 			{
-				CCoin* coin = dynamic_cast<CCoin*>(e->obj);
+				/*CCoin* coin = dynamic_cast<CCoin*>(e->obj);
 				if (coin->GetState() == COIN_STATE_NORMAL)
 				{
 					coinplay->AddCoinHub();
 					coin->SetState(COIN_STATE_HIDEN);
-				}
+				}*/
 			}
 
 			if (dynamic_cast<CGoalCard*>(e->obj)) {
@@ -314,6 +315,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	// clean up collision events
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
 	if (y < GAME_POSITION_Y_LIMIT) y = GAME_POSITION_Y_LIMIT;
+	UpdateSub(coObjects);
+
+}
+
+void CMario::UpdateSub(vector<LPGAMEOBJECT>* coObjects)
+{
 	vector<LPGAMEOBJECT> colidingObjects;
 	isCollidingObject(coObjects, colidingObjects);
 	for (UINT i = 0; i < colidingObjects.size(); i++)
@@ -325,8 +332,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			{
 				isMarioInPortal = true;
 			}
-			else {
+			else if (dynamic_cast<CCoin*>(c)) {
 				isMarioInPortal = false;
+				CCoin* coin = dynamic_cast<CCoin*>(c);
+				if (coin->GetState() == COIN_STATE_NORMAL)
+				{
+					coinplay->AddCoinHub();
+					coin->SetState(COIN_STATE_HIDEN);
+				}
 			}
 		}
 	}
@@ -385,6 +398,14 @@ void CMario::SetState(int state)
 		marioStateTorToiSeShell = false;
 		vx = -SPEED_MARIO_WALKING;
 		nx = DIRECTION_MARIO_LEFT;
+		break;
+	case STATE_MARIO_RUNNING_FAST_RIGHT:
+		isRunning = true;
+		isJump = 0;
+		isKick = false;
+		vx = SPEED_MARIO_RUNNING_FAST;
+		if (isTurn)  vx = SPEED_MARIO_RUNNING + 0.01f;
+		nx = DIRECTION_MARIO_RIGHT;
 		break;
 	case STATE_MARIO_RUNNING_RIGHT:
 		isRunning = true;
@@ -603,6 +624,7 @@ void CMario::FilterCollision(
 		LPCOLLISIONEVENT c = coEvents[i];
 
 		if (dynamic_cast<CPortal*>(c->obj)) continue;
+		if (dynamic_cast<CCoin*>(c->obj)) continue;
 		else if (dynamic_cast<CColorBrick*>(c->obj))
 		{
 			if (c->ny < 0 && c->t < min_tx)
@@ -692,14 +714,21 @@ void CMario::isCollidingObject(vector<LPGAMEOBJECT>* coObjects, vector<LPGAMEOBJ
 	GetBoundingBox(objectL, objectT, objectR, objectB);
 	for (int i = 0; i < coObjects->size(); i++)
 	{
-		coObjects->at(i)->GetBoundingBox(otherL, otherT, otherR, otherB);
-		if (otherL <= objectR &&
-			otherR >= objectL &&
-			otherT <= objectB &&
-			otherB >= objectT)
+		if (dynamic_cast<CPortal*>(coObjects->at(i))
+			|| dynamic_cast<CCoin*>(coObjects->at(i))
+		)
 		{
-			colidingObjects.push_back(coObjects->at(i));
+			coObjects->at(i)->GetBoundingBox(otherL, otherT, otherR, otherB);
+			if (otherL <= objectR &&
+				otherR >= objectL &&
+				otherT <= objectB &&
+				otherB >= objectT)
+			{
+			//	DebugOut(L"sdfsdf");
+				colidingObjects.push_back(coObjects->at(i));
+			}
 		}
+		
 	}
 }
 
@@ -879,17 +908,13 @@ int CMario::RenderLevelMarioFire() {
 	{
 		if (nx > 0) {
 			if (marioStateShootFire) {
-				//DebugOut(L"sssssssss shoot \n");
 				ani = 91;
 			}
 			else if (isStateSitDown) ani = 89;
 			else if (isJump == 1) ani = 30;
 			else if (isKick) ani = 38;
 			else if (marioStateTorToiSeShell) ani = 58;
-		//	else if (isJump == 1 || isJump == -1) ani = ANI_MARIO_FIRE_JUMP_RIGHT;
 			else { 
-			//	DebugOut(L"sssssssss idle \n");
-
 				ani = 12; 
 			}
 		} 
@@ -899,7 +924,6 @@ int CMario::RenderLevelMarioFire() {
 			else if (isJump == 1) ani = 31;
 			else if (isKick) ani = 39;
 			else if (marioStateTorToiSeShell) ani = 59;
-		//	else if (isJump == 1 || isJump == -1) ani = ANI_MARIO_FIRE_JUMP_LEFT;
 			else ani = 13;
 		}
 	}
@@ -1349,14 +1373,14 @@ void CMario::CollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
-	if (e->nx < 0)
+	/*if (e->nx < 0)
 	{
 		DebugOut(L"quay lai left \n");
 	}
 	if (e->nx > 0)
 	{
 		DebugOut(L"quay lai right \n");
-	}
+	}*/
 
 	if (nx != 0)
 	{
@@ -1408,7 +1432,6 @@ void CMario::CollisionWithMushroom(LPCOLLISIONEVENT e)
 		mushroom->SetState(MUSHROOM_STATE_HIDEN);
 		DisplayListScore(MARIO_SCORE_1000, mushroom->x, mushroom->y, GetTickCount64());
 		lives->AddLives();
-
 	}
 }
 
@@ -1463,7 +1486,7 @@ void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CMario::MarioHanlerProcessArrow()
 {
-	if (state == STATE_MARIO_RUNNING_RIGHT ||
+	 if (state == STATE_MARIO_RUNNING_RIGHT ||
 		state == STATE_MARIO_RUNNING_LEFT || 
 		state == STATE_MARIO_RUNNING_FAST_LEFT || 
 		state == STATE_MARIO_RUNNING_FAST_RIGHT)

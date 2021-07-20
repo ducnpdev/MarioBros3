@@ -30,14 +30,14 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 	
 	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN || state == KOOPAS_STATE_TORTOISESHELL_UP || state == KOOPAS_STATE_REBORN) {
 		right = x + KOOPAS_BBOX_WIDTH_MEDIUM;
-		bottom = y + 16;
+		bottom = y + KOOPAS_BBOX_HEIGHT_REBORN;
 	}
 	else if (state == KOOPAS_STATE_SPIN_RIGHT || state == KOOPAS_STATE_SPIN_LEFT){
 		right = x + KOOPAS_BBOX_WIDTH_MIN;
-		bottom = y + 16;
+		bottom = y + KOOPAS_BBOX_HEIGHT_SPIN;
 	}
 	else {
-		right = x + KOOPAS_BBOX_WIDTH;
+		right = x + 15;
 		bottom = y + KOOPAS_BBOX_HEIGHT;
 	}
 }
@@ -50,7 +50,6 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (state != KOOPAS_STATE_TAKEN )  vy += KOOPA_GRAVITY * dt;
 	handlerDeflect();
 	handleReborn();
-	//// koopa chuẩn bị hồi sinh
 
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -116,8 +115,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				}
 			}
+			if (dynamic_cast<CBrick*>(e->obj)) {
 
-			CollisionWithBrick(e);
+				CollisionWithBrick(e);
+			}
 
 			if (typeKoopa == PARAKOOPA_COLOR_GREEN)
 			{
@@ -134,21 +135,16 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj)
 						|| dynamic_cast<CWoodBlock*>(e->obj)
-						// || dynamic_cast<CBrick*>(e->obj)
+						// ||
 						)
 					{
-					/*	if (e->nx > 0) {
-							DebugOut(L"11111111 \n");
+						if (e->nx > 0) {
 							SetState(KOOPAS_STATE_WALKING_RIGHT);
 						}
 						else if (e->nx < 0) {
-							DebugOut(L"222222 \n");
 							SetState(KOOPAS_STATE_WALKING_LEFT);
-						}*/
+						}
 					}
-					/*if (dynamic_cast<CMario*>(e->obj))
-					{
-					}*/
 				}
 
 				if (state == KOOPAS_STATE_SPIN_LEFT)
@@ -212,10 +208,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (typeKoopa == KOOPA_COLOR_RED) RedirectY();
 	for (UINT i = 0; i < coEvents.size(); i++) delete coEvents[i];
-	
 }
-
-
 
 void CKoopas::Render()
 {
@@ -239,7 +232,6 @@ void CKoopas::Render()
 	animation_set->at(ani)->Render(x, y);
 	RenderBoundingBox();
 }
-
 
 void CKoopas::SetState(int state)
 {
@@ -332,30 +324,6 @@ int CKoopas::RenderKoopaRed()
 
 int CKoopas::RenderKoopaGreen()
 {
-	//if (isKoopaDie) ani = 15;
-	///*else if (intro_state && state == KOOPA_STATE_TAKEN || intro_state && state == KOOPA_STATE_TORTOISESHELL_DOWN)
-	//	ani = KOOPA_ANI_GREEN_TAKEN_DOWN;*/
-	//else if (vx < 0 && state != KOOPAS_STATE_SPIN_LEFT && state != KOOPAS_STATE_SPIN_RIGHT)
-	//	ani = KOOPA_ANI_GREEN_WALKING_LEFT;
-	//else if (state == KOOPAS_STATE_REBORN)
-	//	ani = KOOPA_ANI_GREEN_REBORN_DOWN;
-	///*else if (state == KOOPAS_STATE_REBORN && !isDown)
-	//	ani = 19;*/
-	//else if (state == KOOPAS_STATE_TORTOISESHELL_DOWN)
-	//	ani = KOOPA_ANI_GREEN_TORTOISESHELL_DOWN;
-	//else if (state == KOOPAS_STATE_TORTOISESHELL_UP)
-	//	ani = KOOPA_ANI_GREEN_TORTOISESHELL_UP;
-	//else if (state == KOOPAS_STATE_SPIN_LEFT || state == KOOPAS_STATE_SPIN_RIGHT)
-	//	ani = KOOPA_ANI_GREEN_SPIN_DOWN;
-	///*else if (state == KOOPA_STATE_SPIN_LEFT && !isDown || state == KOOPA_STATE_SPIN_RIGHT && !isDown)
-	//	ani = KOOPA_ANI_GREEN_SPIN_UP;
-	//else if (state == KOOPA_STATE_TAKEN && isDown)
-	//	ani = KOOPA_ANI_GREEN_TAKEN_DOWN;
-	//else if (state == KOOPA_STATE_TAKEN && !isDown)
-	//	ani = KOOPA_ANI_GREEN_TAKEN_UP;*/
-	//else ani = KOOPA_ANI_GREEN_WALKING_RIGHT;
-	//return ani;
-
 	if (isKoopaDie) ani = KOOPA_ANI_GREEN_TAKEN_UP;
 	else if (vx < 0 && state != KOOPAS_STATE_SPIN_LEFT && state != KOOPAS_STATE_SPIN_RIGHT)
 		ani = KOOPA_ANI_GREEN_WALKING_LEFT;
@@ -460,6 +428,17 @@ void CKoopas::CollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	CBrick* music = dynamic_cast<CBrick*>(e->obj);
 	if (typeKoopa == KOOPA_COLOR_RED) {
+		/*	if (state == KOOPAS_STATE_WALKING_LEFT || state == KOOPAS_STATE_WALKING_RIGHT)
+			{
+				if (e->ny == 0) {
+					if (e->nx > 0) {
+						SetState(KOOPAS_STATE_WALKING_RIGHT);
+					}
+					else if (e->nx < 0) {
+						SetState(KOOPAS_STATE_WALKING_LEFT);
+					}
+				}
+			}*/
 		// TODO
 	}
 	if (typeKoopa == KOOPA_GREEN_FORM) {
@@ -537,6 +516,10 @@ void CKoopas::RedirectY()
 				prePosY = y;
 			}
 		}
+		else {
+			DebugOut(L"1111 \n");
+		}
+
 
 	}
 
