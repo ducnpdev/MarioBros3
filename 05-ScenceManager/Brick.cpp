@@ -74,6 +74,7 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (i == ITEM_AMOUNT-1 && item[i] == NULL) {
 					SetState(BRICK_STATE_HIDEN);
 					((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+					mario->SetMarioIsRenderMusic(true);
 				}
 			}
 			if (type == 0) {
@@ -118,4 +119,9 @@ void CBrick::SetItem()
 CGameObject* CBrick::GetItem()
 {
 	return item[0];
+}
+
+CGameObject* CBrick::GetItemLatest()
+{
+	return item[9];
 }

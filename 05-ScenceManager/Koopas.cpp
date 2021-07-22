@@ -116,7 +116,6 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 			}
 			if (dynamic_cast<CBrick*>(e->obj)) {
-
 				CollisionWithBrick(e);
 			}
 
@@ -135,7 +134,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 					if (dynamic_cast<CPipe*>(e->obj) || dynamic_cast<CBorderRoad*>(e->obj)
 						|| dynamic_cast<CWoodBlock*>(e->obj)
-						// ||
+						 || dynamic_cast<CQuestionBrick*>(e->obj)
 						)
 					{
 						if (e->nx > 0) {
@@ -517,7 +516,7 @@ void CKoopas::RedirectY()
 			}
 		}
 		else {
-			DebugOut(L"1111 \n");
+			// DebugOut(L"1111 \n");
 		}
 
 

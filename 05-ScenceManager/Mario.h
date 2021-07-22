@@ -82,6 +82,10 @@ class CMario : public  CCollision
 
 	bool isAcceptFlyCamera = false;
 
+	bool isRenderMusic = false;
+	DWORD timeMarioAcceptScene3_1;
+
+
 
 public: 
 	
@@ -167,6 +171,9 @@ public:
 	void SetMarioIsStandingFloor(bool stading) { isStandingFloor = stading; }
 
 
+	bool GetMarioIsRenderMusic() { return isRenderMusic; }
+	void SetMarioIsRenderMusic(bool accpe) { isRenderMusic = accpe; }
+
 	bool GetMarioAcceptFlyCamera() { return isAcceptFlyCamera; }
 	void SetMarioAcceptFlyCamera(bool accpe) { isAcceptFlyCamera = accpe; }
 
@@ -178,6 +185,9 @@ public:
 
 	bool GetMarioShootFire() { return marioStateShootFire; }
 	void SetMarioShootFire(int shoot) { marioStateShootFire = shoot; }
+
+	DWORD GetMarioAcceptSwitchScene3_1Start() { return timeMarioAcceptScene3_1; }
+	void SetMarioAcceptSwitchScene3_1Start(DWORD time) { timeMarioAcceptScene3_1 = time; }
 
 	DWORD GetMarioShootFireStart() { return timeMarioShootFire; }
 	void SetMarioShootFireStart(DWORD time) { timeMarioShootFire = time; }
@@ -193,6 +203,8 @@ public:
 
 	float GetMarioSpeechJump() { return marioSpeechJump; }
 	void SetMarioSpeechJump() { marioSpeechJump += 0.00025f; }
+	void SetMarioSpeechSwitchScene3_1() { marioSpeechJump += 0.0025f; }
+
 
 	float GetMarioFallState() { return marioStateFall; }
 	void SetMarioFallState(int _fallstate) { marioStateFall += _fallstate; }

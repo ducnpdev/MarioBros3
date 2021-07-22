@@ -31,7 +31,7 @@
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_TAIL;
+	level = LEVEL_MARIO_SMAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 	start_x = x; 
@@ -341,6 +341,23 @@ void CMario::UpdateSub(vector<LPGAMEOBJECT>* coObjects)
 					coin->SetState(COIN_STATE_HIDEN);
 				}
 			}
+
+			if (dynamic_cast<CMusic*>(c))
+			{
+				/*CMusic* music = dynamic_cast<CMusic*>(c);
+				if (isRenderMusic) {
+					DebugOut(L"isRenderMusic true\n");
+				}
+
+				if (!isRenderMusic) {
+					DebugOut(L"isRenderMusic false \n");
+				}*/
+
+				//CMusic* music = dynamic_cast<CMusic*>(c);
+				//// music->GetTypeMusic();
+				//DebugOut(L"music %d \n", music->GetTypeMusic());
+			}
+
 		}
 	}
 }
@@ -625,6 +642,7 @@ void CMario::FilterCollision(
 
 		if (dynamic_cast<CPortal*>(c->obj)) continue;
 		if (dynamic_cast<CCoin*>(c->obj)) continue;
+	//	if (dynamic_cast<CMusic*>(c->obj)) continue;
 		else if (dynamic_cast<CColorBrick*>(c->obj))
 		{
 			if (c->ny < 0 && c->t < min_tx)
@@ -716,6 +734,7 @@ void CMario::isCollidingObject(vector<LPGAMEOBJECT>* coObjects, vector<LPGAMEOBJ
 	{
 		if (dynamic_cast<CPortal*>(coObjects->at(i))
 			|| dynamic_cast<CCoin*>(coObjects->at(i))
+			|| dynamic_cast<CMusic*>(coObjects->at(i))
 		)
 		{
 			coObjects->at(i)->GetBoundingBox(otherL, otherT, otherR, otherB);
@@ -1315,25 +1334,25 @@ void CMario::CollisionWithBoomerangBros(LPCOLLISIONEVENT e)
 
 	else if (e->nx != 0)
 	{
-		if (untouchable == 0)
+	if (untouchable == 0)
+	{
+		if (boomerangbro->GetState() != STATE_BOOMERANGBRO_DIE)
 		{
-			if (boomerangbro->GetState() != STATE_BOOMERANGBRO_DIE)
+			if (level > LEVEL_MARIO_SMAIL && !marioStateFight)
 			{
-				if (level > LEVEL_MARIO_SMAIL && !marioStateFight)
-				{
-					SetMarioLevel(GetMarioLevel() - 1);
-					StartUntouchable();
-				}
-				else if (marioStateFight)
-				{
-					boomerangbro->SetState(STATE_BOOMERANGBRO_DIE);
-					boomerangbro->SetBoomerangTimeDead(GetTickCount64());
-
-				}
-				else
-					SetState(STATE_MARIO_DIE);
+				SetMarioLevel(GetMarioLevel() - 1);
+				StartUntouchable();
 			}
+			else if (marioStateFight)
+			{
+			boomerangbro->SetState(STATE_BOOMERANGBRO_DIE);
+			boomerangbro->SetBoomerangTimeDead(GetTickCount64());
+
+			}
+			else
+			SetState(STATE_MARIO_DIE);
 		}
+	}
 	}
 }
 
@@ -1346,11 +1365,14 @@ void CMario::CollisionWithWoodBlock(LPCOLLISIONEVENT e)
 		woodBlock->GetPosition(woodBlockX, woodBlockY);
 		if (woodBlockX > x) {
 			woodBlock->SetState(WOOD_BLOCK_MOVING_RIGHT);
+			// vx = -0.2f;
+			x = x - MARIO_ADD_POSITION_X;
 		}
 		else {
+			x = x + MARIO_ADD_POSITION_X;
 			woodBlock->SetState(WOOD_BLOCK_MOVING_LEFT);
 		}
-	
+
 	}
 }
 
@@ -1373,6 +1395,9 @@ void CMario::CollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
+
+
+
 	/*if (e->nx < 0)
 	{
 		DebugOut(L"quay lai left \n");
@@ -1392,18 +1417,47 @@ void CMario::CollisionWithBrick(LPCOLLISIONEVENT e)
 	if (e->ny > 0) {
 		brick->SetState(BRICK_STATE_310);
 		// vy = -vy;
-		y = y + 3;
+		y = y + 1;
+
+		if (brick->GetItemLatest() == NULL) {
+			DebugOut(L"1111\n");
+		}
+
+		if (brick->GetItemLatest() != NULL) {
+			DebugOut(L"2222\n");
+		}
+
 	}
 }
 
 void CMario::CollisionWithMusic(LPCOLLISIONEVENT e)
 {
 	CMusic* music = dynamic_cast<CMusic*>(e->obj);
-	if (e->ny < 0) {
-		vy = -SPEED_MARIO_MUSIC_Y;
-		music->SetState(MUSIC_DOWN_STATE);
-		if (nx > 0) vx = SPEED_MARIO_MUSIC_X;
-		if (nx < 0) vx = -SPEED_MARIO_MUSIC_X;
+	if (music->GetTypeMusic() == MUSIC_ANI_WHITE) {
+		if (e->ny < 0) {
+			vy = -SPEED_MARIO_MUSIC_Y;
+			music->SetState(MUSIC_DOWN_STATE);
+			if (nx > 0) vx = SPEED_MARIO_MUSIC_X;
+			if (nx < 0) vx = -SPEED_MARIO_MUSIC_X;
+		}
+	}
+	if (music->GetTypeMusic() == MUSIC_ANI_RED) {
+		if (music->GetState() == MUSIC_HIDEN_STATE){
+			x += dx;
+			y += dy;
+		}
+		if (e->ny > 0) {
+			music->SetState(MUSIC_APPEAR_STATE);
+		}
+		if (music->GetState() != MUSIC_HIDEN_STATE) {
+			if (e->ny < 0) {
+				vy = -SPEED_MARIO_MUSIC_Y;
+				music->SetState(MUSIC_DOWN_STATE);
+				if (nx > 0) vx = SPEED_MARIO_MUSIC_X;
+				if (nx < 0) vx = -SPEED_MARIO_MUSIC_X;
+				timeMarioAcceptScene3_1 = GetTickCount64();
+			}
+		}
 	}
 
 }

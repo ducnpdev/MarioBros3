@@ -26,7 +26,7 @@ void CMusic::Render()
 void CMusic::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CGameObject::Update(dt);
-//	y += dy;
+
 	if (type == MUSIC_TYPE_WHITE) {
 		if (state == MUSIC_DOWN_STATE) {
 			y += dy;
@@ -37,7 +37,12 @@ void CMusic::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 	if (type == MUSIC_TYPE_RED) {
-
+		if (state == MUSIC_DOWN_STATE) {
+			y += dy;
+			if (y - originY > MUSIC_RANGE_POSITION_Y) {
+				SetState(MUSIC_UP_STATE);
+			}
+		}
 	}
 	if (state == MUSIC_UP_STATE) {
 		y += dy;
@@ -56,8 +61,11 @@ void CMusic::GetBoundingBox(float& l, float& t, float& r, float& b)
 	b = y + MUSIC_BBOX_HEIGHT;
 	if (state == MUSIC_HIDEN_STATE)
 	{
-		r = 0;
-		b = 0;
+	/*	r = 0;
+		b = 0;*/
+
+		r = x + MUSIC_BBOX_WIDTH;
+		b = y + MUSIC_BBOX_HEIGHT;
 	}
 }
 

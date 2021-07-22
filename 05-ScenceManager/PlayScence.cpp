@@ -695,17 +695,23 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	if (game->IsKeyDown(DIK_S)) {
 		if (GetTickCount64() - mario->GetTimeJumpStart() < 250 )
 		{
-
 			// && mario->vy <= 0
 			if (mario->GetMarioSpeechJump() < 0.2) {
 				mario->SetMarioSpeechJump();
 			}
-		//	DebugOut(L"mario->vy 22 %f \n", mario->GetMarioSpeechJump());
-
+		//	
 			if (mario->GetMarioIsJump() != -1 && mario->vy <= 0.02 && !mario->GetMarioFallState()) {
 				mario->SetState(STATE_MARIO_JUMP);
 			}
 		}
+		
+		// handle switch scene 3.1
+		/*if (GetTickCount64() - mario->GetMarioAcceptSwitchScene3_1Start() < TIME_MARIO_SWITCH_SCENE_3_1)
+		{
+			DebugOut(L"OKKKKKKKKKK \n");
+			mario->SetMarioSpeechSwitchScene3_1();
+		}*/
+
 	}
 
 }

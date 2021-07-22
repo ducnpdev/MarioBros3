@@ -35,6 +35,7 @@ class CMusic : public CCollision
 	int type;
 	float originY;
 public:
+	int GetTypeMusic() { return type; }
 	CMusic(int type, int _status, float _originY);
 	void SetShootStart(DWORD t) { shootStart = t; };
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects = NULL);

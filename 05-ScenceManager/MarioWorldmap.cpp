@@ -163,6 +163,9 @@ int CMarioWorldmap::GetTypeCurrentNode()
 {
 	for (size_t i = 0; i < nodes.size(); i++)
 	{
+		if (nodes[i] == NULL) {
+			continue;
+		}
 		if (x == nodes[i]->GetLeft() && y == nodes[i]->GetTop())
 		{
 			return nodes[i]->GetType();

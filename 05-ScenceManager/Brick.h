@@ -46,6 +46,6 @@ public:
 	int GetBrickType() { return type; };
 
 	CGameObject* GetItem();
-
+	CGameObject* GetItemLatest();
 };
 
