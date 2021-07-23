@@ -357,6 +357,11 @@
 #define MARIO_PIPE_DOWN_POS_X_4								2260
 #define MARIO_PIPE_DOWN_POS_Y_4								500
 
+
+#define MARIO_PIPE_DOWN_POS_X_SCENE_3								2105
+#define MARIO_PIPE_DOWN_POS_Y_SCENE_3								556
+
+
 #define MARIO_PIPE_VY_UP 2
 #define MARIO_PIPE_VY_DOWN 1
 

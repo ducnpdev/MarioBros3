@@ -1,4 +1,5 @@
 #include "Node.h"
+#include "Utils.h"
 
 CNode::CNode(float l, float t, float r, float b, int p)
 {
@@ -7,4 +8,9 @@ CNode::CNode(float l, float t, float r, float b, int p)
 	right = r;
 	bottom = b;
 	type = p;
+}
+
+float CNode::GetLeft()
+{
+	return left; 
 }

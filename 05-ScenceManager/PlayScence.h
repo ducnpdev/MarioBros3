@@ -81,6 +81,9 @@ public:
 	bool ObjectInUsing(float x, float y);
 	CMario * GetPlayer() { return player; } 
 
+int GetSceneID() { return id; }
+
+
 	// handle when mario collision with brick
 	void CreatePieceBrick(float x, float y, DWORD t);
 	

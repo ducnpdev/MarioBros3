@@ -18,12 +18,18 @@
 20	textures\score.png	0	224	142
 21	Textures\goal-roulette.png	0	183	239
 24	textures\enemies-3.png	0	136	255
+30	textures\maptexture\map3.png	176	224	248
 
 [MAPBACKGROUND]
 # idtexture columnMap rowMap columnTileSet rowTileSet maxTileSet pathfile
 30001	94	26	19	19	361	textures\tilemap\map3_final.txt	0
 
 [SPRITES]
+
+# CLOUD
+311000	80	232	96	248	30
+311001	136	232	152	248	30
+
 # SMALL MARIO 
 # idle small right
 10000	217	77	229	104	0
@@ -1081,6 +1087,10 @@
 #BLUE BRICK
 851	60002	100
 
+3110	311000	100
+3111	311001	100
+
+
 # ==== BRICK =========
 701	30001	100
 702	30002	100
@@ -1177,7 +1187,8 @@
 
 # BRICK 
 444	851
-
+3110	3110
+3111	3111
 
 # PIPE
 81	781
@@ -1272,7 +1283,7 @@
 990	990	991	992
 
 [OBJECTS]
-0	650.0	600.0	1
+0	100.0	200.0	1
 
 # CLASS HUB
 # number

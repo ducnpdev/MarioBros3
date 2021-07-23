@@ -544,14 +544,28 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		mario->marioSetUpDownLevel(LEVEL_MARIO_FIRE);
 		break;
 	case DIK_5:
+		if(((CPlayScene*)scence)->GetSceneID() == SCENE_1 ){
+			mario->SetMarioAcceptFlyCamera(true);
+			mario->SetPosition(2250, 20);
+		}
+		if (((CPlayScene*)scence)->GetSceneID() == SCENE_3) {
+			mario->SetMarioScene3Top(true);
+			mario->SetPosition(1500, 20);
+		}
 		break;
 	case DIK_6:
+		mario->SetMarioIsAcceptPortal(false);
 		mario->SetPosition(50, 384);
+		mario->SetMarioINScene3Top(false);
 		break;
 	case DIK_7:
+		mario->SetMarioIsAcceptPortal(false);
+		mario->SetMarioINScene3Top(false);
 		mario->SetPosition(1152, 384);
 		break;
 	case DIK_8:
+		mario->SetMarioIsAcceptPortal(false);
+		mario->SetMarioINScene3Top(false);
 		mario->SetPosition(2357, 80);
 		break;
 	case DIK_A:
@@ -581,7 +595,6 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			mario->SetTimeJumpStart(GetTickCount64());
 		//	mario->SetState(STATE_MARIO_JUMP);
 		}
-
 		if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL)
 		{
 			if (mario->GetMarioPower())
@@ -609,6 +622,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 void CPlayScenceKeyHandler::OnKeyUp(int KeyCode) 
 {
 	CMario* mario = ((CPlayScene*)scence)->GetPlayer();
+
 	if (mario->GetMarioIsDead()) return;
 	switch (KeyCode)
 	{
@@ -633,7 +647,6 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 			mario->SetState(STATE_MARIO_KICK);
 		}
 		break;
-
 	}
 }
 
@@ -688,7 +701,6 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 	else {
 	//	DebugOut(L"STATE_MARIO_IDLE \n");
-
 		mario->SetState(STATE_MARIO_IDLE);
 	}
 	

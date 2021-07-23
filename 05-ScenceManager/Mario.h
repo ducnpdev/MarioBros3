@@ -75,6 +75,7 @@ class CMario : public  CCollision
 	bool isMarioAcceptPortal = false;
 	bool isMarioScene3Right = false;
 	bool isMarioScene3Top = false;
+	bool isMarioINScene3Top = false;
 
 	bool marioStateShootFire;
 	DWORD timeMarioShootFire;
@@ -291,4 +292,8 @@ public:
 
 	bool GetMarioScene3Top() { return isMarioScene3Top; }
 	void SetMarioScene3Top(bool c) { isMarioScene3Top = c; }
+	bool GetMarioINScene3Top() { return isMarioINScene3Top; }
+	void SetMarioINScene3Top(bool c) { isMarioINScene3Top = c; }
+
+	
 };

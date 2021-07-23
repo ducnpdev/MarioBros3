@@ -10,7 +10,7 @@ class CNode
 
 public:
 	CNode(float l, float t, float r, float b, int type);
-	float GetLeft() { return left; }
+	float GetLeft();
 	float GetTop() { return top; }
 	float GetRight() { return right; }
 	float GetBottom() { return bottom; }

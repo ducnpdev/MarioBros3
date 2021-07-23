@@ -31,7 +31,7 @@
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_SMAIL;
+	level = LEVEL_MARIO_TAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 	start_x = x; 
@@ -45,8 +45,7 @@ CMario::CMario(float x, float y)
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-
-
+	// DebugOut(L"x, y %f %f \n", x, y);
 	CGameObject::Update(dt);
 	if (!marioStateDie) vy += 0.0005*dt;
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -1146,6 +1145,7 @@ void CMario::handlerMarioFight()
 void CMario::handlerMarioDownPipe()
 {
 	if (!marioStatePipeDown) return;
+	
 	if (GetTickCount64() - timeMarioPipeDown < MARIO_PIPE_DOWN_UP_TIME)
 	{
 		SetState(STATE_MARIO_PIPE_DOWN);
@@ -1155,7 +1155,14 @@ void CMario::handlerMarioDownPipe()
 	{
 		marioStatePipeDown = false;
 		SetState(STATE_MARIO_IDLE);
-		SetPosition(MARIO_PIPE_DOWN_POS_X_4, MARIO_PIPE_DOWN_POS_Y_4);
+		int sceneID =	CGame::GetInstance()->GetScene();
+		if (sceneID == SCENE_1) {
+			SetPosition(MARIO_PIPE_DOWN_POS_X_4, MARIO_PIPE_DOWN_POS_Y_4);
+		}
+		if (sceneID == SCENE_3) {
+			isMarioScene3Top = false;
+			SetPosition(MARIO_PIPE_DOWN_POS_X_SCENE_3, MARIO_PIPE_DOWN_POS_Y_SCENE_3);
+		}
 	}
 }
 
@@ -1257,6 +1264,7 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 				if (state != STATE_MARIO_RUNNING_RIGHT && state != STATE_MARIO_RUNNING_LEFT) {
 					DisplayListScore(MARIO_SCORE_200, koopa->x, koopa->y, (DWORD)GetTickCount64());
 					timeStartKick = GetTickCount64();
+					y = y - 2;
 					SetState(STATE_MARIO_KICK);
 					if (e->nx < 0)
 					{
@@ -1585,6 +1593,7 @@ void CMario::handleMarioDead()
 		if (y > POSITION_Y_SCENE_3_MARIO_DEAD) {
 			marioStateDie = true;
 		}
+		// DebugOut(L"sfsadf \n");
 	}
 }
 
