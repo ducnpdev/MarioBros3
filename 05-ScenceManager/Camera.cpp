@@ -133,25 +133,137 @@ void CCamera::UpdateCameraScence3Right() {
 }
 
 void CCamera::UpdateCameraScence3Top() {
+	float ydefault = 20.0f;
 	player->GetPosition(playerX, playerY);
 	CGame* game = CGame::GetInstance();
 	if (playerX < CAM_3_TOP_X_MIN_CAM) {
 		if (playerX < CAM_3_TOP_X_MARIO) player->SetPosition(CAM_3_TOP_X_MARIO, playerY);
 	//
-		CGame::GetInstance()->SetCamPos(round(CAM_3_TOP_X_MARIO), round(CAM_Y_MIN));
+		if (player->GetMarioLevel() == LEVEL_MARIO_TAIL && player->GetMarioAcceptFlyCamera())
+		{
+		//	DebugOut(L"2222222 \n");
+			if (playerY < game->GetScreenHeight() / 2 + 30) {
+				playerX -= game->GetScreenWidth() / 2;
+				SetPositionCamera(round(CAM_3_TOP_X_MARIO), ydefault);
+				CGame::GetInstance()->SetCamPos(round(CAM_3_TOP_X_MARIO), ydefault);
+			}
+			else {
+				playerX -= game->GetScreenWidth() / 2;
+				playerY -= game->GetScreenHeight() / 2 + CAM_Y_PLUS;
+				SetPositionCamera(round(CAM_3_TOP_X_MARIO), round(playerY));
+				CGame::GetInstance()->SetCamPos(round(CAM_3_TOP_X_MARIO), round(playerY));
+			}
+		} else {
+			CGame::GetInstance()->SetCamPos(round(CAM_3_TOP_X_MARIO), round(CAM_Y_MIN));
+		}
 	}
+
 	else if (playerX > CAM_3_TOP_Y_MAX_MARIO)
 	{
 		if (playerX > CAM_3_TOP_Y_MAX_MARIO_1) player->SetPosition(2200, playerY);
-		SetPositionCamera(CAM_3_TOP_Y_MAX_CAM, CAM_Y_MIN); // CAM_Y_MIN
-	// CGame::GetInstance()->SetCamPos(round(2082), round(CAM_Y_MIN));
+
+		if (player->GetMarioLevel() == LEVEL_MARIO_TAIL && player->GetMarioAcceptFlyCamera())
+		{
+			//
+			if (playerY < game->GetScreenHeight() / 2 + 30) {
+				DebugOut(L"Right 111 \n");
+				playerX -= game->GetScreenWidth() / 2;
+
+				SetPositionCamera(round(CAM_3_TOP_Y_MAX_CAM), ydefault);
+				CGame::GetInstance()->SetCamPos(round(CAM_3_TOP_Y_MAX_CAM), ydefault);
+			}
+			else {
+				DebugOut(L"Right 222 \n");
+				playerX -= game->GetScreenWidth() / 2;
+				playerY -= game->GetScreenHeight() / 2 + CAM_Y_PLUS;
+				SetPositionCamera(round(CAM_3_TOP_Y_MAX_CAM), round(playerY));
+				CGame::GetInstance()->SetCamPos(round(CAM_3_TOP_Y_MAX_CAM), round(playerY));
+			}
+		}
+		else {
+			SetPositionCamera(CAM_3_TOP_Y_MAX_CAM, CAM_Y_MIN); // CAM_Y_MIN
+		}
 	}
 	else {
-		playerX -= game->GetScreenWidth() / 2;
-		playerY -= game->GetScreenHeight() / 2;
-		CGame::GetInstance()->SetCamPos(round(playerX), round(CAM_Y_MIN));
-		SetPositionCamera(round(playerX), round(CAM_Y_MIN));
+	//	DebugOut(L"1111111 \n");
+		if (player->GetMarioLevel() == LEVEL_MARIO_TAIL && player->GetMarioAcceptFlyCamera())
+		{
+		//	DebugOut(L"2222222 \n");
+			if (playerY < game->GetScreenHeight() / 2 + 30) {
+				playerX -= game->GetScreenWidth() / 2;
+				SetPositionCamera(round(playerX), ydefault);
+				CGame::GetInstance()->SetCamPos(round(playerX), ydefault);
+			}
+			else {
+				playerX -= game->GetScreenWidth() / 2;
+				playerY -= game->GetScreenHeight() / 2 + CAM_Y_PLUS;
+				SetPositionCamera(round(playerX), round(playerY));
+				CGame::GetInstance()->SetCamPos(round(playerX), round(playerY));
+			}
+		}
+		else {
+			// DebugOut(L"3333333 \n");
+			playerX -= game->GetScreenWidth() / 2;
+			playerY -= game->GetScreenHeight() / 2;
+			CGame::GetInstance()->SetCamPos(round(playerX), round(CAM_Y_MIN));
+			SetPositionCamera(round(playerX), round(CAM_Y_MIN));
+		}
 	}
+}
+
+void CCamera::UpdateCameraScence3TopNew() {
+	player->GetPosition(playerX, playerY);
+	CGame* game = CGame::GetInstance();
+	float defaultY = CAM_Y_MIN + 16.0f;
+	float defaultX = CAM_3_TOP_X_MARIO;
+	if (scene3TOP_X < CAM_3_TOP_X_INIT) {
+		scene3TOP_X = defaultX;
+	}
+	if (playerX < CAM_3_TOP_X_MARIO) player->SetPosition(CAM_3_TOP_X_MARIO, playerY);
+	if (playerX > CAM_3_TOP_Y_MAX_MARIO_1) player->SetPosition(CAM_3_TOP_Y_MAX_MARIO_1, playerY);
+	if (playerX > (scene3TOP_X + CAM_3_TOP_X_OVER_CAMERA)) {
+		player->SetPosition(scene3TOP_X + CAM_3_TOP_X_OVER_CAMERA, playerY);
+	}
+	if (!checkLeft) {
+		scene3TOP_X = scene3TOP_X + 0.9f;
+	}
+
+	if (scene3TOP_X > CAM_3_TOP_Y_MAX_CAM) {
+		checkLeft = true;
+	}
+	if (playerX < scene3TOP_X) {
+		player->SetState(STATE_MARIO_SCENE_3_TOP_LEFT);
+		player->SetPosition(scene3TOP_X, playerY);
+	}
+
+	if (playerX > CAM_3_TOP_Y_MAX_MARIO)
+	{
+		//if (player->GetMarioLevel() == LEVEL_MARIO_TAIL && player->GetMarioAcceptFlyCamera())
+		//{
+		//	if (playerY < game->GetScreenHeight() / 2 + 30) {
+		//		playerX -= game->GetScreenWidth() / 2;
+		//		SetPositionCamera(round(CAM_3_TOP_Y_MAX_CAM), defaultY);
+		//		CGame::GetInstance()->SetCamPos(round(CAM_3_TOP_Y_MAX_CAM), defaultY);
+		//	}
+		//	else {
+		//	//	DebugOut(L"Right 222 \n");
+		//		playerX -= game->GetScreenWidth() / 2;
+		//		playerY -= game->GetScreenHeight() / 2 + CAM_Y_PLUS;
+		//		SetPositionCamera(round(CAM_3_TOP_Y_MAX_CAM), round(playerY));
+		//		CGame::GetInstance()->SetCamPos(round(CAM_3_TOP_Y_MAX_CAM), round(playerY));
+		//	}
+		//}
+		//else {
+			CGame::GetInstance()->SetCamPos(round(CAM_3_TOP_Y_MAX_CAM), round(defaultY));
+			SetPositionCamera(CAM_3_TOP_Y_MAX_CAM, defaultY); // CAM_Y_MIN
+		// }
+	}
+	else {
+		SetPositionCamera(round(scene3TOP_X), round(defaultY));
+		CGame::GetInstance()->SetCamPos(round(scene3TOP_X), round(defaultY));
+
+	}
+
 }
 
 void CCamera::UpdateCameraScence3() {
@@ -164,7 +276,8 @@ void CCamera::UpdateCameraScence3() {
 	}
 
 	if (player->GetMarioScene3Top()) {
-		UpdateCameraScence3Top();
+		// UpdateCameraScence3Top();
+		UpdateCameraScence3TopNew();
 		return;
 	}
 
@@ -181,33 +294,7 @@ void CCamera::UpdateCameraScence3() {
 		playerX = CAM_3_X_SCENE_RIGHT_1_MARIO;
 		SetPositionCamera(playerX, CAM_3_Y_DEFAULT); // CAM_Y_MIN
 	}
-
-	// mario khi đi đến giữa và ở dưới cống 
-	/*else if (playerX > (game->GetScreenWidth() / 2) && playerY > UNDERGROUND_Y) {
-		playerX -= game->GetScreenWidth() / 2;
-		playerY -= game->GetScreenHeight() / 2;
-		CGame::GetInstance()->SetCamPos(round(playerX), CAM_Y_UNDERGROUND);
-		SetPositionCamera(round(playerX), CAM_Y_UNDERGROUND);
-	}*/
-
-	// Mario khi đi đến giữa màn hình game
 	else if (playerX > (game->GetScreenWidth() / 2)) {
-
-		/*if (player->GetMarioLevel() == LEVEL_MARIO_TAIL)
-		{
-			playerX -= game->GetScreenWidth() / 2;
-			playerY -= game->GetScreenHeight() / 2 + CAM_Y_PLUS;
-			if (playerY < 150.0f) {
-				SetPositionCamera(round(playerX), round(playerY));
-				CGame::GetInstance()->SetCamPos(round(playerX), round(playerY));
-			}
-			else {
-				SetPositionCamera(round(playerX), round(CAM_3_Y_DEFAULT));
-				CGame::GetInstance()->SetCamPos(round(playerX), round(CAM_3_Y_DEFAULT));
-			}
-		}
-*/
-
 		if (player->GetMarioLevel() == LEVEL_MARIO_TAIL && player->GetMarioAcceptFlyCamera())
 		{
 			if (playerY < game->GetScreenHeight() / 2 + 30) {
@@ -231,7 +318,6 @@ void CCamera::UpdateCameraScence3() {
 			SetPositionCamera(round(playerX), round(CAM_3_Y_DEFAULT));
 		}
 	}
-
 	// Mario khi mới bắt mở game
 	else {
 		if (player->GetMarioLevel() == LEVEL_MARIO_TAIL && playerY < game->GetScreenHeight() / 2)

@@ -19,6 +19,8 @@ class CMario : public  CCollision
 	DWORD untouchable_start;
 	int ani = -1;
 
+	bool autoChangeAni = false;
+
 	float start_x;			// initial position of Mario at scene
 	float start_y; 
 	bool marioIsDead = false;

@@ -98,7 +98,7 @@ void CPlayScene::_ParseSection_SPRITES(string line)
 	if (tex == NULL)
 	{
 		DebugOut(L"[ERROR] Texture ID %d not found!\n", texID);
-		return; 
+		return;
 	}
 
 	CSprites::GetInstance()->Add(ID, l, t, r, b, tex);
@@ -573,11 +573,11 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_5:
 		if(((CPlayScene*)scence)->GetSceneID() == SCENE_1 ){
 			mario->SetMarioAcceptFlyCamera(true);
-			mario->SetPosition(2250, 20);
+			mario->SetPosition(2250.0f, 20.0f);
 		}
 		if (((CPlayScene*)scence)->GetSceneID() == SCENE_3) {
 			mario->SetMarioScene3Top(true);
-			mario->SetPosition(1500, 20);
+			mario->SetPosition(1320.0f,400.0f);
 		}
 		break;
 	case DIK_6:

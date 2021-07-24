@@ -45,6 +45,9 @@ class CCamera {
 	float playerY ;
 	CMario* player;
 	int sceneID;
+
+	float scene3TOP_X;
+	bool checkLeft = false;
 public:
 	CCamera(CMario* m, int id);
 	float GetPositionCameraX() { return cameraX; }
@@ -57,5 +60,6 @@ public:
 	void UpdateCameraScence3Right();
 	void UpdateCameraScence4();
 	void UpdateCameraScence3Top();
+	void UpdateCameraScence3TopNew();
 
 };

@@ -50,3 +50,6 @@
 #define CAM_3_TOP_Y_MAX_MARIO		2082.0f
 #define CAM_3_TOP_Y_MAX_CAM		1922.0f
 #define CAM_3_TOP_Y_MAX_MARIO_1		2200.0f
+#define CAM_3_TOP_X_INIT		0.00001f
+
+#define CAM_3_TOP_X_OVER_CAMERA	 280.0f

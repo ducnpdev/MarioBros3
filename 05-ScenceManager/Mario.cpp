@@ -45,9 +45,9 @@ CMario::CMario(float x, float y)
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	// DebugOut(L"x, y %f %f \n", x, y);
+	// DebugOut(L"mario x, y %f %f \n", x, y);
 	CGameObject::Update(dt);
-	if (!marioStateDie) vy += 0.0005*dt;
+	if (!marioStateDie) vy += 0.00037*dt;
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 	handlerMarioUpLevelOtherSmall();
@@ -114,6 +114,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				if (dynamic_cast<CBlueBrick*>(e->obj)) {
 					isJump = 0;
+					isAcceptFlyCamera = false;
 				}
 				if (dynamic_cast<CBoomerang*>(e->obj)) {
 					CollisionWithBoomerang(e);
@@ -379,6 +380,9 @@ void CMario::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
+	case STATE_MARIO_SCENE_3_TOP_LEFT:
+		autoChangeAni = true;
+		break;
 	case STATE_MARIO_FLYING_HIGH_RIGHT:
 		nx = 1;
 		isRunning = false;
@@ -398,6 +402,7 @@ void CMario::SetState(int state)
 		vy = -MARIO_FLYING_SPEED_Y;
 		break;
 	case STATE_MARIO_WALKING_RIGHT:
+		autoChangeAni = false;
 		isRunning = false;
 		isJump = 0;
 		isTurn = false;
@@ -466,6 +471,7 @@ void CMario::SetState(int state)
 		break; 
 	case STATE_MARIO_IDLE:
 		isKick = false;
+		autoChangeAni = false;
 		marioStateFlyHigh = false;
 		isTurn = false;
 		// isJump = 0;
@@ -782,7 +788,8 @@ int CMario::RenderLevelMarioSmall() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG_RIGHT;
+			if (autoChangeAni) ani = ANI_MARIO_SMALL_WALKING_RIGHT;
+			else if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG_RIGHT;
 			else if (isStateSitDown) ani = ANI_MARIO_SMALL_SITDOWN_RIGHT;
 			else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_RIGHT;
 			else if (isKick) ani = ANI_MARIO_SMALL_KICK_RIGHT;
@@ -791,7 +798,8 @@ int CMario::RenderLevelMarioSmall() {
 			else ani = ANI_MARIO_SMALL_IDLE_RIGHT;
 		} 
 		else {
-			if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG_LEFT;
+			if (autoChangeAni) ani = ANI_MARIO_SMALL_TURN_RIGHT;
+			else if (marioStateUpLevel) ani = ANI_MARIO_UP_LEVEL_SMALL_TO_BIG_LEFT;
 			else if (isStateSitDown) ani = ANI_MARIO_SMALL_SITDOWN_LEFT;
 			else if (isJump == 1) ani = ANI_MARIO_SMALL_JUMP_LEFT;
 			// else if (marioStateMaxPower) ani = 117;
@@ -827,7 +835,8 @@ int CMario::RenderLevelMarioBig() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if (marioStateSmoke) ani = ANI_MARIO_UP_LEVEL_BIG_TO_TAIL_SMOKE;
+			if (autoChangeAni) ani = ANI_MARIO_BIG_WALKING_RIGHT;
+			else if (marioStateSmoke) ani = ANI_MARIO_UP_LEVEL_BIG_TO_TAIL_SMOKE;
 			else if (isStateSitDown) ani = ANI_MARIO_BIG_SITDOWN_RIGHT;
 			else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_RIGHT;
 			else if (isKick) ani = ANI_MARIO_BIG_KICK_RIGHT;
@@ -835,7 +844,8 @@ int CMario::RenderLevelMarioBig() {
 			else ani = ANI_MARIO_BIG_IDLE_RIGHT;
 		} 
 		else {
-			if (marioStateSmoke) ani = ANI_MARIO_UP_LEVEL_BIG_TO_TAIL_SMOKE;
+			if (autoChangeAni) ani = ANI_MARIO_BIG_TURN_RIGHT;
+			else if (marioStateSmoke) ani = ANI_MARIO_UP_LEVEL_BIG_TO_TAIL_SMOKE;
 			else if (isStateSitDown) ani = ANI_MARIO_BIG_SITDOWN_LEFT;
 			else if (isJump == 1) ani = ANI_MARIO_BIG_JUMP_LEFT;
 			else if (isKick) ani = ANI_MARIO_BIG_KICK_LEFT;
@@ -872,7 +882,8 @@ int CMario::RenderLevelMarioTail() {
 	{
 		// right
 		if (nx > 0) {
-			if (marioStateFlyHigh) ani = ANI_MARIO_TAIL_FLY_HIGH_RIGHT;
+			if (autoChangeAni) ani = ANI_MARIO_TAIL_WALKING_RIGHT;
+			else if (marioStateFlyHigh) ani = ANI_MARIO_TAIL_FLY_HIGH_RIGHT;
 			else if (isStateSitDown) ani = ANI_MARIO_TAIL_SITDOWN_RIGHT;
 			else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_RIGHT;
 			else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_FLY_LOW_RIGHT;
@@ -882,7 +893,8 @@ int CMario::RenderLevelMarioTail() {
 			else ani = ANI_MARIO_TAIL_IDLE_RIGHT;	
 		} 
 		else {
-			 if (marioStateFlyHigh) ani = ANI_MARIO_TAIL_FLY_HIGH_LEFT;
+			if (autoChangeAni) ani = ANI_MARIO_TAIL_TURN_RIGHT;
+			else if (marioStateFlyHigh) ani = ANI_MARIO_TAIL_FLY_HIGH_LEFT;
 			else if (isStateSitDown) ani = ANI_MARIO_TAIL_SITDOWN_LEFT;
 			else if (isJump == 1) ani = ANI_MARIO_TAIL_JUMP_LEFT;
 			else if (isJumpFlyLow == 1) ani = ANI_MARIO_TAIL_FLY_LOW_LEFT;
@@ -925,19 +937,17 @@ int CMario::RenderLevelMarioFire() {
 	if (vx == 0)
 	{
 		if (nx > 0) {
-			if (marioStateShootFire) {
-				ani = 91;
-			}
+			if (autoChangeAni) ani = 14;
+			else if (marioStateShootFire) ani = 91;
 			else if (isStateSitDown) ani = 89;
 			else if (isJump == 1) ani = 30;
 			else if (isKick) ani = 38;
 			else if (marioStateTorToiSeShell) ani = 58;
-			else { 
-				ani = 12; 
-			}
+			else ani = 12; 
 		} 
 		else {
-			if (marioStateShootFire) ani = 92;
+			if (autoChangeAni) ani = 70;
+			else if (marioStateShootFire) ani = 92;
 			else if (isStateSitDown) ani = 90;
 			else if (isJump == 1) ani = 31;
 			else if (isKick) ani = 39;
