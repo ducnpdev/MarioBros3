@@ -51,8 +51,8 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 
 	if (tokens.size() < 6) return; // skip invalid lines
 
-	int x = atoi(tokens[1].c_str());
-	int y = atoi(tokens[2].c_str());
+	float x = atoi(tokens[1].c_str());
+	float y = atoi(tokens[2].c_str());
 	int cellX = atoi(tokens[4].c_str());
 	int cellY = atoi(tokens[5].c_str());
 	int type = atoi(tokens[0].c_str());

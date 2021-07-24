@@ -96,7 +96,7 @@ public:
 	virtual void UpdateSub(vector<LPGAMEOBJECT>* object = NULL);
 	void SetState(int state);
 	void SetLevel(int l) { level = l; }
-	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
+	void StartUntouchable() { untouchable = 1; untouchable_start = (DWORD)GetTickCount64(); }
 
 	void Reset();
 	void isCollidingObject(vector<LPGAMEOBJECT>* coObjects, vector<LPGAMEOBJECT>& colidingObjects);
@@ -207,8 +207,8 @@ public:
 	void SetMarioSpeechSwitchScene3_1() { marioSpeechJump += 0.0025f; }
 
 
-	float GetMarioFallState() { return marioStateFall; }
-	void SetMarioFallState(int _fallstate) { marioStateFall += _fallstate; }
+	bool GetMarioFallState() { return marioStateFall; }
+	void SetMarioFallState(int _fallstate) { marioStateFall = _fallstate; }
 
 	int GetBBoxWidthMario();
 	int GetBBoxHeightMario();

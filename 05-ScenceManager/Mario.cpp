@@ -31,7 +31,7 @@
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_TAIL;
+	level = LEVEL_MARIO_SMAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 	start_x = x; 
@@ -192,7 +192,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				marioStateFall = false;
 				SetMarioFallState(false);
 				isAcceptFlyCamera = false;
-				y = y - 0.01;
+				y = y - 0.01f;
 			}
 			if ( dynamic_cast<CColorBrick*>(e->obj)) {
 				marioSpeechJump = 0.0f;
@@ -261,8 +261,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					leaf->SetState(LEAF_STATE_HIDEN);
 					SetState(STATE_MARIO_SMOKE);
 					SetPosition(x, y - 2);
-					timeMarioSmoke = GetTickCount64();
-					DisplayListScore(MARIO_SCORE_1000, leaf->x, leaf->y, GetTickCount64());
+					timeMarioSmoke = (DWORD)GetTickCount64();
+					DisplayListScore(MARIO_SCORE_1000, leaf->x, leaf->y, (DWORD)GetTickCount64());
 				}
 			}
 
@@ -508,9 +508,9 @@ void CMario::SetState(int state)
 		break;
 	case STATE_MARIO_DIE:
 		marioStateDie = true;
-		timeMarioDead = GetTickCount64();
+		timeMarioDead = (DWORD)GetTickCount64();
 		marioStateTorToiSeShell = false;
-		tortoiseshell == NULL;
+		tortoiseshell = NULL;
 	//	vy = -SPEED_MARIO_DIE_DEFLECT;
 		break;
 	case STATE_MARIO_TORTOISESHELL_RIGHT:
@@ -983,7 +983,7 @@ int CMario::GetBBoxWidthMario()
 	case LEVEL_MARIO_FIRE:
 		width = BBOX_MARIO_FIRE_WIDTH;
 	}
-	return round(width);
+	return (width);
 }
 
 int CMario::GetBBoxHeightMario()
@@ -1000,7 +1000,7 @@ int CMario::GetBBoxHeightMario()
 	case LEVEL_MARIO_FIRE:
 		height = MARIO_BIG_BBOX_HEIGHT;
 	}
-	return round(height);
+	return (height);
 }
 
 
@@ -1217,7 +1217,7 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 		)
 	{
 		koopa->SetState(KOOPAS_STATE_TORTOISESHELL_UP);
-		koopa->SetDefectStart(GetTickCount64());
+		koopa->SetDefectStart((DWORD)GetTickCount64());
 		koopa->SetStateDefect(true);
 	}
 	// collision tren koopas
@@ -1263,7 +1263,7 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 			else {
 				if (state != STATE_MARIO_RUNNING_RIGHT && state != STATE_MARIO_RUNNING_LEFT) {
 					DisplayListScore(MARIO_SCORE_200, koopa->x, koopa->y, (DWORD)GetTickCount64());
-					timeStartKick = GetTickCount64();
+					timeStartKick = (DWORD)GetTickCount64();
 					y = y - 2;
 					SetState(STATE_MARIO_KICK);
 					if (e->nx < 0)
@@ -1335,7 +1335,7 @@ void CMario::CollisionWithBoomerangBros(LPCOLLISIONEVENT e)
 		{
 			DisplayListScore(MARIO_SCORE_100, boomerangbro->x, boomerangbro->y, (DWORD)GetTickCount64());
 			boomerangbro->SetState(STATE_BOOMERANGBRO_DIE);
-			boomerangbro->SetBoomerangTimeDead(GetTickCount64());
+			boomerangbro->SetBoomerangTimeDead((DWORD)GetTickCount64());
 			vy = -SPEED_MARIO_JUMP_DEFLECT;
 		}
 	}
@@ -1354,7 +1354,7 @@ void CMario::CollisionWithBoomerangBros(LPCOLLISIONEVENT e)
 			else if (marioStateFight)
 			{
 			boomerangbro->SetState(STATE_BOOMERANGBRO_DIE);
-			boomerangbro->SetBoomerangTimeDead(GetTickCount64());
+			boomerangbro->SetBoomerangTimeDead((DWORD)GetTickCount64());
 
 			}
 			else
@@ -1463,7 +1463,7 @@ void CMario::CollisionWithMusic(LPCOLLISIONEVENT e)
 				music->SetState(MUSIC_DOWN_STATE);
 				if (nx > 0) vx = SPEED_MARIO_MUSIC_X;
 				if (nx < 0) vx = -SPEED_MARIO_MUSIC_X;
-				timeMarioAcceptScene3_1 = GetTickCount64();
+				timeMarioAcceptScene3_1 = (DWORD)GetTickCount64();
 			}
 		}
 	}
@@ -1481,8 +1481,8 @@ void CMario::CollisionWithMushroom(LPCOLLISIONEVENT e)
 		SetPosition(x, y - UP_DOWN_POSITOIN_Y);
 		mushroom->SetState(MUSHROOM_STATE_HIDEN);
 		SetState(STATE_MARIO_UP_LEVEL);
-		timeMarioUpLevel = GetTickCount64();
-		DisplayListScore(MARIO_SCORE_1000, mushroom->x, mushroom->y, GetTickCount64());
+		timeMarioUpLevel = (DWORD)GetTickCount64();
+		DisplayListScore(MARIO_SCORE_1000, mushroom->x, mushroom->y, (DWORD)GetTickCount64());
 		//	}
 			/*else
 			{
@@ -1492,7 +1492,7 @@ void CMario::CollisionWithMushroom(LPCOLLISIONEVENT e)
 	}
 	if (mushroom->GetMushroomType() == MUSHROOM_TYPE_GREEN) {
 		mushroom->SetState(MUSHROOM_STATE_HIDEN);
-		DisplayListScore(MARIO_SCORE_1000, mushroom->x, mushroom->y, GetTickCount64());
+		DisplayListScore(MARIO_SCORE_1000, mushroom->x, mushroom->y, (DWORD)GetTickCount64());
 		lives->AddLives();
 	}
 }
@@ -1505,7 +1505,7 @@ void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)
 	}
 	if (e->ny < 0) {
 		if (goomba->GetState() != GOOMBA_STATE_DIE) {
-			DisplayListScore(MARIO_SCORE_100, goomba->x, goomba->y, GetTickCount64());
+			DisplayListScore(MARIO_SCORE_100, goomba->x, goomba->y, (DWORD)GetTickCount64());
 
 			if (goomba->getColorGoomba() == GOOMBA_YELLOW_COLOR) {
 				goomba->SetState(GOOMBA_STATE_DIE);
@@ -1555,13 +1555,13 @@ void CMario::MarioHanlerProcessArrow()
 	{
 		if (GetTickCount64() - timeRunningStart > MARIO_TIME_RUNNING) {
 			listArrow->SetWhiteListArrow();
-			timeRunningStart = GetTickCount64();
+			timeRunningStart = (DWORD)GetTickCount64();
 		}
 	}
 	else {
 		if (GetTickCount64() - timeRunningStart > MARIO_TIME_RUNNING) {
 			listArrow->SetBlackListArrow();
-			timeRunningStart = GetTickCount64();
+			timeRunningStart = (DWORD)GetTickCount64();
 		}
 	}
 }

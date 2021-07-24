@@ -135,15 +135,15 @@ void CCamera::UpdateCameraScence3Right() {
 void CCamera::UpdateCameraScence3Top() {
 	player->GetPosition(playerX, playerY);
 	CGame* game = CGame::GetInstance();
-	if (playerX < 1392) {
-		if (playerX < 1232) player->SetPosition(1232, playerY);
+	if (playerX < CAM_3_TOP_X_MIN_CAM) {
+		if (playerX < CAM_3_TOP_X_MARIO) player->SetPosition(CAM_3_TOP_X_MARIO, playerY);
 	//
-		CGame::GetInstance()->SetCamPos(round(1232), round(CAM_Y_MIN));
+		CGame::GetInstance()->SetCamPos(round(CAM_3_TOP_X_MARIO), round(CAM_Y_MIN));
 	}
-	else if (playerX > 2082)
+	else if (playerX > CAM_3_TOP_Y_MAX_MARIO)
 	{
-		if (playerX > 2200) player->SetPosition(2200, playerY);
-		SetPositionCamera(1922, CAM_Y_MIN); // CAM_Y_MIN
+		if (playerX > CAM_3_TOP_Y_MAX_MARIO_1) player->SetPosition(2200, playerY);
+		SetPositionCamera(CAM_3_TOP_Y_MAX_CAM, CAM_Y_MIN); // CAM_Y_MIN
 	// CGame::GetInstance()->SetCamPos(round(2082), round(CAM_Y_MIN));
 	}
 	else {
@@ -175,10 +175,10 @@ void CCamera::UpdateCameraScence3() {
 	}
 
 	// Mario khi đi đến sát biên bên phải 
-	if (playerX > 2400)
+	if (playerX > CAM_3_X_SCENE_RIGHT_MAX_MARIO)
 	{
-		if (playerX > 2528) player->SetPosition(2528, playerY);
-		playerX = 2232;
+		if (playerX > CAM_3_X_SCENE_RIGHT_3_MARIO) player->SetPosition(CAM_3_X_SCENE_RIGHT_3_MARIO, playerY);
+		playerX = CAM_3_X_SCENE_RIGHT_1_MARIO;
 		SetPositionCamera(playerX, CAM_3_Y_DEFAULT); // CAM_Y_MIN
 	}
 
