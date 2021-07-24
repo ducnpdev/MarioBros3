@@ -729,7 +729,7 @@ void CMario::isCollidingObject(vector<LPGAMEOBJECT>* coObjects, vector<LPGAMEOBJ
 	float objectB;
 	float objectR;
 	GetBoundingBox(objectL, objectT, objectR, objectB);
-	for (int i = 0; i < coObjects->size(); i++)
+	for (size_t i = 0; i < coObjects->size(); i++)
 	{
 		if (dynamic_cast<CPortal*>(coObjects->at(i))
 			|| dynamic_cast<CCoin*>(coObjects->at(i))
@@ -1236,7 +1236,7 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 		}
 		else if (koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_DOWN || 
 			koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_UP) {
-			if ((x + GetBBoxWidthMario()+1) < (koopa->x + round(KOOPAS_BBOX_WIDTH / 2))) {
+			if ((x + round(GetBBoxWidthMario() + 1)) < (koopa->x + round(KOOPAS_BBOX_WIDTH / 2))) {
 				koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
 			}
 			else {

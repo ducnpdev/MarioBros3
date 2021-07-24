@@ -15,12 +15,39 @@
 #include "FireBullet.h"
 
 using namespace std;
+//
+//CCard* cards[MaxShowCards];
+//CMario* player;					// A play scene has to have player, right? 
+//CCamera* camera;
+//CPieceBrick* pieceBrick[16];
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
+	camera = NULL;
+	cardText = NULL;
+	time = NULL;
+	arrows = NULL;
+	cardT = NULL;
+	tail = NULL;
+	score = NULL;
+	lives = NULL;
+	coinPlay = NULL;
+	mapBackground = NULL;
+	gridResource = NULL;
+	hub = NULL;
+	for (int i = 0; i < MaxShowCards; i++)
+		cards[i] = NULL;
+	for (int i = 0; i < 16; i++)
+		pieceBrick[i] = NULL;
+	for (int i = 0; i < 3; i++)
+		listScore[i] = NULL;
+	player = NULL;
+
 	key_handler = new CPlayScenceKeyHandler(this);
 }
+
+
 
 bool CPlayScene::ObjectInUsing(float x, float y) {
 	float CamX, CamY;
@@ -572,15 +599,17 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL && !mario->GetMarioIsFight()
 		 && GetTickCount64() - mario->GetTimeIsFight() > 380)
 		{
-			mario->SetTimeIsFight(GetTickCount64());
-			mario->SetMarioIsFight(STATE_MARIO_FIGHT);
+			mario->SetTimeIsFight((DWORD)GetTickCount64());
+			// todo
+			//  mario->SetMarioIsFight(STATE_MARIO_FIGHT);
+			mario->SetMarioIsFight(true);
 		}
 	
 		if (mario->GetMarioLevel() == LEVEL_MARIO_FIRE 
 			&& !mario->GetMarioShootFire())
 		{
 			// mario->SetMarioShootFire((DWORD)GetTickCount64());
-			mario->SetMarioShootFireStart(GetTickCount64());
+			mario->SetMarioShootFireStart((DWORD)GetTickCount64());
 			mario->ShootFireBullet();
 			if (mario->nx > 0)
 				mario->SetState(STATE_MARIO_SHOOT_FIRE_BULLET_RIGHT);
@@ -592,7 +621,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_S:
 		// if(mario->GetMarioIsStandingFloor()) mario->SetState(STATE_MARIO_JUMP);
 		if (mario->GetMarioIsJump() == 0) {
-			mario->SetTimeJumpStart(GetTickCount64());
+			mario->SetTimeJumpStart((DWORD)GetTickCount64());
 		//	mario->SetState(STATE_MARIO_JUMP);
 		}
 		if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL)
@@ -606,7 +635,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 			}
 			else if (mario->vy != 0 &&  mario->GetMarioIsJump() == -1)
 			{
-				mario->SetTimeJumpStartFlyLow(GetTickCount64());
+				mario->SetTimeJumpStartFlyLow((DWORD)GetTickCount64());
 				if (mario->nx > 0)
 					mario->SetState(STATE_MARIO_FLYING_LOW_RIGHT);
 				else mario->SetState(STATE_MARIO_FLYING_LOW_LEFT);
@@ -643,7 +672,7 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_A:
 		if (mario->GetMarioIsTortoiseshell())
 		{
-			mario->SetTimeStartKick(GetTickCount64());
+			mario->SetTimeStartKick((DWORD)GetTickCount64());
 			mario->SetState(STATE_MARIO_KICK);
 		}
 		break;
@@ -667,7 +696,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 
 	if (game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_DOWN)) {
 
-		mario->SetTimeWalkingRight(GetTickCount64());
+		mario->SetTimeWalkingRight((DWORD)GetTickCount64());
 		if (GetTickCount64() - mario->GetTimeWalkingLeft() > 200) {
 			if (game->IsKeyDown(DIK_A) || game->IsKeyDown(DIK_A) && game->IsKeyDown(DIK_S)) {
 				if (mario->GetMarioPower()) {
@@ -687,7 +716,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 	else if (game->IsKeyDown(DIK_LEFT) && !game->IsKeyDown(DIK_DOWN) ) {
 
-		mario->SetTimeWalkingLeft(GetTickCount64());
+		mario->SetTimeWalkingLeft((DWORD)GetTickCount64());
 		if (GetTickCount64() - mario->GetTimeWalkingRight() > 200) {
 			if(game->IsKeyDown(DIK_A) || game->IsKeyDown(DIK_A) && game->IsKeyDown(DIK_S)){
 				mario->SetState(STATE_MARIO_RUNNING_LEFT);

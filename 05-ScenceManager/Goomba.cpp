@@ -13,7 +13,7 @@
 
 CGoomba::CGoomba(int typeColor)
 {
-	timeParaGoomba = GetTickCount();
+	timeParaGoomba = (DWORD)GetTickCount64();
 	setColorGoomba(typeColor);
 	SetState(GOOMBA_STATE_WALKING);
 	vx = -GOOMBA_WALKING_SPEED;
@@ -153,7 +153,7 @@ void CGoomba::handleGoombaJumpInterval()
 			}
 		}
 		else {
-			timeParaGoomba = GetTickCount64();
+			timeParaGoomba = (DWORD)GetTickCount64();
 		}
 	}
 }

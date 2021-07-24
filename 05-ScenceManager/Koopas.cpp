@@ -111,7 +111,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 					mario->DisplayListScore(MARIO_SCORE_100, boomerangBro->x, boomerangBro->y, (DWORD)GetTickCount64());
 					boomerangBro->SetState(STATE_BOOMERANGBRO_DIE);
-					boomerangBro->SetBoomerangTimeDead(GetTickCount64());
+					boomerangBro->SetBoomerangTimeDead((DWORD)GetTickCount64());
 
 				}
 			}
@@ -124,7 +124,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (e->ny < 0) { 
 					if (GetTickCount64() - timeFly > KOOPAS_TIME_FLY) {
 						vy = -KOOPAS_FLY_INTERVAL;
-						timeFly = GetTickCount64();
+						timeFly = (DWORD)GetTickCount64();
 					}
 				}
 			}
@@ -241,12 +241,12 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_TORTOISESHELL_DOWN:
 		vx = 0;
 		vy = 0;
-		if (!stateKoopaTortoiSeShell) timeStateTorToiSeShell = GetTickCount64();
+		if (!stateKoopaTortoiSeShell) timeStateTorToiSeShell = (DWORD)GetTickCount64();
 		stateKoopaTortoiSeShell = true;
 		isDown = true;
 		break;
 	case KOOPAS_STATE_TORTOISESHELL_UP:
-		if (!stateKoopaTortoiSeShell) timeStateTorToiSeShell = GetTickCount64();
+		if (!stateKoopaTortoiSeShell) timeStateTorToiSeShell = (DWORD)GetTickCount64();
 		stateKoopaTortoiSeShell = true;
 		isDown = false;
 		vx = 0;
@@ -407,7 +407,7 @@ void CKoopas::handleReborn()
 
 	// hồi sinh qua trạng thái ban đầu
 	else if (stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > KOOPA_TIME_REBORN_END) {
-		timeNotEffect = GetTickCount64();
+		timeNotEffect = (DWORD)GetTickCount64();
 		mario->SetState(STATE_MARIO_IDLE);
 		mario->SetMarioIsTortoiseshell(false);
 		mario->MarioSetTortoiseshell(NULL);

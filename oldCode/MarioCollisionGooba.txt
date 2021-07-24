@@ -3,10 +3,10 @@ CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 						if (goomba->GetState() != GOOMBA_STATE_DIE) {
 							if (goomba->getColorGoomba() != PARA_GOOMBA_BROWN) {
 								goomba->SetState(GOOMBA_STATE_DIE);
-								DisplayListScore(MARIO_SCORE_100, goomba->x, goomba->y, GetTickCount64());
+								DisplayListScore(MARIO_SCORE_100, goomba->x, goomba->y, (DWORD)GetTickCount64());
 							}
 							else {
-								DisplayListScore(MARIO_SCORE_100, goomba->x, goomba->y, GetTickCount64());
+								DisplayListScore(MARIO_SCORE_100, goomba->x, goomba->y, (DWORD)GetTickCount64());
 								goomba->setColorGoomba(GOOMBA_YELLOW_COLOR);
 							}
 							vy = -0.2f;

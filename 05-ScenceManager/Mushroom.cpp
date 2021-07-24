@@ -102,7 +102,7 @@ void CMushroom::SetState(int state)
 		if (!stateMovingMushroom)
 		{
 			stateMovingMushroom = true;
-			timeStateMovingMushroom = GetTickCount64();
+			timeStateMovingMushroom = (DWORD)GetTickCount64();
 		}
 		break;
 	case MUSHROOM_STATE_HIDEN:

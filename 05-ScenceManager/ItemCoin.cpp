@@ -16,13 +16,13 @@ void CCoin::SetState(int state)
 	case 3:
 	//	if (!stateMoving) {
 			stateMoving = true;
-			timeStateMoving = GetTickCount64();
+			timeStateMoving = (DWORD)GetTickCount64();
 	//	}
 		break;
 	case COIN_STATE_MOVING:
 		if (!stateMoving) {
 			stateMoving = true;
-			timeStateMoving = GetTickCount64();
+			timeStateMoving = (DWORD)GetTickCount64();
 		}
 		break;
 	case COIN_STATE_HIDEN:
