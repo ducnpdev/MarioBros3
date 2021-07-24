@@ -146,6 +146,7 @@
     <ClCompile Include="Gold.cpp" />
     <ClCompile Include="GoldCard.cpp" />
     <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="GoombaMini.cpp" />
     <ClCompile Include="GridResource.cpp" />
     <ClCompile Include="Hub.cpp" />
     <ClCompile Include="ItemCoin.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="GoldCard.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="GoombaConfig.h" />
+    <ClInclude Include="GoombaMini.h" />
     <ClInclude Include="GridConfig.h" />
     <ClInclude Include="GridResource.h" />
     <ClInclude Include="Hub.h" />

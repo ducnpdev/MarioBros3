@@ -9,6 +9,7 @@ CCamera::CCamera(CMario* m, int id) {
 	cameraY = 267.0f;
 	playerX = 0.0f;
 	playerY = 0.0f;
+	scene3TOP_X = 0.0f;
 }
 
 void CCamera::UpdateCamera() {

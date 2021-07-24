@@ -28,6 +28,7 @@
 #include "BlueBrick.h"	
 #include "FireBullet.h"	
 #include "Music.h"	
+#include "GoombaMini.h"	
 
 CMario::CMario(float x, float y)
 {
@@ -45,7 +46,11 @@ CMario::CMario(float x, float y)
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	// DebugOut(L"mario x, y %f %f \n", x, y);
+	if (isStateSitDown) {
+	//DebugOut(L"sit down true \n" );
+	}
+	//DebugOut(L"mario x, y %f %f \n", x, y);
+	//
 	CGameObject::Update(dt);
 	if (!marioStateDie) vy += 0.00037*dt;
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -96,6 +101,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			// colission effect
 			if (untouchable == 0)
 			{
+			
 				if (dynamic_cast<CGoomba*>(e->obj)) {
 					CollisionWithGoomba(e);
 				}
@@ -328,6 +334,17 @@ void CMario::UpdateSub(vector<LPGAMEOBJECT>* coObjects)
 		LPGAMEOBJECT c = colidingObjects[i];
 		if (untouchable == 0)
 		{
+			if (dynamic_cast<CGoombaMini*>(c)) {
+				// CollisionWithGoombaMini(c);
+				CGoombaMini* goombaMini = dynamic_cast<CGoombaMini*>(c);
+				if (marioStateFight) {
+					goombaMini->SetState(STATE_GOOMBA_MINI_HIDEN);
+					return;
+				}
+				if (!goombaMini->GetCheckCollisionMario()) {
+					goombaMini->SetState(STATE_GOOMBA_MINI_MOVING_IN_MARIO);
+				}
+			}
 			if (dynamic_cast<CPortal*>(c))
 			{
 				isMarioInPortal = true;
@@ -393,6 +410,8 @@ void CMario::SetState(int state)
 		vy = -MARIO_FLYING_SPEED_Y;
 		break;
 	case STATE_MARIO_FLYING_HIGH_LEFT:
+		isStateSitDown = false;
+
 		nx = -1;
 		isRunning = false;
 		isJump = 0;
@@ -402,6 +421,8 @@ void CMario::SetState(int state)
 		vy = -MARIO_FLYING_SPEED_Y;
 		break;
 	case STATE_MARIO_WALKING_RIGHT:
+		isStateSitDown = false;
+
 		autoChangeAni = false;
 		isRunning = false;
 		isJump = 0;
@@ -413,6 +434,8 @@ void CMario::SetState(int state)
 		nx = DIRECTION_MARIO_RIGHT;
 		break;
 	case STATE_MARIO_WALKING_LEFT: 
+		isStateSitDown = false;
+
 		isJump = 0;
 		isTurn = false;
 		isKick = false;
@@ -421,6 +444,8 @@ void CMario::SetState(int state)
 		nx = DIRECTION_MARIO_LEFT;
 		break;
 	case STATE_MARIO_RUNNING_FAST_RIGHT:
+		isStateSitDown = false;
+
 		isRunning = true;
 		isJump = 0;
 		isKick = false;
@@ -435,12 +460,15 @@ void CMario::SetState(int state)
 		vx = SPEED_MARIO_RUNNING;
 		if (isTurn)  vx = SPEED_MARIO_RUNNING + 0.01f;
 		nx = DIRECTION_MARIO_RIGHT;
+		isStateSitDown = false;
+
 		break;
 	case STATE_MARIO_RUNNING_LEFT:
 		isRunning = true;
 		marioStateTorToiSeShell = false;
 		isKick = false;
 		isJump = 0;
+		isStateSitDown = false;
 
 		vx = -SPEED_MARIO_RUNNING;
 		if (isTurn)  vx = -SPEED_MARIO_RUNNING - 0.01f;
@@ -448,13 +476,14 @@ void CMario::SetState(int state)
 		break;		
 	case STATE_MARIO_SITDOWN:
 		isJump = 0;
-		if (level != LEVEL_MARIO_TAIL)
+		/*if (level != LEVEL_MARIO_TAIL)
 		{
 			if (!isStateSitDown)
 			{
+				DebugOut(L"111111111 \n");
 				y = y + 9;
 			}
-		}
+		}*/
 		isStateSitDown = true;
 		marioStateTorToiSeShell = false;
 		break;
@@ -474,6 +503,7 @@ void CMario::SetState(int state)
 		autoChangeAni = false;
 		marioStateFlyHigh = false;
 		isTurn = false;
+		// isStateSitDown = false;
 		// isJump = 0;
 		// marioSpeechJump = 0.0f;
 		vx = 0;
@@ -647,6 +677,7 @@ void CMario::FilterCollision(
 
 		if (dynamic_cast<CPortal*>(c->obj)) continue;
 		if (dynamic_cast<CCoin*>(c->obj)) continue;
+		if (dynamic_cast<CGoombaMini*>(c->obj)) continue;
 	//	if (dynamic_cast<CMusic*>(c->obj)) continue;
 		else if (dynamic_cast<CColorBrick*>(c->obj))
 		{
@@ -740,6 +771,7 @@ void CMario::isCollidingObject(vector<LPGAMEOBJECT>* coObjects, vector<LPGAMEOBJ
 		if (dynamic_cast<CPortal*>(coObjects->at(i))
 			|| dynamic_cast<CCoin*>(coObjects->at(i))
 			|| dynamic_cast<CMusic*>(coObjects->at(i))
+			|| dynamic_cast<CGoombaMini*>(coObjects->at(i))
 		)
 		{
 			coObjects->at(i)->GetBoundingBox(otherL, otherT, otherR, otherB);
@@ -1163,13 +1195,16 @@ void CMario::handlerMarioDownPipe()
 	}
 	else
 	{
+	//	DebugOut(L"111111 \n");
 		marioStatePipeDown = false;
 		SetState(STATE_MARIO_IDLE);
 		int sceneID =	CGame::GetInstance()->GetScene();
 		if (sceneID == SCENE_1) {
+	//		DebugOut(L"2222222 \n");
 			SetPosition(MARIO_PIPE_DOWN_POS_X_4, MARIO_PIPE_DOWN_POS_Y_4);
 		}
 		if (sceneID == SCENE_3) {
+	//		DebugOut(L"333333  \n");
 			isMarioScene3Top = false;
 			SetPosition(MARIO_PIPE_DOWN_POS_X_SCENE_3, MARIO_PIPE_DOWN_POS_Y_SCENE_3);
 		}
@@ -1302,7 +1337,7 @@ void CMario::CollisionWithPipe(LPCOLLISIONEVENT e)
 {
 	CPipe* pipe = dynamic_cast<CPipe*>(e->obj);
 	if (e->ny != 0 && isStateSitDown && pipe->GetType() == PIPE_STATE_UP_DOWN) {
-
+	//	DebugOut(L" xxx \n");
 		if (!marioStatePipeDown) {
 			SetState(STATE_MARIO_PIPE_DOWN);
 			timeMarioPipeDown = (DWORD)GetTickCount64();
@@ -1412,10 +1447,6 @@ void CMario::CollisionWithPortal(LPCOLLISIONEVENT e)
 void CMario::CollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-
-
-
-
 	/*if (e->nx < 0)
 	{
 		DebugOut(L"quay lai left \n");
@@ -1507,6 +1538,18 @@ void CMario::CollisionWithMushroom(LPCOLLISIONEVENT e)
 	}
 }
 
+void CMario::CollisionWithGoombaMini(LPCOLLISIONEVENT e)
+{
+	CGoombaMini* goombaMini = dynamic_cast<CGoombaMini*>(e->obj);
+	if (marioStateFight) {
+		goombaMini->SetState(STATE_GOOMBA_MINI_HIDEN);
+		return;
+	}
+	if (!goombaMini->GetCheckCollisionMario()) {
+		goombaMini->SetState(STATE_GOOMBA_MINI_MOVING_IN_MARIO);
+	}
+}
+
 void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
@@ -1520,6 +1563,7 @@ void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)
 			if (goomba->getColorGoomba() == GOOMBA_YELLOW_COLOR) {
 				goomba->SetState(GOOMBA_STATE_DIE);
 			}
+			if (goomba->getColorGoomba() == GOOMBA_YELLOW_COLOR_FLY) goomba->setColorGoomba(GOOMBA_YELLOW_COLOR);
 
 			if (goomba->getColorGoomba() == PARA_GOOMBA_BROWN) {
 				if (goomba->GetState() == GOOMBA_STATE_BROWN_WALKING) {
@@ -1530,9 +1574,6 @@ void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)
 					goomba->SetState(GOOMBA_STATE_BROWN_WALKING);
 				}
 			}
-			/*else {
-				goomba->setColorGoomba(GOOMBA_YELLOW_COLOR);
-			}*/
 			vy = -0.2f;
 			isJump = 1;
 		}

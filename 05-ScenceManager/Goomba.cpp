@@ -11,14 +11,19 @@
 #include "WoodBlock.h"
 
 
-CGoomba::CGoomba(int typeColor)
+CGoomba::CGoomba(int typeColor,int _tempState, CGoombaMini* _goombaMini[NUMBER_GOOMBA_MINI])
 {
 	timeParaGoomba = (DWORD)GetTickCount64();
 	setColorGoomba(typeColor);
-	SetState(GOOMBA_STATE_WALKING);
+	SetState(_tempState);
+	timeFlyGoomba = (DWORD)GetTickCount64();
+// 	SetState(GOOMBA_STATE_WALKING);
 	vx = -GOOMBA_WALKING_SPEED;
+	for (int i = 0; i < NUMBER_GOOMBA_MINI; i++)
+	{
+		goombaMini[i] = _goombaMini[i];
+	}
 }
-
 
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -137,6 +142,51 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	}
 
+	handleGoombaHighSmallGoomba();
+
+}
+
+void CGoomba::handleGoombaHighSmallGoomba()
+{
+	if (typeColorGoomba != GOOMBA_YELLOW_COLOR_FLY) return;
+	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	int direction = 1;
+	if (mario->x < x) direction = -1;
+	if (GetTickCount64() - timeFlyGoomba < 2000) {
+		vx = direction * BOOMERANG_FLYING_SPEECH;
+		vy = -0.05f;
+	}
+	else if (GetTickCount64() - timeFlyGoomba < 2300) {
+		if (!goombaMini[0]->GetCheckCollisionMario() && goombaMini[0] != NULL ) {
+			goombaMini[0]->SetPosition(x, y);
+			goombaMini[0]->SetState(STATE_GOOMBA_MINI_FLY_LEFT);
+		}
+		vy = 0.05f;
+	}
+	else if (GetTickCount64() - timeFlyGoomba < 2600) {
+		if (!goombaMini[1]->GetCheckCollisionMario() && goombaMini[1] != NULL) {
+			goombaMini[1]->SetPosition(x, y);
+			goombaMini[1]->SetState(STATE_GOOMBA_MINI_FLY_LEFT);
+		}
+		vy = -0.05f;
+	}
+	else if (GetTickCount64() - timeFlyGoomba < 2900) {
+		if (!goombaMini[2]->GetCheckCollisionMario() && goombaMini[2] != NULL) {
+			goombaMini[2]->SetPosition(x, y);
+			goombaMini[2]->SetState(STATE_GOOMBA_MINI_FLY_LEFT);
+		}
+		vy = 0.05f;
+	}
+	else if (GetTickCount64() - timeFlyGoomba < 3200) {
+		vy = -0.05f;
+	}
+	else if (GetTickCount64() - timeFlyGoomba < 5000) {
+		SetState(GOOMBA_STATE_YELLOW_COLOR_WALKING);
+	}
+	else {
+		SetState(GOOMBA_STATE_YELLOW_COLOR_FLY);
+		timeFlyGoomba = (DWORD)GetTickCount64();
+	}
 }
 
 void CGoomba::handleGoombaJumpInterval()
@@ -177,11 +227,9 @@ void CGoomba::Render()
 	}
 	else if(typeColorGoomba == PARA_GOOMBA_BROWN) {
 		if (state == GOOMBA_STATE_DIE) {
-		//DebugOut(L" 1111 \n");
 			ani = 5;
 		}
 		else if (state == GOOMBA_STATE_BROWN_WALKING) {
-			//DebugOut(L" 222222 \n");
 			ani = 1;
 		}
 		else {
@@ -189,18 +237,34 @@ void CGoomba::Render()
 			if (!goomStateJump) ani = PARA_GOOMBA_ANI_BROWN_WALKING;
 		}
 	}
+
+	else if (typeColorGoomba == GOOMBA_YELLOW_COLOR_FLY) {
+		if (state == GOOMBA_STATE_YELLOW_COLOR_FLY) ani = 8;
+		else if (state == GOOMBA_STATE_YELLOW_COLOR_WALKING) ani = 9;
+		else ani = 0;
+	}
 	animation_set->at(ani)->Render(x, y);
 }
 // 0 walking màu vang, 1 walking màu do,2 la do canh len mau do, 3 up canh xg mau do, 4 la xep xg sau va cham mau vang
 // 5 la xep xg sau va cham mau do, 
+// 6 la co mo canh mau vang, 
+// 7 la co up canh mau vang, 
+// 8 la mo va up canh mau vang nhanh ,  
+// 9 la mo va up canh mau vang cham,  
+// 10 goomba nho, 
 
 void CGoomba::SetState(int state)
 {
 	CGameObject::SetState(state);
 	switch (state)
 	{
-
+	case GOOMBA_STATE_YELLOW_COLOR_FLY:
+		break;
 	case GOOMBA_STATE_HIDEN: break;
+	case GOOMBA_STATE_YELLOW_COLOR_WALKING:
+		goomStateJump = false;
+		// vx = -GOOMBA_WALKING_SPEED;
+		break;
 	case GOOMBA_STATE_WALKING:
 		goomStateJump = false;
 		// vx = -GOOMBA_WALKING_SPEED;
@@ -237,12 +301,10 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 	top = y;
 	if (typeColorGoomba == PARA_GOOMBA_BROWN) {
 		if (goomStateJump) {
-			// DebugOut(L" 111 \n");
 			right = x + PARA_GOOMBA_JUMPING_BBOX_WIDTH;
 			bottom = y + PARA_GOOMBA_JUMPING_BBOX_HEIGHT;
 		}
 		else {
-	//		DebugOut(L" 2222 \n");
 			right = x + PARA_GOOMBA_BBOX_WIDTH;
 			bottom = y + PARA_GOOMBA_BBOX_HEIGHT;
 			if (state == GOOMBA_STATE_BROWN_WALKING) {
@@ -250,6 +312,10 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 				bottom = y + GOOMBA_BBOX_HEIGHT;
 			}
 		}
+	}
+	else if (typeColorGoomba == 3) {
+		right = x + PARA_GOOMBA_JUMPING_BBOX_WIDTH;
+		bottom = y + PARA_GOOMBA_JUMPING_BBOX_HEIGHT;
 	}
 	else {
 		right = x + GOOMBA_BBOX_WIDTH;

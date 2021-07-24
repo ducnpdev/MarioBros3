@@ -237,6 +237,9 @@
     <ClCompile Include="Music.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="GoombaMini.cpp">
+      <Filter>Source Files\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -439,6 +442,9 @@
     </ClInclude>
     <ClInclude Include="Music.h">
       <Filter>Header Files\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="GoombaMini.h">
+      <Filter>Header Files\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

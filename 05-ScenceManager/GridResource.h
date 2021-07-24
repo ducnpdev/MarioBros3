@@ -45,6 +45,9 @@ class CGridResource {
 
 	CMushroom* mushroomOfBrick;
 	CLeaf* leafOfBrick;
+	CGoombaMini* goombaMini[NUMBER_GOOMBA_MINI];
+
+
 public:
 	CGridResource(LPCWSTR pathFileGrid);
 	void GridLoadResource(LPCWSTR pathFileGrid);

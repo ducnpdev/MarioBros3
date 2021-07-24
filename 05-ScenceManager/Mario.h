@@ -88,10 +88,7 @@ class CMario : public  CCollision
 	bool isRenderMusic = false;
 	DWORD timeMarioAcceptScene3_1;
 
-
-
 public: 
-	
 
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);
@@ -265,6 +262,7 @@ public:
 	void CollisionWithBrick(LPCOLLISIONEVENT e);
 	void CollisionWithMusic(LPCOLLISIONEVENT e);
 	void CollisionWithMushroom(LPCOLLISIONEVENT e);
+	void CollisionWithGoombaMini(LPCOLLISIONEVENT e);
 
 
 	// 
@@ -297,5 +295,5 @@ public:
 	bool GetMarioINScene3Top() { return isMarioINScene3Top; }
 	void SetMarioINScene3Top(bool c) { isMarioINScene3Top = c; }
 
-	
+	int getMarioDirection() { return nx; }
 };

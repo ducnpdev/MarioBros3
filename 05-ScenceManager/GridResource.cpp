@@ -17,6 +17,7 @@
 #include "Boomerang.h"
 #include "Portal.h"
 #include "Music.h"
+#include "GoombaMini.h"
 
 CGridResource::CGridResource(LPCWSTR path) {
 	numRow = 0;
@@ -190,8 +191,20 @@ void CGridResource::_ParseSection_Grid_ENEMIES(string line) {
 	CGameObject* obj = NULL;
 	switch (type)
 	{
+	case OBJECT_TYPE_GOOMBA_MINI:
+		obj = new CGoombaMini();
+		for (int i = 0; i < NUMBER_GOOMBA_MINI; i++)
+		{
+			if (goombaMini[i] == NULL)
+			{
+				goombaMini[i] = (CGoombaMini*)obj;
+				break;
+			}
+		}
+		break;
 	case OBJECT_TYPE_GOOMBA: {
-		obj = new CGoomba(state);
+		int typeStatusInt = atoi(tokens[7].c_str());
+		obj = new CGoomba(state, typeStatusInt, goombaMini);
 		break;
 	}
 	case OBJECT_TYPE_KOOPAS: {

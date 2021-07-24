@@ -483,6 +483,10 @@ void CPlayScene::Render()
 	if (mapBackground) {
 		mapBackground->RenderMap(id);
 	}
+	/*for (int i = objects.size() - 1; i >= 0; i--)
+	{
+		if (dynamic_cast<CGoombaMini*>(objects[i])) objects[i]->Render();
+	}*/
 
 	for (int i = objects.size() - 1; i >= 0; i--)
 	{
@@ -492,6 +496,7 @@ void CPlayScene::Render()
 	for (int i = objects.size() - 1; i >= 0; i--)
 	{
 		if (!dynamic_cast<CPipe*>(objects[i]) && (!dynamic_cast<CColorBrick*>(objects[i]))
+		//	&& (!dynamic_cast<CGoombaMini*>(objects[i]))
 			&& (!dynamic_cast<CHub*>(objects[i])) && (!dynamic_cast<CNumber*>(objects[i])) && (!dynamic_cast<CCard*>(objects[i])) && (!dynamic_cast<CArrow*>(objects[i]))
 			) 
 			objects[i]->Render();
@@ -577,7 +582,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		}
 		if (((CPlayScene*)scence)->GetSceneID() == SCENE_3) {
 			mario->SetMarioScene3Top(true);
-			mario->SetPosition(1320.0f,400.0f);
+			mario->SetPosition(1320.0f, 350.0f);
 		}
 		break;
 	case DIK_6:
@@ -656,13 +661,13 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_DOWN: {
-
-		if(mario->GetMarioIsStateSitDown()){
+		// if(mario->GetMarioIsStateSitDown()) {
+			DebugOut(L"111111 \n");
 			if (mario->GetMarioLevel() != LEVEL_MARIO_SMAIL) {
 				mario->y -= NUMBER_AFTER_MARIO_SIT_DOWN;
 				mario->SetMarioIsStateSitDown(false);
 			}
-		}
+		// }
 		break;
 	}
 	case DIK_S: {
@@ -689,13 +694,13 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	// disable control key when Mario die 
 	if (mario->GetState() == STATE_MARIO_DIE) return;
 
-	if (game->IsKeyDown(DIK_DOWN)) {
+	if (game->IsKeyDown(DIK_DOWN) && mario->GetState() != STATE_MARIO_PIPE_DOWN) {
 		if (mario->GetState() == STATE_MARIO_IDLE)
 			mario->SetState(STATE_MARIO_SITDOWN);
 	}
 
-	if (game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_DOWN)) {
-
+	if (game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_DOWN) && !game->IsKeyDown(DIK_LEFT)) {
+		// DebugOut(L"222222 \n");
 		mario->SetTimeWalkingRight((DWORD)GetTickCount64());
 		if (GetTickCount64() - mario->GetTimeWalkingLeft() > 200) {
 			if (game->IsKeyDown(DIK_A) || game->IsKeyDown(DIK_A) && game->IsKeyDown(DIK_S)) {
@@ -714,8 +719,8 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		}
 		
 	}
-	else if (game->IsKeyDown(DIK_LEFT) && !game->IsKeyDown(DIK_DOWN) ) {
-
+	else if (game->IsKeyDown(DIK_LEFT) && !game->IsKeyDown(DIK_DOWN) && !game->IsKeyDown(DIK_RIGHT)) {
+		// DebugOut(L"3333 \n");
 		mario->SetTimeWalkingLeft((DWORD)GetTickCount64());
 		if (GetTickCount64() - mario->GetTimeWalkingRight() > 200) {
 			if(game->IsKeyDown(DIK_A) || game->IsKeyDown(DIK_A) && game->IsKeyDown(DIK_S)){
