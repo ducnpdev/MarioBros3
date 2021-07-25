@@ -49,7 +49,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (isStateSitDown) {
 	//DebugOut(L"sit down true \n" );
 	}
-	//DebugOut(L"mario x, y %f %f \n", x, y);
+	// DebugOut(L"mario x, y %f %f \n", x, y);
 	//
 	CGameObject::Update(dt);
 	if (!marioStateDie) vy += 0.00037*dt;
@@ -491,10 +491,10 @@ void CMario::SetState(int state)
 		isKick = false;
 		isJump = 1;
 		if (marioStateMaxPower) {
-			vy = -0.2f - marioSpeechJump;
+			vy = -0.17f - marioSpeechJump;
 		}
 		else {
-			vy = -0.13f - marioSpeechJump;
+			vy = -0.1f - marioSpeechJump;
 		}
 
 		break; 
@@ -1563,14 +1563,17 @@ void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)
 			if (goomba->getColorGoomba() == GOOMBA_YELLOW_COLOR) {
 				goomba->SetState(GOOMBA_STATE_DIE);
 			}
+
 			if (goomba->getColorGoomba() == GOOMBA_YELLOW_COLOR_FLY) goomba->setColorGoomba(GOOMBA_YELLOW_COLOR);
 
 			if (goomba->getColorGoomba() == PARA_GOOMBA_BROWN) {
+
+				// if(marioStateFight) goomba->SetState(GOOMBA_STATE_DIE);
+
 				if (goomba->GetState() == GOOMBA_STATE_BROWN_WALKING) {
 					goomba->SetState(GOOMBA_STATE_DIE);
 				}
 				else {
-					//DebugOut(L"222222 \n");
 					goomba->SetState(GOOMBA_STATE_BROWN_WALKING);
 				}
 			}

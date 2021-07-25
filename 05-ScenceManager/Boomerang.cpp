@@ -12,6 +12,7 @@ CBoomerang::CBoomerang()
 
 void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 {
+//	DebugOut(L"111111111 \n");
 	CGameObject::Update(dt);
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
@@ -36,8 +37,10 @@ void CBoomerang::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		y += min_ty * dy + ny * 0.4f;
 
 	}
+	// DebugOut(L"2222222 \n");
 
 	if (!isBoomerangFly) return;
+//	DebugOut(L"333333 \n");
 
 	if (state == STATE_BOOMERANG_FLYING_LEFT) {
 		if (GetTickCount64() - shootStartBoomerangTime < STATE_BOOMERANG_FLYING_ONE_TIME) {

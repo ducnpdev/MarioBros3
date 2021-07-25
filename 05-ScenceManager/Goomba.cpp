@@ -124,16 +124,17 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (mario->GetMarioIsFight() && state != GOOMBA_STATE_DEFLECT)
 	{
 		if (abs(y - mario->y) <= 50) {
-
 			// mario left of goomba
 			if (mario->x - x < 0 && abs(x - mario->x) <= GOOMBA_AUTO_DEAD_ZONE)
 			{
+				mario->DisplayListScore(MARIO_SCORE_100, x, y, (DWORD)GetTickCount64());
 				vx = vx + GOOMBA_DEFLECT;
 				SetState(GOOMBA_STATE_DEFLECT);
 			}
 			else
 			{
 				if (abs(mario->x - x) <= GOOMBA_AUTO_DEAD_ZONE) {
+					mario->DisplayListScore(MARIO_SCORE_100, x, y, (DWORD)GetTickCount64());
 					vx = vx - GOOMBA_DEFLECT;
 					SetState(GOOMBA_STATE_DEFLECT);
 				}
@@ -141,7 +142,6 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 
 	}
-
 	handleGoombaHighSmallGoomba();
 
 }
@@ -158,7 +158,7 @@ void CGoomba::handleGoombaHighSmallGoomba()
 	}
 	else if (GetTickCount64() - timeFlyGoomba < 2300) {
 		if (!goombaMini[0]->GetCheckCollisionMario() && goombaMini[0] != NULL ) {
-			goombaMini[0]->SetPosition(x, y);
+			goombaMini[0]->SetPosition(x, y+5);
 			goombaMini[0]->SetState(STATE_GOOMBA_MINI_FLY_LEFT);
 		}
 		vy = 0.05f;
@@ -191,7 +191,11 @@ void CGoomba::handleGoombaHighSmallGoomba()
 
 void CGoomba::handleGoombaJumpInterval()
 {
-	if (state == GOOMBA_STATE_BROWN_WALKING || state == GOOMBA_STATE_DIE) return;
+	if (state == GOOMBA_STATE_BROWN_WALKING || state == GOOMBA_STATE_DIE
+		|| state == GOOMBA_STATE_DEFLECT
+	) {
+		return;
+	}
 
 	if (typeColorGoomba == PARA_GOOMBA_BROWN) {
 		if (GetTickCount64() - timeParaGoomba < 2000) {
@@ -218,7 +222,7 @@ void CGoomba::Render()
 			ani = GOOMBA_ANI_YELLOW_DIE;
 		}
 		else if (state == GOOMBA_STATE_DEFLECT) {
-			ani = GOOMBA_ANI_DEFLECT;
+			ani = GOOMBA_ANI_YELLOW_DEFECT_AFTER_COLLISION_TAIL;
 		}
 		// GOOMBA_STATE_IDLE sau khi mario collision 
 		else if (state == GOOMBA_STATE_IDLE) {
@@ -227,10 +231,13 @@ void CGoomba::Render()
 	}
 	else if(typeColorGoomba == PARA_GOOMBA_BROWN) {
 		if (state == GOOMBA_STATE_DIE) {
-			ani = 5;
+			ani = GOOMBA_ANI_BROWN_DIE;
+		}
+		else if (state == GOOMBA_STATE_DEFLECT) {
+			ani = GOOMBA_ANI_BROWN_DEFECT_AFTER_COLLISION_TAIL;
 		}
 		else if (state == GOOMBA_STATE_BROWN_WALKING) {
-			ani = 1;
+			ani = GOOMBA_ANI_BROWN_WALKING;
 		}
 		else {
 			ani = PARA_GOOMBA_ANI_BROWN_JUMPING;
@@ -239,9 +246,9 @@ void CGoomba::Render()
 	}
 
 	else if (typeColorGoomba == GOOMBA_YELLOW_COLOR_FLY) {
-		if (state == GOOMBA_STATE_YELLOW_COLOR_FLY) ani = 8;
-		else if (state == GOOMBA_STATE_YELLOW_COLOR_WALKING) ani = 9;
-		else ani = 0;
+		if (state == GOOMBA_STATE_YELLOW_COLOR_FLY) ani = GOOMBA_ANI_YELLOW_FLY;
+		else if (state == GOOMBA_STATE_YELLOW_COLOR_WALKING) ani = GOOMBA_ANI_YELLOW_FLY_WALKING;
+		else ani = GOOMBA_ANI_YELLOW_WALKING;
 	}
 	animation_set->at(ani)->Render(x, y);
 }
@@ -251,7 +258,7 @@ void CGoomba::Render()
 // 7 la co up canh mau vang, 
 // 8 la mo va up canh mau vang nhanh ,  
 // 9 la mo va up canh mau vang cham,  
-// 10 goomba nho, 
+// 10 goomba nho, 11 la mau vang nguoc sau va cham vs duoi,12 la mau nau nguoc sau va cham vs duoi
 
 void CGoomba::SetState(int state)
 {
@@ -313,7 +320,7 @@ void CGoomba::GetBoundingBox(float& left, float& top, float& right, float& botto
 			}
 		}
 	}
-	else if (typeColorGoomba == 3) {
+	else if (typeColorGoomba == GOOMBA_YELLOW_COLOR_FLY) {
 		right = x + PARA_GOOMBA_JUMPING_BBOX_WIDTH;
 		bottom = y + PARA_GOOMBA_JUMPING_BBOX_HEIGHT;
 	}

@@ -202,7 +202,7 @@ public:
 	DWORD GetTimeWalkingRight() { return timeWalkingRight; }
 
 	float GetMarioSpeechJump() { return marioSpeechJump; }
-	void SetMarioSpeechJump() { marioSpeechJump += 0.00025f; }
+	void SetMarioSpeechJump() { marioSpeechJump += 0.002f; }
 	void SetMarioSpeechSwitchScene3_1() { marioSpeechJump += 0.0025f; }
 
 

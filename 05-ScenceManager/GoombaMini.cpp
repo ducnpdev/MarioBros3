@@ -111,17 +111,16 @@ void CGoombaMini::SetState(int state)
 	case STATE_GOOMBA_MINI_MOVING_IN_MARIO:
 		if (!checkCollisionMario) {
 			checkCollisionMario = true;
-			// vy = -0.05f;
 			vy = 0.0f;
 			vx = -0.05f;
 		}
 		break;
 	case STATE_GOOMBA_MINI_FLY_LEFT:
-		vy = 0.05f;
+		vy = 0.1f;
 		vx = -0.1f;
 		break;
 	case STATE_GOOMBA_MINI_FLY_RIGHT:
-		vy = 0.05f;
+		vy = 0.1f;
 		vx = 0.1f;
 		break;
 	default:

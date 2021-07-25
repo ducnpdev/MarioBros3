@@ -8,7 +8,16 @@ CBoomerangBro::CBoomerangBro(CBoomerang* weapon[BOOMERANG_AMOUNT])
 	{
 		boomerang[i] = weapon[i];
 	}
+	timeBoomerangBrosDead = (DWORD)0.0f;
+	timeBoomerangBrosStart = (DWORD)0.0f;
+	foundMario = false;
+	isBoomerangBrosIdle = false;
+	isBoomerangBrosBack = false;
+	isBoomerangBrosShoot = false;
+	isBoomerangBrosGoBack = false;
+	isBoomerangBrosRight = false;
 }
+
 
 void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -62,8 +71,10 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (!isBoomerangBrosShoot) {
 				for (int i = 0; i < BOOMERANG_AMOUNT; i++)
 				{
+					DebugOut(L"boomerang \n");
 					if (boomerang[i]->GetState() == STATE_BOOMERANG_HIDEN)
 					{
+						DebugOut(L"boomerang  11 \n");
 						isBoomerangBrosShoot = true;
 						if (isBoomerangBrosRight)
 						{

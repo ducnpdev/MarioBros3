@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "Collision.h"
 
+#define KOOPAS_REBORN_EFFECTY_MARIO 30
 
 #define KOOPAS_TIME_FLY 700
 
@@ -10,10 +11,11 @@
 #define KOOPAS_WALKING_SPEED 0.03f;
 #define KOOPAS_SPINNING_SPEED 0.25f;
 #define KOOPA_GRAVITY									0.001f
+#define KOOPA_GRAVITY_BIG									0.015f
 #define KOOPAS_FLY_INTERVAL 0.3f;
 // B box
 #define KOOPAS_BBOX_WIDTH 16
-#define KOOPAS_BBOX_WIDTH_MIN 13
+#define KOOPAS_BBOX_WIDTH_MIN 12
 #define KOOPAS_BBOX_WIDTH_MEDIUM 15
 
 #define KOOPAS_BBOX_HEIGHT_SPIN 14

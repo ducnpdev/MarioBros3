@@ -25,6 +25,7 @@ void CMarioWorldmap::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 			if (nodes[i] == NULL) {
 				continue;
 			}
+			float lefttemp = nodes[i]->GetLeft();
 			if (x + MARIO_INTRO_SMALL_BBOX_WIDTH == nodes[i]->GetLeft() && y == nodes[i]->GetTop())
 			{
 				move_right = 1;
@@ -39,6 +40,7 @@ void CMarioWorldmap::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		for (size_t i = 0; i < nodes.size(); i++)
 		{
 			if (nodes[i] == NULL) {
+				DebugOut(L"node == null");
 				continue;
 			}
 			if (x - MARIO_INTRO_SMALL_BBOX_WIDTH == nodes[i]->GetLeft() && y == nodes[i]->GetTop())
@@ -55,6 +57,7 @@ void CMarioWorldmap::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		for (size_t i = 0; i < nodes.size(); i++)
 		{
 			if (nodes[i] == NULL) {
+				DebugOut(L"node == null");
 				continue;
 			}
 			if (x == nodes[i]->GetLeft() && y - MARIO_INTRO_SMALL_BBOX_HEIGHT == nodes[i]->GetTop())
@@ -71,6 +74,7 @@ void CMarioWorldmap::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 		for (size_t i = 0; i < nodes.size(); i++)
 		{
 			if (nodes[i] == NULL) {
+				DebugOut(L"node == null");
 				continue;
 			}
 			if (x == nodes[i]->GetLeft() && y + MARIO_INTRO_SMALL_BBOX_HEIGHT == nodes[i]->GetTop())

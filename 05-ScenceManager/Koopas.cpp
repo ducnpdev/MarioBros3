@@ -44,10 +44,9 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	// DebugOut(L" state of koopas %d \n", state);
 	if (hidenStateKoopas) return;
 	CGameObject::Update(dt, coObjects);
-	if (state != KOOPAS_STATE_TAKEN )  vy += KOOPA_GRAVITY * dt;
+	if (state != KOOPAS_STATE_TAKEN) vy += KOOPA_GRAVITY * dt;
 	handlerDeflect();
 	handleReborn();
 
@@ -411,12 +410,17 @@ void CKoopas::handleReborn()
 		mario->SetState(STATE_MARIO_IDLE);
 		mario->SetMarioIsTortoiseshell(false);
 		mario->MarioSetTortoiseshell(NULL);
-		if (mario->GetMarioLevel() == LEVEL_MARIO_SMAIL) {
-			mario->SetState(STATE_MARIO_DIE);
-		}
-		else {
-			mario->SetMarioLevel(mario->GetMarioLevel() - 1);
-			mario->StartUntouchable();
+
+		float marioX, marioY;
+		mario->GetPosition(marioX, marioY);
+		if (abs(marioX - x) < KOOPAS_REBORN_EFFECTY_MARIO && abs(marioY - y) < KOOPAS_REBORN_EFFECTY_MARIO) {
+			if (mario->GetMarioLevel() == LEVEL_MARIO_SMAIL) {
+				mario->SetState(STATE_MARIO_DIE);
+			}
+			else {
+				mario->SetMarioLevel(mario->GetMarioLevel() - 1);
+				mario->StartUntouchable();
+			}
 		}
 		SetState(KOOPAS_STATE_WALKING_RIGHT);
 	
