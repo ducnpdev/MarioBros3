@@ -522,10 +522,7 @@ void CKoopas::RedirectY()
 		else {
 			// DebugOut(L"1111 \n");
 		}
-
-
 	}
-
 }
 
 

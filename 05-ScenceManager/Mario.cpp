@@ -32,7 +32,7 @@
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_SMAIL;
+	level = LEVEL_MARIO_TAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 	start_x = x; 
@@ -46,13 +46,8 @@ CMario::CMario(float x, float y)
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	if (isStateSitDown) {
-	//DebugOut(L"sit down true \n" );
-	}
-	// DebugOut(L"mario x, y %f %f \n", x, y);
-	//
 	CGameObject::Update(dt);
-	if (!marioStateDie) vy += 0.00037*dt;
+	if (!marioStateDie) vy += 0.00037f * dt;
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 	handlerMarioUpLevelOtherSmall();
@@ -121,9 +116,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (dynamic_cast<CBlueBrick*>(e->obj)) {
 					isJump = 0;
 					isAcceptFlyCamera = false;
+					marioSpeechJump = 0.0f;
 				}
 				if (dynamic_cast<CBoomerang*>(e->obj)) {
-					CollisionWithBoomerang(e);
+					// CollisionWithBoomerang(e);
 				}
 
 				if (dynamic_cast<CBoomerangBro*>(e->obj)) {
@@ -334,6 +330,24 @@ void CMario::UpdateSub(vector<LPGAMEOBJECT>* coObjects)
 		LPGAMEOBJECT c = colidingObjects[i];
 		if (untouchable == 0)
 		{
+			if (dynamic_cast<CBoomerang*>(c)) {
+				if (untouchable == 0) {
+					 CBoomerang* boomerang = dynamic_cast<CBoomerang*>(c);
+					 if (boomerang->GetState() != STATE_BOOMERANG_HIDEN)
+					 {
+						/* if (e->ny > 0) {
+							 y = y - MARIO_DEFECT_Y_COLLISION;
+						 }*/
+						 if (level > LEVEL_MARIO_SMAIL)
+						 {
+							 SetMarioLevel(GetMarioLevel() - 1);
+							 StartUntouchable();
+						 }
+						 else SetState(STATE_MARIO_DIE);
+					 }
+				}
+			//	DebugOut(L"sssssss \n");
+			}
 			if (dynamic_cast<CGoombaMini*>(c)) {
 				// CollisionWithGoombaMini(c);
 				CGoombaMini* goombaMini = dynamic_cast<CGoombaMini*>(c);
@@ -496,7 +510,6 @@ void CMario::SetState(int state)
 		else {
 			vy = -0.1f - marioSpeechJump;
 		}
-
 		break; 
 	case STATE_MARIO_IDLE:
 		isKick = false;
@@ -678,6 +691,7 @@ void CMario::FilterCollision(
 		if (dynamic_cast<CPortal*>(c->obj)) continue;
 		if (dynamic_cast<CCoin*>(c->obj)) continue;
 		if (dynamic_cast<CGoombaMini*>(c->obj)) continue;
+		if (dynamic_cast<CBoomerang*>(c->obj)) continue;
 	//	if (dynamic_cast<CMusic*>(c->obj)) continue;
 		else if (dynamic_cast<CColorBrick*>(c->obj))
 		{
@@ -772,6 +786,7 @@ void CMario::isCollidingObject(vector<LPGAMEOBJECT>* coObjects, vector<LPGAMEOBJ
 			|| dynamic_cast<CCoin*>(coObjects->at(i))
 			|| dynamic_cast<CMusic*>(coObjects->at(i))
 			|| dynamic_cast<CGoombaMini*>(coObjects->at(i))
+			|| dynamic_cast<CBoomerang*>(coObjects->at(i))
 		)
 		{
 			coObjects->at(i)->GetBoundingBox(otherL, otherT, otherR, otherB);
@@ -1277,7 +1292,8 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 
 			else if (koopa->getIsDown()) koopa->SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
 			else koopa->SetState(KOOPAS_STATE_TORTOISESHELL_UP);
-			vy = -0.2f;
+			// vy = -0.2f;
+			vy = -MARIO_JUMP_SPEED_Y;
 		}
 		else if (koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_DOWN || 
 			koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_UP) {
@@ -1446,27 +1462,19 @@ void CMario::CollisionWithPortal(LPCOLLISIONEVENT e)
 
 void CMario::CollisionWithBrick(LPCOLLISIONEVENT e)
 {
+	marioSpeechJump = 0.0f;
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-	/*if (e->nx < 0)
-	{
-		DebugOut(L"quay lai left \n");
-	}
-	if (e->nx > 0)
-	{
-		DebugOut(L"quay lai right \n");
-	}*/
-
 	if (nx != 0)
 	{
 		if (brick->GetState() == BRICK_STATE_NORMAL && marioStateFight)
 		{
-			brick->SetState(BRICK_STATE_HIDEN);
+		//	brick->SetState(BRICK_STATE_HIDEN);
 		}
 	}
 	if (e->ny > 0) {
 		brick->SetState(BRICK_STATE_310);
 		// vy = -vy;
-		y = y + 1;
+	//	y = y + 1;
 
 		if (brick->GetItemLatest() == NULL) {
 			DebugOut(L"1111\n");
@@ -1515,21 +1523,12 @@ void CMario::CollisionWithMushroom(LPCOLLISIONEVENT e)
 {
 	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
 	if (mushroom->GetState() == MUSHROOM_STATE_HIDEN) return;
-
 	if (mushroom->GetMushroomType() == MUSHROOM_TYPE_RED) {
-		/*if (level == LEVEL_MARIO_SMAIL)
-		{*/
 		SetPosition(x, y - UP_DOWN_POSITOIN_Y);
 		mushroom->SetState(MUSHROOM_STATE_HIDEN);
 		SetState(STATE_MARIO_UP_LEVEL);
 		timeMarioUpLevel = (DWORD)GetTickCount64();
 		DisplayListScore(MARIO_SCORE_1000, mushroom->x, mushroom->y, (DWORD)GetTickCount64());
-		//	}
-			/*else
-			{
-				DisplayListScore(MARIO_SCORE_1000, mushroom->x, mushroom->y, GetTickCount64());
-				mushroom->SetState(MUSHROOM_STATE_HIDEN);
-			}*/
 	}
 	if (mushroom->GetMushroomType() == MUSHROOM_TYPE_GREEN) {
 		mushroom->SetState(MUSHROOM_STATE_HIDEN);
@@ -1577,7 +1576,7 @@ void CMario::CollisionWithGoomba(LPCOLLISIONEVENT e)
 					goomba->SetState(GOOMBA_STATE_BROWN_WALKING);
 				}
 			}
-			vy = -0.2f;
+			vy = -MARIO_JUMP_SPEED_Y;
 			isJump = 1;
 		}
 

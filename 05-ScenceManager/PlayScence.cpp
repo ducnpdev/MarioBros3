@@ -295,7 +295,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	case OBJECT_PIECE_BRICK:
 		obj = new CPieceBrick();
-		for (int i = 0; i < 16; i++)
+		for (int i = 0; i < ITEM_PIECE_BRICK_TOTAL; i++)
 		{
 			if (pieceBrick[i] == NULL)
 			{
@@ -765,7 +765,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 void CPlayScene::CreatePieceBrick(float x, float y, DWORD t)
 {
 	int count = 0;
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < ITEM_PIECE_BRICK_RENDER; i++)
 	{
 		if (pieceBrick[i]->GetState() == 0 && count < 4)
 		{

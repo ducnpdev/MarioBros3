@@ -5,6 +5,10 @@ void CPieceBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt);
 	y += vy * dt;
 	x += vx * dt;
+	if (state == STATE_PIECE_BRICK_DISPLAY && GetTickCount64() - timeDisplay > STATE_PIECE_BRICK_CHANGE_DIRECTION)
+	{
+		if (vy < 0) vy = -vy;
+	}
 	if (state == STATE_PIECE_BRICK_DISPLAY && GetTickCount64() - timeDisplay > STATE_PIECE_BRICK_HIDEN_TIME)
 	{
 		SetState(STATE_PIECE_BRICK_HIDEN);

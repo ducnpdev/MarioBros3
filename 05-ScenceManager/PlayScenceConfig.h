@@ -1,4 +1,6 @@
 #pragma once
+#define ITEM_PIECE_BRICK_TOTAL 16
+#define ITEM_PIECE_BRICK_RENDER 8
 
 // *** playsecene ***
 #define SCENE_SECTION_UNKNOWN -1

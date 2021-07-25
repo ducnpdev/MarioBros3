@@ -1,5 +1,5 @@
 [SETTINGS]
-start	1
+start	3
 #scene list
 [SCENES]
 0	filetxt/worldmap.txt

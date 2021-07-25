@@ -2,7 +2,8 @@
 #include "GameObject.h"
 #define STATE_PIECE_BRICK_HIDEN			0
 #define STATE_PIECE_BRICK_DISPLAY		1
-#define STATE_PIECE_BRICK_HIDEN_TIME	400
+#define STATE_PIECE_BRICK_HIDEN_TIME	500
+#define STATE_PIECE_BRICK_CHANGE_DIRECTION	400
 
 class CPieceBrick : public CGameObject
 {
