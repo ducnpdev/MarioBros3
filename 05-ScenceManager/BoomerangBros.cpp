@@ -71,10 +71,8 @@ void CBoomerangBro::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (!isBoomerangBrosShoot) {
 				for (int i = 0; i < BOOMERANG_AMOUNT; i++)
 				{
-					DebugOut(L"boomerang \n");
 					if (boomerang[i]->GetState() == STATE_BOOMERANG_HIDEN)
 					{
-						DebugOut(L"boomerang  11 \n");
 						isBoomerangBrosShoot = true;
 						if (isBoomerangBrosRight)
 						{

@@ -130,5 +130,6 @@ public:
 	void SetNotEffectReborn(DWORD time) { timeNotEffect = time; }
 
 	void CollisionWithBrick(LPCOLLISIONEVENT e);
+	void CollisionWithMusic(LPCOLLISIONEVENT e);
 
 };

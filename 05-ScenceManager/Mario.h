@@ -87,6 +87,7 @@ class CMario : public  CCollision
 
 	bool isRenderMusic = false;
 	DWORD timeMarioAcceptScene3_1;
+	bool isMarioNotJump = false;
 
 public: 
 
@@ -169,7 +170,9 @@ public:
 
 	bool GetMarioIsStandingFloor() { return isStandingFloor; }
 	void SetMarioIsStandingFloor(bool stading) { isStandingFloor = stading; }
-
+	
+	bool GetMarioNotJump() { return isMarioNotJump; }
+	void SetMarioNotJump(bool isJump) { isMarioNotJump = isJump; }
 
 	bool GetMarioIsRenderMusic() { return isRenderMusic; }
 	void SetMarioIsRenderMusic(bool accpe) { isRenderMusic = accpe; }
@@ -237,6 +240,9 @@ public:
 	void CreateListScore(CListScore* s);
 	void DisplayListScore(int s, float x, float y, DWORD t);
 	void CreateTail(CTail* t);
+
+	void ShipCollision();
+
 
 
 	// func sub handler

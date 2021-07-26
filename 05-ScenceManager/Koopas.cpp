@@ -12,6 +12,7 @@
 #include "WoodBlock.h"
 #include "BoomerangBros.h"
 #include "Portal.h"
+#include "Music.h"
 
 CKoopas::CKoopas(int type)
 {
@@ -102,6 +103,9 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CGoomba*>(e->obj)) {
 			}
 
+			if (dynamic_cast<CMusic*>(e->obj)) {
+			}
+
 			if (dynamic_cast<CBoomerangBro*>(e->obj))
 			{
 				CBoomerangBro* boomerangBro = dynamic_cast<CBoomerangBro*>(e->obj);
@@ -151,7 +155,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						dynamic_cast<CQuestionBrick*>(e->obj) || 
 						dynamic_cast<CBorderRoad*>(e->obj) ||
 						dynamic_cast<CBrick*>(e->obj) ||
-						dynamic_cast<CWoodBlock*>(e->obj))
+						dynamic_cast<CWoodBlock*>(e->obj) ||
+						dynamic_cast<CMusic*>(e->obj))  
 					{
 						// colision right
 						if (e->nx > 0) {
@@ -175,8 +180,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (e->nx < 0) {
 						if ( dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CPipe*>(e->obj) ||
 							dynamic_cast<CBorderRoad*>(e->obj) ||
-							dynamic_cast<CWoodBlock*>(e->obj)
-							)
+							dynamic_cast<CWoodBlock*>(e->obj) ||
+							dynamic_cast<CMusic*>(e->obj))
 						{
 							if (dynamic_cast<CBrick*>(e->obj))
 							{
@@ -454,6 +459,14 @@ void CKoopas::CollisionWithBrick(LPCOLLISIONEVENT e)
 				SetState(KOOPAS_STATE_WALKING_LEFT);
 			}
 		}
+	}
+}
+
+void CKoopas::CollisionWithMusic(LPCOLLISIONEVENT e)
+{
+	CMusic* music = dynamic_cast<CMusic*>(e->obj);
+	if (typeKoopa == KOOPA_COLOR_RED) {
+		
 	}
 }
 

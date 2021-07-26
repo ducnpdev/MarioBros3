@@ -14,17 +14,20 @@ CBrick::CBrick(float _originX, float _originY, int _type)
 	originX = _originX;
 	originY = _originY;
 	type = _type;
+	timeBack = (DWORD)0.0f;
+	timeAttach = (DWORD)0.0f;
 }
 
 void CBrick::Render()
 {
 	if (state == BRICK_STATE_HIDEN) return;
-	animation_set->at(0)->Render(x, y);
+	int ani = 0;
+	if (state == BRICK_STATE_NEED_CRETE) ani = 1;
+	animation_set->at(ani)->Render(x, y);
 }
 
 void CBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	// DebugOut(L"state birck %d \n", state);
 	if (state == BRICK_STATE_HIDEN || state == BRICK_STATE_DESTROY) return;
 	l = x;
 	t = y;
@@ -34,55 +37,119 @@ void CBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	// DebugOut(L"mario with brick \n");
+	if (state == BRICK_STATE_NEED_CRETE) return;
+
+	if (state == BRICK_STATE_FLY_UP && GetTickCount64() - timeBack > 70) {
+		SetState(BRICK_STATE_FLY_DOWN);
+	}
+	if ( y > originY) {
+		y = originY;
+		SetState(BRICK_STATE_NORMAL);
+	}
+
+	/*if (state == BRICK_STATE_FLY_UP && originY - y < 5) {
+		SetState(BRICK_STATE_FLY_DOWN);
+	}*/
+
+	CGameObject::Update(dt);
+	y += vy * dt;
+	x += vx * dt;
+
 	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetMarioIsFight() && state == BRICK_STATE_NORMAL)
 	{
-		// xử lí va chạm với gạch trong khoảng cách so với Y của mario
-		if (abs(mario->y - y) > DISTANCE_BRICK_WITH_MARIO_MIN && abs(mario->y - y) < DISTANCE_BRICK_WITH_MARIO_MAX)
-		{
-			// xử lí va chạm với gạch trong khoảng cách so với X của mario
-			if (mario->x - x < 0 && abs(x - mario->x) <= GOOMBA_AUTO_DEAD_ZONE)
+			// xử lí va chạm với gạch trong khoảng cách so với Y của mario
+			if (abs(mario->y - y) > DISTANCE_BRICK_WITH_MARIO_MIN && abs(mario->y - y) < DISTANCE_BRICK_WITH_MARIO_MAX)
 			{
-				SetState(BRICK_STATE_HIDEN);
-				((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
-			}
-			else
-			{
-				if (abs(mario->x - x) <= GOOMBA_AUTO_DEAD_ZONE)
+				bool temcheck = false;
+				// xử lí va chạm với gạch trong khoảng cách so với X của mario
+				if (mario->x - x < 0 && abs(x - mario->x) <= GOOMBA_AUTO_DEAD_ZONE)
 				{
-					SetState(BRICK_STATE_HIDEN);
-					((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+					if (GetTickCount64() - timeAttach > GOOMBA_TIME_ATTACHT) {
+						timeAttach = (DWORD)GetTickCount64();
+						if (type == BRICK_TYPE_HAVE_ITEM) { 
+							temcheck = true;
+						}else{
+							SetState(BRICK_STATE_HIDEN);
+							((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+						}
+					}
 				}
-
-			}
+				else
+				{
+					if (abs(mario->x - x) <= GOOMBA_AUTO_DEAD_ZONE)
+					{
+						if (GetTickCount64() - timeAttach > GOOMBA_TIME_ATTACHT) {
+							timeAttach = (DWORD)GetTickCount64();
+							if (type == BRICK_TYPE_HAVE_ITEM) {
+								temcheck = true;
+							}
+							else {
+								SetState(BRICK_STATE_HIDEN);
+								((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+							}	
+						}
+					}
+				}
+				if (temcheck) HaveItem();
+				temcheck = false;
+			
 		}
 	}
 
-	
 	if (state == BRICK_STATE_310) {
+		/*if (type == BRICK_TYPE_NOT_ITEM) {
+			if (mario->GetMarioLevel() == LEVEL_MARIO_SMAIL) {
+				SetState(BRICK_STATE_FLY_UP);
+				timeBack = (DWORD)GetTickCount64();
+				mario->SetMarioNotJump(true);
+			}
+			else {
+				float mariovx, mariovy;
+				mario->GetSpeed(mariovx, mariovy);
+				mario->SetSpeed(mariovx, 0.01f);
+				SetState(BRICK_STATE_HIDEN);
+				((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+			}
+		}*/
+
 		for (int i = 0; i < ITEM_AMOUNT; i++)
 		{
 			SetState(BRICK_STATE_320);
-			if (type == 1) {
+			if (type == BRICK_TYPE_HAVE_ITEM) {
+				mario->SetMarioNotJump(true);
+
 				if (item[i] != NULL) {
 					item[i]->SetPosition(originX, originY);
 					item[i]->SetState(COIN_STATE_MOVING_OF_BRICK);
 					item[i] = NULL;
 					break;
 				}
-				if (i == ITEM_AMOUNT-1 && item[i] == NULL) {
-					SetState(BRICK_STATE_HIDEN);
+				if (i == ITEM_AMOUNT - 1 && item[i] == NULL) {
+					SetState(BRICK_STATE_NEED_CRETE);
 					((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
 					mario->SetMarioIsRenderMusic(true);
+					break;
 				}
 			}
-			if (type == 0) {
-				float mariovx, mariovy;
+			if (type == BRICK_TYPE_NOT_ITEM) {
+				mario->SetMarioNotJump(true);
+				if ( mario->GetMarioLevel() == LEVEL_MARIO_SMAIL ) {
+					if (GetTickCount64() - timeBack > 200) {
+						SetState(BRICK_STATE_FLY_UP);
+						timeBack = (DWORD)GetTickCount64();
+					}
+					break;
+				}
+
+				else {
+					float mariovx, mariovy;
 					mario->GetSpeed(mariovx, mariovy);
 					mario->SetSpeed(mariovx, 0.01f);
 					SetState(BRICK_STATE_HIDEN);
-					((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+					// ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+					break;
+				}
 			}
 		
 		}
@@ -95,6 +162,24 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CBrick::SetState(int state)
 {
 	CGameObject::SetState(state);
+	switch (state)
+	{
+	case BRICK_STATE_FLY_UP:
+		DebugOut(L"222 \n");
+
+		vy = -0.2f;
+		break;
+	case BRICK_STATE_FLY_DOWN:
+		vy = 0.2f;
+		break;
+	case BRICK_STATE_NORMAL:
+
+		vx = 0.0f;
+		vy = 0.0f;
+		break;
+	default:
+		break;
+	}
 }
 
 void CBrick::AddItemBrick(CGameObject* obj)
@@ -124,4 +209,26 @@ CGameObject* CBrick::GetItem()
 CGameObject* CBrick::GetItemLatest()
 {
 	return item[9];
+}
+
+void CBrick::HaveItem() {
+	if (type == BRICK_TYPE_HAVE_ITEM) {
+		CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+			for (int i = 0; i < ITEM_AMOUNT; i++)
+			{
+				DebugOut(L"aaaaaaaa\n");
+				if (item[i] != NULL) {
+					item[i]->SetPosition(originX, originY);
+					item[i]->SetState(COIN_STATE_MOVING_OF_BRICK);
+					item[i] = NULL;
+					break;
+				}
+				if (i == ITEM_AMOUNT - 1 && item[i] == NULL) {
+					SetState(BRICK_STATE_NEED_CRETE);
+					((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+					mario->SetMarioIsRenderMusic(true);
+					break;
+				}
+			}
+		}
 }

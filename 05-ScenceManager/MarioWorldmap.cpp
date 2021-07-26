@@ -187,6 +187,9 @@ void CMarioWorldmap::GetBoundingBox(float& l, float& t, float& r, float& b)
 }
 void CMarioWorldmap::PushNode(CNode* node)
 {
+	if (node == NULL) {
+		return;
+	}
 	nodes.push_back(node);
 }
 

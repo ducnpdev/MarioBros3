@@ -739,7 +739,10 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 	
 	if (game->IsKeyDown(DIK_S)) {
-		if (GetTickCount64() - mario->GetTimeJumpStart() < 250 )
+		// GetMarioNotJump();
+		if (GetTickCount64() - mario->GetTimeJumpStart() < 250 
+			 && !mario->GetMarioNotJump()
+			)
 		{
 			// && mario->vy <= 0
 			if (mario->GetMarioSpeechJump() < 0.2) {
