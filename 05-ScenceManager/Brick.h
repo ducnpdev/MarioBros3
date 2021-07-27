@@ -54,7 +54,7 @@ public:
 	// void SetState(int state) { CGameObject::SetState(state); }
 	void SetItem();
 	int GetBrickType() { return type; };
-void	HaveItem();
+	void HaveItem();
 	CGameObject* GetItem();
 	CGameObject* GetItemLatest();
 };

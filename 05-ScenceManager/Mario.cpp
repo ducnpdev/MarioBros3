@@ -1307,7 +1307,7 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 			// vy = -MARIO_JUMP_SPEED_Y;
 		}
 		else if (koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_DOWN || koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_UP) {
-			if ((x + round(GetBBoxWidthMario() + 1)) < (koopa->x + round(KOOPAS_BBOX_WIDTH / 2))) {
+			if ((x + round(GetBBoxWidthMario() + 1)) <= (koopa->x + round(KOOPAS_BBOX_WIDTH / 2))) {
 				koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
 			}
 			else {

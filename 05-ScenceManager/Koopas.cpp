@@ -38,16 +38,36 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 		bottom = y + KOOPAS_BBOX_HEIGHT_SPIN;
 	}
 	else {
-		right = x + 15;
+		right = x + KOOPAS_BBOX_WIDTH_MEDIUM;
 		bottom = y + KOOPAS_BBOX_HEIGHT;
 	}
+}
+
+float CKoopas::GetHeightKoopas() {
+	float height = KOOPAS_BBOX_HEIGHT;
+	if (state == KOOPAS_STATE_SPIN_RIGHT || state == KOOPAS_STATE_SPIN_LEFT) {
+		height = KOOPAS_BBOX_HEIGHT_SPIN;
+	}
+	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN || state == KOOPAS_STATE_TORTOISESHELL_UP || state == KOOPAS_STATE_REBORN) {
+		height = KOOPAS_BBOX_HEIGHT_REBORN;
+	}
+	return height - 5.0f;;
 }
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (hidenStateKoopas) return;
 	CGameObject::Update(dt, coObjects);
-	if (state != KOOPAS_STATE_TAKEN) vy += KOOPA_GRAVITY * dt;
+	if (state != KOOPAS_STATE_TAKEN) {
+		if (state == KOOPAS_STATE_SPIN_LEFT || state == KOOPAS_STATE_SPIN_RIGHT) {
+			vy += KOOPA_GRAVITY_BIG * dt;
+		}
+		else {
+			vy += KOOPA_GRAVITY * dt;
+		}
+		//vy += KOOPA_GRAVITY * dt;
+
+	}
 	handlerDeflect();
 	handleReborn();
 
@@ -154,23 +174,26 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (dynamic_cast<CPipe*>(e->obj) || 
 						dynamic_cast<CQuestionBrick*>(e->obj) || 
 						dynamic_cast<CBorderRoad*>(e->obj) ||
-						dynamic_cast<CBrick*>(e->obj) ||
+						// dynamic_cast<CBrick*>(e->obj) ||
 						dynamic_cast<CWoodBlock*>(e->obj) ||
 						dynamic_cast<CMusic*>(e->obj))  
 					{
+						DebugOut(L"CMusic %f \n", vy);
 						// colision right
 						if (e->nx > 0) {
-							if (dynamic_cast<CBrick*>(e->obj))
-							{
-								CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-								// Bắt đầu va chạm
-								if (brick->y - (y + 16) < 0)
-								{
-									((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
-									brick->SetState(BRICK_STATE_HIDEN);
-								}
+							DebugOut(L"CMusic  11111 \n");
 
-							}
+							//if (dynamic_cast<CBrick*>(e->obj))
+							//{
+							//	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+							//	// Bắt đầu va chạm
+							//	if (brick->y - (y + 16) < 0)
+							//	{
+							//		((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+							//		brick->SetState(BRICK_STATE_HIDEN);
+							//	}
+
+							//}
 							SetState(KOOPAS_STATE_SPIN_RIGHT);
 						}
 					}
@@ -178,18 +201,19 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else if (state == KOOPAS_STATE_SPIN_RIGHT)
 				{
 					if (e->nx < 0) {
-						if ( dynamic_cast<CBrick*>(e->obj) || dynamic_cast<CPipe*>(e->obj) ||
+						if (  dynamic_cast<CPipe*>(e->obj) ||
+						//	dynamic_cast<CBrick*>(e->obj) ||
 							dynamic_cast<CBorderRoad*>(e->obj) ||
 							dynamic_cast<CWoodBlock*>(e->obj) ||
 							dynamic_cast<CMusic*>(e->obj))
 						{
-							if (dynamic_cast<CBrick*>(e->obj))
-							{
-								CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-								brick->SetState(BRICK_STATE_HIDEN);
-								((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
-								 // SetState(KOOPAS_STATE_SPIN_LEFT);
-							}
+							////if (dynamic_cast<CBrick*>(e->obj))
+							////{
+							////	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+							////	brick->SetState(BRICK_STATE_HIDEN);
+							////	((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+							////	 // SetState(KOOPAS_STATE_SPIN_LEFT);
+							////}
 
 							SetState(KOOPAS_STATE_SPIN_LEFT);
 						}
@@ -278,11 +302,13 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_SPIN_RIGHT:
 		stateKoopaTortoiSeShell = false;
 		vx = KOOPAS_SPINNING_SPEED;
+	//	vx = 0.025f;
 	///	vx = 0.075f;
 		break;
 	case KOOPAS_STATE_SPIN_LEFT:
 		stateKoopaTortoiSeShell = false;
-		vx = -KOOPAS_SPINNING_SPEED;
+		 vx = -KOOPAS_SPINNING_SPEED;
+		// vx = -0.025f;
 		break;
 	case KOOPAS_STATE_HIDEN:
 		stateKoopaTortoiSeShell = false;
@@ -434,11 +460,51 @@ void CKoopas::handleReborn()
 
 void CKoopas::CollisionWithBrick(LPCOLLISIONEVENT e)
 {
-	CBrick* music = dynamic_cast<CBrick*>(e->obj);
+	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
 	if (typeKoopa == KOOPA_COLOR_RED) {
-		/*	if (state == KOOPAS_STATE_WALKING_LEFT || state == KOOPAS_STATE_WALKING_RIGHT)
-			{
-				if (e->ny == 0) {
+		if (state == KOOPAS_STATE_SPIN_LEFT) {
+			if (e->nx > 0) {
+				DebugOut(L"spin left \n");
+				/*DebugOut(L"Y of Koopas %f \n", y);
+				DebugOut(L"Y of Brick %f \n", brick->y);
+				DebugOut(L"height %f \n", y + GetHeightKoopas());*/
+				if ((y + GetHeightKoopas()) > brick->y) {
+					DebugOut(L"spin left exute\n");
+
+					if (brick->y - (y + 16) < 0)
+					{
+						((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+						brick->SetState(BRICK_STATE_HIDEN);
+						SetState(KOOPAS_STATE_SPIN_RIGHT);
+					}
+				}
+			}
+		}
+		
+		if (state == KOOPAS_STATE_SPIN_RIGHT) {
+			if (e->nx < 0) {
+			/*	DebugOut(L"spin right \n");
+				DebugOut(L"Y of Koopas %f \n", y);
+				DebugOut(L"Y of Brick %f \n", brick->y);
+				DebugOut(L"height %f \n", y + GetHeightKoopas());*/
+				if ((y + GetHeightKoopas()) > brick->y) {
+				//	DebugOut(L"spin right exute\n");
+					brick->SetState(BRICK_STATE_HIDEN);
+					((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+					SetState(KOOPAS_STATE_SPIN_LEFT);
+				}
+			}
+		}
+
+
+		if (state == KOOPAS_STATE_WALKING_LEFT || state == KOOPAS_STATE_WALKING_RIGHT)
+		{
+			float tempX, tempY;
+			brick->GetPosition(tempX,tempY);
+			if (e->ny == 0) {
+		
+				if ((y + GetHeightKoopas()) > tempY) {
 					if (e->nx > 0) {
 						SetState(KOOPAS_STATE_WALKING_RIGHT);
 					}
@@ -446,7 +512,8 @@ void CKoopas::CollisionWithBrick(LPCOLLISIONEVENT e)
 						SetState(KOOPAS_STATE_WALKING_LEFT);
 					}
 				}
-			}*/
+			}
+		}
 		// TODO
 	}
 	if (typeKoopa == KOOPA_GREEN_FORM) {
@@ -457,6 +524,25 @@ void CKoopas::CollisionWithBrick(LPCOLLISIONEVENT e)
 			}
 			else if (e->nx < 0) {
 				SetState(KOOPAS_STATE_WALKING_LEFT);
+			}
+		}
+		if (state == KOOPAS_STATE_SPIN_LEFT) {
+			if (e->nx > 0) {
+				if (brick->y - (y + 16) < 0)
+				{
+					((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+					brick->SetState(BRICK_STATE_HIDEN);
+					SetState(KOOPAS_STATE_SPIN_RIGHT);
+				}
+			}
+		}
+
+		if (state == KOOPAS_STATE_SPIN_RIGHT) {
+			if (e->nx < 0) {
+				DebugOut(L"spin right exute\n");
+				brick->SetState(BRICK_STATE_HIDEN);
+				((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+				SetState(KOOPAS_STATE_SPIN_LEFT);
 			}
 		}
 	}

@@ -11,7 +11,7 @@
 #define KOOPAS_WALKING_SPEED 0.03f;
 #define KOOPAS_SPINNING_SPEED 0.25f;
 #define KOOPA_GRAVITY									0.001f
-#define KOOPA_GRAVITY_BIG									0.015f
+#define KOOPA_GRAVITY_BIG									0.0015f
 #define KOOPAS_FLY_INTERVAL 0.3f;
 // B box
 #define KOOPAS_BBOX_WIDTH 16
@@ -131,5 +131,7 @@ public:
 
 	void CollisionWithBrick(LPCOLLISIONEVENT e);
 	void CollisionWithMusic(LPCOLLISIONEVENT e);
+
+	float GetHeightKoopas();
 
 };

@@ -710,7 +710,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			else {
 				if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL) {
 					//if (mario->GetState() == STATE_MARIO_WALKING_RIGHT) {
-					DebugOut(L"WALKING_LEFT %d \n", mario->getMarioDirection());
+				//	DebugOut(L"WALKING_LEFT %d \n", mario->getMarioDirection());
 					if (mario->getMarioDirection() == -1) {
 						float marioX, marioY;
 						mario->GetPosition(marioX, marioY);
@@ -734,7 +734,7 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			}else {
 				if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL) {
 					//if (mario->GetState() == STATE_MARIO_WALKING_RIGHT) {
-						DebugOut(L"WALKING_LEFT %d \n", mario->getMarioDirection());
+				//		DebugOut(L"WALKING_LEFT %d \n", mario->getMarioDirection());
 						if (mario->getMarioDirection() == 1) {
 							float marioX, marioY;
 							mario->GetPosition(marioX, marioY);
