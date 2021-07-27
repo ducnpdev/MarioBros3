@@ -662,7 +662,6 @@ void CPlayScenceKeyHandler::OnKeyUp(int KeyCode)
 	{
 	case DIK_DOWN: {
 		// if(mario->GetMarioIsStateSitDown()) {
-			DebugOut(L"111111 \n");
 			if (mario->GetMarioLevel() != LEVEL_MARIO_SMAIL) {
 				mario->y -= NUMBER_AFTER_MARIO_SIT_DOWN;
 				mario->SetMarioIsStateSitDown(false);
@@ -700,17 +699,25 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 	}
 
 	if (game->IsKeyDown(DIK_RIGHT) && !game->IsKeyDown(DIK_DOWN) && !game->IsKeyDown(DIK_LEFT)) {
-		// DebugOut(L"222222 \n");
 		mario->SetTimeWalkingRight((DWORD)GetTickCount64());
 		if (GetTickCount64() - mario->GetTimeWalkingLeft() > 200) {
 			if (game->IsKeyDown(DIK_A) || game->IsKeyDown(DIK_A) && game->IsKeyDown(DIK_S)) {
 				if (mario->GetMarioPower()) {
-					// DebugOut(L"DIK_RIGHT \n");
 					mario->SetState(STATE_MARIO_RUNNING_FAST_RIGHT);
 				}
 				else mario->SetState(STATE_MARIO_RUNNING_RIGHT);
 			}
 			else {
+				if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL) {
+					//if (mario->GetState() == STATE_MARIO_WALKING_RIGHT) {
+					DebugOut(L"WALKING_LEFT %d \n", mario->getMarioDirection());
+					if (mario->getMarioDirection() == -1) {
+						float marioX, marioY;
+						mario->GetPosition(marioX, marioY);
+						mario->SetPosition(marioX - 5, marioY);
+					}
+					//}
+				}
 				mario->SetState(STATE_MARIO_WALKING_RIGHT);
 			}
 		}
@@ -720,12 +727,21 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		
 	}
 	else if (game->IsKeyDown(DIK_LEFT) && !game->IsKeyDown(DIK_DOWN) && !game->IsKeyDown(DIK_RIGHT)) {
-		// DebugOut(L"3333 \n");
 		mario->SetTimeWalkingLeft((DWORD)GetTickCount64());
 		if (GetTickCount64() - mario->GetTimeWalkingRight() > 200) {
 			if(game->IsKeyDown(DIK_A) || game->IsKeyDown(DIK_A) && game->IsKeyDown(DIK_S)){
 				mario->SetState(STATE_MARIO_RUNNING_LEFT);
 			}else {
+				if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL) {
+					//if (mario->GetState() == STATE_MARIO_WALKING_RIGHT) {
+						DebugOut(L"WALKING_LEFT %d \n", mario->getMarioDirection());
+						if (mario->getMarioDirection() == 1) {
+							float marioX, marioY;
+							mario->GetPosition(marioX, marioY);
+							mario->SetPosition(marioX+ 7, marioY);
+						}
+					//}
+				}
 				mario->SetState(STATE_MARIO_WALKING_LEFT);
 			}
 		}

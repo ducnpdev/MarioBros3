@@ -486,7 +486,6 @@ void CKoopas::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLI
 	{
 		LPCOLLISIONEVENT c = coEvents[i];
 		if (dynamic_cast<CCoin*>(c->obj) || dynamic_cast<CPortal*>(c->obj)) {
-			// DebugOut(L"koopas collision coin \n");
 			continue;
 		}
 		// else
@@ -533,7 +532,6 @@ void CKoopas::RedirectY()
 			}
 		}
 		else {
-			// DebugOut(L"1111 \n");
 		}
 	}
 }

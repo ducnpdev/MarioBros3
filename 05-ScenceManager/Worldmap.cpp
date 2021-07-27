@@ -10,6 +10,7 @@
 #include "Animations.h"
 #include "GameObject.h"
 #include "BackgroundWorldmap.h"
+#include "All.h"
 
 CWorldMap::CWorldMap(int id, LPCWSTR filePath) 
 	: CScene(id, filePath)
@@ -361,13 +362,13 @@ void CWorldMapKeyHandler::OnKeyDown(int KeyCode)
 	// DebugOut(L"world map onKeyDown\n");
 	CGame* game = CGame::GetInstance();
 	CMarioWorldmap* marioWorldmap = ((CWorldMap*)scence)->GetPlayer();
-	if (game->IsKeyDown(DIK_X))
+	if (game->IsKeyDown(DIK_S))
 	{
-		if( marioWorldmap->GetTypeCurrentNode() == 3 ){
+		if( marioWorldmap->GetTypeCurrentNode() == SCENE_3 ){
 			//DebugOut(L"world map onKeyDown: DIK_X %d \n", marioWorldmap->GetTypeCurrentNode());
 			 CGame::GetInstance()->SwitchScene(marioWorldmap->GetTypeCurrentNode());
 		}
-		if (marioWorldmap->GetTypeCurrentNode() == 1)
+		if (marioWorldmap->GetTypeCurrentNode() == SCENE_1)
 			CGame::GetInstance()->SwitchScene(marioWorldmap->GetTypeCurrentNode());
 	}
 	else if (game->IsKeyDown(DIK_RIGHT) && !marioWorldmap->GetIsMoving()) {

@@ -46,6 +46,8 @@ CMario::CMario(float x, float y)
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+
+
 	CGameObject::Update(dt);
 	if (!marioStateDie) vy += 0.00038f * dt;
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -56,7 +58,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (state == STATE_MARIO_RUNNING_RIGHT || state == STATE_MARIO_RUNNING_LEFT) {
 	}
-	DebugOut(L"time %f  \n", timeMarioJumpStart);
 
 	// turn off collision when die 
 	if (state!=STATE_MARIO_DIE)
@@ -113,6 +114,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (dynamic_cast<CWoodBlock*>(e->obj)) {
 					isJump = 0;
 					CollisionWithWoodBlock(e);
+					marioSpeechJump = 0.0f;
 				}
 				if (dynamic_cast<CBlueBrick*>(e->obj)) {
 					isJump = 0;
@@ -208,6 +210,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			}
 		
 			if (dynamic_cast<CQuestionBrick*>(e->obj)) {
+				marioSpeechJump = 0.0f;
 				isJump = 0;
 				CQuestionBrick* questionBrick = dynamic_cast<CQuestionBrick*>(e->obj);
 
@@ -291,6 +294,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				CollisionWithBrick(e);
 			}
 			if (dynamic_cast<CPipe*>(e->obj)) {
+				marioSpeechJump = 0.0f;
 				CollisionWithPipe(e);
 				isJump = 0;
 			}
@@ -376,13 +380,12 @@ void CMario::UpdateSub(vector<LPGAMEOBJECT>* coObjects)
 
 			if (dynamic_cast<CMusic*>(c))
 			{
+				marioSpeechJump = 0.0f;
 				/*CMusic* music = dynamic_cast<CMusic*>(c);
 				if (isRenderMusic) {
-					DebugOut(L"isRenderMusic true\n");
 				}
 
 				if (!isRenderMusic) {
-					DebugOut(L"isRenderMusic false \n");
 				}*/
 
 				//CMusic* music = dynamic_cast<CMusic*>(c);
@@ -437,7 +440,6 @@ void CMario::SetState(int state)
 		break;
 	case STATE_MARIO_WALKING_RIGHT:
 		isStateSitDown = false;
-
 		autoChangeAni = false;
 		isRunning = false;
 		isJump = 0;
@@ -450,7 +452,6 @@ void CMario::SetState(int state)
 		break;
 	case STATE_MARIO_WALKING_LEFT: 
 		isStateSitDown = false;
-
 		isJump = 0;
 		isTurn = false;
 		isKick = false;
@@ -796,7 +797,6 @@ void CMario::isCollidingObject(vector<LPGAMEOBJECT>* coObjects, vector<LPGAMEOBJ
 				otherT <= objectB &&
 				otherB >= objectT)
 			{
-			//	DebugOut(L"sdfsdf");
 				colidingObjects.push_back(coObjects->at(i));
 			}
 		}
@@ -1151,7 +1151,6 @@ void CMario::CreateTail(CTail* t)
 void CMario::ShipCollision()
 {
 	if (untouchable == 0) return;
-	DebugOut(L"ship collisoin \n");
 	float marioX, marioY;
 	GetPosition(marioX, marioY);
 	SetPosition(marioX, marioY );
@@ -1221,16 +1220,13 @@ void CMario::handlerMarioDownPipe()
 	}
 	else
 	{
-	//	DebugOut(L"111111 \n");
 		marioStatePipeDown = false;
 		SetState(STATE_MARIO_IDLE);
 		int sceneID =	CGame::GetInstance()->GetScene();
 		if (sceneID == SCENE_1) {
-	//		DebugOut(L"2222222 \n");
 			SetPosition(MARIO_PIPE_DOWN_POS_X_4, MARIO_PIPE_DOWN_POS_Y_4);
 		}
 		if (sceneID == SCENE_3) {
-	//		DebugOut(L"333333  \n");
 			isMarioScene3Top = false;
 			SetPosition(MARIO_PIPE_DOWN_POS_X_SCENE_3, MARIO_PIPE_DOWN_POS_Y_SCENE_3);
 		}
@@ -1293,24 +1289,18 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 	}
 	// collision tren koopas
 	else if (e->ny < 0) {
-		DebugOut(L"mario collisoin koopas o tren \n");
 		if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN &&
 			koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_UP)
 		{
-			DebugOut(L"mario collisoin koopas o tren 11 \n");
-
 			DisplayListScore(MARIO_SCORE_100, koopa->x, koopa->y, (DWORD)GetTickCount64());
 			if (koopa->GetTypeKoopa() == PARAKOOPA_COLOR_GREEN) {
 				koopa->SetTypeKoopa(KOOPA_GREEN_FORM);
-				DebugOut(L"mario collisoin koopas o tren 22 \n");
 			}
 
 			else if (koopa->getIsDown()) {
-				DebugOut(L"mario collisoin koopas o tren 33 \n");
 				koopa->SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
 			}
 			else {
-				DebugOut(L"mario collisoin koopas o tren 44 \n");
 				koopa->SetState(KOOPAS_STATE_TORTOISESHELL_UP);
 			}
 			 vy = -0.2f;
@@ -1374,7 +1364,6 @@ void CMario::CollisionWithPipe(LPCOLLISIONEVENT e)
 {
 	CPipe* pipe = dynamic_cast<CPipe*>(e->obj);
 	if (e->ny != 0 && isStateSitDown && pipe->GetType() == PIPE_STATE_UP_DOWN) {
-	//	DebugOut(L" xxx \n");
 		if (!marioStatePipeDown) {
 			SetState(STATE_MARIO_PIPE_DOWN);
 			timeMarioPipeDown = (DWORD)GetTickCount64();

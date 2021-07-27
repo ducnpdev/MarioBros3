@@ -127,7 +127,7 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 				if (i == ITEM_AMOUNT - 1 && item[i] == NULL) {
 					SetState(BRICK_STATE_NEED_CRETE);
-					((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+				//	((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
 					mario->SetMarioIsRenderMusic(true);
 					break;
 				}
@@ -147,7 +147,7 @@ void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					mario->GetSpeed(mariovx, mariovy);
 					mario->SetSpeed(mariovx, 0.01f);
 					SetState(BRICK_STATE_HIDEN);
-					// ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
+					((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->CreatePieceBrick(x, y, (DWORD)GetTickCount64());
 					break;
 				}
 			}
@@ -165,8 +165,6 @@ void CBrick::SetState(int state)
 	switch (state)
 	{
 	case BRICK_STATE_FLY_UP:
-		DebugOut(L"222 \n");
-
 		vy = -0.2f;
 		break;
 	case BRICK_STATE_FLY_DOWN:
@@ -216,7 +214,6 @@ void CBrick::HaveItem() {
 		CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 			for (int i = 0; i < ITEM_AMOUNT; i++)
 			{
-				DebugOut(L"aaaaaaaa\n");
 				if (item[i] != NULL) {
 					item[i]->SetPosition(originX, originY);
 					item[i]->SetState(COIN_STATE_MOVING_OF_BRICK);
