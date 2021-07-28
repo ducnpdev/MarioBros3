@@ -1,6 +1,9 @@
 #include "GoldCard.h"
 #include "Game.h"
 #include "Utils.h"
+#include "All.h"
+#include "PlayScence.h"
+#include "MarioConfig.h"
 
 CGoalCard::CGoalCard(CCardText* c)
 {
@@ -38,11 +41,15 @@ void CGoalCard::Update(DWORD dt, vector<LPGAMEOBJECT>* colliable_objects)
 	}
 	if (isHiden)
 	{
+		CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 		if (GetTickCount64() - hiden_start > GOALCARD_SWITCH_TIME)
 		{
+			mario->SetMarioPreEndScene(false);
 			CGame::GetInstance()->SetCamPos(0, 0);
-			CGame::GetInstance()->SwitchScene(0);
+			CGame::GetInstance()->SwitchScene(SCENE_0);
 			isHiden = 0;
+		}else {
+			mario->SetMarioPreEndScene(true);
 		}
 	}
 }

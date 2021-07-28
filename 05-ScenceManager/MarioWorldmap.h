@@ -30,6 +30,9 @@ class CMarioWorldmap : public CGameObject
 
 public:
 	CMarioWorldmap();
+	~CMarioWorldmap() {
+		DebugOut(L"Unload CMarioOverworld \n");
+	};
 	void SetState(int state);
 	bool GetIsMoving();
 	int GetTypeCurrentNode();

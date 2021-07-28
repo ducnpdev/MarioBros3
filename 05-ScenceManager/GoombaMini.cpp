@@ -34,6 +34,14 @@ void CGoombaMini::handleCollisionMario()
 	if (mario->GetMarioLevel() == 1) {
 		y -= mario->GetBBoxHeightMario() / 2;
 	}
+
+	if (mario->GetMarioHaveGoompaMini()) {
+		if (GetTickCount64() - mario->GetTimeMarioHaveGoompaMini() > GOOMBA_MINI_TIME_IN_MARIO) {
+			mario->SetMarioHaveGoompaMini(false);
+			SetState(STATE_GOOMBA_MINI_HIDEN);
+			checkCollisionMario = true;
+		}
+	}
 }
 
 void CGoombaMini::handleChangeDirection()

@@ -88,8 +88,32 @@ class CMario : public  CCollision
 	bool isRenderMusic = false;
 	DWORD timeMarioAcceptScene3_1;
 	bool isMarioNotJump = false;
+	bool checkUpdateUpdatePipe = false;
+
+	bool setDeadWhenPipeUpDown = false;
+
+	bool marioPreEndScene = false;
+
+	bool marioHaveGoompaMini = false;
+	DWORD timeMarioHaveGoompaMini;
 
 public: 
+
+	void HandleDeleteGoombaMIni() {
+		if (!marioHaveGoompaMini) return;
+		if (GetTickCount64() - timeMarioHaveGoompaMini > 5000) {
+			marioHaveGoompaMini = false;
+		}
+	}
+
+	DWORD GetTimeMarioHaveGoompaMini() { return timeMarioHaveGoompaMini; }
+	void SetTimeMarioHaveGoompaMini(DWORD time) { timeMarioHaveGoompaMini = time; }
+
+	bool GetMarioHaveGoompaMini() { return marioHaveGoompaMini; }
+	void SetMarioHaveGoompaMini(bool bol) { marioHaveGoompaMini = bol; }
+
+	bool GetMarioPreEndScene() { return marioPreEndScene; }
+	void SetMarioPreEndScene(bool bol) { marioPreEndScene = bol; }
 
 	CMario(float x = 0.0f, float y = 0.0f);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *colliable_objects = NULL);

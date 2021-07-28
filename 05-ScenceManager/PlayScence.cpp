@@ -135,7 +135,7 @@ void CPlayScene::_ParseSection_ANIMATION_SETS(string line)
 
 	CAnimations *animations = CAnimations::GetInstance();
 
-	for (int i = 1; i < tokens.size(); i++)
+	for (UINT i = 1; i < tokens.size(); i++)
 	{
 		int ani_id = atoi(tokens[i].c_str());
 		
@@ -157,8 +157,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
-	float y = atof(tokens[2].c_str());
-
+	float y = (atof(tokens[2].c_str()));
+	
 	int ani_set_id = atoi(tokens[3].c_str());
 
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
@@ -576,9 +576,9 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 		mario->marioSetUpDownLevel(LEVEL_MARIO_FIRE);
 		break;
 	case DIK_5:
-		if(((CPlayScene*)scence)->GetSceneID() == SCENE_1 ){
+		if(((CPlayScene*)scence)->GetSceneID() == SCENE_1 && mario->GetMarioLevel() == LEVEL_MARIO_TAIL){
 			mario->SetMarioAcceptFlyCamera(true);
-			mario->SetPosition(2250.0f, 20.0f);
+			mario->SetPosition(2255.0f, 20.0f);
 		}
 		if (((CPlayScene*)scence)->GetSceneID() == SCENE_3) {
 			mario->SetMarioScene3Top(true);
@@ -709,14 +709,11 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 			}
 			else {
 				if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL) {
-					//if (mario->GetState() == STATE_MARIO_WALKING_RIGHT) {
-				//	DebugOut(L"WALKING_LEFT %d \n", mario->getMarioDirection());
 					if (mario->getMarioDirection() == -1) {
 						float marioX, marioY;
 						mario->GetPosition(marioX, marioY);
 						mario->SetPosition(marioX - 5, marioY);
 					}
-					//}
 				}
 				mario->SetState(STATE_MARIO_WALKING_RIGHT);
 			}
@@ -733,14 +730,11 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 				mario->SetState(STATE_MARIO_RUNNING_LEFT);
 			}else {
 				if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL) {
-					//if (mario->GetState() == STATE_MARIO_WALKING_RIGHT) {
-				//		DebugOut(L"WALKING_LEFT %d \n", mario->getMarioDirection());
-						if (mario->getMarioDirection() == 1) {
-							float marioX, marioY;
-							mario->GetPosition(marioX, marioY);
-							mario->SetPosition(marioX+ 7, marioY);
-						}
-					//}
+					if (mario->getMarioDirection() == 1) {
+						float marioX, marioY;
+						mario->GetPosition(marioX, marioY);
+						mario->SetPosition(marioX+ 7, marioY);
+					}
 				}
 				mario->SetState(STATE_MARIO_WALKING_LEFT);
 			}
@@ -750,22 +744,26 @@ void CPlayScenceKeyHandler::KeyState(BYTE *states)
 		}
 	}
 	else {
-	//	DebugOut(L"STATE_MARIO_IDLE \n");
 		mario->SetState(STATE_MARIO_IDLE);
 	}
 	
 	if (game->IsKeyDown(DIK_S)) {
-		// GetMarioNotJump();
 		if (GetTickCount64() - mario->GetTimeJumpStart() < 250 
 			 && !mario->GetMarioNotJump()
 			)
 		{
-			// && mario->vy <= 0
 			if (mario->GetMarioSpeechJump() < 0.2) {
-				mario->SetMarioSpeechJump();
+				/*if (!mario->GetMarioHaveGoompaMini()) {
+					
+
+				}
+				else {
+		
+				}*/
+				 mario->SetMarioSpeechJump();
 			}
-		//	
 			if (mario->GetMarioIsJump() != -1 && mario->vy <= 0.02 && !mario->GetMarioFallState()) {
+			//	DebugOut(L"22222 \n");
 				mario->SetState(STATE_MARIO_JUMP);
 			}
 		}

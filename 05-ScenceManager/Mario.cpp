@@ -46,10 +46,13 @@ CMario::CMario(float x, float y)
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-
-
 	CGameObject::Update(dt);
-	if (!marioStateDie) vy += 0.00038f * dt;
+	if (!marioStateDie) {
+		vy += 0.00038f * dt;
+	} 
+	if (marioPreEndScene) {
+		vx = 0.1f;
+	}
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 	handlerMarioUpLevelOtherSmall();
@@ -361,6 +364,8 @@ void CMario::UpdateSub(vector<LPGAMEOBJECT>* coObjects)
 					return;
 				}
 				if (!goombaMini->GetCheckCollisionMario()) {
+					timeMarioHaveGoompaMini = (DWORD)GetTickCount64();
+					marioHaveGoompaMini = true;
 					goombaMini->SetState(STATE_GOOMBA_MINI_MOVING_IN_MARIO);
 				}
 			}
@@ -415,6 +420,10 @@ void CMario::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
+	case STATE_MARIO_PRE_SWITCH_SCENE:
+		vx = SPEED_MARIO_WALKING;
+		nx = DIRECTION_MARIO_RIGHT;
+		break;
 	case STATE_MARIO_SCENE_3_TOP_LEFT:
 		autoChangeAni = true;
 		break;
@@ -510,7 +519,12 @@ void CMario::SetState(int state)
 			vy = -0.17f - marioSpeechJump;
 		}
 		else {
-			vy = -0.1f - marioSpeechJump;
+			if (marioHaveGoompaMini) {
+				vy = -0.05f;
+			}
+			else {
+				vy = -0.1f - marioSpeechJump;
+			}
 		}
 		break; 
 	case STATE_MARIO_IDLE:
@@ -1244,6 +1258,8 @@ void CMario::handlerMarioUpPipe()
 	}
 	else if (GetTickCount64() - timeMarioPipeUp < MARIO_PIPE_DOWN_1_TIME) {
 		SetPosition(MARIO_PIPE_POS_X_4, MARIO_PIPE_POS_Y_4);
+		checkUpdateUpdatePipe = true;
+		DebugOut(L"set  position mario up pipe NO set \n");
 	}
 	else if (GetTickCount64() - timeMarioPipeUp < MARIO_PIPE_DOWN_2_TIME)
 	{
@@ -1252,8 +1268,38 @@ void CMario::handlerMarioUpPipe()
 	}
 	else
 	{
+		if (!checkUpdateUpdatePipe) {
+			DebugOut(L"set  position mario up pipe \n");
+			SetPosition(MARIO_PIPE_POS_X_4, MARIO_PIPE_POS_Y_4+20);
+		}
 		marioStatePipeUp = false;
 		SetState(STATE_MARIO_IDLE);
+	}
+}
+
+
+void CMario::handleMarioDead()
+{
+	int sceneID = CGame::GetInstance()->GetScene();
+	if (sceneID == SCENE_1) {
+		if (y > POSITION_Y_SCENE_1_MARIO_DEAD && state != STATE_MARIO_PIPE_UP && state != STATE_MARIO_PIPE_DOWN)
+		{
+			if (y > POSITION_Y_SCENE_1_OVER) {
+				marioStateDie = true;
+			}
+			if (x > POSITION_X_SCENE_1_MARIO_DEAD && y < 496) {
+					marioStateDie = true;
+			}
+			else if (x <= POSITION_X_SCENE_1_MARIO_DEAD) {
+					marioStateDie = true;
+			}
+		}
+	}
+	else {
+		// scene 3
+		if (y > POSITION_Y_SCENE_3_MARIO_DEAD) {
+			marioStateDie = true;
+		}
 	}
 }
 
@@ -1662,26 +1708,6 @@ bool CMario::checkMarioMaxPower()
 	return true;
 }
 
-void CMario::handleMarioDead()
-{
-	int sceneID = CGame::GetInstance()->GetScene();
-	if (sceneID == SCENE_1) {
-		if (y > POSITION_Y_SCENE_1_MARIO_DEAD && state != STATE_MARIO_PIPE_UP && state != STATE_MARIO_PIPE_DOWN)
-		{
-			if (x > POSITION_X_SCENE_1_MARIO_DEAD && y < 496)
-				marioStateDie = true;
-			else if (x <= POSITION_X_SCENE_1_MARIO_DEAD)
-				marioStateDie = true;
-		}
-	}
-	else {
-		// scene 3
-		if (y > POSITION_Y_SCENE_3_MARIO_DEAD) {
-			marioStateDie = true;
-		}
-		// DebugOut(L"sfsadf \n");
-	}
-}
 
 void CMario::handleMarioFlyHigh()
 {
