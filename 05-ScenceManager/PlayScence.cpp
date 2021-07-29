@@ -279,11 +279,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_HUB_CARDTEXT: 
 		obj = new CCardText(cardT);
 		cardText = (CCardText*)obj;
-		DebugOut(L"ssss 11 \n");
-
 		break;
 	case OBJECT_TYPE_HUB_GOALCARDS:
-		DebugOut(L"ssss 22 \n");
 		 obj = new CGoalCard(cardText);
 		break;
 	case OBJECT_TYPE_HUB_ARROWS: 

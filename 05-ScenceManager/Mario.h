@@ -153,6 +153,7 @@ public:
 	void SetListArrow(CListArrow* list) { listArrow = list; }
 	CListArrow* GetListArrow() { return listArrow; }
 	void SetLives(CLives* _live) { lives = _live; }
+	CLives* GetMarioLive() { return lives; }
 
 	void MarioSetTortoiseshell(CGameObject* _tortoiseshell) { tortoiseshell = _tortoiseshell; };
 

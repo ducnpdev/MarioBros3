@@ -143,6 +143,8 @@
     <ClCompile Include="FireMario.cpp" />
     <ClCompile Include="FirePiranhaPlant.cpp" />
     <ClCompile Include="FirePlantBullet.cpp" />
+    <ClCompile Include="Gift.cpp" />
+    <ClCompile Include="GiftItem.cpp" />
     <ClCompile Include="Gold.cpp" />
     <ClCompile Include="GoldCard.cpp" />
     <ClCompile Include="Goomba.cpp" />
@@ -208,6 +210,8 @@
     <ClInclude Include="FireMario.h" />
     <ClInclude Include="FirePiranhaPlant.h" />
     <ClInclude Include="FirePlantBullet.h" />
+    <ClInclude Include="Gift.h" />
+    <ClInclude Include="GiftItem.h" />
     <ClInclude Include="Gold.h" />
     <ClInclude Include="GoldCard.h" />
     <ClInclude Include="Goomba.h" />

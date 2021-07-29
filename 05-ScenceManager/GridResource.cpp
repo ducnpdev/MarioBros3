@@ -18,6 +18,7 @@
 #include "Portal.h"
 #include "Music.h"
 #include "GoombaMini.h"
+#include "Gift.h"
 
 CGridResource::CGridResource(LPCWSTR path) {
 	numRow = 0;
@@ -26,6 +27,7 @@ CGridResource::CGridResource(LPCWSTR path) {
 	cellHeight = 0;
 	// GridLoadResource must place end func
 	GridLoadResource(path);
+	giftItem = NULL;
 }
 
 void CGridResource::_ParseSection_Grid_INITIAL(string line) {
@@ -79,6 +81,13 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 		}
 		break;
 	}
+	case OBJECT_TYPE_GIFT_ITEM:
+		obj = new CGiftItem();
+		giftItem = (CGiftItem*)obj;
+		break;
+	case OBJECT_TYPE_GIFT:
+		obj = new CGift(giftItem);
+		break;
 	case OBJECT_TYPE_BORDER_ROAD: {
 		obj = new CBorderRoad(); break;
 	}

@@ -240,6 +240,12 @@
     <ClCompile Include="GoombaMini.cpp">
       <Filter>Source Files\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Gift.cpp">
+      <Filter>Source Files\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="GiftItem.cpp">
+      <Filter>Source Files\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -444,6 +450,12 @@
       <Filter>Header Files\Items</Filter>
     </ClInclude>
     <ClInclude Include="GoombaMini.h">
+      <Filter>Header Files\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Gift.h">
+      <Filter>Header Files\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="GiftItem.h">
       <Filter>Header Files\Enemies</Filter>
     </ClInclude>
   </ItemGroup>

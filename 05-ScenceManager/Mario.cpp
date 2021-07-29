@@ -29,6 +29,7 @@
 #include "FireBullet.h"	
 #include "Music.h"	
 #include "GoombaMini.h"	
+#include "Gift.h"	
 
 CMario::CMario(float x, float y)
 {
@@ -46,6 +47,7 @@ CMario::CMario(float x, float y)
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+//	DebugOut(L"x,y %f %f \n", x, y);
 	CGameObject::Update(dt);
 	if (!marioStateDie) {
 		vy += 0.00038f * dt;
@@ -354,6 +356,12 @@ void CMario::UpdateSub(vector<LPGAMEOBJECT>* coObjects)
 		LPGAMEOBJECT c = colidingObjects[i];
 		if (untouchable == 0)
 		{
+			if (dynamic_cast<CGift*>(c)) {
+				CGift* gift = dynamic_cast<CGift*>(c);
+				gift->SetState(GIFT_OPEN);
+				gift->SetTimeStartOpen((DWORD)GetTickCount64());
+			}
+
 			if (dynamic_cast<CBoomerang*>(c)) {
 				if (untouchable == 0) {
 					 CBoomerang* boomerang = dynamic_cast<CBoomerang*>(c);
@@ -370,7 +378,6 @@ void CMario::UpdateSub(vector<LPGAMEOBJECT>* coObjects)
 						 else SetState(STATE_MARIO_DIE);
 					 }
 				}
-			//	DebugOut(L"sssssss \n");
 			}
 			if (dynamic_cast<CGoombaMini*>(c)) {
 				// CollisionWithGoombaMini(c);
@@ -724,6 +731,7 @@ void CMario::FilterCollision(
 		if (dynamic_cast<CCoin*>(c->obj)) continue;
 		if (dynamic_cast<CGoombaMini*>(c->obj)) continue;
 		if (dynamic_cast<CBoomerang*>(c->obj)) continue;
+		if (dynamic_cast<CGift*>(c->obj)) continue;
 	//	if (dynamic_cast<CMusic*>(c->obj)) continue;
 		else if (dynamic_cast<CColorBrick*>(c->obj))
 		{
@@ -819,6 +827,7 @@ void CMario::isCollidingObject(vector<LPGAMEOBJECT>* coObjects, vector<LPGAMEOBJ
 			|| dynamic_cast<CMusic*>(coObjects->at(i))
 			|| dynamic_cast<CGoombaMini*>(coObjects->at(i))
 			|| dynamic_cast<CBoomerang*>(coObjects->at(i))
+			|| dynamic_cast<CGift*>(coObjects->at(i))
 		)
 		{
 			coObjects->at(i)->GetBoundingBox(otherL, otherT, otherR, otherB);
@@ -830,7 +839,6 @@ void CMario::isCollidingObject(vector<LPGAMEOBJECT>* coObjects, vector<LPGAMEOBJ
 				colidingObjects.push_back(coObjects->at(i));
 			}
 		}
-		
 	}
 }
 
