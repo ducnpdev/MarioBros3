@@ -158,7 +158,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	int object_type = atoi(tokens[0].c_str());
 	float x = atof(tokens[1].c_str());
 	float y = (atof(tokens[2].c_str()));
-	
 	int ani_set_id = atoi(tokens[3].c_str());
 
 	CAnimationSets * animation_sets = CAnimationSets::GetInstance();
@@ -280,8 +279,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_HUB_CARDTEXT: 
 		obj = new CCardText(cardT);
 		cardText = (CCardText*)obj;
+		DebugOut(L"ssss 11 \n");
+
 		break;
 	case OBJECT_TYPE_HUB_GOALCARDS:
+		DebugOut(L"ssss 22 \n");
 		 obj = new CGoalCard(cardText);
 		break;
 	case OBJECT_TYPE_HUB_ARROWS: 
@@ -433,7 +435,6 @@ void CPlayScene::Update(DWORD dt)
 	// TO-DO: This is a "dirty" way, need a more organized way 
 	if (player == NULL) return;
 	initCamera();
-
 	vector<LPGAMEOBJECT> coObjects;
 	for (size_t i = 1; i < objects.size(); i++)
 	{
@@ -598,7 +599,7 @@ void CPlayScenceKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_8:
 		mario->SetMarioIsAcceptPortal(false);
 		mario->SetMarioINScene3Top(false);
-		mario->SetPosition(2357, 80);
+		mario->SetPosition(2300, 80);
 		break;
 	case DIK_A:
 		if (mario->GetMarioLevel() == LEVEL_MARIO_TAIL && !mario->GetMarioIsFight()

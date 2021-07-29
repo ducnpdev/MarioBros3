@@ -36,11 +36,18 @@ void CGoombaMini::handleCollisionMario()
 	}
 
 	if (mario->GetMarioHaveGoompaMini()) {
+	//	DebugOut(L"true \n");
 		if (GetTickCount64() - mario->GetTimeMarioHaveGoompaMini() > GOOMBA_MINI_TIME_IN_MARIO) {
+	//		DebugOut(L"true 111 \n");
+
 			mario->SetMarioHaveGoompaMini(false);
 			SetState(STATE_GOOMBA_MINI_HIDEN);
-			checkCollisionMario = true;
+			checkCollisionMario = false;
 		}
+	}
+	else
+	{
+		DebugOut(L"false \n");
 	}
 }
 

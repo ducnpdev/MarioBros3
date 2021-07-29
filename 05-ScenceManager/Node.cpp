@@ -12,5 +12,9 @@ CNode::CNode(float l, float t, float r, float b, int p)
 
 float CNode::GetLeft()
 {
+	// DebugOut(L"sss \n");
+	if (&left ==  nullptr) {
+		return 0.0f;
+	}
 	return left; 
 }

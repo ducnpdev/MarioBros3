@@ -10,6 +10,7 @@
 #include "GoombaConfig.h"
 #include "WoodBlock.h"
 
+#include "ColorBrick.h"
 
 CGoomba::CGoomba(int typeColor,int _tempState, CGoombaMini* _goombaMini[NUMBER_GOOMBA_MINI])
 {
@@ -148,8 +149,11 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CGoomba::handleGoombaHighSmallGoomba()
 {
-	if (typeColorGoomba != GOOMBA_YELLOW_COLOR_FLY) return;
 	CMario* mario = ((CPlayScene*)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	if (mario->GetMarioPreEndScene()) {
+		SetState(GOOMBA_STATE_HIDEN);
+	}
+	if (typeColorGoomba != GOOMBA_YELLOW_COLOR_FLY) return;
 	int direction = 1;
 	if (mario->x < x) direction = -1;
 	if (GetTickCount64() - timeFlyGoomba < 2000) {
@@ -368,14 +372,22 @@ void CGoomba::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCOLLI
 				//DebugOut(L"3333 \n");
 			}
 		}
-
-
-		if (c->t < min_tx && c->nx != 0) {
-			min_tx = c->t; nx = c->nx; min_ix = i; rdx = c->dx;
+		else if (dynamic_cast<CColorBrick*>(c->obj))
+		{
+			if (c->ny < 0 && c->t < min_tx)
+			{
+				min_ty = c->t; ny = c->ny; rdy = c->dy;
+				coEventsResult.push_back(coEvents[i]);
+			}
 		}
+		else {
+			if (c->t < min_tx && c->nx != 0) {
+				min_tx = c->t; nx = c->nx; min_ix = i; rdx = c->dx;
+			}
 
-		if (c->t < min_ty && c->ny != 0) {
-			min_ty = c->t; ny = c->ny; min_iy = i; rdy = c->dy;
+			if (c->t < min_ty && c->ny != 0) {
+				min_ty = c->t; ny = c->ny; min_iy = i; rdy = c->dy;
+			}
 		}
 	}
 

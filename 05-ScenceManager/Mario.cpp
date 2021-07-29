@@ -32,7 +32,7 @@
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_TAIL;
+	level = LEVEL_MARIO_SMAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 	start_x = x; 
@@ -79,6 +79,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		x += dx; 
 		y += dy;
 		isStandingFloor = false;
+	//	DebugOut(L"size == 0 \n");
 	}
 	else
 	{
@@ -203,6 +204,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				isAcceptFlyCamera = false;
 				y = y - 0.01f;
 				isMarioNotJump = false;
+				if (untouchable == 1) {
+					DebugOut(L"1111 \n");
+				}
 			}
 			if ( dynamic_cast<CColorBrick*>(e->obj)) {
 				marioSpeechJump = 0.0f;
@@ -270,9 +274,21 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (leaf->GetState() != LEAF_STATE_HIDEN)
 				{
 					leaf->SetState(LEAF_STATE_HIDEN);
-					SetState(STATE_MARIO_SMOKE);
-					SetPosition(x, y - 2);
-					timeMarioSmoke = (DWORD)GetTickCount64();
+
+					if (level == LEVEL_MARIO_SMAIL) {
+						SetPosition(x, y - UP_DOWN_POSITOIN_Y);
+						SetState(STATE_MARIO_UP_LEVEL);
+						timeMarioUpLevel = (DWORD)GetTickCount64();
+					}
+					if (level == LEVEL_MARIO_BIG) {
+						SetState(STATE_MARIO_SMOKE);
+						SetPosition(x, y - 2);
+						timeMarioSmoke = (DWORD)GetTickCount64();
+					}
+
+					//SetState(STATE_MARIO_SMOKE);
+					//SetPosition(x, y - 2);
+					//timeMarioSmoke = (DWORD)GetTickCount64();
 					DisplayListScore(MARIO_SCORE_1000, leaf->x, leaf->y, (DWORD)GetTickCount64());
 				}
 			}
@@ -359,13 +375,13 @@ void CMario::UpdateSub(vector<LPGAMEOBJECT>* coObjects)
 			if (dynamic_cast<CGoombaMini*>(c)) {
 				// CollisionWithGoombaMini(c);
 				CGoombaMini* goombaMini = dynamic_cast<CGoombaMini*>(c);
-				if (marioStateFight) {
+				if (!marioHaveGoompaMini && marioStateFight) {
 					goombaMini->SetState(STATE_GOOMBA_MINI_HIDEN);
 					return;
 				}
+				marioHaveGoompaMini = true;
 				if (!goombaMini->GetCheckCollisionMario()) {
 					timeMarioHaveGoompaMini = (DWORD)GetTickCount64();
-					marioHaveGoompaMini = true;
 					goombaMini->SetState(STATE_GOOMBA_MINI_MOVING_IN_MARIO);
 				}
 			}
@@ -1207,9 +1223,21 @@ void CMario::handlerMarioUpLevelSmoke()
 	if (!marioStateSmoke) return;
 
 	if (GetTickCount64() - timeMarioSmoke < MARIO_TIME_UP_LEVEL_SMOLE) return;
+	DebugOut(L"okkk \n");
 
 	marioStateSmoke = false;
-	SetLevel(LEVEL_MARIO_TAIL);
+	if (level == LEVEL_MARIO_TAIL) {
+		DebugOut(L"111 \n");
+		SetLevel(LEVEL_MARIO_BIG);
+	}
+	else if (level == LEVEL_MARIO_BIG) {
+		DebugOut(L"333 \n");
+		SetLevel(LEVEL_MARIO_TAIL);
+	}
+	else if (level == LEVEL_MARIO_TAIL) {
+		DebugOut(L"222 \n");
+		SetLevel(LEVEL_MARIO_FIRE);
+	}
 	SetState(STATE_MARIO_IDLE);
 }
 
@@ -1600,10 +1628,17 @@ void CMario::CollisionWithMushroom(LPCOLLISIONEVENT e)
 	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
 	if (mushroom->GetState() == MUSHROOM_STATE_HIDEN) return;
 	if (mushroom->GetMushroomType() == MUSHROOM_TYPE_RED) {
-		SetPosition(x, y - UP_DOWN_POSITOIN_Y);
 		mushroom->SetState(MUSHROOM_STATE_HIDEN);
-		SetState(STATE_MARIO_UP_LEVEL);
-		timeMarioUpLevel = (DWORD)GetTickCount64();
+		if (level == LEVEL_MARIO_SMAIL) {
+			SetPosition(x, y - UP_DOWN_POSITOIN_Y);
+			SetState(STATE_MARIO_UP_LEVEL);
+			timeMarioUpLevel = (DWORD)GetTickCount64();
+		}
+		if (level == LEVEL_MARIO_BIG) {
+			SetState(STATE_MARIO_SMOKE);
+			SetPosition(x, y - 2);
+			timeMarioSmoke = (DWORD)GetTickCount64();
+		}
 		DisplayListScore(MARIO_SCORE_1000, mushroom->x, mushroom->y, (DWORD)GetTickCount64());
 	}
 	if (mushroom->GetMushroomType() == MUSHROOM_TYPE_GREEN) {

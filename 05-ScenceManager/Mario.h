@@ -96,15 +96,15 @@ class CMario : public  CCollision
 
 	bool marioHaveGoompaMini = false;
 	DWORD timeMarioHaveGoompaMini;
-
+	int counterMarioGoombaMimi = 0;
 public: 
 
-	void HandleDeleteGoombaMIni() {
-		if (!marioHaveGoompaMini) return;
-		if (GetTickCount64() - timeMarioHaveGoompaMini > 5000) {
-			marioHaveGoompaMini = false;
-		}
-	}
+	//void HandleDeleteGoombaMIni() {
+	//	if (!marioHaveGoompaMini) return;
+	//	if (GetTickCount64() - timeMarioHaveGoompaMini > 5000) {
+	//		marioHaveGoompaMini = false;
+	//	}
+	//}
 
 	DWORD GetTimeMarioHaveGoompaMini() { return timeMarioHaveGoompaMini; }
 	void SetTimeMarioHaveGoompaMini(DWORD time) { timeMarioHaveGoompaMini = time; }
