@@ -175,6 +175,7 @@
     <ClCompile Include="Tail.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Turtle.cpp" />
+    <ClCompile Include="UpVip.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -247,6 +248,7 @@
     <ClInclude Include="Time.h" />
     <ClInclude Include="Turtle.h" />
     <ClInclude Include="TurtleConfig.h" />
+    <ClInclude Include="UpVip.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />

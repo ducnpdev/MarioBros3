@@ -19,6 +19,7 @@
 #include "Mushroom.h"
 #include "Leaf.h"
 #include "GiftItem.h"
+#include "UpVip.h"
 
 class CGridResource {
 
@@ -49,6 +50,7 @@ class CGridResource {
 	CGoombaMini* goombaMini[NUMBER_GOOMBA_MINI];
 
 	CGiftItem* giftItem;
+	CUpVip* upVip;
 
 public:
 	CGridResource(LPCWSTR pathFileGrid);

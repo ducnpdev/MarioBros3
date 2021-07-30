@@ -17,12 +17,17 @@
 19	textures\font.png	255	0	255
 20	textures\score.png	0	224	142
 21	Textures\goal-roulette.png	0	183	239
+22	Textures\goal-roulette-new.png	0	183	239
 
 [MAPBACKGROUND]
 # idtexture columnMap rowMap columnTileSet rowTileSet maxTileSet pathfile
 30000	88	22	12	21	243	textures\tilemap\map1.txt	1
 
 [SPRITES]
+
+# up vip
+311056	463	383	488	400	22
+
 # SMALL MARIO 
 # idle small right
 10000	217	77	229	104	0
@@ -868,6 +873,8 @@
 # ==== QUESTION MARK BRICK =========
 #602	40001	1000	40001	100	40002	100	40003	100	40004	100
 
+# up vip
+31156	311056	100
 
 # ==== ROAD =========
 311	30011	100
@@ -1131,6 +1138,8 @@
 # BRICK 
 444	851
 
+# up vip
+31156	31156
 
 # PIPE
 81	781
@@ -1224,7 +1233,7 @@
 999	999
 
 [OBJECTS]
-0	500.0	300.0	1
+0	100.0	300.0	1
 
 # CLASS HUB
 # number

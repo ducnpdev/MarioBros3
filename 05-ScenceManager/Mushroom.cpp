@@ -3,10 +3,11 @@
 #include "Pipe.h"
 #include "Road.h"
 
-CMushroom::CMushroom(int _state, int _type)
+CMushroom::CMushroom(int _state, int _type, CUpVip* _upVip)
 {
 	SetState(MUSHROOM_STATE_HIDEN);
 	typeMushroom = _type;
+	upVip = _upVip;
 }
 
 

@@ -81,6 +81,10 @@ void CGridResource::_ParseSection_Grid_ITEMS(string line) {
 		}
 		break;
 	}
+	case OBJECT_TYPE_UP_VIP:
+		obj = new CUpVip();
+		upVip = (CUpVip*)obj;
+		break;
 	case OBJECT_TYPE_GIFT_ITEM:
 		obj = new CGiftItem();
 		giftItem = (CGiftItem*)obj;
@@ -346,7 +350,7 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 		}
 		break;
 	case OBJECT_TYPE_MUSHROOM_OF_BRICK:
-		obj = new CMushroom(state,0);
+		obj = new CMushroom(state,0, upVip);
 		if (mushroomOfBrick == NULL) {
 			mushroomOfBrick = (CMushroom*)obj;
 		}
@@ -354,7 +358,7 @@ void CGridResource::_ParseSection_ITEMS_QUESTION(string line) {
 	case OBJECT_TYPE_MUSHROOM: {
 		int tsype = atoi(tokens[7].c_str());
 		int type = atoi(tokens[8].c_str());
-		obj = new CMushroom(state, type);
+		obj = new CMushroom(state, type, upVip);
 		for (int i = 0; i < 10; i++)
 		{
 			if (listItemQuestionBrick[i] == NULL)

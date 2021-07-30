@@ -260,8 +260,21 @@ void CCamera::UpdateCameraScence3TopNew() {
 		// }
 	}
 	else {
-		SetPositionCamera(round(scene3TOP_X), round(defaultY));
-		CGame::GetInstance()->SetCamPos(round(scene3TOP_X), round(defaultY));
+		if (playerY < game->GetScreenHeight() / 2 + 30) {
+			DebugOut(L"ssss \n");
+			playerX -= game->GetScreenWidth() / 2;
+			SetPositionCamera(round(scene3TOP_X), 0);
+			CGame::GetInstance()->SetCamPos(round(scene3TOP_X), 0);
+		}
+		else {
+			playerX -= game->GetScreenWidth() / 2;
+			playerY -= game->GetScreenHeight() / 2 + CAM_Y_PLUS;
+			SetPositionCamera(round(scene3TOP_X), round(playerY));
+			CGame::GetInstance()->SetCamPos(round(scene3TOP_X), round(playerY));
+		}
+
+	/*	SetPositionCamera(round(scene3TOP_X), round(defaultY));
+		CGame::GetInstance()->SetCamPos(round(scene3TOP_X), round(defaultY));*/
 
 	}
 

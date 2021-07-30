@@ -81,7 +81,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		x += dx; 
 		y += dy;
 		isStandingFloor = false;
-	//	DebugOut(L"size == 0 \n");
 	}
 	else
 	{
@@ -207,7 +206,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				y = y - 0.01f;
 				isMarioNotJump = false;
 				if (untouchable == 1) {
-				//	DebugOut(L"1111 \n");
 				}
 			}
 			if ( dynamic_cast<CColorBrick*>(e->obj)) {
@@ -260,14 +258,18 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (dynamic_cast<CGoalCard*>(e->obj)) {
 				CGoalCard* goalCard = dynamic_cast<CGoalCard*>(e->obj);
 				CGame* game = CGame::GetInstance();
+				if (goalCard->GetCheckPrene()) return;
 				if (goalCard->GetState() == GOALCARD_STATE_HIDEN) return;
 				SetCardState(goalCard->GetState());
-			
 				game->SetItemGoalCard(goalCard->GetState());
 				goalCard->SetSwitchScene((DWORD)GetTickCount64());
 				goalCard->GetCardText()->SetState(1);
 				goalCard->GetCardText()->GetCard()->SetState(goalCard->GetState());
 				goalCard->SetState(COIN_STATE_HIDEN);
+
+				//goalCard->SetTimePre_end((DWORD)GetTickCount64());
+				//goalCard->SetCheckPrene(true);
+
 			}
 
 			if (dynamic_cast<CLeaf*>(e->obj))
@@ -1375,7 +1377,6 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 			koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_UP)
 		{
 			if (koopa->GetState() == KOOPAS_STATE_SPIN_RIGHT || koopa->GetState() == KOOPAS_STATE_SPIN_LEFT) {
-				DebugOut(L"111 \n");
 				//float koopaX, koopaY;
 				//koopa->GetPosition(koopaX, koopaY);
 				//koopaY = koopaY - 100.0f;
@@ -1384,8 +1385,6 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 				koopa->SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
 			}
 			else {
-				DebugOut(L"222 \n");
-
 				DisplayListScore(MARIO_SCORE_100, koopa->x, koopa->y, (DWORD)GetTickCount64());
 				if (koopa->GetTypeKoopa() == PARAKOOPA_COLOR_GREEN) {
 					koopa->SetTypeKoopa(KOOPA_GREEN_FORM);
@@ -1403,8 +1402,6 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 			// vy = -MARIO_JUMP_SPEED_Y;
 		}
 		else if (koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_DOWN || koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_UP) {
-			DebugOut(L"333 \n");
-
 			if ((x + round(GetBBoxWidthMario() + 1)) <= (koopa->x + round(KOOPAS_BBOX_WIDTH / 2))) {
 				koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
 			}
@@ -1483,7 +1480,7 @@ void CMario::CollisionWithBoomerang(LPCOLLISIONEVENT e)
 	if (boomerang->GetState() != STATE_BOOMERANG_HIDEN)
 	{
 		if (e->ny > 0) {
-y = y - MARIO_DEFECT_Y_COLLISION;
+			y = y - MARIO_DEFECT_Y_COLLISION;
 		}
 		if (level > LEVEL_MARIO_SMAIL)
 		{
@@ -1524,7 +1521,6 @@ void CMario::CollisionWithBoomerangBros(LPCOLLISIONEVENT e)
 				{
 					boomerangbro->SetState(STATE_BOOMERANGBRO_DIE);
 					boomerangbro->SetBoomerangTimeDead((DWORD)GetTickCount64());
-
 				}
 				else
 					SetState(STATE_MARIO_DIE);
@@ -1542,7 +1538,6 @@ void CMario::CollisionWithWoodBlock(LPCOLLISIONEVENT e)
 		woodBlock->GetPosition(woodBlockX, woodBlockY);
 		if (woodBlockX > x) {
 			woodBlock->SetState(WOOD_BLOCK_MOVING_RIGHT);
-			// vx = -0.2f;
 			x = x - MARIO_ADD_POSITION_X;
 		}
 		else {
@@ -1644,7 +1639,6 @@ void CMario::CollisionWithMusic(LPCOLLISIONEVENT e)
 			}
 		}
 	}
-
 }
 
 void CMario::CollisionWithMushroom(LPCOLLISIONEVENT e)
@@ -1668,7 +1662,12 @@ void CMario::CollisionWithMushroom(LPCOLLISIONEVENT e)
 	if (mushroom->GetMushroomType() == MUSHROOM_TYPE_GREEN) {
 		mushroom->SetState(MUSHROOM_STATE_HIDEN);
 		DisplayListScore(MARIO_SCORE_1000, mushroom->x, mushroom->y, (DWORD)GetTickCount64());
-		lives->AddLives();
+		if (mushroom->GetUpVip() != NULL) {
+			mushroom->GetUpVip()->SetState(STATE_UP_VIP_ITEM_FLY);
+			mushroom->GetUpVip()->SetTimePreHide((DWORD)GetTickCount64());
+		}
+		else {
+		}
 	}
 }
 

@@ -271,7 +271,6 @@ void CKoopas::Render()
 void CKoopas::SetState(int state)
 {
 	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN) {
-		DebugOut(L"koopas vx vy %f %f \n", vx, vy);
 		y = y - APPEND_KOOPAS_STATE_SPIN_TO_TORTOISESHELL;
 	}
 	CGameObject::SetState(state);
@@ -280,7 +279,6 @@ void CKoopas::SetState(int state)
 	
 	case KOOPAS_STATE_TORTOISESHELL_DOWN:
 		if (state == KOOPAS_STATE_SPIN_RIGHT || state == KOOPAS_STATE_SPIN_LEFT) {
-			DebugOut(L"koopas vx vy %f %f \n", vx, vy);
 			y = y - 20;
 		}
 		vx = 0.0f;

@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Collision.h"
+#include "UpVip.h"
 
 #define MUSHROOM_BBOX_WIDTH 16
 #define MUSHROOM_BBOX_HEIGHT 16
@@ -32,10 +33,11 @@ class CMushroom : public CCollision
 	bool stateMovingMushroom = false;
 	DWORD timeStateMovingMushroom;
 	int typeMushroom;
+	CUpVip* upVip;
 public:
 	int GetMushroomType() { return typeMushroom; }
 
-	CMushroom(int _state,  int _type);
+	CMushroom(int _state,  int _type, CUpVip* upVip);
 	void SetState(int state);
 	bool MushroomMoving() { return stateMovingMushroom; }
 	virtual void Render();
@@ -51,4 +53,10 @@ public:
 		float& ny,
 		float& rdx,
 		float& rdy);
+	CUpVip* GetUpVip() {
+		if (upVip == NULL) {
+			return NULL;
+		}
+		return upVip;
+	}
 };

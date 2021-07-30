@@ -246,6 +246,9 @@
     <ClCompile Include="GiftItem.cpp">
       <Filter>Source Files\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="UpVip.cpp">
+      <Filter>Source Files\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -456,6 +459,9 @@
       <Filter>Header Files\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="GiftItem.h">
+      <Filter>Header Files\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="UpVip.h">
       <Filter>Header Files\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
