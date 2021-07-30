@@ -33,7 +33,7 @@
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_SMAIL;
+	level = LEVEL_MARIO_TAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 	start_x = x; 
@@ -207,7 +207,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				y = y - 0.01f;
 				isMarioNotJump = false;
 				if (untouchable == 1) {
-					DebugOut(L"1111 \n");
+				//	DebugOut(L"1111 \n");
 				}
 			}
 			if ( dynamic_cast<CColorBrick*>(e->obj)) {
@@ -1235,15 +1235,15 @@ void CMario::handlerMarioUpLevelSmoke()
 
 	marioStateSmoke = false;
 	if (level == LEVEL_MARIO_TAIL) {
-		DebugOut(L"111 \n");
+		//DebugOut(L"111 \n");
 		SetLevel(LEVEL_MARIO_BIG);
 	}
 	else if (level == LEVEL_MARIO_BIG) {
-		DebugOut(L"333 \n");
+	//	DebugOut(L"333 \n");
 		SetLevel(LEVEL_MARIO_TAIL);
 	}
 	else if (level == LEVEL_MARIO_TAIL) {
-		DebugOut(L"222 \n");
+	//	DebugOut(L"222 \n");
 		SetLevel(LEVEL_MARIO_FIRE);
 	}
 	SetState(STATE_MARIO_IDLE);
@@ -1374,21 +1374,37 @@ void CMario::CollisionWithKoopa(LPCOLLISIONEVENT e)
 		if (koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_DOWN &&
 			koopa->GetState() != KOOPAS_STATE_TORTOISESHELL_UP)
 		{
-			DisplayListScore(MARIO_SCORE_100, koopa->x, koopa->y, (DWORD)GetTickCount64());
-			if (koopa->GetTypeKoopa() == PARAKOOPA_COLOR_GREEN) {
-				koopa->SetTypeKoopa(KOOPA_GREEN_FORM);
-			}
-
-			else if (koopa->getIsDown()) {
+			if (koopa->GetState() == KOOPAS_STATE_SPIN_RIGHT || koopa->GetState() == KOOPAS_STATE_SPIN_LEFT) {
+				DebugOut(L"111 \n");
+				//float koopaX, koopaY;
+				//koopa->GetPosition(koopaX, koopaY);
+				//koopaY = koopaY - 100.0f;
+				//	// APPEND_KOOPAS_STATE_SPIN_TO_TORTOISESHELL;
+				//koopa->GetPosition(koopaX, koopaY);
 				koopa->SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
 			}
 			else {
-				koopa->SetState(KOOPAS_STATE_TORTOISESHELL_UP);
+				DebugOut(L"222 \n");
+
+				DisplayListScore(MARIO_SCORE_100, koopa->x, koopa->y, (DWORD)GetTickCount64());
+				if (koopa->GetTypeKoopa() == PARAKOOPA_COLOR_GREEN) {
+					koopa->SetTypeKoopa(KOOPA_GREEN_FORM);
+				}
+
+				else if (koopa->getIsDown()) {
+					koopa->SetState(KOOPAS_STATE_TORTOISESHELL_DOWN);
+				}
+				else {
+					koopa->SetState(KOOPAS_STATE_TORTOISESHELL_UP);
+				}
 			}
+
 			 vy = -0.2f;
 			// vy = -MARIO_JUMP_SPEED_Y;
 		}
 		else if (koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_DOWN || koopa->GetState() == KOOPAS_STATE_TORTOISESHELL_UP) {
+			DebugOut(L"333 \n");
+
 			if ((x + round(GetBBoxWidthMario() + 1)) <= (koopa->x + round(KOOPAS_BBOX_WIDTH / 2))) {
 				koopa->SetState(KOOPAS_STATE_SPIN_RIGHT);
 			}

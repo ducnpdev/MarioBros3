@@ -7,9 +7,11 @@ void CGift::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	// if (state == GIFT_CLOSE) return;
 	CGameObject::Update(dt, coObjects);
 	if (itemStartOpen != 0 &&  GetTickCount64() - itemStartOpen > 100) {
-		DebugOut(L"class CGift item fly \n");
+		if (giftItem->GetState() != STATE_GIFT_ITEM_HIDEN) {
+
 		giftItem->SetState(STATE_GIFT_ITEM_FLY);
 		giftItem->SetTimePreHide((DWORD)GetTickCount64());
+		}
 	}
 }
 

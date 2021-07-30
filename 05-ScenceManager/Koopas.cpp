@@ -32,10 +32,16 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN || state == KOOPAS_STATE_TORTOISESHELL_UP || state == KOOPAS_STATE_REBORN) {
 		right = x + KOOPAS_BBOX_WIDTH_MEDIUM;
 		bottom = y + KOOPAS_BBOX_HEIGHT_REBORN;
+		/*if (state == KOOPAS_STATE_SPIN_RIGHT || state == KOOPAS_STATE_SPIN_LEFT) {
+			bottom = y + KOOPAS_BBOX_HEIGHT_SPIN;
+		}*/
 	}
 	else if (state == KOOPAS_STATE_SPIN_RIGHT || state == KOOPAS_STATE_SPIN_LEFT){
 		right = x + KOOPAS_BBOX_WIDTH_MIN;
 		bottom = y + KOOPAS_BBOX_HEIGHT_SPIN;
+		/*if (state == KOOPAS_STATE_TORTOISESHELL_DOWN ) {
+			bottom = y + KOOPAS_BBOX_HEIGHT_REBORN+1;
+		}*/
 	}
 	else {
 		right = x + KOOPAS_BBOX_WIDTH_MEDIUM;
@@ -56,6 +62,8 @@ float CKoopas::GetHeightKoopas() {
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+//	DebugOut(L"koopas state %d %f %f \n", state, x, y);
+//	DebugOut(L"koopas vx vy %f %f \n",  vx, vy);
 	if (hidenStateKoopas) return;
 	CGameObject::Update(dt, coObjects);
 	if (state != KOOPAS_STATE_TAKEN) {
@@ -65,7 +73,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else {
 			vy += KOOPA_GRAVITY * dt;
 		}
-		//vy += KOOPA_GRAVITY * dt;
+	//	vy += KOOPA_GRAVITY * dt;
 
 	}
 	handlerDeflect();
@@ -178,10 +186,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						dynamic_cast<CWoodBlock*>(e->obj) ||
 						dynamic_cast<CMusic*>(e->obj))  
 					{
-						DebugOut(L"CMusic %f \n", vy);
+					//	DebugOut(L"CMusic %f \n", vy);
 						// colision right
 						if (e->nx > 0) {
-							DebugOut(L"CMusic  11111 \n");
+					//		DebugOut(L"CMusic  11111 \n");
 
 							//if (dynamic_cast<CBrick*>(e->obj))
 							//{
@@ -262,23 +270,33 @@ void CKoopas::Render()
 
 void CKoopas::SetState(int state)
 {
+	if (state == KOOPAS_STATE_TORTOISESHELL_DOWN) {
+		DebugOut(L"koopas vx vy %f %f \n", vx, vy);
+		y = y - APPEND_KOOPAS_STATE_SPIN_TO_TORTOISESHELL;
+	}
 	CGameObject::SetState(state);
 	switch (state)
 	{
 	
 	case KOOPAS_STATE_TORTOISESHELL_DOWN:
-		vx = 0;
-		vy = 0;
+		if (state == KOOPAS_STATE_SPIN_RIGHT || state == KOOPAS_STATE_SPIN_LEFT) {
+			DebugOut(L"koopas vx vy %f %f \n", vx, vy);
+			y = y - 20;
+		}
+		vx = 0.0f;
+		vy = 0.0f;
 		if (!stateKoopaTortoiSeShell) timeStateTorToiSeShell = (DWORD)GetTickCount64();
 		stateKoopaTortoiSeShell = true;
 		isDown = true;
 		break;
 	case KOOPAS_STATE_TORTOISESHELL_UP:
-		if (!stateKoopaTortoiSeShell) timeStateTorToiSeShell = (DWORD)GetTickCount64();
+		if (!stateKoopaTortoiSeShell) {
+			timeStateTorToiSeShell = (DWORD)GetTickCount64();
+		}
 		stateKoopaTortoiSeShell = true;
 		isDown = false;
-		vx = 0;
-
+		vx = 0.0f;
+		vy = 0.0f;
 		break;
 	case KOOPAS_STATE_DIE:
 		y += KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_DIE + 1;
@@ -432,6 +450,7 @@ void CKoopas::handleReborn()
 	// koopa chuẩn bị hồi sinh
 	if (stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > KOOPA_TIME_REBORN_START
 		&& GetTickCount64() - timeStateTorToiSeShell < KOOPA_TIME_REBORN_END) {
+		DebugOut(L"reborn \n");
 		SetState(KOOPAS_STATE_REBORN);
 	}
 

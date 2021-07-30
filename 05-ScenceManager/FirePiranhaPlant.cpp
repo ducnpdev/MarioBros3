@@ -9,6 +9,8 @@ CFirePiranhaPlant::CFirePiranhaPlant(CGameObject* mario)
 	SetState(FIREPIRANHAPLANT_STATE_HIDE);
 	player = mario;
 	y_limit = FIREPIRANHAPLANT_Y_LIMIT;
+	//firePlantBullet = NULL;
+	//firePlantBullet = std::unique_ptr<>;
 }
 
 void CFirePiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -183,8 +185,27 @@ void CFirePiranhaPlant::GetBoundingBox(float& left, float& top, float& right, fl
 	}
 }
 
+bool check(CFirePiranhaPlant *a) {
+	if (a) {
+		return true;
+	}
+	return false;
+}
+
 void CFirePiranhaPlant::CreateFirePlantBullet(CGameObject* fireplantbullet)
 {
+//	CGameObject* a = firePlantBullet;
+//	if (&a) {
+//		DebugOut(L"sss \n");
+//	}
+//	//check(&CFirePiranhaPlant)
+////	DebugOut(L"ssss", firePlantBullet);
+//	if (&firePlantBullet == nullptr) {
+//		DebugOut(L"sss \n");
+//	}
+//	if (*&firePlantBullet != nullptr) {
+//		return;
+//	}
 	if (firePlantBullet == NULL)
 		firePlantBullet = fireplantbullet;
 	else if (firePlantBullet->GetState() == FIREPLANTBULLET_DESTROY_STATE)
@@ -232,6 +253,14 @@ void CFirePiranhaPlant::SetState(int state)
 		vy = 0.035f;
 		break;
 	case FIREPIRANHAPLANT_STATE_HIDE:
+		
+		//CFirePiranhaPlant* a;
+		//if (a->dt) {
+		//	DebugOut(L"ss\n");
+		////	return true;
+		//}
+		//DebugOut(L"ss\n");
+		//return false;
 		CreateFirePlantBullet(NULL);
 		is_shoot = 0;
 		stateHide = 1;

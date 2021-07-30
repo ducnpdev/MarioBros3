@@ -354,6 +354,10 @@ void CWorldMap::_ParseSection_NODES(string line)
 	int state = atoi(tokens[5].c_str());
 
 	CNode* node = new CNode(l, t, r, b, state);
+	if (node  == NULL || node == nullptr )
+	{
+		return;
+	}
 	player->PushNode(node);
 }
 
