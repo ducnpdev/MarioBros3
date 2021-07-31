@@ -448,7 +448,6 @@ void CKoopas::handleReborn()
 	// koopa chuẩn bị hồi sinh
 	if (stateKoopaTortoiSeShell && GetTickCount64() - timeStateTorToiSeShell > KOOPA_TIME_REBORN_START
 		&& GetTickCount64() - timeStateTorToiSeShell < KOOPA_TIME_REBORN_END) {
-		DebugOut(L"reborn \n");
 		SetState(KOOPAS_STATE_REBORN);
 	}
 
@@ -482,12 +481,10 @@ void CKoopas::CollisionWithBrick(LPCOLLISIONEVENT e)
 	if (typeKoopa == KOOPA_COLOR_RED) {
 		if (state == KOOPAS_STATE_SPIN_LEFT) {
 			if (e->nx > 0) {
-				DebugOut(L"spin left \n");
 				/*DebugOut(L"Y of Koopas %f \n", y);
 				DebugOut(L"Y of Brick %f \n", brick->y);
 				DebugOut(L"height %f \n", y + GetHeightKoopas());*/
 				if ((y + GetHeightKoopas()) > brick->y) {
-					DebugOut(L"spin left exute\n");
 
 					if (brick->y - (y + 16) < 0)
 					{

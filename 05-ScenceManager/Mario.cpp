@@ -1297,7 +1297,6 @@ void CMario::handlerMarioUpPipe()
 	else if (GetTickCount64() - timeMarioPipeUp < MARIO_PIPE_DOWN_1_TIME) {
 		SetPosition(MARIO_PIPE_POS_X_4, MARIO_PIPE_POS_Y_4);
 		checkUpdateUpdatePipe = true;
-		DebugOut(L"set  position mario up pipe NO set \n");
 	}
 	else if (GetTickCount64() - timeMarioPipeUp < MARIO_PIPE_DOWN_2_TIME)
 	{
@@ -1307,7 +1306,6 @@ void CMario::handlerMarioUpPipe()
 	else
 	{
 		if (!checkUpdateUpdatePipe) {
-			DebugOut(L"set  position mario up pipe \n");
 			SetPosition(MARIO_PIPE_POS_X_4, MARIO_PIPE_POS_Y_4+20);
 		}
 		marioStatePipeUp = false;
