@@ -33,7 +33,7 @@
 
 CMario::CMario(float x, float y)
 {
-	level = LEVEL_MARIO_TAIL;
+	level = LEVEL_MARIO_SMAIL;
 	untouchable = 0;
 	SetState(STATE_MARIO_IDLE);
 	start_x = x; 

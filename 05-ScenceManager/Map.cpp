@@ -28,8 +28,8 @@ void CMap::RenderMap(int sceneID)
 	for (int rowMapIndex = 0; rowMapIndex < rowMap; rowMapIndex++) {
 		for (int columnMapIndex = 0; columnMapIndex < columnMap; columnMapIndex++)
 		{
-			float drawX = columnMapIndex * tile;
-			float drawY = rowMapIndex * tile;
+			float drawX = float(columnMapIndex * tile);
+			float drawY = float(rowMapIndex * tile);
 			spritesTiles[TiledMap[rowMapIndex][columnMapIndex] - indexTileMap]->Draw((float)drawX, (float)drawY, 255); //(x,y,alpha)
 		}
 	}
