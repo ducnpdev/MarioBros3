@@ -370,10 +370,10 @@ void CWorldMapKeyHandler::OnKeyDown(int KeyCode)
 	{
 		if( marioWorldmap->GetTypeCurrentNode() == SCENE_3 ){
 			//DebugOut(L"world map onKeyDown: DIK_X %d \n", marioWorldmap->GetTypeCurrentNode());
-			 CGame::GetInstance()->SwitchScene(marioWorldmap->GetTypeCurrentNode());
+			 CGame::GetInstance()->SwitchScene(SCENE_3);
 		}
 		if (marioWorldmap->GetTypeCurrentNode() == SCENE_1)
-			CGame::GetInstance()->SwitchScene(marioWorldmap->GetTypeCurrentNode());
+			CGame::GetInstance()->SwitchScene(SCENE_1);
 	}
 	else if (game->IsKeyDown(DIK_RIGHT) && !marioWorldmap->GetIsMoving()) {
 		marioWorldmap->SetState(MARIO_STATE_MOVING_RIGHT);

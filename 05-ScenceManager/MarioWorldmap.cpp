@@ -172,12 +172,20 @@ void CMarioWorldmap::SetState(int state)
 // 
 int CMarioWorldmap::GetTypeCurrentNode()
 {
+	/*for (size_t i = 0; i < nodes.size(); i++)
+	{
+		if (i == 1 || i == 2 || i == 3) {
+
+		nodes.erase(nodes.begin() + i);
+		}
+	}*/
+
+
 	for (size_t i = 0; i < nodes.size(); i++)
 	{
 		if (nodes[i] == NULL) {
 			continue;
 		}
-		DebugOut(L"sss %d \n", i);
 		if (x == nodes[i]->GetLeft() && y == nodes[i]->GetTop())
 		{
 			return nodes[i]->GetType();
