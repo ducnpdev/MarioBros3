@@ -23,6 +23,9 @@ CWorldMap::CWorldMap(int id, LPCWSTR filePath)
 	lives = NULL;
 	hub = NULL;
 	key_handler = new CWorldMapKeyHandler(this);
+	cardT = NULL;
+	for (int i = 0; i < MaxShowCards; i++)
+		cards[i] = NULL;
 }
 
 
@@ -354,7 +357,7 @@ void CWorldMap::_ParseSection_NODES(string line)
 	int state = atoi(tokens[5].c_str());
 
 	CNode* node = new CNode(l, t, r, b, state);
-	if (node  == NULL || node == nullptr )
+	if (node  == NULL )
 	{
 		return;
 	}
